@@ -8,18 +8,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>First steps as a user &#8212; LAVA 2021.01 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="stylesheet" href="static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="static/language_data.js"></script>
+    <script type="text/javascript" src="static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Submitting your first job" href="first-job.html" />
@@ -43,7 +43,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+        <a class="navbar-brand" href="index.html"><span><img src="static/lava.png"></span>
           LAVA</a>
         <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
       </div>
@@ -161,7 +161,7 @@ interact with LAVA once logged in.</p>
 administrator may grant different permissions to the user to perform various
 operations within LAVA. A typical login screen will look something like the
 following.</p>
-<img alt="_images/local-user-login.png" src="_images/local-user-login.png" />
+<img alt="images/local-user-login.png" src="images/local-user-login.png" />
 <p>To log in with a username and password, enter your credentials in the provided
 text boxes and click “Login” button.</p>
 <p>Local user accounts can be particularly useful for automated users like build
@@ -181,13 +181,13 @@ LDAP login fields.</p>
 <p class="last">If your Linaro email is <code class="docutils literal notranslate"><span class="pre">first.second&#64;linaro.org</span></code> then use
 <code class="docutils literal notranslate"><span class="pre">first.second</span></code> as your username.</p>
 </div>
-<img alt="_images/ldap-user-login.png" src="_images/ldap-user-login.png" />
+<img alt="images/ldap-user-login.png" src="images/ldap-user-login.png" />
 <p>A successful authentication will redirect you to <a class="reference external" href="https://validation.linaro.org/">https://validation.linaro.org/</a></p>
 <p>If you do not have a Linaro LDAP account, you can register at
 <a class="reference external" href="https://register.linaro.org/">https://register.linaro.org/</a>.</p>
 <p>After logging in, the LAVA scheduler page will look something like the
 following:</p>
-<img alt="_images/lava-scheduler-page.png" src="_images/lava-scheduler-page.png" />
+<img alt="images/lava-scheduler-page.png" src="images/lava-scheduler-page.png" />
 </div>
 </div>
 <div class="section" id="authentication-tokens">
@@ -197,17 +197,17 @@ XML-RPC clients, users first need to create an authentication token.</p>
 <p>Once logged in to a LAVA instance (e.g. <a class="reference external" href="https://validation.linaro.org/">https://validation.linaro.org/</a>), click
 on the “API” link then on the “Authentication Tokens” link from the drop down
 menu. The following page will appear</p>
-<img alt="_images/authentication-tokens-page.png" src="_images/authentication-tokens-page.png" />
+<img alt="images/authentication-tokens-page.png" src="images/authentication-tokens-page.png" />
 <p>Click on the “New” button on the above page which raises a dialog box asking
 for a description of the token to help you identify and delete tokens - if
 required at a later stage.</p>
-<img alt="_images/create-new-authentication-token.png" src="_images/create-new-authentication-token.png" />
+<img alt="images/create-new-authentication-token.png" src="images/create-new-authentication-token.png" />
 <p>Click on the “Create” button to generate the token. The token will be assigned
 a token number (which is autogenerated by LAVA).</p>
-<img alt="_images/sample-token-page.png" src="_images/sample-token-page.png" />
+<img alt="images/sample-token-page.png" src="images/sample-token-page.png" />
 <p>To display the token that was generated above click on the green “Display this
 token” button in the Actions column on the above page.</p>
-<img alt="_images/token-display-page.png" src="_images/token-display-page.png" />
+<img alt="images/token-display-page.png" src="images/token-display-page.png" />
 <p>If a token is compromised, it can be removed by clicking on the red “delete
 this token” button in the Actions column. Anyone using that token will then no
 longer be able to authenticate as you in the system.</p>

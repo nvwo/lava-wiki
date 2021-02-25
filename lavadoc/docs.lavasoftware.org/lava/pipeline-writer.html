@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-writer.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Test Writer use cases &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Worked example of migrating a known device" href="migrating-admin-example.html" />
+    <link rel="prev" title="Migrating to LAVA V2" href="migration.html" />
+    <link rel="canonical" href="pipeline-writer.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Test Writer use cases</a><ul>
+<li><a class="reference internal" href="#writing-a-lava-job-submission">Writing a LAVA job submission</a><ul>
+<li><a class="reference internal" href="#general-principles">General principles</a><ul>
+<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#validity-checks">Validity checks</a></li>
+<li><a class="reference internal" href="#results">Results</a></li>
+<li><a class="reference internal" href="#job-submission-data">Job submission data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-a-new-testjob">Writing a new TestJob</a></li>
+<li><a class="reference internal" href="#yaml-syntax">YAML syntax</a><ul>
+<li><a class="reference internal" href="#common-yaml-errors">Common YAML errors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#understanding-available-support">Understanding available support</a></li>
+<li><a class="reference internal" href="#understanding-a-testjob">Understanding a TestJob</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#submissions-using-advanced-features">Submissions using advanced features</a><ul>
+<li><a class="reference internal" href="#templating">Templating</a></li>
+<li><a class="reference internal" href="#including-yaml">Including YAML</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="migration.html" title="Previous Chapter: Migrating to LAVA V2"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Migrating to LAVA V2</span>
+    </a>
+  </li>
+  <li>
+    <a href="migrating-admin-example.html" title="Next Chapter: Worked example of migrating a known device"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Worked exampl... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="test-writer-use-cases">
+<span id="index-0"></span><span id="id1"></span><h1>Test Writer use cases<a class="headerlink" href="#test-writer-use-cases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="writing-a-lava-job-submission">
+<span id="writing-pipeline-submission"></span><span id="index-1"></span><h2>Writing a LAVA job submission<a class="headerlink" href="#writing-a-lava-job-submission" title="Permalink to this headline">¶</a></h2>
+<p>Numerous changes have been made compared with the previous JSON submission
+format. There is no compatibility between the old JSON files and the new
+pipeline job submissions. There is no conversion tool and none will be
+supported. Each test job needs to be understood and redesigned. Compatibility
+has only been preserved inside the Lava Test Shell Definitions.</p>
+<div class="section" id="general-principles">
+<span id="general-pipeline-principles"></span><h3>General principles<a class="headerlink" href="#general-principles" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="api">
+<h4>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>The API here is still in development and changes may still be required.
+<a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git">Sample jobs are available</a> from the LAVA team and
+are updated regularly.</li>
+<li>Only certain deployment types, boot types and device types are currently
+supportable. These guidelines will be enlarged as support grows.</li>
+<li>The pipeline does not make assumptions and the only defaults are
+constrictive and only provided for admin reasons.</li>
+</ol>
+</div>
+<div class="section" id="validity-checks">
+<h4>Validity checks<a class="headerlink" href="#validity-checks" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>Decisions about the validity of a test job submission are made as early
+as possible.</li>
+<li>Some validity checks will be done before a job submission is accepted</li>
+<li>Most will be completed before the job submission is scheduled.</li>
+<li>An invalid job submission will result in an Incomplete test job.</li>
+<li>Some validity checks can only be done after the test job has started,
+e.g. checks relating to downloaded files. These checks will result in
+a JobError.</li>
+</ol>
+</div>
+<div class="section" id="results">
+<h4>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>All pipeline test jobs report results, whether a test shell is used or not.</li>
+<li>Visibility of test job results is determined solely by the job submission.</li>
+<li>Results are part of the test job and cannot be manually created.</li>
+<li>Result analysis is primarily a task for other engines, results can be
+exported in full but the principle emphasis is on data generation.</li>
+<li>Results are posted in real time, while the job is still running. This means
+that a later failure in the test job cannot cause a loss of results.</li>
+</ol>
+</div>
+<div class="section" id="job-submission-data">
+<h4>Job submission data<a class="headerlink" href="#job-submission-data" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic">
+<li><p class="first">There are three actions for all test jobs: <strong>deploy</strong>, <strong>boot</strong> and <strong>test</strong>.</p>
+</li>
+<li><p class="first">All scheduled submissions may only specify a <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>, <strong>not</strong> a
+target. The device type is only for use by the scheduler and is ignored by
+the dispatcher. Locally, dispatchers only have configuration for the devices
+currently running test jobs.</p>
+</li>
+<li><p class="first">Default timeouts can be specified at the top of the file.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a></p>
+</div>
+</li>
+<li><p class="first">priority can be specified, the default is medium.</p>
+</li>
+<li><p class="first"><strong>Always</strong> <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=">check your YAML syntax</a></p>
+</li>
+<li><p class="first">The <strong>actions</strong> element in a pipeline job submission is a list of
+dictionaries - ensure that the line ends with a colon <code class="docutils literal notranslate"><span class="pre">:</span></code>, the next line
+needs to be indented and needs to start with a hyphen <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p>
+</li>
+<li><p class="first">YAML supports comments using <code class="docutils literal notranslate"><span class="pre">#</span></code>, please use them liberally. Comments
+are not preserved in the database after submission.</p>
+</li>
+<li><p class="first">The new result views know about the deployment type and boot type, so the
+<code class="docutils literal notranslate"><span class="pre">job_name</span></code> can concentrate on the objective of the test, not the methods
+used in it. The job name will still need to exist as a file in the test
+shell and as a URL in the results, so underscores and hyphens need to be
+used in place of spaces.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a> are specified in human readable units, days, hours,
+minutes or seconds. Avoid specifying timeouts in smaller units when a
+larger unit is available: i.e. you should <strong>never</strong> use 120 seconds, always
+2 minutes. Schema rules may be introduced to enforce this and your jobs
+could be rejected. The requested timeout and the actual duration of each
+action class within a test job is logged and excessive timeouts can be
+identified.</p>
+</div>
+</div>
+</div>
+<div class="section" id="writing-a-new-testjob">
+<span id="index-2"></span><h3>Writing a new TestJob<a class="headerlink" href="#writing-a-new-testjob" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="dispatcher-actions.html#dispatcher-actions"><span class="std std-ref">Dispatcher Action Reference</span></a> for details of the available actions and use the
+<a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git">sample jobs</a> as examples.</p>
+</div>
+<div class="section" id="yaml-syntax">
+<span id="writing-new-job-yaml"></span><span id="index-3"></span><h3>YAML syntax<a class="headerlink" href="#yaml-syntax" title="Permalink to this headline">¶</a></h3>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last"><strong>Indenting is critically important to YAML</strong>. A valid YAML
+document can still render an object which lacks the structure required for a
+valid submission. The parser errors do tend to be cryptic but will at
+generally indicate the last tag encountered.</p>
+</div>
+<p><strong>Always</strong> use an editor which shows the actual whitespace. Many text editors
+have syntax highlighting for YAML. However, syntax highlighting may not be
+sufficient to identify common YAML syntax errors.</p>
+<div class="section" id="common-yaml-errors">
+<h4>Common YAML errors<a class="headerlink" href="#common-yaml-errors" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+</pre></div>
+</div>
+<p>Using the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=">Online YAML parser</a>,
+this results in:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;boot&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;u-boot&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Note how the entire boot block is loaded as a <code class="docutils literal notranslate"><span class="pre">null</span></code>. <code class="docutils literal notranslate"><span class="pre">method</span></code> is now out
+of place. It has been made into a new entry in the list of actions. The
+submission is trying to create a test job which does:</p>
+<ol class="arabic simple">
+<li>deploy</li>
+<li>boot</li>
+<li>method</li>
+<li>test</li>
+</ol>
+<p>The correct syntax is:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+</pre></div>
+</div>
+<p>Note how <code class="docutils literal notranslate"><span class="pre">method</span></code> is indented <strong>beneath</strong> <code class="docutils literal notranslate"><span class="pre">boot</span></code> instead of at the same
+level.</p>
+<p>Using the parser, this results in:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;boot&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;u-boot&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>This now creates a submission which is trying to do:</p>
+<ol class="arabic simple">
+<li>deploy</li>
+<li>boot<ul>
+<li>method</li>
+</ul>
+</li>
+<li>test</li>
+</ol>
+</div>
+</div>
+<div class="section" id="understanding-available-support">
+<h3>Understanding available support<a class="headerlink" href="#understanding-available-support" title="Permalink to this headline">¶</a></h3>
+<p>Devices to run pipeline jobs must be set as a pipeline device by the admin of
+the LAVA instance. Check for a tick mark in the Pipeline Device column of the
+device type overview. The instance itself must be enabled for pipeline usage -
+one indicator is that an updated instance has a <strong>Results</strong> section in the top
+level menu.</p>
+</div>
+<div class="section" id="understanding-a-testjob">
+<h3>Understanding a TestJob<a class="headerlink" href="#understanding-a-testjob" title="Permalink to this headline">¶</a></h3>
+<p>To convert an existing job to the pipeline, there are steps to be covered:</p>
+<ol class="arabic simple">
+<li>Be explicit about the type of deployment and the type of boot</li>
+<li>Be explicit about the operating system inside any rootfs</li>
+<li>Start with an already working device type or job submission.</li>
+<li>Start with singlenode jobs, use of the multinode protocol can follow later.</li>
+<li>Drop details of submitting results</li>
+</ol>
+<p>Instead of calling a “deploy_kernel” or “deploy_image” command and passing
+parameters, a pipeline job submission requires that the type of deployment and
+the type of boot is specified as part of a single deploy action which covers
+all devices and all jobs.</p>
+<p>Equally, a pipeline job submission requires that assumptions are removed in
+favor of explicit settings. Just because a URL ends in <code class="docutils literal notranslate"><span class="pre">.gz</span></code> does not mean
+that the dispatcher will assume that <code class="docutils literal notranslate"><span class="pre">gz</span></code> decompression can be used - this
+must be specified or no decompression is done at all.</p>
+<p>The pipeline will not assume anything about the operating system of a rootfs
+specified in a URL - the job submission will simply fail to validate and will
+be rejected.</p>
+<p>Booting beaglebone-black with an nfsrootfs requires knowledge of how
+that device can use NFS - in this case, using tftp.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+ <span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+     <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+     <span class="nt">kernel</span><span class="p">:</span>
+       <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/functional-test-images/bbb/zImage</span>
+     <span class="c1"># nfsrootfs: file:///home/linaro/lava/nfsrootfs/jessie-rootfs.tar.gz</span>
+     <span class="nt">nfsrootfs</span><span class="p">:</span>
+       <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/pipeline/debian-jessie-rootfs.tar.gz</span>
+       <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+     <span class="nt">dtb</span><span class="p">:</span>
+       <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the use of comments here allows the writer to flip between a remote
+image and a local test version of that image - this would be suitable for
+running directly on a local dispatcher.</p>
+</div>
+<p>The same deployment stanza can be used for any device which supports NFS using
+tftp, just changing the URLs.</p>
+<p>To change this deployment to a ramdisk without NFS, still using TFTP, simply
+provide a ramdisk instead of an nfsrootfs:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+
+ <span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+    <span class="nt">kernel</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/functional-test-images/bbb/zImage</span>
+    <span class="nt">ramdisk</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/functional-test-images/common/linaro-image-minimal-initramfs-genericarmv7a.cpio.gz.u-boot</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">dtb</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/functional-test-images/bbb/am335x-bone.dtb</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>ramdisk-type</strong> must be explicitly set, despite the URL in this case
+happening to have a <code class="docutils literal notranslate"><span class="pre">u-boot</span></code> extension. This is not assumed. Without the
+<code class="docutils literal notranslate"><span class="pre">ramdisk-type</span></code> being set to <code class="docutils literal notranslate"><span class="pre">u-boot</span></code> in the job submission, the U-Boot
+header on the ramdisk would be mangled when the test definitions are
+applied, resulting in an invalid ramdisk.</p>
+</div>
+</div>
+</div>
+<div class="section" id="submissions-using-advanced-features">
+<span id="test-job-yaml-advanced"></span><h2>Submissions using advanced features<a class="headerlink" href="#submissions-using-advanced-features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="templating">
+<h3>Templating<a class="headerlink" href="#templating" title="Permalink to this headline">¶</a></h3>
+<p>Not all test jobs are written by hand and many <a class="reference internal" href="lava_ci.html#continuous-integration"><span class="std std-ref">Continuous Integration</span></a>
+systems will generate test jobs for submission to LAVA using a templating
+system. For example, <a class="reference internal" href="custom-result-handling.html#kernelci-org"><span class="std std-ref">KernelCI.org</span></a> uses <a class="reference internal" href="glossary.html#term-jinja2"><span class="xref std std-term">jinja2</span></a> to convert the
+data used to build the kernel artifacts into test job submissions for LAVA V2.</p>
+</div>
+<div class="section" id="including-yaml">
+<h3>Including YAML<a class="headerlink" href="#including-yaml" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to include YAML directly into a V2 test job submission
+using the <code class="docutils literal notranslate"><span class="pre">include:</span></code> dictionary which takes3 a single string as the URL of a
+remote YAML file. This file will be downloaded and inserted into the test job
+YAML. Any existing values at this point of the file will be updated. Any new
+values from the included file will be added.</p>
+<p>This feature can be used to include generic boilerplate into YAML files or to
+help insert metadata or other elements. The URL provided <strong>must</strong> be publicly
+accessible to the master during submission.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-writer.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+</html>

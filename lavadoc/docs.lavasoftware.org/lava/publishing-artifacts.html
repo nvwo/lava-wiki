@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/publishing-artifacts.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:11 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Publishing artifacts &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Writing a monitors test action" href="monitors.html" />
+    <link rel="prev" title="Lava-Test Test Definition 1.0" href="lava_test_shell.html" />
+    <link rel="canonical" href="publishing-artifacts.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Publishing artifacts</a><ul>
+<li><a class="reference internal" href="#linaro-lava-lab">Linaro LAVA-lab</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="lava_test_shell.html" title="Previous Chapter: Lava-Test Test Definition 1.0"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Lava-Test Tes...</span>
+    </a>
+  </li>
+  <li>
+    <a href="monitors.html" title="Next Chapter: Writing a monitors test action"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Writing a mon... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="publishing-artifacts">
+<span id="index-0"></span><span id="id1"></span><h1>Publishing artifacts<a class="headerlink" href="#publishing-artifacts" title="Permalink to this headline">¶</a></h1>
+<p>Test writers might want to publish files from the device under test
+(<a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>) to the outside world.</p>
+<p>LAVA does not provide a specific command to publish files. However, LAVA does
+provide a way to share secrets between the test writer and the device.</p>
+<p>The secrets should be listed in the <em>job definition</em> as a dictionary called
+<code class="docutils literal notranslate"><span class="pre">secrets</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">secrets</span><span class="p">:</span>
+  <span class="nt">API_USER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kernel-ci</span>
+  <span class="nt">API_KEY</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">b43614a9583f9c74b989914a91d1cfd9</span>
+</pre></div>
+</div>
+<p>This dictionary will be written to the lava overlay along with the test
+definitions and scripts. The resulting file, called <code class="docutils literal notranslate"><span class="pre">secrets</span></code>, can be sourced
+from a shell script:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">API_USER</span><span class="o">=</span>kernel-ci
+<span class="nv">API_KEY</span><span class="o">=</span>b43614a9583f9c74b989914a91d1cfd9
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to include a <strong>secrets</strong> dictionary, a job definition
+shouldn’t be public. Hence a <a class="reference internal" href="glossary.html#term-visibility"><span class="xref std std-term">visibility</span></a> set to
+<em>personal</em> or <em>group</em> (see <a class="reference internal" href="explain_first_job.html#explain-first-job"><span class="std std-ref">Explaining the first job in detail</span></a>).</p>
+</div>
+<p>Thanks to these secrets, the test writer can push files to an external server
+that he does control.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Do not use <strong>personal</strong> secrets as the secret is visible to any
+operation within the test shell and this may compromise the security of
+your personal accounts. Always create a dedicated account for automated
+submissions and only give that account minimal permissions to create the
+automated uploads.</p>
+</div>
+<div class="section" id="linaro-lava-lab">
+<h2>Linaro LAVA-lab<a class="headerlink" href="#linaro-lava-lab" title="Permalink to this headline">¶</a></h2>
+<p>The Linaro lab team provides and maintains a default web server that test
+writers can use to publish artifacts.</p>
+<p><a class="reference external" href="https://archive.validation.linaro.org/">https://archive.validation.linaro.org/</a></p>
+<p>In order to use this server, you should ask admins for:
+* an account on the server (and a token) for automated submissions
+* a directory where to upload your files</p>
+<p>This token should be provided to the device, thanks to the <strong>secrets</strong>
+dictionary.</p>
+<p>To publish an artifact, just make a POST request to your directory
+inside a custom script so that the secret is not visible in the output of
+<code class="docutils literal notranslate"><span class="pre">curl</span></code> itself.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -F <span class="s1">&#39;path=@file_to_publish.ext&#39;</span> -F <span class="s1">&#39;token=1234567890&#39;</span> https://archive.validation.linaro.org/artifacts/my-directory/
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It remains the responsibility of the user to keep the secret hidden
+- tokens can be revoked if misused.</p>
+</div>
+<p>The server will return the full url to the file you just published. You can
+also list all files stored in the server by browsing
+<a class="reference external" href="https://archive.validation.linaro.org/artifacts/">https://archive.validation.linaro.org/artifacts/</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Keep in mind that each file will be automatically deleted after some
+days and that quotas applies to each directories. For the Cambridge
+LAVA lab, the current timeout is 30 days.</p>
+</div>
+<p>Other third party sites can also be used. Access to such sites and obtaining the
+tokens or secrets required for such sites is beyond the scope of this guide.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="writing-tests.html#test-case-references"><span class="std std-ref">Recording test case references</span></a> for recording the returned path to
+the published file alongside your test case results.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/publishing-artifacts.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:11 GMT -->
+</html>

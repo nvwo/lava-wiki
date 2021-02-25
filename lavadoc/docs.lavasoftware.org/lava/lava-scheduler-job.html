@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/lava-scheduler-job.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:58 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>LAVA job failures, errors, comments and tags &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Job submission failure help" href="lava-scheduler-submit-job.html" />
+    <link rel="canonical" href="lava-scheduler-job.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">LAVA job failures, errors, comments and tags</a><ul>
+<li><a class="reference internal" href="#dispatcher-error-or-test-failure">Dispatcher error or test failure</a></li>
+<li><a class="reference internal" href="#job-failure-tags">Job failure tags</a></li>
+<li><a class="reference internal" href="#job-failure-comment">Job failure comment</a></li>
+<li><a class="reference internal" href="#lava-failure-messages">LAVA Failure messages</a><ul>
+<li><a class="reference internal" href="#missing-methods">Missing methods</a></li>
+<li><a class="reference internal" href="#python-traceback-messages">Python traceback messages</a></li>
+<li><a class="reference internal" href="#compatibility-failures">Compatibility failures</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commenting-on-or-tagging-a-job-failure">Commenting on or tagging a job failure</a></li>
+<li><a class="reference internal" href="#viewing-reports-of-job-failures">Viewing reports of job failures</a></li>
+<li><a class="reference internal" href="#unreported-test-failures">Unreported test failures</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="lava-scheduler-submit-job.html" title="Previous Chapter: Job submission failure help"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Job submissio...</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-job-failures-errors-comments-and-tags">
+<span id="job-help"></span><h1>LAVA job failures, errors, comments and tags<a class="headerlink" href="#lava-job-failures-errors-comments-and-tags" title="Permalink to this headline">¶</a></h1>
+<p>LAVA jobs and LAVA test cases may fail for a number of reasons, including:</p>
+<ul class="simple">
+<li>Errors in the JSON, YAML, parser or custom scripts:<ul>
+<li>Files expected to be downloaded are absent or have been moved or deleted</li>
+<li>YAML files copied from a repository to a location outside VCS without
+adding a Version to the YAML</li>
+<li>Custom scripts failing, not available or not executable - see
+<a class="reference internal" href="writing-tests.html#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a></li>
+<li>missing dependencies</li>
+<li>parser errors</li>
+</ul>
+</li>
+<li>Errors in the deployed image or kernel</li>
+<li>Errors in LAVA</li>
+<li>Failures on the device</li>
+</ul>
+<p>See <a class="reference internal" href="developing-tests.html#test-developer"><span class="std std-ref">Writing Tests</span></a></p>
+<div class="section" id="dispatcher-error-or-test-failure">
+<h2>Dispatcher error or test failure<a class="headerlink" href="#dispatcher-error-or-test-failure" title="Permalink to this headline">¶</a></h2>
+<p>If LAVA detected an error during the job, that error will be highlighted at the
+top of the job output. Some errors can be due to bugs in LAVA and should be
+reported to LAVA using the link at the bottom of each LAVA page. Other errors
+may be LAVA detecting an error in the job data (JSON, YAML, parser or scripts)
+which need to be fixed by the test writer.</p>
+<p>See <a class="reference internal" href="writing-tests.html#best-practices"><span class="std std-ref">Best practices for writing a LAVA test job</span></a></p>
+<p>When LAVA detects an error, the job will be marked as <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code> and will
+show up in the failure reports for the device type and the device.</p>
+</div>
+<div class="section" id="job-failure-tags">
+<span id="failure-tags"></span><h2>Job failure tags<a class="headerlink" href="#job-failure-tags" title="Permalink to this headline">¶</a></h2>
+<p>Failure tags allow the same failure reason to be marked on a variety of
+different jobs which may otherwise be unrelated. If a particular failure starts
+to become common with a particular piece of hardware or due to a specific
+cause, a tag can be created by the lab administrators.</p>
+<p>Failure tags can be used whether the job was marked as <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code> in LAVA
+or not. The tags will show on the job output but only <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code> jobs will
+show failure tags in the reports.</p>
+</div>
+<div class="section" id="job-failure-comment">
+<span id="failure-comments"></span><h2>Job failure comment<a class="headerlink" href="#job-failure-comment" title="Permalink to this headline">¶</a></h2>
+<p>Failure comments can be used when a failure is unique, rare or to add more
+detail to an existing tag as it relates to this specific job.</p>
+<p>Failure comments can be used whether the job was marked as <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code> in
+LAVA or not. The comments will show on the job output but only <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code>
+jobs will show failure comments in the reports.</p>
+</div>
+<div class="section" id="lava-failure-messages">
+<span id="id1"></span><h2>LAVA Failure messages<a class="headerlink" href="#lava-failure-messages" title="Permalink to this headline">¶</a></h2>
+<p>This list will be expanded over time.</p>
+<div class="section" id="missing-methods">
+<span id="missing-method-failures"></span><h3>Missing methods<a class="headerlink" href="#missing-methods" title="Permalink to this headline">¶</a></h3>
+<p>Errors in test job submissions and errors in admin setup can show up as a
+failure comment of no deployment or boot method being available. First, attempt
+to reproduce the failure with one of the <a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">standard test jobs</span></a>. If the error is reproduced, the admin can use the
+<a class="reference internal" href="simple-admin.html#admin-triage"><span class="std std-ref">Triage</span></a> guidelines to identify the problem.</p>
+</div>
+<div class="section" id="python-traceback-messages">
+<span id="python-traceback-failures"></span><h3>Python traceback messages<a class="headerlink" href="#python-traceback-messages" title="Permalink to this headline">¶</a></h3>
+<p>These messages relate to code errors which should either have been caught as
+invalid input or handled gracefully within the test job. Failure messages
+containing a traceback should be reported as bugs.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="support.html#getting-support"><span class="std std-ref">Getting support</span></a></p>
+</div>
+</div>
+<div class="section" id="compatibility-failures">
+<span id="compatibility-failure"></span><h3>Compatibility failures<a class="headerlink" href="#compatibility-failures" title="Permalink to this headline">¶</a></h3>
+<p>Some updates of the LAVA packages can introduce new code support or changes to
+the code support. The master and the worker need to be running the same code
+version of <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> for the test job to run correctly. For example,
+a deprecated option in a test job submission could be removed in an update. If
+the master is running an older version of code than the worker, the test job
+could fail as the worker would be unable to handle the removed option.</p>
+<p>To prevent this, the master and the worker calculate a compatibility number for
+each test job. If this number does not match, the test job will fail. So a
+compatibility failure indicates that the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> code on the worker
+is out of date with respect to the master. This is a problem which needs to be
+reported to the admins.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#compatibility-failures"><span class="std std-ref">Compatibility failures</span></a> for more information on how
+developers set the compatibility for test jobs.</p>
+</div>
+</div>
+</div>
+<div class="section" id="commenting-on-or-tagging-a-job-failure">
+<span id="commenting-on-failures"></span><h2>Commenting on or tagging a job failure<a class="headerlink" href="#commenting-on-or-tagging-a-job-failure" title="Permalink to this headline">¶</a></h2>
+<p>If you have permission to add or edit failure tags and comments, a button will
+be displayed on the job output page <code class="docutils literal notranslate"><span class="pre">Comment</span> <span class="pre">on</span> <span class="pre">failure</span></code>.</p>
+<p>The button displays a form where the current tag(s) or comment(s) are
+displayed. Additional tags can be selected and the comment (if any) can be
+edited.</p>
+</div>
+<div class="section" id="viewing-reports-of-job-failures">
+<h2>Viewing reports of job failures<a class="headerlink" href="#viewing-reports-of-job-failures" title="Permalink to this headline">¶</a></h2>
+<p>Incomplete jobs will show up in the reports. Reports are generated which cover
+all jobs, all jobs on a specified <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> and all jobs on a
+specific device.</p>
+<p>Reports show two graphs of the number of complete jobs against the number of
+incomplete jobs over time, separating health checks from other test jobs.
+Clicking on the time / day link shows the failure tags and failure comments for
+the incomplete jobs during that timeframe.</p>
+</div>
+<div class="section" id="unreported-test-failures">
+<h2>Unreported test failures<a class="headerlink" href="#unreported-test-failures" title="Permalink to this headline">¶</a></h2>
+<p>Not all test failures will show as incomplete jobs and a <code class="docutils literal notranslate"><span class="pre">Complete</span></code> job can
+still have failure tags and failure comments assigned.</p>
+<p>If a test failed due to a problem outside the test definition or supporting
+files and scripts, use the link at the bottom of each page to report a bug.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/lava-scheduler-job.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:58 GMT -->
+</html>

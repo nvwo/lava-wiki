@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/development-intro.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Guide to development within LAVA &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development process" href="process.html" />
+    <link rel="prev" title="LAVA review criteria" href="review-criteria.html" />
+    <link rel="canonical" href="development-intro.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Guide to development within LAVA</a><ul>
+<li><a class="reference internal" href="#dependencies-required-to-run-unit-tests">Dependencies required to run unit tests</a></li>
+<li><a class="reference internal" href="#developing-using-device-type-templates">Developing using device-type templates</a><ul>
+<li><a class="reference internal" href="#device-type-templates-as-code">Device type templates as code</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-new-device-type-templates">Testing new device-type templates</a><ul>
+<li><a class="reference internal" href="#use-version-control-for-device-type-templates">Use version-control for device-type templates</a></li>
+<li><a class="reference internal" href="#contribute-device-type-templates-back-upstream">Contribute device-type templates back upstream</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#developer-workflows">Developer workflows</a></li>
+<li><a class="reference internal" href="#code-locations">Code locations</a></li>
+<li><a class="reference internal" href="#compatibility">Compatibility</a><ul>
+<li><a class="reference internal" href="#jinja2-support">Jinja2 support</a></li>
+<li><a class="reference internal" href="#device-dictionaries">Device dictionaries</a></li>
+<li><a class="reference internal" href="#dispatcher-device-configurations">Dispatcher device configurations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contributing-upstream">Contributing Upstream</a><ul>
+<li><a class="reference internal" href="#planning">Planning</a></li>
+<li><a class="reference internal" href="#report-a-bug">Report a Bug</a></li>
+<li><a class="reference internal" href="#community-contributions">Community contributions</a><ul>
+<li><a class="reference internal" href="#contributing-via-your-distribution">Contributing via your distribution</a></li>
+<li><a class="reference internal" href="#contributing-via-github">Contributing via GitHub</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="review-criteria.html" title="Previous Chapter: LAVA review criteria"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; LAVA review criteria</span>
+    </a>
+  </li>
+  <li>
+    <a href="process.html" title="Next Chapter: Development process"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Development process &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="guide-to-development-within-lava">
+<span id="developer-guide"></span><h1>Guide to development within LAVA<a class="headerlink" href="#guide-to-development-within-lava" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="dependencies-required-to-run-unit-tests">
+<span id="unit-test-dependencies"></span><span id="index-0"></span><h2>Dependencies required to run unit tests<a class="headerlink" href="#dependencies-required-to-run-unit-tests" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#developer-preparations"><span class="std std-ref">Preparing for LAVA development</span></a> and <a class="reference internal" href="debian.html#testing-packaging"><span class="std std-ref">building LAVA
+packages</span></a>.</p>
+</div>
+<p>To run the unit tests, a range of dependencies need to be installed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt -y install lava-dev
+</pre></div>
+</div>
+<p>To reduce the number of unit tests which are skipped, a number of other
+packages are listed as recommended by <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> and these should be
+installed as well:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt -y install lxc u-boot-tools tftpd-hpa telnet nfs-kernel-server img2simg simg2img
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>For security reasons, each installation of
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> sets the permissions of
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/instance.conf</span></code> to only be readable by the
+<code class="docutils literal notranslate"><span class="pre">lavaserver</span></code> user and users in the <code class="docutils literal notranslate"><span class="pre">lavaserver</span></code> group.</p>
+<p>(Some older instances may have a different username for this user
+and group - check the value of <code class="docutils literal notranslate"><span class="pre">LAVA_DB_USER</span></code> in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/instance.conf</span></code> using sudo.)</p>
+<p>To run the unit tests, the user running the unit tests needs to be
+in the <code class="docutils literal notranslate"><span class="pre">lavaserver</span></code> group. For example:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo adduser &lt;username&gt; lavaserver
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="developing-using-device-type-templates">
+<span id="developing-device-type-templates"></span><span id="index-1"></span><h2>Developing using device-type templates<a class="headerlink" href="#developing-using-device-type-templates" title="Permalink to this headline">¶</a></h2>
+<p>If you are an administrator, you may think the previous link sent you
+to the wrong section. However, administrators need to understand how
+device-type templates operate and how the template engine will use the
+template to be able to make changes.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Device type templates are more than configuration files
+- the templates are processed as source code at runtime. Anyone
+making changes to a device-type <code class="docutils literal notranslate"><span class="pre">.jinja2</span></code> template file <strong>must</strong>
+understand the basics of how to test templates using the same tools
+as developers.</p>
+</div>
+<div class="section" id="device-type-templates-as-code">
+<h3>Device type templates as code<a class="headerlink" href="#device-type-templates-as-code" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> provides a powerful templating engine. Templates in LAVA use
+several standard programming concepts:</p>
+<ul class="simple">
+<li>Conditional Logic</li>
+<li>Inheritance</li>
+<li>Default values</li>
+</ul>
+<p>In addition, LAVA templates need to <strong>always</strong> render to valid YAML. It
+is this YAML which is sent to the worker as <code class="docutils literal notranslate"><span class="pre">device.yaml</span></code>. The worker
+does not handle the templates. All operations are done on the master.</p>
+</div>
+</div>
+<div class="section" id="testing-new-device-type-templates">
+<span id="testing-new-devicetype-templates"></span><h2>Testing new device-type templates<a class="headerlink" href="#testing-new-device-type-templates" title="Permalink to this headline">¶</a></h2>
+<p>The simplest check is to render the new template to YAML and check that
+it contains the expected commands. As with test job files, there are
+common YAML errors which can block the use of new templates.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer.html#writing-new-job-yaml"><span class="std std-ref">YAML syntax errors</span></a></p>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>lava-server manage device-dictionary --hostname &lt;HOSTNAME&gt; --review
+</pre></div>
+</div>
+<p>All templates are checked for basic syntax and output using:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -vcf lava_scheduler_app.tests.test_base_templates.TestBaseTemplates.test_all_templates
+</pre></div>
+</div>
+<p>A more rigorous test is to use the dedicated unit test which does
+<strong>not</strong> require <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> to be installed, i.e. it does not
+require a database to be configured. This test can be run directly from
+a git checkout of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> with a few basic python packages
+installed (including <code class="docutils literal notranslate"><span class="pre">python-jinja2</span></code>).</p>
+<p>Individual templates have their own unit tests to test for specific
+elements of the rendered device configuration.</p>
+<p>The number of unit tests and templates has increased, so there are
+dedicated unit test files for particular types of template unit tests:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -vcf lava_scheduler_app.tests.test_fastboot_templates
+
+$ python3 -m unittest -vcf lava_scheduler_app.tests.test_grub_templates
+
+$ python3 -m unittest -vcf lava_scheduler_app.tests.test_qemu_templates
+
+$ python3 -m unittest -vcf lava_scheduler_app.tests.test_uboot_templates
+</pre></div>
+</div>
+<p>Most changes to device-type templates take effect <strong>immediately</strong> - as
+soon as the file is changed in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code> the next testjob
+for that device-type will use the output of that template. Always test
+your templates locally <strong>before</strong> deploying the template to the master.
+(Test jobs which have already started are not affected by template
+changes.)</p>
+<div class="section" id="use-version-control-for-device-type-templates">
+<h3>Use version-control for device-type templates<a class="headerlink" href="#use-version-control-for-device-type-templates" title="Permalink to this headline">¶</a></h3>
+<p>This cannot be stressed enough. <strong>ALL admins</strong> need to keep device-type
+templates in some form of version control. The template files are code
+and admins will need to be able to upgrade templates when packages are
+upgraded <strong>and</strong> when devices need to implement new support.</p>
+</div>
+<div class="section" id="contribute-device-type-templates-back-upstream">
+<h3>Contribute device-type templates back upstream<a class="headerlink" href="#contribute-device-type-templates-back-upstream" title="Permalink to this headline">¶</a></h3>
+<p>As code, device-type templates need to develop alongside the rest of
+the codebase. The best way to maintain support is to
+<a class="reference internal" href="#contribute-upstream"><span class="std std-ref">Contributing Upstream</span></a> so that new features can be tested against
+your templates and new releases can automatically include updates to
+your templates.</p>
+<p>Some individual device files exist in the codebase in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/devices</span></code> but these are only for use in the
+existing unit tests. There is no need to contribute individual device
+dictionaries unless there are new unit tests which use those device
+dictionaries.</p>
+</div>
+</div>
+<div class="section" id="developer-workflows">
+<span id="developer-workflow"></span><span id="index-2"></span><h2>Developer workflows<a class="headerlink" href="#developer-workflows" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">LAVA is developed using Debian packaging to ensure that
+daemons and system-wide configuration is correctly updated with
+changes in the codebase. There is <strong>no official support for pypi or python
+virtual environments or installing directly from a git directory</strong>.
+<code class="docutils literal notranslate"><span class="pre">python-setuptools</span></code> is used but only with <code class="docutils literal notranslate"><span class="pre">sdist</span></code> to create the
+tarballs to be used for the Debian packaging, not for <code class="docutils literal notranslate"><span class="pre">install</span></code>.
+Some dependencies of LAVA are not available with pypi, for example
+<code class="docutils literal notranslate"><span class="pre">python-guestfs</span></code> would need installing using another method.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#lava-on-debian"><span class="std std-ref">Developing LAVA on Debian</span></a> and a summary of the
+<a class="reference external" href="https://qa.debian.org/developer.php?email=pkg-linaro-lava-devel%40lists.alioth.debian.org">Debian LAVA team activity</a></p>
+</div>
+<p>Developers can update the installed code on their own systems manually
+(by copying files into the system paths) and/or use symlinks where
+appropriate but changes need to be tested in a system which is deployed
+using the <a class="reference internal" href="debian.html#dev-builds"><span class="std std-ref">Developer package build</span></a> before being proposed for review. All
+changes <strong>must</strong> also pass <strong>all</strong> the unit tests, unless those tests
+are already allowed to be skipped using unittest decorators.</p>
+<p>Mixing the use of python code in <code class="docutils literal notranslate"><span class="pre">/usr/local/lib</span></code> and <code class="docutils literal notranslate"><span class="pre">/usr/lib</span></code> on
+a single system is <strong>known</strong> to cause spurious errors and will only
+waste your development time. Be very careful when copying files and
+when using symlinks. If in doubt, remove <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/python*</span></code>
+<strong>and</strong> <code class="docutils literal notranslate"><span class="pre">~/.local/lib/python*</span></code> then build a <a class="reference internal" href="debian.html#dev-builds"><span class="std std-ref">local developer
+package</span></a> and install it.</p>
+<p>If your change introduces a dependency on a new python module, always
+ensure that this module is available in Debian by <a class="reference external" href="https://www.debian.org/distrib/packages#search_packages">searching the Debian
+package lists</a>. If the
+module exists but is not in the current stable release of Debian, it
+can be <em>backported</em> but be aware that this will delay testing and
+acceptance of your change. It is expressly <strong>not acceptable</strong> to add a
+dependency on a python module which is only available using pypi or
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>. Introducing such a module to Debian can involve a
+large amount of work - <a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">talk to us</span></a> before
+spending time on code which relies on such modules or which relies on
+newer versions of the modules than are currently available in Debian
+testing.</p>
+<p>The dependencies required by LAVA are tracked using the
+<code class="docutils literal notranslate"><span class="pre">./share/requires.py</span></code> script which is also available in the
+<code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> package as <code class="docutils literal notranslate"><span class="pre">/usr/share/lava-server/requires.py</span></code>.
+Merge requests which need extra modules which already exist in Debian
+can add the relevant information to the <code class="docutils literal notranslate"><span class="pre">share/requirements/debian</span></code>
+files.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For the CI to pass, the extra module(s) <strong>must</strong> be available for
+stable and testing. Pay particular attention to the version available in
+buster and buster-backports. If a minimum version is required, this can be
+specified in the requirements, as long as that version or newer is available
+in buster-backports. <a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">talk to us</span></a> if your change
+involves new files that may need changes in the packaging code. All CI tests
+must pass before any new code can be merged, including building working
+packages containing the new support.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#developer-python3"><span class="std std-ref">Development using Python3</span></a>, <a class="reference internal" href="debian.html#quick-fixes"><span class="std std-ref">Quick fixes and testing</span></a> and
+<a class="reference internal" href="dispatcher-testing.html#testing-pipeline-code"><span class="std std-ref">Testing the design</span></a></p>
+</div>
+</div>
+<div class="section" id="code-locations">
+<span id="developer-code-locations"></span><span id="index-3"></span><h2>Code locations<a class="headerlink" href="#code-locations" title="Permalink to this headline">¶</a></h2>
+<p>All the code for the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> support
+exists in the single LAVA repository:</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava">https://git.lavasoftware.org/lava/lava</a></p>
+<p>Includes:</p>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava_scheduler_app</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava_results_app</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava_server</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava_common</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">linaro_django_xmlrpc</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava_dispatcher</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava_test_shell</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">debian</span></code></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="developer-example.html#developing-new-classes"><span class="std std-ref">Developing new classes for LAVA V2</span></a></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="compatibility">
+<span id="compatibility-developer"></span><span id="index-4"></span><h2>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#compatibility-failures"><span class="std std-ref">Compatibility failures</span></a></p>
+</div>
+<p>The compatibility mechanism allows the lava-master daemon to prevent
+issues that would arise if the worker is running older software. A job
+with a lower compatibility may fail much, much later but this allows
+the job to fail early. In future, support is to be added for re-queuing
+such jobs.</p>
+<p>Developers need to take note that in the code, compatibility should
+reflect the removal of support for particular elements, similar to
+handling a SONAME when developing in C. When parts of the submission
+YAML are changed to no longer support fields previously used, then the
+compatibility of the associated strategy class must be raised to one
+more than the current highest compatibility in the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>
+codebase. Compatibility does not need to be changed when adding new
+classes or functionality. It remains a task for the admins to ensure
+that the code is updated when new functionality is to be used on a
+worker as this typically involves adding devices and other hardware.</p>
+<p>Compatibility is calculated for each pipeline during parsing. Only if
+the pipeline uses classes with the higher compatibility will the master
+prevent the test job from executing. Therefore, test jobs using code
+which has not had a compatibility change will continue to execute even
+if the worker is running older software. Compatibility is not a
+guarantee that all workers are running latest code, it exists to let
+jobs fail early when those specific jobs would attempt to execute a
+code path which has been removed in the updated code.</p>
+<div class="section" id="jinja2-support">
+<span id="developer-jinja2-support"></span><h3>Jinja2 support<a class="headerlink" href="#jinja2-support" title="Permalink to this headline">¶</a></h3>
+<p>The Jinja2 templates can be found in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types</span></code> in the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>
+codebase. The reason for this is that all template changes are checked
+in the unit-tests. When the package is installed, the <code class="docutils literal notranslate"><span class="pre">device-types</span></code>
+directory is installed into
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code>. The contents of
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/devices</span></code> is ignored by the packaging, these
+files exist solely to support the unit tests.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#unit-tests"><span class="std std-ref">Unit-tests</span></a> and <a class="reference internal" href="dispatcher-testing.html#testing-pipeline-code"><span class="std std-ref">Testing the design</span></a> for
+examples of how to run individual unit tests or all unit tests
+within a class or module.</p>
+</div>
+</div>
+<div class="section" id="device-dictionaries">
+<h3>Device dictionaries<a class="headerlink" href="#device-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>Individual instances will each have their own locations for the device
+dictionaries of real devices. To allow the unit tests to run, some
+device dictionaries are exported into
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/devices</span></code> but there is <strong>no</strong> guarantee that
+any of these would work with any real devices, even of the declared
+<a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device-type</span></a>.</p>
+<p>For example, the Cambridge lab stores each <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> in
+git at <a class="reference external" href="https://git.linaro.org/lava/lava-lab.git">https://git.linaro.org/lava/lava-lab.git</a> and you can look at the
+configuration of <code class="docutils literal notranslate"><span class="pre">staging</span></code> as a reference:
+<a class="reference external" href="https://git.linaro.org/lava/lava-lab.git/tree/staging.validation.linaro.org/master-configs/staging-master.lavalab/lava-server/dispatcher-config/devices">https://git.linaro.org/lava/lava-lab.git/tree/staging.validation.linaro.org/master-configs/staging-master.lavalab/lava-server/dispatcher-config/devices</a></p>
+<p>Device dictionaries can also be downloaded from any LAVA instance
+using the <a class="reference internal" href="data-export.html#xml-rpc"><span class="std std-ref">XML-RPC</span></a> call, without needing authentication:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">get_dictionary</span><span class="p">(</span><span class="n">hostname</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dispatcher-device-configurations">
+<h3>Dispatcher device configurations<a class="headerlink" href="#dispatcher-device-configurations" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> codebase also has local device configuration
+files in order to support the dispatcher unit tests. These are <strong>not</strong>
+Jinja2 format, these are YAML - the same YAML as would be sent to the
+dispatcher by the relevant master after rendering the Jinja2 templates
+on that master. There is <strong>no</strong> guarantee that any of the device-type
+or device configurations in the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> codebase would work
+with any real devices, even of the declared <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device-type</span></a>.</p>
+</div>
+</div>
+<div class="section" id="contributing-upstream">
+<span id="contribute-upstream"></span><span id="index-5"></span><h2>Contributing Upstream<a class="headerlink" href="#contributing-upstream" title="Permalink to this headline">¶</a></h2>
+<p>The best way to protect your investment on LAVA is to contribute your
+changes back. This way you don’t have to maintain the changes you need
+by yourself, and you don’t run the risk of LAVA changed in a way that
+is incompatible with your changes.</p>
+<p>Upstream uses <a class="reference external" href="https://www.debian.org/">Debian</a>, see <a class="reference internal" href="debian.html#lava-on-debian"><span class="std std-ref">Developing LAVA on Debian</span></a> for more information.</p>
+<div class="section" id="planning">
+<span id="developer-planning"></span><span id="index-6"></span><h3>Planning<a class="headerlink" href="#planning" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA Software Community Project uses <a class="reference external" href="https://git.lavasoftware.org/">GitLab</a> for all development
+and planning for new features and concepts. Discussion happens on the
+<a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">Mailing lists</span></a>.</p>
+<p>Many older git commit messages within the LAVA codebase contain
+references to JIRA issues as <code class="docutils literal notranslate"><span class="pre">LAVA-123</span></code> etc., as the LAVA project
+used to use Linaro’s JIRA instance to track issues. All references
+like this can be appended to a basic URL to find the details of that
+issue: <code class="docutils literal notranslate"><span class="pre">https://projects.linaro.org/browse/</span></code>. e.g. the addition of
+this section on JIRA relates to <code class="docutils literal notranslate"><span class="pre">LAVA-735</span></code> which can be viewed as
+<a class="reference external" href="https://projects.linaro.org/browse/LAVA-735">https://projects.linaro.org/browse/LAVA-735</a></p>
+<p>If you have comments or questions about anything visible within the
+LAVA project, please subscribe to one of the <a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">mailing lists</span></a> and ask your questions there.</p>
+</div>
+<div class="section" id="report-a-bug">
+<span id="bug-reporting"></span><span id="index-7"></span><h3>Report a Bug<a class="headerlink" href="#report-a-bug" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA Software Community Project uses <a class="reference external" href="https://git.lavasoftware.org/">GitLab</a> for all bugs, issues,
+feature requests, enhancements and problem reports. For more general
+questions and discussion, use the <a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">Mailing lists</span></a>. It is often
+useful to discuss the full details of the problem on the <a class="reference external" href="https://lists.lavasoftware.org/mailman/listinfo/lava-users">lava-users</a>
+mailing list before creating an issue in GitLab.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The old Bugzilla and JIRA systems are both deprecated and
+reporting bugs in the old Bugzilla system will not be tracked
+by the LAVA team.</p>
+</div>
+</div>
+<div class="section" id="community-contributions">
+<span id="index-8"></span><span id="id1"></span><h3>Community contributions<a class="headerlink" href="#community-contributions" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA software team use <a class="reference external" href="https://git.lavasoftware.org/">GitLab</a> to manage contributions. For
+details, please read the <a class="reference internal" href="contribution.html#contribution-guide"><span class="std std-ref">LAVA Software Community Project Contribution Guide</span></a></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="process.html#lava-release-process"><span class="std std-ref">Release process</span></a> and <a class="reference internal" href="development.html#lava-development"><span class="std std-ref">LAVA development</span></a>
+and <a class="reference internal" href="contribution.html#contribution-guide"><span class="std std-ref">LAVA Software Community Project Contribution Guide</span></a> for detailed information on running
+the unit tests and other static code analysis tools before
+submitting the review.</p>
+</div>
+<div class="section" id="contributing-via-your-distribution">
+<h4>Contributing via your distribution<a class="headerlink" href="#contributing-via-your-distribution" title="Permalink to this headline">¶</a></h4>
+<p>You are welcome to use the bug tracker of your chosen distribution. The
+maintainer for the packages in that distribution should have an account
+on <a class="reference external" href="https://git.lavasoftware.org/lava/lava">https://git.lavasoftware.org/lava/lava</a> to be able to forward bug
+reports and patches into the upstream LAVA systems.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://www.debian.org/Bugs/Reporting">https://www.debian.org/Bugs/Reporting</a></p>
+</div>
+</div>
+<div class="section" id="contributing-via-github">
+<h4>Contributing via GitHub<a class="headerlink" href="#contributing-via-github" title="Permalink to this headline">¶</a></h4>
+<p>GitHub has mirrors of the GitLab repository but merge requests need to
+be run through the GitLab CI tests. This can be done by changing the
+git remote of the GitHub branch and pushing to GitLab. GitHub users can
+create GitLab accounts on <a class="reference external" href="https://git.lavasoftware.org/">https://git.lavasoftware.org</a> using their
+GitHub credentials.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#lava-development"><span class="std std-ref">LAVA development</span></a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/development-intro.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:33 GMT -->
+</html>

@@ -1,0 +1,867 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/dispatcher-design.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lava Dispatcher Design &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Writing YAML job submission files" href="dispatcher-format.html" />
+    <link rel="prev" title="Pipeline Design" href="pipeline-design.html" />
+    <link rel="canonical" href="dispatcher-design.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Lava Dispatcher Design</a><ul>
+<li><a class="reference internal" href="#pipeline-architecture">Pipeline Architecture</a><ul>
+<li><a class="reference internal" href="#principal-changes">Principal changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#objectives">Objectives</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+<li><a class="reference internal" href="#following-the-code-flow">Following the code flow</a></li>
+<li><a class="reference internal" href="#pipeline-construction-and-flow">Pipeline construction and flow</a><ul>
+<li><a class="reference internal" href="#using-strategy-classes">Using strategy classes</a></li>
+<li><a class="reference internal" href="#lava-test-shell-scripts">Lava test shell scripts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pipeline-error-handling">Pipeline error handling</a><ul>
+<li><a class="reference internal" href="#runtimeerror-exception">RuntimeError Exception</a></li>
+<li><a class="reference internal" href="#infrastructureerror-exception">InfrastructureError Exception</a></li>
+<li><a class="reference internal" href="#joberror-exception">JobError Exception</a></li>
+<li><a class="reference internal" href="#testerror-exception">TestError Exception</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#result-bundle-identifiers">Result bundle identifiers</a></li>
+<li><a class="reference internal" href="#secondary-media">Secondary media</a></li>
+<li><a class="reference internal" href="#device-configuration-design">Device configuration design</a><ul>
+<li><a class="reference internal" href="#device-dictionary">Device Dictionary</a><ul>
+<li><a class="reference internal" href="#exporting-an-existing-device-dictionary">Exporting an existing device dictionary</a></li>
+<li><a class="reference internal" href="#reviewing-an-existing-device-dictionary">Reviewing an existing device dictionary</a></li>
+<li><a class="reference internal" href="#example-device-configuration-review">Example device configuration review</a></li>
+<li><a class="reference internal" href="#importing-configuration-using-a-known-template">Importing configuration using a known template</a></li>
+<li><a class="reference internal" href="#creating-a-new-template">Creating a new template</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-lava-run-directly">Running lava-run directly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-design.html" title="Previous Chapter: Pipeline Design"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Pipeline Design</span>
+    </a>
+  </li>
+  <li>
+    <a href="dispatcher-format.html" title="Next Chapter: Writing YAML job submission files"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Writing YAML ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-dispatcher-design">
+<span id="dispatcher-design"></span><span id="index-0"></span><h1>Lava Dispatcher Design<a class="headerlink" href="#lava-dispatcher-design" title="Permalink to this headline">¶</a></h1>
+<p>This is the <strong>developer</strong> documentation for the new V2 dispatcher design. See
+<a class="reference internal" href="pipeline-usecases.html#pipeline-use-cases"><span class="std std-ref">Advanced Use Cases</span></a> for information for lab administrators and users of
+the new design.</p>
+<p>The refactoring takes place alongside the V1 dispatcher and existing JSON jobs
+are unaffected. A migration will take place where individual devices are
+configured for <a class="reference internal" href="pipeline-admin.html#pipeline-device-requirements"><span class="std std-ref">pipeline support</span></a> and
+individual jobs are then re-written using the <a class="reference internal" href="pipeline-schema.html#pipeline-schema"><span class="std std-ref">pipeline_schema</span></a>. The administrator of each instance will be able to manage
+their own migration and at some point after <code class="docutils literal notranslate"><span class="pre">validation.linaro.org</span></code> has
+completed the migration of all devices to pipeline support, the support for the
+current dispatcher will be removed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">validation.linaro.org</span></code> supports LAVA V2 pipeline submissions as of the
+<code class="docutils literal notranslate"><span class="pre">2016.2</span></code> release and the V2 support will continue to expand in subsequent
+releases.</p>
+<p>The LAVA developers use a <a class="reference external" href="https://staging.validation.linaro.org/">staging instance</a> for testing of the current master
+branch and release candidates for the next production release.</p>
+<div class="section" id="pipeline-architecture">
+<h2>Pipeline Architecture<a class="headerlink" href="#pipeline-architecture" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/arch-overview.svg" src="_images/arch-overview.svg" /><div class="section" id="principal-changes">
+<h3>Principal changes<a class="headerlink" href="#principal-changes" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><strong>Database isolation</strong> - Only the master daemon has a connection to the
+database. This simplifies the architecture and avoids the use of
+fault-intolerant database connections to remote workers.</li>
+<li><strong>Drop use of SSHFS</strong> between workers and master - this was awkward to
+configure and problematic over external connections.</li>
+<li><strong>Move configuration onto the master</strong> - The worker becomes a simple worker
+which receives all configuration and tasks from the master.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="objectives">
+<span id="id1"></span><h2>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h2>
+<p>The new dispatcher design is intended to make it easier to adapt the dispatcher
+flow to new boards, new mechanisms and new deployments. It also shifts support
+to do less work on the dispatcher, make fewer assumptions about the test in the
+dispatcher configuration and put more flexibility into the hands of the test
+writer.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The new code is still developing, some areas are absent, some areas
+will change substantially before the migration completes. There may be
+changes to the submission formats but these will be announced on the
+<a class="reference internal" href="support.html#lava-announce"><span class="std std-ref">lava-announce</span></a> mailing list.</p>
+</div>
+<p>From <strong>2015.8 onwards</strong> the sample jobs supporting the unit tests conform to
+the <a class="reference internal" href="pipeline-schema.html#pipeline-schema"><span class="std std-ref">LAVA schema</span></a>.</p>
+</div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>Start with a Job which is broken up into a Deployment, a Boot and a Test class.
+Results are transmitted live during any part of the job.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="29%" />
+<col width="26%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Job</th>
+<th class="head">&#160;</th>
+<th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#160;</td>
+<td>Deployment</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>DeployAction</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>DownloadAction</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>ChecksumAction</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>MountAction</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>CustomiseAction</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>TestDefAction</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>UnmountAction</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>BootAction</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>TestAction</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<p>The Job manages the Actions using a Pipeline structure. Actions can specialize
+actions by using internal pipelines and an Action can include support for
+retries and other logical functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DownloadAction</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#160;</td>
+<td>HttpDownloadAction</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>FileDownloadAction</td>
+</tr>
+</tbody>
+</table>
+<p>If a Job includes one or more Test definitions, the Deployment can then extend
+the Deployment to overlay the LAVA test scripts without needing to mount the
+image twice:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="27%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DeployAction</th>
+<th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#160;</td>
+<td>OverlayAction</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>MultinodeOverlayAction</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>LMPOverlayAction</td>
+</tr>
+</tbody>
+</table>
+<p>The TestDefinitionAction has a similar structure with specialist tasks being
+handed off to cope with particular tools:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="25%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TestDefinitionAction</th>
+<th class="head">&#160;</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#160;</td>
+<td>RepoAction</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>GitRepoAction</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>&#160;</td>
+<td>TarRepoAction</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>&#160;</td>
+<td>UrlRepoAction</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="following-the-code-flow">
+<span id="code-flow"></span><h2>Following the code flow<a class="headerlink" href="#following-the-code-flow" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Filename</th>
+<th class="head">Role</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>lava_dispatcher/actions/commands.py</td>
+<td>Command line arguments, call to YAML parser</td>
+</tr>
+<tr class="row-odd"><td>lava_dispatcher/device.py</td>
+<td>YAML Parser to create the Device object</td>
+</tr>
+<tr class="row-even"><td>lava_dispatcher/parser.py</td>
+<td>YAML Parser to create the Job object</td>
+</tr>
+<tr class="row-odd"><td>….actions/deploy/</td>
+<td>Handlers for different deployment strategies</td>
+</tr>
+<tr class="row-even"><td>….actions/boot/</td>
+<td>Handlers for different boot strategies</td>
+</tr>
+<tr class="row-odd"><td>….actions/test/</td>
+<td>Handlers for different LavaTestShell strategies</td>
+</tr>
+<tr class="row-even"><td>….actions/deploy/image.py</td>
+<td>DeployImages strategy creates DeployImagesAction</td>
+</tr>
+<tr class="row-odd"><td>….actions/deploy/image.py</td>
+<td>DeployImagesAction.populate adds deployment
+actions to the Job pipeline</td>
+</tr>
+<tr class="row-even"><td><strong>*repeat for each strategy*</strong></td>
+<td>each <code class="docutils literal notranslate"><span class="pre">populate</span></code> function adds more Actions</td>
+</tr>
+<tr class="row-odd"><td>….action.py</td>
+<td><code class="docutils literal notranslate"><span class="pre">Pipeline.run_actions()</span></code> to start</td>
+</tr>
+</tbody>
+</table>
+<p>The deployment is determined from the device_type specified in the Job (or the
+device_type of the specified target) by reading the list of support methods
+from the device_types YAML configuration.</p>
+<p>Each Action can define an internal pipeline and add sub-actions in the
+<code class="docutils literal notranslate"><span class="pre">Action.populate</span></code> function.</p>
+<p>Particular Logic Actions (like RetryAction) require an internal pipeline so
+that all actions added to that pipeline can be retried in the same order.
+(Remember that actions must be idempotent.) Actions which fail with a JobError
+or InfrastructureError can trigger Diagnostic actions. See
+<a class="reference internal" href="dispatcher-testing.html#retry-diagnostic"><span class="std std-ref">Logical actions</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+  <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">allow</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span>
+  <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">allow</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">image</span>
+</pre></div>
+</div>
+<p>This then matches the python class structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span><span class="o">/</span>
+   <span class="n">deploy</span><span class="o">/</span>
+       <span class="n">image</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The class defines the list of Action classes needed to implement this
+deployment. See also <a class="reference internal" href="dispatcher-actions.html#dispatcher-actions"><span class="std std-ref">Dispatcher Action Reference</span></a>.</p>
+</div>
+<div class="section" id="pipeline-construction-and-flow">
+<span id="pipeline-construction"></span><h2>Pipeline construction and flow<a class="headerlink" href="#pipeline-construction-and-flow" title="Permalink to this headline">¶</a></h2>
+<p>The pipeline is a <a class="reference external" href="https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)">FIFO</a> and has branches which are handled as a <a class="reference external" href="https://en.wikipedia.org/wiki/Tree_traversal">tree walk</a>.
+The top level object is the job, based on the YAML definition supplied by the
+<strong>lava-master</strong>. The definition is processed by the scheduler and the
+submission interface with information specific to the actual device. The
+processed definition is parsed to generate the top level pipeline and
+<a class="reference internal" href="#using-strategy-classes"><span class="std std-ref">strategy classes</span></a>. Each strategy class adds a
+top level action to the top level pipeline. The top level action then populates
+branches containing more actions.</p>
+<p>Actions are populated, validated and executed in strict order. The next action
+in any branch waits until all branches of the preceding action have completed.
+Populating an action in a pipeline creates a <strong>level</strong> string, e.g. all actions
+in level 1.2.1, including all actions in sublevel 1.2.1.2 are executed before
+the pipeline moves on to processing level 1.3 or 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Deploy</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+   <span class="o">|</span>
+   \<span class="n">___</span> <span class="mf">1.1</span>
+   <span class="o">|</span>
+   \ <span class="n">__</span> <span class="mf">1.2</span>
+   <span class="o">|</span>     <span class="o">|</span>
+   <span class="o">|</span>     \<span class="n">_</span> <span class="mf">1.2</span><span class="o">.</span><span class="mi">1</span>
+   <span class="o">|</span>     <span class="o">|</span>   <span class="o">|</span>
+   <span class="o">|</span>     <span class="o">|</span>   \<span class="n">_</span> <span class="mf">1.2</span><span class="o">.</span><span class="mf">1.1</span>
+   <span class="o">|</span>     <span class="o">|</span>   <span class="o">|</span>
+   <span class="o">|</span>     <span class="o">|</span>   \<span class="n">_</span> <span class="mf">1.2</span><span class="o">.</span><span class="mf">1.2</span>
+   <span class="o">|</span>     <span class="o">|</span>         <span class="o">|</span>
+   <span class="o">|</span>     <span class="o">|</span>         \<span class="n">__</span> <span class="mf">1.2</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mi">1</span>
+   <span class="o">|</span>     <span class="o">|</span>
+   <span class="o">|</span>     \<span class="n">__1</span><span class="o">.</span><span class="mf">2.2</span>
+   <span class="o">|</span>
+   \<span class="n">____1</span><span class="o">.</span><span class="mi">3</span>
+   <span class="o">|</span>
+  <span class="n">Boot</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+   <span class="o">|</span>
+   \<span class="n">_</span> <span class="mf">2.1</span>
+   <span class="o">|</span>
+   \<span class="n">_</span> <span class="mf">2.2</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li>One device per job. One top level pipeline per job<ul>
+<li>loads only the configuration required for this one job.</li>
+</ul>
+</li>
+<li>A NewDevice is built from the target specified (commands.py)</li>
+<li>A Job is generated from the YAML by the parser.</li>
+<li>The top level Pipeline is constructed by the parser.</li>
+<li>Strategy classes are initialized by the parser<ol class="arabic">
+<li>Strategy classes add the top level Action for that strategy to the top
+level pipeline.</li>
+<li>Top level pipeline calls <code class="docutils literal notranslate"><span class="pre">populate()</span></code> on each top level Action added.<ol class="arabic">
+<li>Each <code class="docutils literal notranslate"><span class="pre">Action.populate()</span></code> function may construct one internal
+pipeline, based on parameters.</li>
+<li>internal pipelines call <code class="docutils literal notranslate"><span class="pre">populate()</span></code> on each Action added.</li>
+<li>A sublevel is set for each action in the internal pipeline.
+Level 1 creates 1.1 and level 2.3.2 creates 2.3.2.1.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Parser waits while each Strategy completes branch population.</li>
+<li>Parser adds the FinalizeAction to the top-level pipeline</li>
+<li>Loghandlers are set up</li>
+<li>Job validates the completed pipeline<ol class="arabic">
+<li>Dynamic data can be added to the context</li>
+</ol>
+</li>
+<li>If <code class="docutils literal notranslate"><span class="pre">--validate</span></code> not specified, the job runs.<ol class="arabic">
+<li>Each <code class="docutils literal notranslate"><span class="pre">run()</span></code> function can add dynamic data to the context and/or
+results to the pipeline.</li>
+<li>Pipeline walks along the branches, executing actions.</li>
+</ol>
+</li>
+<li>Job ends, check for errors</li>
+<li>Completed pipeline is available.</li>
+</ol>
+<div class="section" id="using-strategy-classes">
+<span id="index-1"></span><span id="id2"></span><h3>Using strategy classes<a class="headerlink" href="#using-strategy-classes" title="Permalink to this headline">¶</a></h3>
+<p>Strategies are ways of meeting the requirements of the submitted job within the
+limits of available devices and code support.</p>
+<p>If an internal pipeline would need to allow for optional actions, those actions
+still need to be idempotent. Therefore, the pipeline can include all actions,
+with each action being responsible for checking whether anything actually needs
+to be done. The populate function should avoid using conditionals. An explicit
+select function can be used instead.</p>
+<p>Whenever there is a need for a particular job to use a different Action based
+solely on job parameters or device configuration, that decision should occur in
+the Strategy selection using classmethod support.</p>
+<p>Where a class is used in lots of different strategies, identify whether there
+is a match between particular strategies always needing particular options
+within the class. At this point, the class can be split and particular
+strategies use a specialized class implementing the optional behavior and
+calling down to the base class for the rest.</p>
+<p>If there is no clear match, for example in <code class="docutils literal notranslate"><span class="pre">testdef.py</span></code> where any particular
+job could use a different VCS or URL without actually being a different
+strategy, a select function is preferable. A select handler allows the pipeline
+to contain only classes supporting git repositories when only git repositories
+are in use for that job.</p>
+<p>The list of available strategies can be determined in the codebase from the
+module imports in the <code class="docutils literal notranslate"><span class="pre">strategies.py</span></code> file for each action type.</p>
+<p>This results in more classes but a cleaner (and more predictable) pipeline
+construction.</p>
+</div>
+<div class="section" id="lava-test-shell-scripts">
+<h3>Lava test shell scripts<a class="headerlink" href="#lava-test-shell-scripts" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See <a class="reference internal" href="review-criteria.html#criteria"><span class="std std-ref">LAVA review criteria</span></a> - it is a mistake to think of the LAVA test
+support scripts as an <em>overlay</em> - the scripts are an <strong>extension</strong> to the
+test. Wherever possible, current deployments are being changed to supply the
+extensions alongside the deployment instead of overlaying, and thereby
+altering, the deployment.</p>
+</div>
+<p>The LAVA scripts are a standard addition to a LAVA test and are handled as a
+single unit. Using idempotent actions, the test script extension can support
+LMP or MultiNode or other custom requirements without requiring this support to
+be added to all tests. The extensions are created during the deploy strategy
+and specific deployments can override the <code class="docutils literal notranslate"><span class="pre">ApplyExtensionAction</span></code> to unpack
+the extension tarball alongside the test during the deployment phase and then
+mount the extension inside the image. The tarball itself remains in the output
+directory and becomes part of the test records. The checksum of the overlay is
+added to the test job log.</p>
+</div>
+</div>
+<div class="section" id="pipeline-error-handling">
+<h2>Pipeline error handling<a class="headerlink" href="#pipeline-error-handling" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="runtimeerror-exception">
+<span id="runtime-error-exception"></span><h3>RuntimeError Exception<a class="headerlink" href="#runtimeerror-exception" title="Permalink to this headline">¶</a></h3>
+<p>Runtime errors include:</p>
+<ol class="arabic simple">
+<li>Parser fails to handle device configuration</li>
+<li>Parser fails to handle submission YAML</li>
+<li>Parser fails to locate a Strategy class for the Job.</li>
+<li>Code errors in Action classes cause Pipeline to fail.</li>
+<li>Errors in YAML cause errors upon pipeline validation.</li>
+</ol>
+<p>Each runtime error is a bug in the code - wherever possible, implement a unit
+test to prevent regressions.</p>
+</div>
+<div class="section" id="infrastructureerror-exception">
+<span id="infrastructure-error-exception"></span><h3>InfrastructureError Exception<a class="headerlink" href="#infrastructureerror-exception" title="Permalink to this headline">¶</a></h3>
+<p>Infrastructure errors include:</p>
+<ol class="arabic simple">
+<li>Missing dependencies on the dispatcher</li>
+<li>Device configuration errors</li>
+</ol>
+</div>
+<div class="section" id="joberror-exception">
+<span id="job-error-exception"></span><h3>JobError Exception<a class="headerlink" href="#joberror-exception" title="Permalink to this headline">¶</a></h3>
+<p>Job errors include:</p>
+<ol class="arabic simple">
+<li>Failed to find the specified URL.</li>
+<li>Failed in an operation to create the necessary extensions.</li>
+</ol>
+</div>
+<div class="section" id="testerror-exception">
+<span id="test-error-exception"></span><h3>TestError Exception<a class="headerlink" href="#testerror-exception" title="Permalink to this headline">¶</a></h3>
+<p>Test errors include:</p>
+<ol class="arabic simple">
+<li>Failed to handle a signal generated by the device</li>
+<li>Failed to parse a test case</li>
+</ol>
+</div>
+</div>
+<div class="section" id="result-bundle-identifiers">
+<h2>Result bundle identifiers<a class="headerlink" href="#result-bundle-identifiers" title="Permalink to this headline">¶</a></h2>
+<p>Old style result bundles are assigned a text based UUID during submission. This
+has several issues:</p>
+<ul class="simple">
+<li>The UUID is not sequential or predictable, so finding this one, the next one
+or the previous one requires a database lookup for each. The new dispatcher
+model will not have a persistent database connection.</li>
+<li>The UUID is not available to the dispatcher while running the job, so cannot
+be cross-referenced to logs inside the job.</li>
+<li>The UUID makes the final URL of individual test results overly long,
+unmemorable and complex, especially as the test run is also given a separate
+UUID in the old dispatcher model.</li>
+</ul>
+<p>The new dispatcher creates a pipeline where every action within the pipeline is
+guaranteed to have a unique <em>level</em> string which is strictly sequential,
+related directly to the type of action and shorter than a UUID. To make a
+pipeline result unique on a per instance basis, the only requirement is that
+the result includes the JobID which is a sequential number, passed to the job
+in the submission YAML. This could also have been a UUID but the JobID is
+already a unique ID <strong>for this instance</strong>.</p>
+<p>When bundles are downloaded, the database query will need to assign a UUID to
+that downloaded file but the file will also include the job number and the
+query can also insert the source of the bundle in a comment in the YAML.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="review-criteria.html#criteria"><span class="std std-ref">LAVA review criteria</span></a> and <a class="reference internal" href="gold-standards.html#providing-gold-standard-files"><span class="std std-ref">Providing gold standard images</span></a></p>
+</div>
+</div>
+<div class="section" id="secondary-media">
+<span id="secondary-media-design"></span><h2>Secondary media<a class="headerlink" href="#secondary-media" title="Permalink to this headline">¶</a></h2>
+<p>With the migration from master images on an SD card to dynamic master images
+over NFS, other possibilities arise from the refactoring.</p>
+<ul class="simple">
+<li>Deploy a ramdisk, boot and deploy an entire image to a USB key, boot and
+direct bootloader at USB filesystem, including kernel and initrd.</li>
+<li>Deploy an NFS system, boot and bootstrap an image to SATA, boot and direct
+bootloader at SATA filesystem, including kernel and initrd.</li>
+<li>Deploy using a script written by the test author (e.g. debootstrap) which is
+installed in the initial deployment. Parameters for the script need to be
+contained within the test image.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="secondary-media.html#secondary-media"><span class="std std-ref">Secondary media</span></a></p>
+</div>
+</div>
+<div class="section" id="device-configuration-design">
+<h2>Device configuration design<a class="headerlink" href="#device-configuration-design" title="Permalink to this headline">¶</a></h2>
+<p>Device configuration, as received by <code class="docutils literal notranslate"><span class="pre">lava_dispatch</span></code> has moved to YAML and
+the database device configuration has moved to <a class="reference external" href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> templates. This method
+has a much larger scope of possible methods, related to the pipeline strategies
+as well as allowing simple overrides and reuse of common device configuration
+stanzas.</p>
+<p>There is no need for the device configuration to include the hostname in the
+YAML as there is nothing on the dispatcher to check against - the dispatcher
+uses the command line arguments and the supplied device configuration. The
+configuration includes all the data the dispatcher needs to be able to run the
+job on the device attached to the specified ports.</p>
+<p>The device type configuration on the dispatcher is replaced by a device type
+template on the server which is used to generate the YAML device configuration
+sent to the dispatcher.</p>
+<div class="section" id="device-dictionary">
+<h3>Device Dictionary<a class="headerlink" href="#device-dictionary" title="Permalink to this headline">¶</a></h3>
+<p>The normal admin flow for individual devices will be to make changes to the
+<a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> of that device. In time, an editable interface will
+exist within the admin interface. Initially, changes to the dictionary are made
+from the command line with details being available in a read-only view in the
+admin interface.</p>
+<p>The device dictionary acts as a set of variables inside the template, in a very
+similar manner to how Django handles HTML templates. In turn, a device type
+template will extend a base template.</p>
+<p>It is a bug in the template if a missing value causes a broken device
+configuration to be generated. Values which are not included in the specified
+template will be ignored.</p>
+<p>Once the device dictionary has been populated, the scheduler can be told that
+the device is a <code class="docutils literal notranslate"><span class="pre">pipeline</span> <span class="pre">device</span></code> in the admin interface.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Several parts of this process still need helpers and tools or may
+give unexpected errors - there is a lot of ongoing work in this area.</p>
+</div>
+<div class="section" id="exporting-an-existing-device-dictionary">
+<h4>Exporting an existing device dictionary<a class="headerlink" href="#exporting-an-existing-device-dictionary" title="Permalink to this headline">¶</a></h4>
+<p>If the local instance has a working pipeline device called <code class="docutils literal notranslate"><span class="pre">mypanda</span></code>, the
+device dictionary can be exported as a <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#child-template">Jinja2 child template</a> which <em>extends</em>
+a device type jinja template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage device-dictionary --hostname mypanda --export
+{% extends &#39;panda.jinja2&#39; %}
+{% set power_off_command = &#39;/usr/bin/pduclient --daemon tweetypie --hostname pdu --command off --port 08&#39; %}
+{% set hard_reset_command = &#39;/usr/bin/pduclient --daemon tweetypie --hostname pdu --command reboot --port 08&#39; %}
+{% set connection_list = [‘uart0’] %}
+{% set connection_commands = {‘uart0’: ‘telnet dispatcher01 7001’} %}
+{% set connection_tags = {‘uart0’: [‘primary’, &#39;telnet&#39;]} %}
+{% set power_on_command = &#39;/usr/bin/pduclient --daemon tweetypie --hostname pdu --command on --port 08&#39; %}
+</pre></div>
+</div>
+<p>This dictionary declares that the device inherits the rest of the device
+configuration from the <code class="docutils literal notranslate"><span class="pre">panda</span></code> device type. Settings specific to this one
+device are then specified.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="dispatcher-testing.html#power-commands"><span class="std std-ref">Power Commands</span></a></p>
+</div>
+</div>
+<div class="section" id="reviewing-an-existing-device-dictionary">
+<h4>Reviewing an existing device dictionary<a class="headerlink" href="#reviewing-an-existing-device-dictionary" title="Permalink to this headline">¶</a></h4>
+<p>To populate the full configuration using the device dictionary and the
+associated templates, use the <code class="docutils literal notranslate"><span class="pre">review</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage device-dictionary --hostname mypanda --review
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-device-configuration-review">
+<h4>Example device configuration review<a class="headerlink" href="#example-device-configuration-review" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">beaglebone-black</span>
+<span class="nt">commands</span><span class="p">:</span>
+  <span class="nt">connect</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">telnet localhost 6000</span>
+  <span class="nt">hard_reset</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon localhost --hostname pdu --command reboot --port 08</span>
+  <span class="nt">power_off</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon localhost --hostname pdu --command off --port 08</span>
+  <span class="nt">power_on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon localhost --hostname pdu --command on --port 08</span>
+
+<span class="nt">parameters</span><span class="p">:</span>
+ <span class="nt">bootm</span><span class="p">:</span>
+  <span class="nt">kernel</span><span class="p">:</span> <span class="s">&#39;0x80200000&#39;</span>
+  <span class="nt">ramdisk</span><span class="p">:</span> <span class="s">&#39;0x81600000&#39;</span>
+  <span class="nt">dtb</span><span class="p">:</span> <span class="s">&#39;0x815f0000&#39;</span>
+ <span class="nt">bootz</span><span class="p">:</span>
+  <span class="nt">kernel</span><span class="p">:</span> <span class="s">&#39;0x81000000&#39;</span>
+  <span class="nt">ramdisk</span><span class="p">:</span> <span class="s">&#39;0x82000000&#39;</span>
+  <span class="nt">dtb</span><span class="p">:</span> <span class="s">&#39;0x81f00000&#39;</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+ <span class="nt">deploy</span><span class="p">:</span>
+   <span class="c1"># list of deployment methods which this device supports</span>
+   <span class="nt">methods</span><span class="p">:</span>
+     <span class="c1"># - image # not ready yet</span>
+     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+
+ <span class="nt">boot</span><span class="p">:</span>
+   <span class="c1"># list of boot methods which this device supports.</span>
+   <span class="nt">methods</span><span class="p">:</span>
+     <span class="p p-Indicator">-</span> <span class="nt">u-boot</span><span class="p">:</span>
+         <span class="nt">parameters</span><span class="p">:</span>
+           <span class="nt">bootloader_prompt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">U-Boot</span>
+           <span class="nt">boot_message</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Booting Linux</span>
+           <span class="c1"># interrupt: # character needed to interrupt u-boot, single whitespace by default</span>
+         <span class="c1"># method specific stanza</span>
+         <span class="nt">oe</span><span class="p">:</span>
+           <span class="nt">commands</span><span class="p">:</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_high &#39;0xffffffff&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_high &#39;0xffffffff&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootcmd &#39;fatload mmc 0:3 0x80200000 uImage; fatload mmc 0:3 0x815f0000 board.dtb;</span>
+             <span class="l l-Scalar l-Scalar-Plain">bootm 0x80200000 - 0x815f0000&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootargs &#39;console=ttyO0,115200n8 root=/dev/mmcblk0p5 rootwait ro&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+         <span class="nt">nfs</span><span class="p">:</span>
+           <span class="nt">commands</span><span class="p">:</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv autoload no</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_high &#39;0xffffffff&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_high &#39;0xffffffff&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv kernel_addr_r &#39;{KERNEL_ADDR}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_addr_r &#39;{RAMDISK_ADDR}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_addr_r &#39;{DTB_ADDR}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadkernel &#39;tftp ${kernel_addr_r} {KERNEL}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadinitrd &#39;tftp ${initrd_addr_r} {RAMDISK}; setenv initrd_size ${filesize}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadfdt &#39;tftp ${fdt_addr_r} {DTB}&#39;</span>
+           <span class="c1"># this could be a pycharm bug or a YAML problem with colons. Use &amp;#58; for now.</span>
+           <span class="c1"># alternatively, construct the nfsroot argument from values.</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv nfsargs &#39;setenv bootargs console=ttyO0,115200n8 root=/dev/nfs rw nfsroot={SERVER_IP}&amp;#58;{NFSROOTFS},tcp,hard,intr ip=dhcp&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootcmd &#39;dhcp; setenv serverip {SERVER_IP}; run loadkernel; run loadinitrd; run loadfdt; run nfsargs; {BOOTX}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+         <span class="nt">ramdisk</span><span class="p">:</span>
+           <span class="nt">commands</span><span class="p">:</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv autoload no</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_high &#39;0xffffffff&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_high &#39;0xffffffff&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv kernel_addr_r &#39;{KERNEL_ADDR}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_addr_r &#39;{RAMDISK_ADDR}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_addr_r &#39;{DTB_ADDR}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadkernel &#39;tftp ${kernel_addr_r} {KERNEL}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadinitrd &#39;tftp ${initrd_addr_r} {RAMDISK}; setenv initrd_size ${filesize}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadfdt &#39;tftp ${fdt_addr_r} {DTB}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootargs &#39;console=ttyO0,115200n8 root=/dev/ram0 ip=dhcp&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootcmd &#39;dhcp; setenv serverip {SERVER_IP}; run loadkernel; run loadinitrd; run loadfdt; {BOOTX}&#39;</span>
+           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="importing-configuration-using-a-known-template">
+<h4>Importing configuration using a known template<a class="headerlink" href="#importing-configuration-using-a-known-template" title="Permalink to this headline">¶</a></h4>
+<p>To add or update the device dictionary, a file using the same syntax as the
+<code class="docutils literal notranslate"><span class="pre">export</span></code> content can be imported into the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage device-dictionary --hostname mypanda --import mypanda.yaml
+</pre></div>
+</div>
+<p>(The file extension is unnecessary and the content is not actually YAML but
+will be rendered as YAML when the templates are used.)</p>
+</div>
+<div class="section" id="creating-a-new-template">
+<h4>Creating a new template<a class="headerlink" href="#creating-a-new-template" title="Permalink to this headline">¶</a></h4>
+<p>Start with the <code class="docutils literal notranslate"><span class="pre">base.yaml</span></code> template and use the structure of that template to
+ensure that your template remains valid YAML.</p>
+<p>Start with a complete device configuration (in YAML) which works on the
+<code class="docutils literal notranslate"><span class="pre">lava-dispatch</span></code> command line, then iterate over changes in the template to
+produce the same output.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A helper is being planned for this step.</p>
+</div>
+</div>
+</div>
+<div class="section" id="running-lava-run-directly">
+<span id="running-lava-run"></span><span id="index-2"></span><h3>Running lava-run directly<a class="headerlink" href="#running-lava-run-directly" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-run</span></code> can be used to execute test jobs locally on the worker without
+submitting the job or waiting for the scheduler. This is used during device
+integration and triage of infrastructure problems.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Ensure that the device is offline (health state Bad from a
+failed health check or manually set to health Maintenance) so that the
+scheduler does not try to start another test job whilst you are running
+a test job locally.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lava-run</span></code> accepts a YAML file containing the device configuration which
+can be accessed from the download link on the device dictionary page.
+The absolute or relative path to the YAML file must be specified to the
+<code class="docutils literal notranslate"><span class="pre">--device</span></code> option. <code class="docutils literal notranslate"><span class="pre">--output-dir</span></code> must also be specified:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-run --device devices/fred.yaml panda-ramdisk.yaml --output-dir=/tmp/test
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/dispatcher-design.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+</html>

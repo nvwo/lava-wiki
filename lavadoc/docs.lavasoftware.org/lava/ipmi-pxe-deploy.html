@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/ipmi-pxe-deploy.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Deploying an ipmi/pxe-boot Device &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploying an iPXE (x86) device" href="ipxe.html" />
+    <link rel="prev" title="Deploying LXC devices" href="admin-lxc-deploy.html" />
+    <link rel="canonical" href="ipmi-pxe-deploy.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Deploying an ipmi/pxe-boot Device</a><ul>
+<li><a class="reference internal" href="#machines-for-dispatching-a-job">Machines for Dispatching a Job</a></li>
+<li><a class="reference internal" href="#dispatch-steps">Dispatch Steps</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#installing-ipmitool">Installing ipmitool</a></li>
+<li><a class="reference internal" href="#address-configuration">Address Configuration</a></li>
+<li><a class="reference internal" href="#addressing-calxeda-highbank-devices">Addressing Calxeda Highbank Devices</a></li>
+<li><a class="reference internal" href="#ipmitool-usage">ipmitool usage</a></li>
+<li><a class="reference internal" href="#serial-over-lan-input-issues">Serial over LAN input issues</a></li>
+<li><a class="reference internal" href="#busybox-httpd-wget">busybox httpd + wget</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pxe-boot">PXE Boot</a><ul>
+<li><a class="reference internal" href="#server-configuration">Server Configuration</a></li>
+<li><a class="reference internal" href="#tftpboot-directory">tftpboot Directory</a></li>
+<li><a class="reference internal" href="#creating-the-kernel-and-initrd-for-pxe-booting">Creating the kernel and initrd for pxe booting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-with-initrd">Debugging with initrd</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="admin-lxc-deploy.html" title="Previous Chapter: Deploying LXC devices"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Deploying LXC devices</span>
+    </a>
+  </li>
+  <li>
+    <a href="ipxe.html" title="Next Chapter: Deploying an iPXE (x86) device"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Deploying an ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="deploying-an-ipmi-pxe-boot-device">
+<h1>Deploying an ipmi/pxe-boot Device<a class="headerlink" href="#deploying-an-ipmi-pxe-boot-device" title="Permalink to this headline">¶</a></h1>
+<p>This page describes the hardware and software setup for IPMI/PXE-boot, such as
+the setup used by LAVA for a Calxeda Highbank target.</p>
+<div class="section" id="machines-for-dispatching-a-job">
+<h2>Machines for Dispatching a Job<a class="headerlink" href="#machines-for-dispatching-a-job" title="Permalink to this headline">¶</a></h2>
+<p>Dispatching a job to a pxe target involves several steps and communication
+between several machines, including servers traditionally used for lava, and
+also servers for serving the master address and master images for pxe booting.</p>
+<p>The following diagram assumes the configuration for a Calxeda Highbank target.
+Specifically, it shows an ethernet port dedicated to ipmi/serial communications
+and a separate port used for booting the pxe image and also used as the
+target’s network connection.</p>
+<img alt="_images/pxe_machines.png" src="_images/pxe_machines.png" />
+<p><strong>dhcp server:</strong> Serves the dhcp address for the target, specifies the address
+of the tftp server for pxe boot.</p>
+<p><strong>tftp server:</strong> Serves the kernel and initrd to the target.</p>
+<p><strong>dispatcher:</strong> Controls the target via ipmi commands. Opens a serial-over-lan
+connection to send commands to the target.</p>
+<p><strong>target:</strong> Takes boot image from the tftp server, then is controlled by the
+dispatcher.</p>
+</div>
+<div class="section" id="dispatch-steps">
+<h2>Dispatch Steps<a class="headerlink" href="#dispatch-steps" title="Permalink to this headline">¶</a></h2>
+<p>The target boots using pxe boot for any modifications that are needed to
+install the test image or to install or read files from the target. The target
+is booted from its own local media (i.e. a disk drive) for running the actual
+image and tests.</p>
+<img alt="_images/ipmi_pxe_lava_sequence.png" src="_images/ipmi_pxe_lava_sequence.png" />
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-ipmitool">
+<h3>Installing ipmitool<a class="headerlink" href="#installing-ipmitool" title="Permalink to this headline">¶</a></h3>
+<p>The first configuration step is to get ipmitool installed. On Ubuntu, this is
+very easy to do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt install ipmitool
+</pre></div>
+</div>
+<p>Other systems might have ipmitool already available in their package
+repositories. If yours doesn’t, you can always <a class="reference external" href="http://ipmitool.sourceforge.net/">install from source</a>.</p>
+</div>
+<div class="section" id="address-configuration">
+<h3>Address Configuration<a class="headerlink" href="#address-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Device address configuration will vary for different targets. It is important
+to make sure that ipmitool can communicate with the target and that there is at
+least one ethernet port for use by the test image.</p>
+<p>The specific address used for ipmi commands is specified in each target config
+file.</p>
+</div>
+<div class="section" id="addressing-calxeda-highbank-devices">
+<h3>Addressing Calxeda Highbank Devices<a class="headerlink" href="#addressing-calxeda-highbank-devices" title="Permalink to this headline">¶</a></h3>
+<p>For Calxeda Highbank machines, each node uses three addresses, one for
+controlling the node, and two for networking.</p>
+<ul class="simple">
+<li>control</li>
+<li>eth0</li>
+<li>eth1</li>
+</ul>
+<p>There is no requirement that the nodes be named in any particular way. Lava
+requires two things with respect to addresses:</p>
+<ul class="simple">
+<li>the control channel address or name must be specified in the device
+configuration file</li>
+<li>eth0 must be served an address via dhcp.</li>
+</ul>
+<p>For example, the devices were named as follows for initial testing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calxeda</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;-&lt;</span><span class="n">nn</span><span class="o">&gt;-</span><span class="mi">00</span> <span class="o">-</span> <span class="n">eth0</span>
+
+<span class="n">calxeda</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;-&lt;</span><span class="n">nn</span><span class="o">&gt;-</span><span class="mi">01</span> <span class="o">-</span> <span class="n">eth1</span>
+
+<span class="n">calxeda</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;-&lt;</span><span class="n">nn</span><span class="o">&gt;-</span><span class="mi">02</span> <span class="o">-</span> <span class="n">control</span>
+</pre></div>
+</div>
+<p>where &lt;mm&gt; is the machine number and &lt;nn&gt; is the node number.</p>
+<p>Using this naming convention, the following command turns on the power of
+calxeda machine number 2, node number 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H calxeda02-01-02 -U &lt;user&gt; -P &lt;password&gt; chassis power on
+</pre></div>
+</div>
+</div>
+<div class="section" id="ipmitool-usage">
+<h3>ipmitool usage<a class="headerlink" href="#ipmitool-usage" title="Permalink to this headline">¶</a></h3>
+<p>ipmitool is used to control power on the device, to select the boot source, and
+to open a serial terminal to the device.</p>
+<p>powering on the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H &lt;target&gt; -U &lt;user&gt; -P &lt;password&gt; chassis power on
+</pre></div>
+</div>
+<p>powering off the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H &lt;target&gt; -U &lt;user&gt; -P &lt;password&gt; chassis power off
+</pre></div>
+</div>
+<p>resetting the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H &lt;target&gt; -U &lt;user&gt; -P &lt;password&gt; chassis power reset
+</pre></div>
+</div>
+<p>selecting pxe boot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H &lt;target&gt; -U &lt;user&gt; -P &lt;password&gt; chassis bootdev pxe
+</pre></div>
+</div>
+<p>selecting disk boot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H &lt;target&gt; -U &lt;user&gt; -P &lt;password&gt; chassis bootdev disk
+</pre></div>
+</div>
+<p>Opening a serial connection over the network:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipmitool -H &lt;target&gt; -I lanplus -U &lt;user&gt; -P &lt;password&gt; sol activate
+</pre></div>
+</div>
+<p>Note: The serial-connection command is specified in the target type config
+file. This allows the user to specify a command for connecting to the serial
+terminal of a target:</p>
+<p><em>highbank.conf</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client_type</span> <span class="o">=</span> <span class="n">highbank</span>
+<span class="n">connection_command</span> <span class="o">=</span> <span class="n">ipmitool</span> <span class="o">-</span><span class="n">I</span> <span class="n">lanplus</span> <span class="o">-</span><span class="n">U</span> <span class="n">admin</span> <span class="o">-</span><span class="n">P</span> <span class="n">admin</span> <span class="o">-</span><span class="n">H</span> <span class="o">%</span><span class="p">(</span><span class="n">ecmeip</span><span class="p">)</span><span class="n">s</span> <span class="n">sol</span> <span class="n">activate</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="serial-over-lan-input-issues">
+<span id="sol-closed-bmc"></span><h3>Serial over LAN input issues<a class="headerlink" href="#serial-over-lan-input-issues" title="Permalink to this headline">¶</a></h3>
+<p>Some PXE bootloaders are unable to buffer serial input, causing loss of
+characters. To simulate interactive command input, a delay can be added between
+characters sent to the bootloader using the <code class="docutils literal notranslate"><span class="pre">bootloader_serial_delay_ms</span></code>
+option in the device-type configuration. Values are specified in milliseconds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bootloader_serial_delay_ms</span> <span class="o">=</span> <span class="mi">300</span>
+</pre></div>
+</div>
+<p>Some Serial over LAN (SOL) controllers are similarly unable to process bursts
+of input over the serial connection. The <a class="reference internal" href="glossary.html#term-bmc"><span class="xref std std-term">BMC</span></a> drops the serial connection
+and outputs the error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SOL</span> <span class="n">session</span> <span class="n">closed</span> <span class="n">by</span> <span class="n">BMC</span>
+</pre></div>
+</div>
+<p>To avoid this problem, set a delay to use between each character sent over the
+serial line during the operation of the test shell:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_shell_serial_delay_ms</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debugging.html#input-speeds"><span class="std std-ref">Differences in input speeds</span></a> for the updated syntax on setting
+character delays in the device configuration.</p>
+</div>
+</div>
+<div class="section" id="busybox-httpd-wget">
+<h3>busybox httpd + wget<a class="headerlink" href="#busybox-httpd-wget" title="Permalink to this headline">¶</a></h3>
+<p>busybox httpd is used to serve files from the target to the dispatcher. wget
+can then be used to download the files.</p>
+<p>Execute on the target:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">cd</span> <span class="o">/</span><span class="n">lava</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">busybox</span> <span class="n">httpd</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="n">v</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">dispatcher</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">00</span><span class="o">/</span><span class="n">fs</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="pxe-boot">
+<h2>PXE Boot<a class="headerlink" href="#pxe-boot" title="Permalink to this headline">¶</a></h2>
+<p>PXE booting requires a dhcp and tftp services on the network. These services
+provide the kernel and initrd images to the target.</p>
+<div class="section" id="server-configuration">
+<h3>Server Configuration<a class="headerlink" href="#server-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The addresses for each target are defined in dnsmasq.conf. In addition, the
+first interface is set up for tftp boot.</p>
+<p><em>dnsmasq.conf (sample)</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dhcp</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="nb">set</span><span class="p">:</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="p">,</span><span class="n">fc</span><span class="p">:</span><span class="mi">2</span><span class="n">f</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="n">da</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">00</span><span class="p">,</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">2.76</span>
+<span class="n">dhcp</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="n">fc</span><span class="p">:</span><span class="mi">2</span><span class="n">f</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="n">da</span><span class="p">:</span><span class="mi">29</span><span class="p">,</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">2.77</span>
+<span class="n">dhcp</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="n">fc</span><span class="p">:</span><span class="mi">2</span><span class="n">f</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="n">da</span><span class="p">:</span><span class="mi">2</span><span class="n">a</span><span class="p">,</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">02</span><span class="p">,</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">2.78</span>
+<span class="n">dhcp</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="nb">set</span><span class="p">:</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="p">,</span><span class="n">fc</span><span class="p">:</span><span class="mi">2</span><span class="n">f</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">7</span><span class="n">e</span><span class="p">:</span><span class="mi">4</span><span class="n">c</span><span class="p">,</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">00</span><span class="p">,</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">2.79</span>
+<span class="n">dhcp</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="n">fc</span><span class="p">:</span><span class="mi">2</span><span class="n">f</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">7</span><span class="n">e</span><span class="p">:</span><span class="mi">4</span><span class="n">d</span><span class="p">,</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">2.80</span>
+<span class="n">dhcp</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="n">fc</span><span class="p">:</span><span class="mi">2</span><span class="n">f</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">7</span><span class="n">e</span><span class="p">:</span><span class="mi">4</span><span class="n">e</span><span class="p">,</span><span class="n">calxeda02</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">02</span><span class="p">,</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">2.81</span>
+
+<span class="o">...</span>
+
+<span class="c1"># Set the boot filename for netboot/PXE. You will only need</span>
+<span class="c1"># this if you want to boot machines over the network and you will need</span>
+<span class="c1"># a TFTP server; either dnsmasq&#39;s built in TFTP server or an</span>
+<span class="c1"># external one. (See below for how to enable the TFTP server.)</span>
+
+<span class="n">dhcp</span><span class="o">-</span><span class="n">boot</span><span class="o">=</span><span class="n">tag</span><span class="p">:</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="p">,</span><span class="n">master</span><span class="o">/</span><span class="n">pxelinux</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">dhcp</span><span class="o">-</span><span class="n">boot</span><span class="o">=</span><span class="n">tag</span><span class="p">:</span><span class="n">netinstall</span><span class="p">,</span><span class="n">netinstaller</span><span class="o">/</span><span class="n">pxelinux</span><span class="o">.</span><span class="mi">0</span>
+
+<span class="o">...</span>
+
+<span class="c1"># Enable dnsmasq&#39;s built-in TFTP server</span>
+<span class="n">enable</span><span class="o">-</span><span class="n">tftp</span>
+
+<span class="c1"># Set the root directory for files available via FTP.</span>
+<span class="n">tftp</span><span class="o">-</span><span class="n">root</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">tftpboot</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tftpboot-directory">
+<h3>tftpboot Directory<a class="headerlink" href="#tftpboot-directory" title="Permalink to this headline">¶</a></h3>
+<p>The default configuration is specified in default-arm-highbank:</p>
+<p><em>/var/lib/tftpboot/master/pxelinux.cfg/default-arm-highbank</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DEFAULT</span> <span class="n">menu</span>
+<span class="n">PROMPT</span> <span class="mi">0</span>
+<span class="n">MENU</span> <span class="n">TITLE</span> <span class="n">LAVA</span> <span class="n">Master</span> <span class="n">Image</span>
+<span class="n">TIMEOUT</span> <span class="mi">20</span>
+<span class="n">ONTIMEOUT</span> <span class="n">lava</span><span class="o">-</span><span class="n">master</span>
+<span class="n">LABEL</span> <span class="n">lava</span><span class="o">-</span><span class="n">master</span>
+<span class="n">initrd</span> <span class="n">files</span><span class="o">/</span><span class="n">highbank</span><span class="o">/</span><span class="n">initrd</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">MENU</span> <span class="n">LABEL</span> <span class="n">lava</span><span class="o">-</span><span class="n">master</span>
+<span class="n">append</span> <span class="n">console</span><span class="o">=</span><span class="n">ttyAMA0</span> <span class="n">nosplash</span> <span class="k">break</span>
+<span class="n">kernel</span> <span class="n">files</span><span class="o">/</span><span class="n">highbank</span><span class="o">/</span><span class="n">vmlinuz</span>
+</pre></div>
+</div>
+<p>The kernel and initrd are then placed in the locations that are specified in
+the config file:</p>
+<p><em>/var/lib/tftpboot/master/files/highbank (directory listing)</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">initrd</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">vmlinuz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-the-kernel-and-initrd-for-pxe-booting">
+<h3>Creating the kernel and initrd for pxe booting<a class="headerlink" href="#creating-the-kernel-and-initrd-for-pxe-booting" title="Permalink to this headline">¶</a></h3>
+<p>An initrd can be created from a running ubuntu system</p>
+<ol class="arabic simple">
+<li>Install ubuntu on a target server.</li>
+<li>Set up busybox for initrd.</li>
+</ol>
+<p>Note: It is important to include a full-featured version of busybox. This
+version must support the ‘busybox –install -s’ command to automatically
+install links to commands that can then be called from a bash shell.</p>
+<p>Copy the correct version of busybox into /usr/lib/initramfs-tools/bin:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ /bin/busybox
+BusyBox v1.19.3 (Ubuntu 1:1.19.3-7ubuntu1.1) multi-call binary.
+Copyright (C) 1998-2011 Erik Andersen, Rob Landley, Denys Vlasenko
+and others. Licensed under GPLv2.
+See source distribution for full notice.
+
+Usage: busybox [function] [arguments]...
+   or: busybox --list[-full]
+   or: function [arguments]...
+
+        BusyBox is a multi-call binary that combines many common Unix
+        utilities into a single executable.  Most people will create a
+        link to busybox for each function they wish to use and BusyBox
+        will act like whatever it was invoked as.
+
+Currently defined functions:
+        [, [[, adjtimex, ar, arp, arping, ash, awk, basename, blockdev, brctl, bunzip2, bzcat, bzip2, cal, cat, chgrp, chmod, chown,
+        chroot, chvt, clear, cmp, cp, cpio, crond, crontab, cttyhack, cut, date, dc, dd, deallocvt, depmod, df, diff, dirname, dmesg,
+        dnsdomainname, dos2unix, dpkg, dpkg-deb, du, dumpkmap, dumpleases, echo, ed, egrep, env, expand, expr, false, fdisk, fgrep, find,
+        fold, free, freeramdisk, ftpget, ftpput, getopt, getty, grep, groups, gunzip, gzip, halt, head, hexdump, hostid, hostname, httpd,
+        hwclock, id, ifconfig, ifdown, ifup, init, insmod, ionice, ip, ipcalc, kill, killall, klogd, last, less, ln, loadfont, loadkmap,
+        logger, login, logname, logread, losetup, ls, lsmod, lzcat, lzma, md5sum, mdev, microcom, mkdir, mkfifo, mknod, mkswap, mktemp,
+        modinfo, modprobe, more, mount, mt, mv, nameif, nc, netstat, nslookup, of, openvt, passwd, patch, pidof, ping, ping6, pivot_root,
+        poweroff, printf, ps, pwd, rdate, readlink, realpath, reboot, renice, reset, rev, rm, rmdir, rmmod, route, rpm, rpm2cpio,
+        run-parts, sed, seq, setkeycodes, setsid, sh, sha1sum, sha256sum, sha512sum, sleep, sort, start-stop-daemon, stat, static-sh,
+        strings, stty, su, sulogin, swapoff, swapon, switch_root, sync, sysctl, syslogd, tac, tail, tar, taskset, tee, telnet, telnetd,
+        test, tftp, time, timeout, top, touch, tr, traceroute, traceroute6, true, tty, tunctl, udhcpc, udhcpd, umount, uname, uncompress,
+        unexpand, uniq, unix2dos, unlzma, unxz, unzip, uptime, usleep, uudecode, uuencode, vconfig, vi, watch, watchdog, wc, wget, which,
+        who, whoami, xargs, xz, xzcat, yes, zcat
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Specify additional binaries and libraries that you need in a new initrd.</li>
+</ol>
+<p>Note: The busybox command implements many commands by default, but it is best
+to include the actual binaries for each command since the busybox versions
+generally provide limited functionality.</p>
+<p>Commands that are required in the initrd image include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>bzip2</li>
+<li>gzip</li>
+<li>tar</li>
+<li>busybox (with httpd support)</li>
+<li>wget</li>
+<li>ifconfig</li>
+</ul>
+</div></blockquote>
+<p>Note: It is good to include many common commands since the master initrd may be
+used for debugging issues.</p>
+<p><em>/usr/share/initramfs-tools/hooks/master-extras  (sample)</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">initramfs</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">hook</span><span class="o">-</span><span class="n">functions</span>
+
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">tar</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bzip2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">gzip</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">ping</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">wget</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">ifconfig</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">parted</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">resize2fs</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mkimage</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mkfs</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mkfs</span><span class="o">.</span><span class="n">ext2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mkfs</span><span class="o">.</span><span class="n">ext3</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mkfs</span><span class="o">.</span><span class="n">ext4</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mkfs</span><span class="o">.</span><span class="n">vfat</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">nc</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">dhclient</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">fdisk</span>
+
+<span class="c1"># support dhclient</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">dhclient</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">dhclient</span><span class="o">-</span><span class="n">script</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">ip</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">hostname</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">rm</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mv</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fstab</span>
+
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_compat</span><span class="o">-</span><span class="mf">2.15</span><span class="o">.</span><span class="n">so</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_compat</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_dns</span><span class="o">-</span><span class="mf">2.15</span><span class="o">.</span><span class="n">so</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_dns</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_files</span><span class="o">-</span><span class="mf">2.15</span><span class="o">.</span><span class="n">so</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_files</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_hesiod</span><span class="o">-</span><span class="mf">2.15</span><span class="o">.</span><span class="n">so</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_hesiod</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_nis</span><span class="o">-</span><span class="mf">2.15</span><span class="o">.</span><span class="n">so</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_nisplus</span><span class="o">-</span><span class="mf">2.15</span><span class="o">.</span><span class="n">so</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_nisplus</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libnss_nis</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+
+<span class="c1"># Add bash</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libtinfo</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">5</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libdl</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libgcc_s</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span><span class="o">/</span><span class="n">libc</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">6</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ld</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">armhf</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span>
+
+<span class="c1"># Create version info for this image</span>
+<span class="n">echo</span> <span class="s1">&#39;#!/bin/sh&#39;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">info</span>
+<span class="n">echo</span> <span class="s2">&quot;echo $(date +%Y.%m.</span><span class="si">%d</span><span class="s2">-%H.%M.%S)&quot;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">info</span>
+<span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">info</span>
+<span class="n">copy_exec</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">master</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">info</span> <span class="o">/</span><span class="n">sbin</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Run update-initramfs, which will produce a new initrd image.</li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo update-initramfs -k all -c
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">initrd</span><span class="o">.</span><span class="n">img</span><span class="o">-</span><span class="mf">3.5</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">23</span><span class="o">-</span><span class="n">highbank</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Copy initrd and vmlinuz to the tftp server</li>
+</ol>
+</div>
+</div>
+<div class="section" id="debugging-with-initrd">
+<h2>Debugging with initrd<a class="headerlink" href="#debugging-with-initrd" title="Permalink to this headline">¶</a></h2>
+<p>The following are some steps to get a usable machine after pxe booting in
+initrd.</p>
+<p>Set up networking and mount drives:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="o">.</span> <span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">functions</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">DEVICE</span><span class="o">=</span><span class="n">eth0</span> <span class="n">configure_networking</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">echo</span> <span class="n">nameserver</span> <span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">resolv</span><span class="o">.</span><span class="n">conf</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">mnt</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">mount</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda2</span> <span class="o">/</span><span class="n">mnt</span>
+<span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">mount</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">boot</span>
+</pre></div>
+</div>
+<p>Note: The boot directory on the root partition may contain files; if you mount
+the boot partition at /mnt/boot you will not see the files that are in the same
+directory on the root partition.</p>
+<p>Getting files to the target:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">/</span><span class="n">file</span>
+</pre></div>
+</div>
+<p>Getting an image to the target’s hard disk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">initrd</span><span class="p">)</span>  <span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">/</span><span class="n">lava</span><span class="o">.</span><span class="n">img</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="o">|</span> <span class="n">dd</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda</span>
+</pre></div>
+</div>
+<p>Warning This will destroy any data that is currently on the hard disk!</p>
+<p>Chrooting into an installed image (optional) is not really necessary,
+however, it may be useful for debugging issues:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">initrd</span><span class="p">)</span> <span class="n">chroot</span> <span class="o">/</span><span class="n">mnt</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/ipmi-pxe-deploy.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:58 GMT -->
+</html>

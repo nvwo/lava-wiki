@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/review-criteria.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>LAVA review criteria &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Guide to development within LAVA" href="development-intro.html" />
+    <link rel="prev" title="Naming conventions and LAVA architecture" href="naming-conventions.html" />
+    <link rel="canonical" href="review-criteria.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">LAVA review criteria</a><ul>
+<li><a class="reference internal" href="#keep-the-dispatcher-dumb">Keep the dispatcher dumb</a></li>
+<li><a class="reference internal" href="#avoid-defaults-in-dispatcher-code">Avoid defaults in dispatcher code</a></li>
+<li><a class="reference internal" href="#let-the-test-fail-and-diagnose-later">Let the test fail and diagnose later</a></li>
+<li><a class="reference internal" href="#treat-the-deployment-as-a-black-box">Treat the deployment as a black box</a></li>
+<li><a class="reference internal" href="#only-protect-the-essential-components">Only protect the essential components</a></li>
+<li><a class="reference internal" href="#give-the-test-writer-enough-rope">Give the test writer enough rope</a></li>
+<li><a class="reference internal" href="#guidance">Guidance</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="naming-conventions.html" title="Previous Chapter: Naming conventions and LAVA architecture"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Naming conven...</span>
+    </a>
+  </li>
+  <li>
+    <a href="development-intro.html" title="Next Chapter: Guide to development within LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Guide to deve... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-review-criteria">
+<span id="criteria"></span><span id="index-0"></span><h1>LAVA review criteria<a class="headerlink" href="#lava-review-criteria" title="Permalink to this headline">¶</a></h1>
+<p>These criteria are to help developers control the development of new
+code. Any of these criteria can be cited in a code review as reasons
+for a review to be improved.</p>
+<div class="section" id="keep-the-dispatcher-dumb">
+<span id="keep-dispatcher-dumb"></span><h2>Keep the dispatcher dumb<a class="headerlink" href="#keep-the-dispatcher-dumb" title="Permalink to this headline">¶</a></h2>
+<p>There is a temptation to make the dispatcher clever but this only
+restricts the test writer from doing their own clever tests by hard
+coding commands into the dispatcher codebase. If the dispatcher needs
+some information about the test image, that information <strong>must</strong> be
+retrieved from the job submission parameters, <strong>not</strong> by calculating in
+the dispatcher or running commands inside the test image. Exceptions to
+this are the metrics already calculated during download, like file size
+and checksums. Any information about the test image which is permanent
+within that image, e.g. the partition UUID strings or the network
+interface list, can be identified by the process creating that image or
+by a script which is run before the image is compressed and made
+available for testing. If a test uses a tarball instead of an image,
+the test <strong>must</strong> be explicit about the filesystem to use when
+unpacking that tarball for use in the test as well as the size and
+location of the partition to use.</p>
+<p>LAVA will need to implement some safeguards for tests which still need
+to deploy any test data to the media hosting the bootloader (e.g.
+fastboot, SD card or UEFI) in order to avoid overwriting the bootloader
+itself. Therefore, although SD card partitions remain available for
+LAVA tests where no other media are supportable by the device, those
+tests can <strong>only</strong> use tarballs and pre-defined partitions on the SD
+card. The filesystem to use on those partitions needs to be specified
+by the test writer.</p>
+</div>
+<div class="section" id="avoid-defaults-in-dispatcher-code">
+<span id="defaults"></span><h2>Avoid defaults in dispatcher code<a class="headerlink" href="#avoid-defaults-in-dispatcher-code" title="Permalink to this headline">¶</a></h2>
+<p>All constants and defaults are going to need an override somewhere for
+some device or test, eventually. Code defensively and put constants
+into the <code class="docutils literal notranslate"><span class="pre">lava_common</span></code> module to support modification or into one of
+the base Jinja2 templates. Put defaults into the YAML, not the python
+code. It is better to have an extra line in the device_type than a
+string in the python code as this can later be extended to a device or
+a job submission.</p>
+</div>
+<div class="section" id="let-the-test-fail-and-diagnose-later">
+<span id="fail-early"></span><h2>Let the test fail and diagnose later<a class="headerlink" href="#let-the-test-fail-and-diagnose-later" title="Permalink to this headline">¶</a></h2>
+<p><strong>Avoid guessing</strong> in LAVA code. If any operation in the dispatcher
+could go in multiple paths, those paths must be made explicit to the
+test writer. Report the available data, proceed according to the job
+definition and diagnose the state of the device afterwards, where
+appropriate.</p>
+<p><strong>Avoid trying to be helpful in the test image</strong>. Anticipating an error
+and trying to code around it is a mistake. Possible solutions include
+but are not limited to:</p>
+<ul class="simple">
+<li>Provide an optional, idempotent, class which only acts if a specific
+option is passed in the job definition. e.g. AutoLoginAction.</li>
+<li>Provide a diagnostic class which triggers if the expected problem
+arises. Report on the actual device state and document how to improve
+the job submission to avoid the problem in future.</li>
+<li>Split the deployment strategy to explicitly code for each possible
+path.</li>
+</ul>
+<p>AutoLogin is a good example of the problem here. For too long, LAVA has
+made assumptions about the incoming image, requiring hacks like
+<code class="docutils literal notranslate"><span class="pre">linaro-overlay</span></code> packages to be added to basic bootstrap images or
+disabling passwords for the root user. These <em>helpful</em> steps act to
+make it harder to use unchanged third party images in LAVA tests.
+AutoLogin is the <em>de facto</em> default for all images.</p>
+<p>Another example is the assumption in various parts of LAVA that the
+test image will raise a network interface and repeatedly calling
+<code class="docutils literal notranslate"><span class="pre">ping</span></code> on the assumption that the interface will appear, somehow,
+eventually.</p>
+</div>
+<div class="section" id="treat-the-deployment-as-a-black-box">
+<span id="black-box-deploy"></span><h2>Treat the deployment as a black box<a class="headerlink" href="#treat-the-deployment-as-a-black-box" title="Permalink to this headline">¶</a></h2>
+<p>LAVA has claimed to do this for a long time but the dispatcher is now
+pushing this further. Do not think of the LAVA scripts as an <em>overlay</em>,
+despite the class names, the LAVA scripts are <strong>extensions</strong>. When a
+test wants an image deployed, the LAVA extensions should be deployed
+alongside the image and then mounted to create a <code class="docutils literal notranslate"><span class="pre">/lava-$hostname/</span></code>
+directory. Images for testing within LAVA are no longer broken up or
+redeployed but <strong>must</strong> be deployed <strong>intact</strong>. This avoids LAVA
+needing to know anything about issues like SELinux or specific
+filesystems but may involve multiple images for systems like Android
+where data may exist on different physical devices.</p>
+</div>
+<div class="section" id="only-protect-the-essential-components">
+<span id="essential-components"></span><h2>Only protect the essential components<a class="headerlink" href="#only-protect-the-essential-components" title="Permalink to this headline">¶</a></h2>
+<p>LAVA has had a tendency to hardcode commands and operations and there
+are critical areas which must still be protected from changes in the
+test but these critical areas are restricted to:</p>
+<ol class="arabic simple">
+<li>The dispatcher.</li>
+<li>Unbricking devices.</li>
+</ol>
+<p><strong>Any</strong> process which has to run on the dispatcher itself <strong>must</strong> be
+fully protected from mistakes within tests. This means that <strong>all</strong>
+commands to be executed by the dispatcher are hardcoded into the
+dispatcher python code with only limited support for overriding
+parameters or specifying <em>tainted</em> user data.</p>
+<p>Tests are prevented from requiring new software to be installed on any
+dispatcher which is not already a dependency of <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>.
+Issues arising from this need to be resolved using MultiNode.</p>
+<p>Until such time as there is a general and reliable method of deploying
+and testing new bootloaders within LAVA tests, the bootloader /
+firmware installed by the lab admin is deemed sacrosanct and must not
+be altered or replaced in a test job. However, bootloaders are
+generally resilient to errors in the commands, so the commands given to
+the bootloader remain accessible to test writers.</p>
+<p>It is not practical to scan all test definitions for potentially
+harmful commands. If a test inadvertently corrupts the SD card in such
+a way that the bootloader is corrupted, that is an issue for the lab
+admins to take up with the test submitter. If it is possible to detect
+such events through the dispatcher code, an InfrastructureError
+Exception should be raised so that a health check is triggered in
+case the device needs to go offline for the problem to be fixed.</p>
+</div>
+<div class="section" id="give-the-test-writer-enough-rope">
+<span id="give-test-writer-rope"></span><h2>Give the test writer enough rope<a class="headerlink" href="#give-the-test-writer-enough-rope" title="Permalink to this headline">¶</a></h2>
+<p>Within the provisos of <a class="reference internal" href="#essential-components"><span class="std std-ref">Only protect the essential components</span></a>, the test writer
+needs to be given enough rope and then let LAVA <strong>diagnose</strong> issues
+after the event.</p>
+<p>There is no reason to restrict the test writer to using LAVA commands
+inside the test image - as long as the essential components remain
+protected.</p>
+<p>Examples:</p>
+<ol class="arabic simple">
+<li>KVM devices need to protect the QEMU command line because these
+commands run on the dispatcher</li>
+<li>VM devices running on a <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> do <strong>not</strong> need the command line
+to be coded within LAVA. There have already been bug reports on this
+issue.</li>
+</ol>
+<p><a class="reference internal" href="dispatcher-testing.html#diagnostic-actions"><span class="std std-ref">Diagnostic subclasses</span></a> report on the state of the device after some
+kind of error. This reporting can include:</p>
+<ul class="simple">
+<li>The presence or absence of expected files (like <code class="docutils literal notranslate"><span class="pre">/dev/disk/by-id/</span></code>
+or <code class="docutils literal notranslate"><span class="pre">/proc/net/pnp</span></code>).</li>
+<li>Data about running processes or interfaces, e.g. <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code></li>
+</ul>
+<p>It is a mistake to attempt to calculate data about a test image -
+instead, require that the information is provided and <strong>diagnose</strong> the
+actual information if the attempt to use the specified information
+fails.</p>
+</div>
+<div class="section" id="guidance">
+<span id="criteria-guidance"></span><h2>Guidance<a class="headerlink" href="#guidance" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>If the command is to run inside a deployment, <strong>require</strong> that the
+<strong>full</strong> command line can be specified by the test writer. Remember:
+<a class="reference internal" href="#defaults"><span class="std std-ref">Avoid defaults in dispatcher code</span></a>. It is recommended to have default commands where
+appropriate but these defaults need to support overrides in the job
+submission. This includes using a locally built binary instead of an
+executable installed in <code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code> or similar.</li>
+<li>If the command is run on a dispatcher, <strong>require</strong> that the binary
+to be run on the dispatcher is actually installed on the dispatcher.
+If <code class="docutils literal notranslate"><span class="pre">/usr/bin/git</span></code> does not exist, this is a validation error.
+There should be no circumstances where a tool required on the
+dispatcher cannot be identified during validation of the pipeline.</li>
+<li>An error from running the command on the dispatcher with
+user-specified parameters is a JobError.</li>
+<li>Where it is safe to do so, offer <strong>overrides</strong> for supportable
+commandline options.</li>
+</ol>
+<p>The codebase itself will help identify how much control is handed over
+to the test writer. <code class="docutils literal notranslate"><span class="pre">self.run_command()</span></code> is a dispatcher call and
+needs to be protected. <code class="docutils literal notranslate"><span class="pre">connection.sendline()</span></code> is a deployment call
+and does not need to be protected.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/review-criteria.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+</html>

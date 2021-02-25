@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/first-job.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:08 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Submitting your first job &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Explaining the first job in detail" href="explain_first_job.html" />
+    <link rel="prev" title="First steps as a user" href="first_steps.html" />
+    <link rel="canonical" href="first-job.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Submitting your first job</a><ul>
+<li><a class="reference internal" href="#job-definition">Job Definition</a></li>
+<li><a class="reference internal" href="#job-submission">Job Submission</a></li>
+<li><a class="reference internal" href="#test-definitions">Test Definitions</a></li>
+<li><a class="reference internal" href="#viewing-test-results">Viewing test results</a></li>
+<li><a class="reference internal" href="#downloading-test-results">Downloading test results</a></li>
+<li><a class="reference internal" href="#web-based-job-submission">Web Based Job Submission</a></li>
+<li><a class="reference internal" href="#xml-rpc-job-submission">XML-RPC Job Submission</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="first_steps.html" title="Previous Chapter: First steps as a user"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; First steps as a user</span>
+    </a>
+  </li>
+  <li>
+    <a href="explain_first_job.html" title="Next Chapter: Explaining the first job in detail"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Explaining th... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="submitting-your-first-job">
+<span id="submit-first-job"></span><span id="index-0"></span><h1>Submitting your first job<a class="headerlink" href="#submitting-your-first-job" title="Permalink to this headline">¶</a></h1>
+<p>A job defines what software should be deployed on the <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">under</span> <span class="pre">test</span></code>
+(DUT) and what actions should be performed there. Jobs are defined in <em>YAML</em>
+files.</p>
+<div class="section" id="job-definition">
+<span id="first-job-definition"></span><span id="index-1"></span><h2>Job Definition<a class="headerlink" href="#job-definition" title="Permalink to this headline">¶</a></h2>
+<p>Here’s an example minimal job that you should be able to use right away if you
+have user access to an appropriately-configured LAVA installation.</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your first LAVA JOB definition for an x86_64 QEMU</span>
+<span class="n">device_type</span><span class="p">:</span> <span class="n">qemu</span>
+<span class="n">job_name</span><span class="p">:</span> <span class="n">QEMU</span> <span class="n">pipeline</span><span class="p">,</span> <span class="n">first</span> <span class="n">job</span>
+
+<span class="n">timeouts</span><span class="p">:</span>
+  <span class="n">job</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">15</span>
+  <span class="n">action</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="n">connection</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">priority</span><span class="p">:</span> <span class="n">medium</span>
+<span class="n">visibility</span><span class="p">:</span> <span class="n">public</span>
+
+<span class="c1"># context allows specific values to be overridden or included</span>
+<span class="n">context</span><span class="p">:</span>
+  <span class="c1"># tell the qemu template which architecture is being tested</span>
+  <span class="c1"># the template uses that to ensure that qemu-system-x86_64 is executed.</span>
+  <span class="n">arch</span><span class="p">:</span> <span class="n">amd64</span>
+
+<span class="n">metadata</span><span class="p">:</span>
+  <span class="c1"># please change these fields when modifying this job for your own tests.</span>
+  <span class="n">docs</span><span class="o">-</span><span class="n">source</span><span class="p">:</span> <span class="n">first</span><span class="o">-</span><span class="n">job</span>
+  <span class="n">docs</span><span class="o">-</span><span class="n">filename</span><span class="p">:</span> <span class="n">qemu</span><span class="o">-</span><span class="n">pipeline</span><span class="o">-</span><span class="n">first</span><span class="o">-</span><span class="n">job</span><span class="o">.</span><span class="n">yaml</span>
+
+<span class="c1"># ACTION_BLOCK</span>
+<span class="n">actions</span><span class="p">:</span>
+<span class="c1"># DEPLOY_BLOCK</span>
+<span class="o">-</span> <span class="n">deploy</span><span class="p">:</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">to</span><span class="p">:</span> <span class="n">tmpfs</span>
+    <span class="n">images</span><span class="p">:</span>
+      <span class="n">rootfs</span><span class="p">:</span>
+        <span class="n">image_arg</span><span class="p">:</span> <span class="o">-</span><span class="n">drive</span> <span class="nb">format</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="p">{</span><span class="n">rootfs</span><span class="p">}</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">images</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">kvm</span><span class="o">/</span><span class="n">standard</span><span class="o">/</span><span class="n">stretch</span><span class="o">-</span><span class="mf">2.</span><span class="n">img</span><span class="o">.</span><span class="n">gz</span>
+        <span class="n">compression</span><span class="p">:</span> <span class="n">gz</span>
+
+<span class="c1"># BOOT_BLOCK</span>
+<span class="o">-</span> <span class="n">boot</span><span class="p">:</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">qemu</span>
+    <span class="n">media</span><span class="p">:</span> <span class="n">tmpfs</span>
+    <span class="n">prompts</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;root@debian:&quot;</span><span class="p">]</span>
+    <span class="n">auto_login</span><span class="p">:</span>
+      <span class="n">login_prompt</span><span class="p">:</span> <span class="s2">&quot;login:&quot;</span>
+      <span class="n">username</span><span class="p">:</span> <span class="n">root</span>
+
+<span class="c1"># TEST_BLOCK</span>
+<span class="o">-</span> <span class="n">test</span><span class="p">:</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">definitions</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">repository</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">team</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">functional</span><span class="o">-</span><span class="n">tests</span><span class="o">.</span><span class="n">git</span>
+      <span class="n">from</span><span class="p">:</span> <span class="n">git</span>
+      <span class="n">path</span><span class="p">:</span> <span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">shell</span><span class="o">/</span><span class="n">smoke</span><span class="o">-</span><span class="n">tests</span><span class="o">-</span><span class="n">basic</span><span class="o">.</span><span class="n">yaml</span>
+      <span class="n">name</span><span class="p">:</span> <span class="n">smoke</span><span class="o">-</span><span class="n">tests</span>
+    <span class="o">-</span> <span class="n">repository</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">team</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">functional</span><span class="o">-</span><span class="n">tests</span><span class="o">.</span><span class="n">git</span>
+      <span class="n">from</span><span class="p">:</span> <span class="n">git</span>
+      <span class="n">path</span><span class="p">:</span> <span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">shell</span><span class="o">/</span><span class="n">single</span><span class="o">-</span><span class="n">node</span><span class="o">/</span><span class="n">singlenode03</span><span class="o">.</span><span class="n">yaml</span>
+      <span class="n">name</span><span class="p">:</span> <span class="n">singlenode</span><span class="o">-</span><span class="n">advanced</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="examples/test-jobs/qemu-pipeline-first-job.html">Download / view</a></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="explain_first_job.html#explain-first-job"><span class="std std-ref">Explaining the first job in detail</span></a>.</p>
+</div>
+</div>
+<div class="section" id="job-submission">
+<span id="index-2"></span><span id="id1"></span><h2>Job Submission<a class="headerlink" href="#job-submission" title="Permalink to this headline">¶</a></h2>
+<p>Jobs may be submitted to LAVA in one of three ways:</p>
+<ul class="simple">
+<li>the command line (using the <code class="docutils literal notranslate"><span class="pre">lavacli</span></code> program); or</li>
+<li>the <a class="reference internal" href="data-export.html#xml-rpc"><span class="std std-ref">XML-RPC</span></a> API</li>
+<li>the <a class="reference internal" href="#web-ui-submit"><span class="std std-ref">web UI</span></a></li>
+</ul>
+<p>Once you have copied the above job definition to a file, (for example
+<em>/tmp/job.yaml</em>), use <code class="docutils literal notranslate"><span class="pre">lavacli</span></code> to submit it as a test job in Linaro’s main
+LAVA lab:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lavacli --uri https://&lt;username&gt;:&lt;token&gt;@validation.linaro.org/RPC2/ jobs submit /tmp/job.yaml
+1303132
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Replace <em>username</em> with your username and &lt;token&gt; with your private
+token.</p>
+</div>
+<p>Once the job is submitted successfully, the job id is returned; this may be
+used in order to check the status of the job via the web UI. In the above
+submission the job id returned is 1303132. Go to
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/scheduler/job/&lt;job-id&gt;</span></code> in order to see the
+details of the job run: the test device chosen, the test results, etc.</p>
+<img alt="_images/first-job-submitted.png" src="_images/first-job-submitted.png" />
+<p>You can also use lavacli directly to see the logs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lavacli --uri https://&lt;username&gt;:&lt;token&gt;@validation.linaro.org/RPC2/ jobs logs 1303132
+</pre></div>
+</div>
+<p>It may take some time before the job actually starts, depending on the number
+of jobs waiting in the queue for a device of this type. Once the job starts,
+the status information will automatically update and the logs will appear.</p>
+<p>Results are populated live and will start to appear during the operation of the
+deploy action. The plain log can be downloaded and the definition is available
+for later reference. If you are the submitter of the job, you can also choose
+to cancel the job.</p>
+</div>
+<div class="section" id="test-definitions">
+<span id="id2"></span><h2>Test Definitions<a class="headerlink" href="#test-definitions" title="Permalink to this headline">¶</a></h2>
+<p>In order to run a test, a test definition is required. A test definition is
+expressed in YAML format. A minimal test definition would look something like
+the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">passfail</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="s">&quot;Lava-Test-Shell</span><span class="nv"> </span><span class="s">Test</span><span class="nv"> </span><span class="s">Definition</span><span class="nv"> </span><span class="s">1.0&quot;</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Pass/Fail</span><span class="nv"> </span><span class="s">test.&quot;</span>
+    <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0</span>
+
+<span class="nt">run</span><span class="p">:</span>
+    <span class="nt">steps</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="s">&quot;lava-test-case</span><span class="nv"> </span><span class="s">passtest</span><span class="nv"> </span><span class="s">--result</span><span class="nv"> </span><span class="s">pass&quot;</span>
+        <span class="p p-Indicator">-</span> <span class="s">&quot;lava-test-case</span><span class="nv"> </span><span class="s">failtest</span><span class="nv"> </span><span class="s">--result</span><span class="nv"> </span><span class="s">pass&quot;</span>
+</pre></div>
+</div>
+<p>The first job mentioned above uses a more complex test definition:</p>
+<p><a class="reference external" href="https://git.linaro.org/lava-team/lava-functional-tests.git/tree/lava-test-shell/smoke-tests-basic.yaml">https://git.linaro.org/lava-team/lava-functional-tests.git/tree/lava-test-shell/smoke-tests-basic.yaml</a></p>
+<p>The metadata in a test definition is for the maintenance of that test
+definition and covers details like the maintainer, the kinds of devices which
+may find this test definition useful and the scope of the test definition.
+(Scope is arbitrary, often a scope of functional is used to describe a test
+which is useful to test that the image is functioning correctly.) The run steps
+of this definition are:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+   <span class="nt">steps</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case linux-linaro-ubuntu-pwd --shell pwd</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case linux-linaro-ubuntu-uname --shell uname -a</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case linux-linaro-ubuntu-vmstat --shell vmstat</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case linux-linaro-ubuntu-ifconfig --shell ifconfig -a</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case linux-linaro-ubuntu-lscpu --shell lscpu</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case linux-linaro-ubuntu-lsb_release --shell lsb_release -a</span>
+</pre></div>
+</div>
+<p>This simple test executes a series of commands in the booted image. The exit
+value of each command is used to determine whether the test case passed or
+failed. You can try any of these commands on a Ubuntu or Debian system to see
+what the commands should create as output.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="developing-tests.html#test-developer"><span class="std std-ref">Writing Tests</span></a>, <a class="reference internal" href="writing-tests.html#writing-tests-1-0"><span class="std std-ref">Writing a Lava-Test Test Definition 1.0</span></a> and
+<a class="reference internal" href="standard-test-jobs.html#job-metadata"><span class="std std-ref">Metadata</span></a></p>
+</div>
+</div>
+<div class="section" id="viewing-test-results">
+<span id="viewing-results"></span><h2>Viewing test results<a class="headerlink" href="#viewing-test-results" title="Permalink to this headline">¶</a></h2>
+<p>On the job view page, there is a button to access the Results. Results can also
+be accessed from the Results Overview in the menu. The results for the first
+job example could look like:</p>
+<img alt="_images/first-results.png" src="_images/first-results.png" />
+<p>The results include the test definitions submitted within the job as well as a
+reserved <code class="docutils literal notranslate"><span class="pre">lava</span></code> set of results generated during the operation of the test job
+itself. There is also metadata which is generated by the test job, including
+details like the URL of the test definitions used and the type of deploy and
+boot methods involved in the test job.</p>
+</div>
+<div class="section" id="downloading-test-results">
+<span id="downloading-results"></span><span id="index-3"></span><h2>Downloading test results<a class="headerlink" href="#downloading-test-results" title="Permalink to this headline">¶</a></h2>
+<p>LAVA makes the test results available directly from the instance,
+without needing to go through <code class="docutils literal notranslate"><span class="pre">lavacli</span></code>. The results for any test
+job which the user can view can be downloaded in <abbr title="comma-separated value">CSV</abbr> or YAML format.</p>
+<p>For example, the results for test job number 123 are available in CSV
+format using: <code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/csv</span></code>. The
+same results for job number 123 are available in YAML format using:
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/yaml</span></code></p>
+<p>If you know the test definition name, you can also download the
+results for that specific test definition only in a similar way:
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/0_singlenode-advanced/csv</span></code>
+for the data in CSV format and
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/0_singlenode-advanced/yaml</span></code>
+for the YAML format.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="data-export.html#rest-api"><span class="std std-ref">REST API</span></a></p>
+</div>
+</div>
+<div class="section" id="web-based-job-submission">
+<span id="web-ui-submit"></span><span id="index-4"></span><h2>Web Based Job Submission<a class="headerlink" href="#web-based-job-submission" title="Permalink to this headline">¶</a></h2>
+<p>Remember to check the YAML syntax of your test job files using the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=&amp;type=json">Online YAML
+parser</a> before
+submission.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer.html#writing-new-job-yaml"><span class="std std-ref">YAML syntax</span></a></p>
+</div>
+<p>The Scheduler menu contains a Submit Job action which can be used to submit
+jobs to any instance using your browser. You need to be logged in and have
+permission to submit jobs to that instance. The web submission form for a
+localhost installation would be <code class="docutils literal notranslate"><span class="pre">http://localhost/scheduler/jobsubmit</span></code>.</p>
+<p>To submit jobs to the Linaro lab in Cambridge, visit
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/scheduler/jobsubmit</span></code>. Paste your YAML file
+into the window and click the “Submit” button. An example job submission screen
+is shown below,</p>
+<img alt="_images/job-submission-screen.png" src="_images/job-submission-screen.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If a link to a test job YAML file is pasted on the above screen, the
+YAML file will be fetched and displayed in the text box for submission. Make
+sure that the link is to the raw content of the YAML file, not HTML.</p>
+</div>
+<p>Once the job is successfully submitted, the job details are displayed. (If a list of
+jobs was created, the first job in the list will be displayed.)</p>
+<img alt="_images/first-job-submitted.png" src="_images/first-job-submitted.png" />
+<span class="target" id="xmlrpc-job-submit"><span id="index-5"></span></span></div>
+<div class="section" id="xml-rpc-job-submission">
+<span id="index-6"></span><h2>XML-RPC Job Submission<a class="headerlink" href="#xml-rpc-job-submission" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="lavacli.html#lavacli"><span class="std std-ref">lavacli</span></a> is a wrapper around the XML-RPC API with helpers for personal
+usage. The XML-RPC API itself supports a variety of queries and operations
+which can assist in creating a frontend to LAVA which can automate the
+submission of test jobs.</p>
+<p>Many languages have XML-RPC support, the API help page on each LAVA instance
+provides a python example script, with and without using tokens. Job submission
+requires using an <a class="reference internal" href="first_steps.html#authentication-tokens"><span class="std std-ref">authentication token</span></a> and
+should use <code class="docutils literal notranslate"><span class="pre">https</span></code> wherever possible to protect the token.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For help using the XML-RPC API to submit jobs, see the sections on
+<a class="reference internal" href="lavacli.html#lavacli"><span class="std std-ref">lavacli</span></a> and the <strong>Available methods</strong> link from the API menu of the
+LAVA instance. For example: <code class="docutils literal notranslate"><span class="pre">http://localhost/api/help</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/first-job.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:17 GMT -->
+</html>

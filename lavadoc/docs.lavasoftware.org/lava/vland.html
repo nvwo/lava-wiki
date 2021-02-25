@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/vland.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>VLANd support in LAVA test jobs &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Debugging LAVA test failures" href="debugging.html" />
+    <link rel="prev" title="MultiNode API" href="multinodeapi.html" />
+    <link rel="canonical" href="vland.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">VLANd support in LAVA test jobs</a><ul>
+<li><a class="reference internal" href="#what-is-a-vlan">What is a VLAN?</a></li>
+<li><a class="reference internal" href="#vland-and-lava">VLANd and LAVA</a><ul>
+<li><a class="reference internal" href="#vland-test-shell-helpers">VLANd test shell helpers</a><ul>
+<li><a class="reference internal" href="#lava-vland-self">lava-vland-self</a></li>
+<li><a class="reference internal" href="#lava-vland-tags">lava-vland-tags</a></li>
+<li><a class="reference internal" href="#lava-vland-names">lava-vland-names</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vland-identify-interface-names">Identifying interface names</a></li>
+<li><a class="reference internal" href="#vland-restrictions">VLANd Restrictions</a></li>
+<li><a class="reference internal" href="#vland-design-goals-and-considerations">VLANd Design goals and considerations</a></li>
+<li><a class="reference internal" href="#lava-and-vland-device-considerations">LAVA and VLANd Device considerations</a><ul>
+<li><a class="reference internal" href="#requirement-for-multiple-interfaces">Requirement for multiple interfaces</a></li>
+<li><a class="reference internal" href="#lava-and-locked-switch-port-combinations">LAVA and locked switch/port combinations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vland-and-multinode">VLANd and MultiNode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-vland-database-support">LAVA VLANd database support</a><ul>
+<li><a class="reference internal" href="#interfaces-and-link-speeds">Interfaces and link speeds</a><ul>
+<li><a class="reference internal" href="#vland-and-interface-tags-in-lava">VLANd and interface tags in LAVA</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#assigning-roles-to-a-vlan">Assigning roles to a VLAN</a></li>
+<li><a class="reference internal" href="#example-vland-protocol-yaml">Example vland protocol YAML</a></li>
+<li><a class="reference internal" href="#example-yaml-for-the-protocols">Example YAML for the protocols</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="multinodeapi.html" title="Previous Chapter: MultiNode API"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; MultiNode API</span>
+    </a>
+  </li>
+  <li>
+    <a href="debugging.html" title="Next Chapter: Debugging LAVA test failures"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Debugging LAV... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="vland-support-in-lava-test-jobs">
+<span id="vland-in-lava"></span><span id="index-0"></span><h1>VLANd support in LAVA test jobs<a class="headerlink" href="#vland-support-in-lava-test-jobs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-a-vlan">
+<h2>What is a VLAN?<a class="headerlink" href="#what-is-a-vlan" title="Permalink to this headline">¶</a></h2>
+<p>VLANs are a networking technology that can be used to provide control and
+isolation of network ports. Setting up VLANs can create multiple separate
+private networks between specified switch ports. This is equivalent to setting
+up multiple different physical networks with separate switches, but with the
+benefit that it is configured in software instead of needing physical
+connection changes. This means that networks can be reconfigured on the fly,
+even remotely.</p>
+</div>
+<div class="section" id="vland-and-lava">
+<span id="vlan-support"></span><h2>VLANd and LAVA<a class="headerlink" href="#vland-and-lava" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="glossary.html#term-vland"><span class="xref std std-term">VLANd</span></a> is a simple utility to control switches on a single-site,
+single-network basis. LAVA V2 supports the use of VLANd as one of its
+<a class="reference internal" href="actions-protocols.html#protocols"><span class="std std-ref">Protocol Reference</span></a>, allowing for integration of control of VLANs as part of the
+setup of a MultiNode test job.</p>
+<p>Unlike the <a class="reference internal" href="actions-protocols.html#multinode-protocol"><span class="std std-ref">MultiNode Protocol</span></a>, the <code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> protocol has only a
+minimal API for use during the test shell, providing static information about
+the network interfaces on the device. The <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> is also
+available, as with all other multinode jobs.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">MultiNode can be hard to understand and debug in a test job;
+adding VLANd control adds yet more flexibility and therefore more complexity
+to the test configuration. Although helpers are provided to access specific
+pieces of information, the difficulty of turning the helpers into a usable
+test definition should not be underestimated. <a class="reference internal" href="writing-tests.html#custom-scripts"><span class="std std-ref">Custom scripts</span></a> are <strong>strongly</strong> recommended. The helpers simply echo out
+variables set by LAVA, so placeholders can be used when testing custom
+scripts, allowing test writers to debug scripts on local machines outside of
+LAVA.</p>
+</div>
+<div class="section" id="vland-test-shell-helpers">
+<h3>VLANd test shell helpers<a class="headerlink" href="#vland-test-shell-helpers" title="Permalink to this headline">¶</a></h3>
+<p>VLANd configuration is used to control networking of the devices in a test.
+Accordingly, the VLANd test shell helpers give a test writer more information
+about the networking setup of those devices during a test.</p>
+<p>The information about each of the interfaces on a test device will include the
+following data elements:</p>
+<ul>
+<li><p class="first"><strong>interface label</strong> - this is an arbitrary unique label assigned by the admin
+in device configuration, used purely as a key to enable lookup of other data
+elements. It is <strong>not</strong> the interface name that would be used/configured
+using system tools such as <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> or <code class="docutils literal notranslate"><span class="pre">ip</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">eth0</span></code>, <code class="docutils literal notranslate"><span class="pre">ens3</span></code>),
+as those interface names are assigned at boot in potentially random order and
+may change from test to test on the same device.</p>
+</li>
+<li><p class="first"><strong>MAC address</strong> - the MAC address set by the admin in the device
+configuration for the specified interface label.</p>
+</li>
+<li><p class="first"><strong>sysfs path</strong> - the path in <code class="docutils literal notranslate"><span class="pre">/sys</span></code> to the device as declared by the admin
+in the device configuration for the specified interface label. The path
+itself will typically <strong>not</strong> include an interface name (<code class="docutils literal notranslate"><span class="pre">eth0</span></code> etc.) as
+this can be changed with a different userspace.</p>
+</li>
+<li><p class="first"><strong>interface tags</strong> - the <a class="reference internal" href="glossary.html#term-interface-tag"><span class="xref std std-term">tags</span></a> specified by the test
+writer. The tag needs to match the available tags specified by the admin in
+the device configuration. Interface tags determine which devices of the
+requested <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> are scheduled for the test job.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#vland-device-tags"><span class="std std-ref">VLANd and interface tags in LAVA</span></a></p>
+</div>
+</li>
+<li><p class="first"><strong>vlan_name</strong> - the name specified by the test writer for the VLAN using the
+requested tags. Each VLAN will relate to one or more interface labels.</p>
+</li>
+</ul>
+<p>The test writer is responsible for <a class="reference internal" href="#vland-identify-interface-names"><span class="std std-ref">finding out the current interface name</span></a> assigned by the kernel for the relevant
+interface label by using the <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> path and the MAC address. Interface
+names can be modified by userspace so <strong>must</strong> be identified after boot.</p>
+<div class="section" id="lava-vland-self">
+<h4>lava-vland-self<a class="headerlink" href="#lava-vland-self" title="Permalink to this headline">¶</a></h4>
+<p>Prints details of the admin-assigned interface <strong>label</strong>, mac address and
+<code class="docutils literal notranslate"><span class="pre">sysfs</span></code> path for each interface on this device, comma separated without
+whitespace:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iface1,00:e0:4c:53:44:58,/sys/devices/platform/ocp/47400000.usb/47401c00.usb/musb-hdrc.1.auto/usb1/1-1/1-1:1.0/net/
+iface0,90:59:af:5e:69:fd,/sys/devices/platform/ocp/4a100000.ethernet/net/
+</pre></div>
+</div>
+<p>If the interface label is <code class="docutils literal notranslate"><span class="pre">iface0</span></code>, this will output the MAC address:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>- lava-vland-self <span class="p">|</span> grep iface0 <span class="p">|</span> cut -d<span class="s1">&#39;,&#39;</span> -f2
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> path is allowed to contain commas and other characters, so to get
+the path use <code class="docutils literal notranslate"><span class="pre">-</span></code> to get all fields after the third match:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>- lava-vland-self <span class="p">|</span> grep iface0 <span class="p">|</span> cut -d<span class="s1">&#39;,&#39;</span> -f3-
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="writing-tests.html#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a></p>
+</div>
+</div>
+<div class="section" id="lava-vland-tags">
+<h4>lava-vland-tags<a class="headerlink" href="#lava-vland-tags" title="Permalink to this headline">¶</a></h4>
+<p>Prints the interface tag details of the <a class="reference internal" href="#vland-interfaces"><span class="std std-ref">Interfaces and link speeds</span></a> for this
+device, comma separated without whitespace:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>iface1,100M
+iface0,1G
+iface0,100M
+</pre></div>
+</div>
+</div>
+<div class="section" id="lava-vland-names">
+<h4>lava-vland-names<a class="headerlink" href="#lava-vland-names" title="Permalink to this headline">¶</a></h4>
+<p>Lists all the vlan names for this device and the interface labels associated
+with each vlan. Each entry is comma separated on one line, with no whitespace.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>vlan_one,iface0
+vland_two,iface1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="vland-identify-interface-names">
+<span id="identifying-interface-names"></span><h3>Identifying interface names<a class="headerlink" href="#vland-identify-interface-names" title="Permalink to this headline">¶</a></h3>
+<p>The MAC address is usually the best way to identify specific interfaces, but in
+some cases this may not work (e.g. badly designed test devices without
+persistent MAC addresses) so it’s possible to use the <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> path as a
+fallback here. The runtime interface name of a particular interface may change
+from boot to boot, so it is necessary to look this up during your test.</p>
+<p>It’s possible to use other tools like <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> and <code class="docutils literal notranslate"><span class="pre">ip</span></code> to look up an
+interface name, but the easiest way to use a MAC address to look up an
+interface name is typically by looking directly in <code class="docutils literal notranslate"><span class="pre">sysfs</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># MAC and SYSFS would have been determined already</span>
+<span class="c1"># using lava-vland-self</span>
+<span class="nv">MAC</span><span class="o">=</span><span class="s2">&quot;a0:36:9f:39:0b:d7&quot;</span>
+<span class="nv">SYSFS</span><span class="o">=</span><span class="s2">&quot;/sys/devices/pci0000:00/0000:00:03.0/0000:07:00.1/net/&quot;</span>
+
+<span class="c1"># match the MAC to the address in sysfs</span>
+<span class="c1"># identify the interface name from the matching sysfs path.</span>
+<span class="nv">NAME</span><span class="o">=</span><span class="sb">`</span>grep -l <span class="si">${</span><span class="nv">MAC</span><span class="si">}</span> <span class="si">${</span><span class="nv">SYSFS</span><span class="si">}</span>*/address <span class="p">|</span> awk -F/ <span class="s1">&#39;{print $(NF-1)}&#39;</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="si">${</span><span class="nv">NAME</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>Possible output would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eth4</span>
+</pre></div>
+</div>
+<p>Combined with <code class="docutils literal notranslate"><span class="pre">lava-vland-self</span></code>, this provides a way for the test writer to
+know that <code class="docutils literal notranslate"><span class="pre">vlan_one</span></code> on this device uses <code class="docutils literal notranslate"><span class="pre">eth0</span></code>. This information can then
+be used to derive the IP address.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This kind of operation is best done with a <a class="reference internal" href="writing-tests.html#custom-scripts"><span class="std std-ref">custom script</span></a> using a language better suited to these kinds of
+operations (like perl or python). These examples try to use the lowest
+common denominator - busybox. As a result, the examples can appear to be
+more complex than strictly necessary.</p>
+</div>
+<p>The <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> can then be used to broadcast the information about
+this device using <code class="docutils literal notranslate"><span class="pre">lava-send</span></code> and retrieve information from other devices in
+the group using <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code>.</p>
+</div>
+<div class="section" id="vland-restrictions">
+<span id="id1"></span><h3>VLANd Restrictions<a class="headerlink" href="#vland-restrictions" title="Permalink to this headline">¶</a></h3>
+<p>The design of VLANd set out some clear constraints on the support to be created:</p>
+<ul class="simple">
+<li>1 <strong>access</strong> port on 1 switch being on 1 VLAN, no more, no less.<ul>
+<li>aka a port-based or static or manually-created VLAN (depending on which
+vendor’s docs you read!).</li>
+</ul>
+</li>
+<li>No support for dynamic VLANs<ul>
+<li>(switch calling out to external services to determine which VLAN a
+newly-detected connection should be connected to)</li>
+</ul>
+</li>
+<li>No support for filtering on ports to set up VLANs by traffic analysis etc.</li>
+<li>No support for egress/ingress control such that a port may interact with
+ports outside of its own defined VLAN.</li>
+<li>No support for cross-site VLANs via QinQ or similar.</li>
+<li>Ports defined in terms of the switch/port combination.</li>
+<li>Some switch/port combinations are to be <strong>locked</strong> so that test jobs cannot
+put infrastructure devices into a test VLAN.</li>
+</ul>
+</div>
+<div class="section" id="vland-design-goals-and-considerations">
+<span id="vland-design"></span><h3>VLANd Design goals and considerations<a class="headerlink" href="#vland-design-goals-and-considerations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Set up arbitrary sets of VLANs</li>
+<li>Map interfaces to switch ports in the LAVA device instance configuration.</li>
+<li>Run a single VLAN daemon instance per lab</li>
+<li>Switches are identified by IP or hostname - DNS must work for names to be used</li>
+<li>Support a regular background read-only check that the switch config is
+reflected in the DB</li>
+</ul>
+</div>
+<div class="section" id="lava-and-vland-device-considerations">
+<span id="lava-vland-devices"></span><h3>LAVA and VLANd Device considerations<a class="headerlink" href="#lava-and-vland-device-considerations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="requirement-for-multiple-interfaces">
+<span id="vland-multiple-interfaces"></span><h4>Requirement for multiple interfaces<a class="headerlink" href="#requirement-for-multiple-interfaces" title="Permalink to this headline">¶</a></h4>
+<p>Initial support for VLANd in LAVA sets up the VLANs at the start of the job.
+Many test jobs will require the device to download artifacts from the
+dispatcher (which itself has downloaded from third party sites) using protocols
+like TFTP. The device therefore needs to be able to reach the dispatcher over
+the network and this has implications for which devices are usable with VLANd
+at this stage.</p>
+<p>Devices to be used with VLANd <strong>must</strong> have multiple network interfaces. It is
+<strong>not</strong> required that all interfaces are enabled at boot, simply that the boot
+process has a usable network interface. It is up to the test job writer whether
+the other interface(s) are enabled at boot or enabled/disabled during the test
+job - VLANd has no requirement other than that the physical hardware has a
+cable attached to the specified switch/port.</p>
+<p>Future changes are expected to allow for devices with only a single interface
+to use VLANd but this requires code changes to support setting up the VLAN
+after the device has downloaded files using TFTP but before the serial
+connection is used to run the boot commands. This could result in a test job
+where the device has no access to the internet or the dispatcher during the
+rest of the test job. LAVA continues to control the physical device using the
+serial connection, including to implement the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> but some
+test jobs may use dynamic connections made from the dispatcher - such test jobs
+would not be able to use VLANd on devices with only a single network interface.</p>
+</div>
+<div class="section" id="lava-and-locked-switch-port-combinations">
+<span id="vland-locking"></span><h4>LAVA and locked switch/port combinations<a class="headerlink" href="#lava-and-locked-switch-port-combinations" title="Permalink to this headline">¶</a></h4>
+<p>VLANd supports locking particular switch/port combinations to prevent test jobs
+interfering with critical lab infrastructure (like a PDU or the dispatcher
+itself). The dispatcher is serving many jobs simultaneously, so cannot be part
+of any VLAN created by a test job.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> protocol will <strong>not</strong> be allowed to modify locked
+switch/port combinations or to lock switch/port combinations used within the
+test job. LAVA will control the raising and tear down of VLANs using the
+<code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> protocol, so that each test job gets access only to the VLANs
+that the test job itself defines.</p>
+</div>
+</div>
+<div class="section" id="vland-and-multinode">
+<span id="vland-multinode"></span><h3>VLANd and MultiNode<a class="headerlink" href="#vland-and-multinode" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>VLANd is restricted to a single mapping of a switch and port to a single
+interface on a device</li>
+<li>A VLAN which only ever contains a single device is not typically a useful
+test of the networking support on that device.</li>
+<li>The MultiNode <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> determines which devices go onto which named VLAN.</li>
+</ul>
+<p>So the <code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> protocol is directly tied to the <code class="docutils literal notranslate"><span class="pre">lava-multinode</span></code>
+protocol, with one additional restriction:</p>
+<ul class="simple">
+<li>Any <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> used by <code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> <strong>must only</strong> set a count of <strong>one</strong>.
+There is no limit to the number of roles as long as each is unique across the
+MultiNode job.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="lava-vland-database-support">
+<span id="lava-vlan-database"></span><h2>LAVA VLANd database support<a class="headerlink" href="#lava-vland-database-support" title="Permalink to this headline">¶</a></h2>
+<p>Details of which interface of which board is on which port of which switch is
+collectively called the <a class="reference internal" href="vland-admin.html#vland-network-map"><span class="std std-ref">network map</span></a> which is
+maintained by the lab admins. See <a class="reference internal" href="vland-admin.html#admin-vland-lava"><span class="std std-ref">Administering VLANd support in LAVA</span></a>.</p>
+<p>Test writers get to see which <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">types of device</span></a> support
+which interfaces and which <a class="reference internal" href="glossary.html#term-interface-tag"><span class="xref std std-term">interface tag</span></a>, together with <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device
+tags</span></a>. This allows test writers to specify which devices are used
+for a particular test, without being tied to a set of device hostnames that may
+change from time to time. LAVA then maps the test writer request to a specific
+device, interface and switch/port combination and constructs the commands to
+pass to <a class="reference internal" href="glossary.html#term-vland"><span class="xref std std-term">VLANd</span></a>.</p>
+<p>Test writers do not provide explicit switch/port instructions; the test job
+simply defines the type of device to use, the interfaces to use and any device
+tags required. LAVA then assembles this into a series of instructions to VLANd.
+This allows test jobs to be re-used without regard to whether the lab admins
+have had to change the physical topology of the network, as long as the same
+services remain available.</p>
+<div class="section" id="interfaces-and-link-speeds">
+<span id="vland-interfaces"></span><h3>Interfaces and link speeds<a class="headerlink" href="#interfaces-and-link-speeds" title="Permalink to this headline">¶</a></h3>
+<p>Test writers provide information about the device interfaces using the
+<strong>lava-vland</strong> protocol syntax which matches a <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> with a name for a
+VLAN and a list of tags (which may be loosely related to link speeds) which
+that role needs to be able to provide. <strong>All</strong> of the specified tags must be
+supported by the interface before the device will be accepted as suitable for
+the test job.</p>
+<p>Devices may also have requirements that booting can only use certain interfaces
+(which may be considered as <em>primary</em>), e.g. bootloaders may lack the ability
+to detect and/or use a network interface which uses a USB network converter
+when a physical ethernet port is also fitted. If the primary ethernet port is
+put onto a VLAN, the bootloader may be unable to raise a network interface. See
+<a class="reference internal" href="vland-admin.html#identify-primary-interfaces"><span class="std std-ref">Identification of primary interfaces</span></a> and check with your local admins about how
+such issues may be identified and avoided, e.g. by not specifying tags for
+<em>primary</em> interfaces.</p>
+<div class="section" id="vland-and-interface-tags-in-lava">
+<span id="vland-device-tags"></span><span id="index-1"></span><h4>VLANd and interface tags in LAVA<a class="headerlink" href="#vland-and-interface-tags-in-lava" title="Permalink to this headline">¶</a></h4>
+<p>LAVA can use interface tags to distinguish between devices of the same
+<a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>. Commonly, the values in the tags might relate to useful
+features of an interface: the link speeds it supports, the interface types it
+supports (RJ43, SFP) or other things like its manufacturer. The tags that can
+be used are entirely arbitrary: LAVA itself attaches no particular meaning to
+the tags. When selecting devices for a test job, a device is assigned if the
+device dictionary tags match or exceed the requested tags in the job
+definition.</p>
+<p>Therefore, if tags are to be expressed as link speeds, all link speeds
+must be included in the device dictionary, using whatever notation is agreed
+between the admins and the test writers. A 10G link which is also capable of
+1G needs to be expressed as <code class="docutils literal notranslate"><span class="pre">['1G',</span> <span class="pre">'10G']</span></code> (ordering is irrelevant). A device
+with such an interface can then be assigned a testjob requiring a
+10G link or a testjob requiring a 1G link.</p>
+<p>The syntax of the interface tag is arbitrary - individual labs can choose to
+extend the tag to embed more information than the link speed or use a different
+pattern of their own choice.</p>
+<p>This is in line with how a <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> is used elsewhere in LAVA,
+it is the use of such a tag in the device dictionary which is custom to
+VLANd.</p>
+<p>The list of vland-type tags available for a device will be declared on
+the server page for that device but in a different section from other tags.</p>
+</div>
+</div>
+<div class="section" id="assigning-roles-to-a-vlan">
+<span id="vland-vlan-name"></span><h3>Assigning roles to a VLAN<a class="headerlink" href="#assigning-roles-to-a-vlan" title="Permalink to this headline">¶</a></h3>
+<p>The name for the VLAN, as specified by the test writer, is an arbitrary label -
+the actual name used by VLANd will be calculated by LAVA based on the test job
+ID and the MultiNode target group ID. In a similar way to a role, the name is
+used to associate different roles onto the same VLAN.</p>
+</div>
+<div class="section" id="example-vland-protocol-yaml">
+<span id="example-vland-protocol"></span><h3>Example vland protocol YAML<a class="headerlink" href="#example-vland-protocol-yaml" title="Permalink to this headline">¶</a></h3>
+<p>All uses of the <strong>lava-vland</strong> protocol also require the
+<a class="reference internal" href="actions-protocols.html#multinode-protocol"><span class="std std-ref">MultiNode Protocol</span></a>, this example just looks at the vland component.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">lava-vland</span><span class="p">:</span>
+  <span class="nt">client</span><span class="p">:</span>
+    <span class="nt">vlan_one</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10G</span>
+  <span class="nt">server</span><span class="p">:</span>
+    <span class="nt">vlan_one</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1G</span>
+</pre></div>
+</div>
+<p>Any one role can be put onto multiple vlans. Managing the routing and
+specifying which interface is up or down at any particular point of a test job
+is entirely within the remit of the test writer:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">lava-vland</span><span class="p">:</span>
+  <span class="nt">master</span><span class="p">:</span>
+    <span class="nt">vlan_one</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10G</span>
+    <span class="nt">vlan_two</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1G</span>
+  <span class="nt">slave</span><span class="p">:</span>
+    <span class="nt">vlan_one</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1G</span>
+  <span class="nt">soldier</span><span class="p">:</span>
+    <span class="nt">vlan_two</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1G</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-yaml-for-the-protocols">
+<span id="example-test-yaml"></span><h3>Example YAML for the protocols<a class="headerlink" href="#example-yaml-for-the-protocols" title="Permalink to this headline">¶</a></h3>
+<p>Combining the <code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> protocol with the <code class="docutils literal notranslate"><span class="pre">lava-multinode</span></code> protocol
+shows how the roles match up.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="#vland-multinode"><span class="std std-ref">VLANd and MultiNode</span></a> support dictates that the <code class="docutils literal notranslate"><span class="pre">count</span></code> for roles
+which are used by <code class="docutils literal notranslate"><span class="pre">lava-vland</span></code> can only ever be <strong>1</strong>.</p>
+</div>
+<p>This example will create a single VLAN which the test writer will be able to
+see as <strong>vlan_one</strong> and this VLAN will contain a single beaglebone-black and a
+single cubietruck. The beaglebone-black is required to provide at least one
+interface capable of a 10G link speed (so this example is unlikely to ever find
+a suitable device) and the cubietruck is required to provide an interface
+capable of 1G. (The actual meaning of the interface tags is up to the lab
+admins but it is expected that most admins will use the established convention
+of G === gigabit per second.) In addition, this example stipulates that the
+beaglebone-black is to support a <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> called <code class="docutils literal notranslate"><span class="pre">usb-eth</span></code> and the
+cubietruck is to support a device tag called <code class="docutils literal notranslate"><span class="pre">sata</span></code>. Depending on the setup
+of the lab, these tags can be used to indicate that the beaglebone-black has a
+USB ethernet converter as well as the on-board physical ethernet support and
+that the cubietruck has an accessible SATA drive.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="nt">client</span><span class="p">:</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bbb</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="nt">tags</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">usb-eth</span>
+      <span class="nt">server</span><span class="p">:</span>
+         <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cubietruck</span>
+      <span class=" -Error">  </span><span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="nt">tags</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sata</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+  <span class="nt">lava-vland</span><span class="p">:</span>
+    <span class="nt">client</span><span class="p">:</span>
+      <span class="nt">vlan_one</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10G</span>
+    <span class="nt">server</span><span class="p">:</span>
+      <span class="nt">vlan_one</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1G</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/vland.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+</html>

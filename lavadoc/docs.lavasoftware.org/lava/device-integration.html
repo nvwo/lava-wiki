@@ -1,0 +1,702 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/device-integration.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:04:11 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Adding new device types &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="U-Boot" href="integrate-uboot.html" />
+    <link rel="prev" title="Functional testing of LAVA source code" href="functional_tests.html" />
+    <link rel="canonical" href="device-integration.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Adding new device types</a><ul>
+<li><a class="reference internal" href="#device-requirements">Device Requirements</a><ul>
+<li><a class="reference internal" href="#reproducibility">Reproducibility</a><ul>
+<li><a class="reference internal" href="#example-one">Example One</a></li>
+<li><a class="reference internal" href="#example-two">Example Two</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reliability">Reliability</a></li>
+<li><a class="reference internal" href="#scriptability">Scriptability</a></li>
+<li><a class="reference internal" href="#scalability">Scalability</a></li>
+<li><a class="reference internal" href="#power">Power</a></li>
+<li><a class="reference internal" href="#reset">Reset</a></li>
+<li><a class="reference internal" href="#networking">Networking</a></li>
+<li><a class="reference internal" href="#serial-console">Serial console</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-process">Integration process</a></li>
+<li><a class="reference internal" href="#find-a-similar-existing-device-type">Find a similar existing device type</a></li>
+<li><a class="reference internal" href="#extend-from-an-existing-device-type-template">Extend from an existing device type template</a></li>
+<li><a class="reference internal" href="#extend-the-template-unit-tests">Extend the template unit tests</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="functional_tests.html" title="Previous Chapter: Functional testing of LAVA source code"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Functional te...</span>
+    </a>
+  </li>
+  <li>
+    <a href="integrate-uboot.html" title="Next Chapter: U-Boot"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">U-Boot &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="adding-new-device-types">
+<span id="index-0"></span><span id="id1"></span><h1>Adding new device types<a class="headerlink" href="#adding-new-device-types" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This is the most complex part of LAVA and it can be a lot
+of work (sometimes several months) to integrate a completely new
+device into LAVA. V2 offers a different and wider range of support to
+V1 but some devices will need new support to be written within
+<code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>. <strong>It is not always possible to automate a new
+device</strong>, depending on how the device connects to LAVA, how the
+device is powered and whether the software on the device allows the
+device to be controlled remotely. However, do not be tempted into
+using this complexity as an excuse to fall into the trap of
+<a class="reference internal" href="simple-admin.html#simplistic-testing-problems"><span class="std std-ref">simplistic testing</span></a>.</p>
+</div>
+<p>Experience is the hardest and the most expensive teacher of all. This
+section is an attempt to gather a set of guidelines from the collective
+experience of a range of developers based on a wide range of devices
+and the attempts to integrate those devices into LAVA. <strong>Not all such
+integrations succeeded</strong> and more than one attempt resulted in broken
+hardware. Most labs will be asked to integrate prototype or
+pre-production hardware which always bring their own unique mix of
+unexpected errors, limitations and failure methods.</p>
+<p>The integration process is different for every new device. Therefore,
+this documentation can only provide hints about such devices, based on
+experience within the LAVA software and lab teams. <strong>Please</strong> talk to
+us <strong>before</strong> starting on the integration of a new device using the
+<a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">Mailing lists</span></a>. Include full details of the type of device, the
+bootloader specifications, hardware support and anything you have done
+so far to automate the device. Sometimes, the supplied bootloader
+<strong>must</strong> be modified to allow automation. Some devices need electrical
+modifications or specialized hardware to be automated.</p>
+<p>Integrating a new device type will involve some level of development
+work, the device type templates are more than configuration. Testing
+new device type templates requires setting up a developer workflow and
+running unit tests as well as running test jobs on a LAVA instance. If
+the new device type involves a new boot or deployment method, there
+will also need to be changes in the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> codebase. New
+elements of the test job submissions and device configuration may also
+need changes to the schema in <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>. Some new device types
+will be a lot easier than others - for example U-Boot tends to have a
+reasonably consistent interface across multiple devices, so changes for
+a new U-Boot device could be as little as setting variables after
+extending the <code class="docutils literal notranslate"><span class="pre">base-uboot.jinja2</span></code> template.</p>
+<p>The LAVA developers encourage new device type templates to be
+<a class="reference internal" href="development-intro.html#contribute-upstream"><span class="std std-ref">contributed upstream</span></a> as a <a class="reference internal" href="development-intro.html#community-contributions"><span class="std std-ref">community
+contribution</span></a> to LAVA.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="growing_your_lab.html#growing-your-lab"><span class="std std-ref">Growing your lab</span></a>, including <a class="reference internal" href="growing_your_lab.html#lab-scaling"><span class="std std-ref">How many devices is too many for one worker?</span></a>.
+Also <a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">Developing using device-type templates</span></a>,
+<a class="reference internal" href="developer-example.html#developing-new-classes"><span class="std std-ref">Developing new classes for LAVA V2</span></a> and
+<a class="reference internal" href="migrating-admin-example.html#migrating-known-device-example"><span class="std std-ref">Worked example of migrating a known device</span></a></p>
+</div>
+<div class="section" id="device-requirements">
+<span id="index-1"></span><span id="id2"></span><h2>Device Requirements<a class="headerlink" href="#device-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The LAVA software and lab teams have built up a set of guidelines
+relating to the integration of new device-types. The further a device
+deviates from one or more of these guidelines, the harder it will
+become to automate such a device. Always remember that the way that the
+device is supported <strong>must</strong> scale to large labs which already contain
+a range of other devices, each with their own issues. It is <strong>not</strong>
+acceptable to add a new device-type which is incompatible with devices
+which are already supported or which imposes restrictions on how many
+devices of any type can be used in any one lab.</p>
+<p>The guidelines only consider a limited number of possible problems with
+device integration. The guidelines are written using our experiences of
+a variety of poorly behaving devices over years of development of
+automation software like LAVA. Depending on local admins, some labs can
+cope with hardware which does not comply with all guidelines,
+particularly if the devices are not being used at scale. However, the
+more devices are deployed in any lab, the more it will be necessary for
+every device to fully comply or such labs will quickly deteriorate,
+generating unreliable results.</p>
+<p>These guidelines describe device behavior as a whole. This is a
+combination of the device hardware and the firmware. Some devices
+support replacing the firmware. Sometimes this can aid automation,
+sometimes is can cause more problems and complexity.</p>
+<p>Device integration issues are often invisible when testing with a
+single device attached to a single developer machine, so the single
+device implementation <strong>must</strong> be proven to be reliable and
+reproducible before starting to add more devices. For best results,
+<strong>only ever change one thing at a time</strong>.</p>
+<p>It is not possible to automate every piece of hardware, there are a
+number of critical limitations.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-admin.html#pipeline-device-requirements"><span class="std std-ref">Requirements for a LAVA device</span></a></p>
+</div>
+<div class="section" id="reproducibility">
+<span id="integration-reproducibility"></span><h3>Reproducibility<a class="headerlink" href="#reproducibility" title="Permalink to this headline">¶</a></h3>
+<p>Reproducibility is the ability to deploy exactly the same software to
+the same board(s) and running exactly the same tests many times in a
+row, getting exactly the same results each time.</p>
+<p>For automation to work, all device functions which need to be used in
+automation <strong>must</strong> always produce the same results on each device of a
+specific device type, irrespective of any previous operations on that
+device, given the same starting hardware configuration.</p>
+<p>There is no way to automate a device which behaves unpredictably.</p>
+<div class="section" id="example-one">
+<h4>Example One<a class="headerlink" href="#example-one" title="Permalink to this headline">¶</a></h4>
+<p>Some devices have a mode which boots one boot method on the first boot
+and then a different boot method on the second boot without allowing
+for failures or canceled boot operations. This alternating boot is
+<strong>not</strong> suitable for automation because it would require the automation
+to keep state and does not take account of test job failures and
+cancellations.</p>
+</div>
+<div class="section" id="example-two">
+<h4>Example Two<a class="headerlink" href="#example-two" title="Permalink to this headline">¶</a></h4>
+<p>A device which supports jumpers or DIP switches <strong>must</strong> respect those
+hardware settings no matter what software is deployed to the device,
+including when that software is buggy, broken or written to the wrong
+location. It <strong>must not</strong> be possible for test jobs to <em>brick</em> the
+device, that is to prevent the device from being able to start the next
+test job without admin intervention.</p>
+</div>
+</div>
+<div class="section" id="reliability">
+<span id="integration-reliability"></span><h3>Reliability<a class="headerlink" href="#reliability" title="Permalink to this headline">¶</a></h3>
+<p>Reliability is the ability to run a wide range of test jobs, stressing
+different parts of the overall deployment, with a variety of tests and
+<strong>always</strong> getting a <code class="docutils literal notranslate"><span class="pre">Complete</span></code> test job. There must be no
+<code class="docutils literal notranslate"><span class="pre">JobError</span></code> or <code class="docutils literal notranslate"><span class="pre">InfrastructureError</span></code> failures and there should be
+limited variability in the time taken to run the test jobs to avoid the
+need for excessive <a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a>.</p>
+<p>The same hardware configuration and infrastructure <strong>must</strong> always
+behave in precisely the same way. The same commands and operations to
+the device <strong>must</strong> always generate the same behavior.</p>
+<ul class="simple">
+<li>If a device does not always recognize a critical component, for
+example the network hardware, then that device cannot be automated.</li>
+<li>If a device drops the serial connection or resets the connection in
+some situations during image deployment, then the device is not
+sufficiently reliable to be integrated.</li>
+<li>If a device relies on USB, it is possible that errors in the device
+hardware or software can cause instability in the USB stack of the
+worker to which it is connected. (Unlike ethernet, USB is a direct
+metal to metal connection and cannot be electrically isolated.) This
+can potentially cause issues with unrelated devices on the same
+worker.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Many reliability issues can be symptoms of infrastructure
+problems but many devices can also exacerbate these failures by
+behaving in ways which do not fully comply with the standards and
+expectations of the infrastructure. It is <strong>essential</strong> that
+reliability issues are debugged during the process of scaling up the
+number of devices and complexity of your LAVA lab. Do <strong>not</strong> wait
+to debug reliability problems until after you have many devices.
+Quite how many devices counts as too many will vary massively
+according to the complexity of the requirements for each device.
+Sometimes, the only way to tackle reliability problems is to scale
+back, take devices offline or disconnect entire groups of devices
+and infrastructure. Debug your reliability issues <strong>before</strong> putting
+such devices into a production lab to minimize the risk of scheduled
+downtime.</p>
+</div>
+</div>
+<div class="section" id="scriptability">
+<span id="integration-scriptable"></span><h3>Scriptability<a class="headerlink" href="#scriptability" title="Permalink to this headline">¶</a></h3>
+<p>The device <strong>must</strong> support deployment of files and booting of the
+device without <strong>any</strong> need for a human to monitor or interact with the
+process. The need to press buttons is undesirable but can be managed in
+some cases by using relays. However, every extra layer of complexity
+reduces the overall reliability of the automation process and the need
+for buttons should be limited or eliminated wherever possible. If a
+device uses on LEDs to indicate the success of failure of operations,
+such LEDs <strong>must only be indicative</strong>. The device <strong>must</strong> support full
+control of that process using <strong>only</strong> commands and operations which do
+not rely on observation.</p>
+</div>
+<div class="section" id="scalability">
+<span id="integration-scalability"></span><h3>Scalability<a class="headerlink" href="#scalability" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="growing_your_lab.html#growing-your-lab"><span class="std std-ref">Growing your lab</span></a></p>
+</div>
+<p>All methods used to automate a device <strong>must</strong> have minimal footprint
+in terms of load on the workers, complexity of scripting support and
+infrastructure requirements. This is a complex area and can trivially
+impact on both reliability and reproducibility as well as making it
+much more difficult to debug problems which do arise. Admins must also
+consider the complexity of combining multiple different devices which
+each require multiple layers of support.</p>
+<p>Some devices may need:</p>
+<ul class="simple">
+<li>relays to work around buttons,</li>
+<li>specialized hardware to work around deployment limitations,</li>
+<li>complex scripting around power control,</li>
+<li>a need to use <a class="reference internal" href="glossary.html#term-lxc"><span class="xref std std-term">LXC</span></a> for automation.</li>
+</ul>
+<p>Any one of these burdens will make debugging issues on the worker and
+on the devices difficult. Any combination of these burdens make
+debugging many times more difficult than any one burden alone.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last"><strong>ALWAYS START SMALL</strong> and move forward in <strong>small
+steps</strong>. Remember that many of the deployment methods and tools used
+with some devices have been developed and tested only on the
+single-developer, single-device model. Once a single device is
+working, scale up <strong>slowly</strong>, make <strong>one change at a time</strong> then run
+dozens, preferably hundreds, of tests before stepping up in scale.
+It can make a significant difference even scaling up from one device
+to two, let alone to four or ten. Even the best behaved devices will
+need care to scale up to dozens of devices. LAVA can work with
+hundreds of devices but the only way to know how to deploy hundreds
+of <strong>your</strong> devices is to build slowly from one to two and then
+four, ten and beyond. To use thousands of devices, it is usually
+best to consider a <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a> which pulls results from several
+<a class="reference internal" href="growing_your_lab.html#micro-instances"><span class="std std-ref">Micro-instances</span></a>.</p>
+</div>
+<p>Every LAVA lab is different. Planning is essential. When there is any
+expectation that the lab will grow to support a lot of devices, take
+care at the earliest initial stages to plan for the infrastructure that
+can cope with the expected scale (and then add a bit again). It can be
+very expensive (in time and money) to replace the initial
+infrastructure like <abbr title="Uninterruptible Power Supply">UPS</abbr> or
+network switches or <a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a>.</p>
+</div>
+<div class="section" id="power">
+<span id="integration-power"></span><span id="index-2"></span><h3>Power<a class="headerlink" href="#power" title="Permalink to this headline">¶</a></h3>
+<p>Devices <strong>MUST</strong> support automated resets either by the removal of all
+power supplied to the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> or a full reboot or other reset which
+clears all previous state of the DUT.</p>
+<p><strong>Every</strong> boot <strong>must</strong> reliably start, without interaction, directly
+from the first application of power without the limitation of needing
+to press buttons or requiring other interaction. Relays and other
+arrangements can be used at the cost of increasing the overall
+complexity of the solution, so should be avoided wherever possible.</p>
+<p>Devices which have internal batteries become difficult to reliably
+automate, unless the battery can be permanently removed. Forced reboots
+become impossible without electrical modification of the device to
+temporarily take the battery out of circuit. This means that it is much
+easier to cause the device to go offline because of a broken kernel
+build or broken image.</p>
+<p>Battery charging can be an issue - devices may not behave normally when
+held in <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> mode or with a broken kernel build or image
+deployed to the system. This can cause the device to fail to keep
+charge in the battery or fail to recharge the battery, despite having
+power available.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last"><strong>Serial power leaks</strong>
+some devices are capable of drawing power over the serial line used
+to control the device, despite the actual power supply being
+disconnected. Sometimes this requires a period of time to discharge
+capacitors on the board (fixable by adding a <code class="docutils literal notranslate"><span class="pre">sleep</span></code> in the
+<a class="reference internal" href="dispatcher-testing.html#power-commands"><span class="std std-ref">power_off_command</span></a>). Sometimes this power
+leak can cause the device to <code class="docutils literal notranslate"><span class="pre">latch</span></code> into a particular bootloader
+mode or other state which prevents the automation from proceeding.</p>
+</div>
+</div>
+<div class="section" id="reset">
+<span id="integration-reset"></span><span id="index-3"></span><h3>Reset<a class="headerlink" href="#reset" title="Permalink to this headline">¶</a></h3>
+<p>For a lot of devices, simply cycling power is sufficient for a full
+reset. If the device supports reset by other means, for example when a
+serial connection is made, then these resets <strong>must</strong> completely reset
+the device so as to clear all buffers from previous test runs or
+deployments, <strong>including</strong> when such test runs or deployments failed in
+unexpected ways.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is recommended for all devices that admins disable ability
+of the device to automatically boot anything, but rather simply drop
+to the bootloader prompt.</p>
+</div>
+</div>
+<div class="section" id="networking">
+<span id="integration-networking"></span><span id="index-4"></span><h3>Networking<a class="headerlink" href="#networking" title="Permalink to this headline">¶</a></h3>
+<p><strong>Ethernet</strong> - all devices using ethernet interfaces in LAVA <strong>must</strong>
+have a unique MAC address on each interface. The MAC address <strong>must</strong>
+be persistent across reboots. No assumptions should be made about fixed
+IP addresses, address ranges or pre-defined routes. If more than one
+interface is available, the boot process <strong>must</strong> be configurable to
+always use the same interface every time the device is booted.</p>
+<p><strong>WiFi</strong> - is not currently supported as a method of booting devices.</p>
+</div>
+<div class="section" id="serial-console">
+<span id="integration-serial"></span><span id="index-5"></span><h3>Serial console<a class="headerlink" href="#serial-console" title="Permalink to this headline">¶</a></h3>
+<p>LAVA expects to automate devices by interacting with the serial port
+immediately after power is applied to the device. The bootloader
+<strong>must</strong> interact with the serial port. If a serial port is not
+available on the device, suitable additional hardware <strong>must</strong> be
+provided before integration can begin. All messages about the boot
+process must be visible using the serial port and the serial port
+should remain usable for the duration of all test jobs on the device.</p>
+</div>
+</div>
+<div class="section" id="integration-process">
+<span id="index-6"></span><span id="id3"></span><h2>Integration process<a class="headerlink" href="#integration-process" title="Permalink to this headline">¶</a></h2>
+<p>To add support for a new <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>, a certain amount of
+development and testing <strong>will</strong> be required.</p>
+<p>For some new device types, only a new <a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">device type jinja2 template</span></a> will be required. Every new
+template requires testing and a certain amount of debugging. Device
+type templates need to be considered as code, not only configuration.
+Some familiarity with how to <a class="reference internal" href="simple-admin.html#admin-triage"><span class="std std-ref">debug a LAVA instance</span></a> will be necessary.</p>
+<p>For other device types, <a class="reference internal" href="dispatcher-testing.html#adding-new-classes"><span class="std std-ref">new dispatcher Action classes</span></a> and new or modified <a class="reference internal" href="dispatcher-design.html#using-strategy-classes"><span class="std std-ref">strategy classes</span></a> will be needed. This typically involves a lot
+of development time - make sure that you <a class="reference internal" href="development-intro.html#contribute-upstream"><span class="std std-ref">Contributing Upstream</span></a> so
+that your local changes do not break when you next upgrade your LAVA
+instance(s).</p>
+<p>In addition, every new device type will need to be tested on a local
+LAVA instance, so an amount of LAVA administration work will be
+necessary.</p>
+<p>It is <strong>strongly</strong> recommended that everyone who starts work to
+integrate a new device type into LAVA is already familiar with
+administering their own LAVA instance and has submitted dozens of LAVA
+test jobs on at least two different device types already known to work
+in LAVA V2. In most cases, a development instance will be needed as
+well, so some familiarity with installing and upgrading a LAVA instance
+is also recommended.</p>
+<p>This means that developers adding new device types should already be
+familiar with:</p>
+<ul class="simple">
+<li><a class="reference internal" href="contribution.html#development-pre-requisites"><span class="std std-ref">Pre-requisites to start with development</span></a></li>
+<li><a class="reference internal" href="pipeline-admin.html#device-type-templates"><span class="std std-ref">Device type templates</span></a></li>
+<li><a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">Developing using device-type templates</span></a></li>
+<li><a class="reference internal" href="dispatcher-testing.html#testing-pipeline-code"><span class="std std-ref">Testing the design</span></a></li>
+<li><a class="reference internal" href="simple-admin.html#admin-triage"><span class="std std-ref">Administrator triage</span></a></li>
+<li><a class="reference internal" href="simple-admin.html#admin-debug-information"><span class="std std-ref">Where to find debug information</span></a></li>
+<li><a class="reference internal" href="pipeline-admin.html#create-device-dictionary"><span class="std std-ref">Creating a device dictionary for the device</span></a></li>
+<li><a class="reference internal" href="developing-tests.html#test-developer"><span class="std std-ref">Writing Tests</span></a></li>
+<li><a class="reference internal" href="installing_on_debian.html#debian-installation"><span class="std std-ref">Installing on a Debian system</span></a></li>
+<li><a class="reference internal" href="pipeline-server.html#setting-up-pipeline-instance"><span class="std std-ref">Setting up a LAVA instance</span></a></li>
+<li><a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">Gold standard test jobs</span></a></li>
+<li><a class="reference internal" href="debugging.html#debugging-test-failures"><span class="std std-ref">Debugging LAVA test failures</span></a></li>
+<li><a class="reference internal" href="pipeline-debug.html#debugging-v2"><span class="std std-ref">Administrator debugging</span></a></li>
+<li><a class="reference internal" href="development.html#unit-tests"><span class="std std-ref">Unit-tests</span></a></li>
+<li><a class="reference internal" href="debugging.html#hidden-assumptions"><span class="std std-ref">Hidden assumptions in the manual operations</span></a></li>
+</ul>
+<p>In addition, some device types will require the developer to also be
+familiar with:</p>
+<ul class="simple">
+<li><a class="reference internal" href="dispatcher-testing.html#adding-new-classes"><span class="std std-ref">Adding new classes</span></a></li>
+<li><a class="reference internal" href="dispatcher-design.html#using-strategy-classes"><span class="std std-ref">Using strategy classes</span></a></li>
+<li><a class="reference internal" href="development-intro.html#contribute-upstream"><span class="std std-ref">Contributing Upstream</span></a> - maintaining new dispatcher classes
+without upstream support is <strong>not</strong> recommended. LAVA development
+moves relatively quickly.</li>
+<li><a class="reference internal" href="pipeline-schema.html#pipeline-schema"><span class="std std-ref">LAVA schema</span></a> - if your new device type needs changes to the
+test job submission schema.</li>
+<li><a class="reference internal" href="deploy-lxc.html#deploy-using-lxc"><span class="std std-ref">Deploying test images using LXC</span></a></li>
+<li><a class="reference internal" href="deploy-lxc.html#lava-lxc-protocol-android"><span class="std std-ref">Using the LXC protocol to support Android</span></a></li>
+<li><a class="reference internal" href="debugging.html#debugging-multinode"><span class="std std-ref">Debugging MultiNode tests</span></a></li>
+</ul>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Before going any further, <strong>please</strong> talk to us using the
+<a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">Mailing lists</span></a>. Do <strong>not</strong> rush into integration. It is
+tempting to ask a lot of questions on <a class="reference internal" href="support.html#support-irc"><span class="std std-ref">IRC</span></a> but other
+conversations will overlap and pasting logs can become a burden. Use
+the mailing list and attach all the relevant data.</p>
+</div>
+</div>
+<div class="section" id="find-a-similar-existing-device-type">
+<span id="integration-similarity"></span><h2>Find a similar existing device type<a class="headerlink" href="#find-a-similar-existing-device-type" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of places to check for similar types of device which
+are already supported in LAVA V2.</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://master.lavasoftware.org/scheduler/">https://master.lavasoftware.org/scheduler/</a></li>
+<li><a class="reference external" href="https://staging.validation.linaro.org/scheduler/">https://staging.validation.linaro.org/scheduler/</a></li>
+<li><a class="reference external" href="https://validation.linaro.org/scheduler/">https://validation.linaro.org/scheduler/</a></li>
+<li><a class="reference external" href="https://lng.validation.linaro.org/scheduler/">https://lng.validation.linaro.org/scheduler/</a></li>
+<li><a class="reference external" href="https://git.lavasoftware.org/lava/lava/tree/master/lava_scheduler_app/tests/device-types">https://git.lavasoftware.org/lava/lava/tree/master/lava_scheduler_app/tests/device-types</a></li>
+</ol>
+<p>Check for:</p>
+<ul class="simple">
+<li>similar bootloader</li>
+<li>similar deployment type</li>
+<li>similar deployment or boot process</li>
+<li>similar sequence of boot steps</li>
+</ul>
+<p>If you do not find something similar, we strongly recommend that you
+<strong>stop here</strong> and <a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">talk to us</span></a> before doing
+anything else. Be clear about exactly what kind of device you are
+trying to integrate. Include details of exactly how the device
+currently boots and exactly how new files are deployed to the device.
+Do not resort to <a class="reference internal" href="simple-admin.html#simplistic-testing-problems"><span class="std std-ref">simplistic testing</span></a>.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>Do not be tempted to re-use the existing support for
+something which is not actually using that support. Just because
+your custom system looks like U-Boot or fastboot does <strong>not</strong>
+mean you should mangle the existing support to fit. If you need
+something which is similar but not the same, write a new set of
+classes and templates. By all means, use that existing code as a
+starting point.</p>
+<p class="last">Avoid sharing method-specific syntax with a similar but different
+method. U-Boot or fastboot parameters and options remain specific to
+U-Boot or fastboot respectively. While this might look like a quick
+and easy way to add support, it is very likely that future changes
+to the support you’re abusing might break your tests without
+warning.</p>
+</div>
+</div>
+<div class="section" id="extend-from-an-existing-device-type-template">
+<span id="integration-extend-template"></span><h2>Extend from an existing device type template<a class="headerlink" href="#extend-from-an-existing-device-type-template" title="Permalink to this headline">¶</a></h2>
+<p>All new device type templates need to <code class="docutils literal notranslate"><span class="pre">extend</span> <span class="pre">'base.jinja2'</span></code> but
+there are also other base templates which simplify the process for
+certain bootloaders. For example, all new U-Boot device type templates
+should <code class="docutils literal notranslate"><span class="pre">extend</span> <span class="pre">'base-uboot.jinja2</span></code>. Many new fastboot device type
+templates can <code class="docutils literal notranslate"><span class="pre">extend</span> <span class="pre">'base-fastboot.jinja2</span></code>. Avoid directly
+extending any of the templates which do not have the <code class="docutils literal notranslate"><span class="pre">base</span></code> prefix -
+instead copy the existing template for your new device type. When this
+template is <a class="reference internal" href="development-intro.html#contribute-upstream"><span class="std std-ref">contributed upstream</span></a>, a new
+<code class="docutils literal notranslate"><span class="pre">base</span></code> template can be considered as part of the review process.</p>
+</div>
+<div class="section" id="extend-the-template-unit-tests">
+<span id="integration-unit-test"></span><h2>Extend the template unit tests<a class="headerlink" href="#extend-the-template-unit-tests" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#testing-new-devicetype-templates"><span class="std std-ref">Testing new device-type templates</span></a>,
+<a class="reference internal" href="pipeline-debug.html#debugging-configuration"><span class="std std-ref">debugging configuration files</span></a>
+and setting character delays due to <a class="reference internal" href="debugging.html#input-speeds"><span class="std std-ref">Differences in input speeds</span></a>.</p>
+</div>
+<p>All device type template files in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types</span></code> will be checked for simple
+YAML validity by the <code class="docutils literal notranslate"><span class="pre">test_all_templates</span></code> unit test. However, a
+dedicated unit test is recommended for all but the simplest of new
+device type templates. At the very least, having a unit test for your
+new device type template will assist in debugging why the test job does
+not run to completion. The full device configuration can be output as
+part of running the unit test by changing the <code class="docutils literal notranslate"><span class="pre">debug</span></code> value to
+<code class="docutils literal notranslate"><span class="pre">True</span></code> at the top of the <code class="docutils literal notranslate"><span class="pre">TestTemplates</span></code> class in
+<code class="docutils literal notranslate"><span class="pre">test_templates.py</span></code>.</p>
+<p>Add your new device-type template to
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types</span></code>. Edit
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/test_templates.py</span></code> and add a new unit test
+for your device-type based on one of the existing test functions.
+Create a dummy device dictionary as a <code class="docutils literal notranslate"><span class="pre">data</span></code> string and ensure that
+the combination of the template and the dictionary creates a valid
+device. This can be as simple as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="k">def</span> <span class="nf">test_pixel_template</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">validate_data</span><span class="p">(</span><span class="s1">&#39;staging-pixel-01&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;{</span><span class="si">% e</span><span class="s2">xtends &#39;pixel.jinja2&#39; %}</span>
+<span class="s2">{</span><span class="si">% s</span><span class="s2">et adb_serial_number = &#39;FDAC1231DAD&#39; %}</span>
+<span class="s2">{</span><span class="si">% s</span><span class="s2">et fastboot_serial_number = &#39;FDAC1231DAD&#39; %}</span>
+<span class="s2">{</span><span class="si">% s</span><span class="s2">et device_info = [{&#39;board_id&#39;: &#39;FDAC1231DAD&#39;}] %}</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In many cases, some of the default values in the base template will
+need to be altered for your new device-type. For example:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">boot_character_delay</span> <span class="o">=</span> <span class="m">150</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>If the value may also need to be extended for some devices of this
+device type, you should provide the new value as a default in the
+template so that a device dictionary can set an override:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">baud_rate</span> <span class="o">=</span> <span class="nv">baud_rate</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="m">115200</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When setting updated values for defaults in the base
+template, ensure that the line setting the new value is <strong>above</strong>
+the start of the important <code class="docutils literal notranslate"><span class="pre">body</span></code> block which will contain the
+output of that value.</p>
+<div class="last highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">boot_character_delay</span> <span class="o">=</span> <span class="m">150</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">console_device</span> <span class="o">=</span> <span class="nv">console_device</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;ttyAMA0&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">baud_rate</span> <span class="o">=</span> <span class="nv">baud_rate</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="m">115200</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_nfsroot_args</span> <span class="o">=</span> <span class="nv">nfsroot_args</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">base_nfsroot_args</span><span class="o">)</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">kernel_args</span> <span class="o">=</span> <span class="nv">kernel_args</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;acpi=force&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<p>Every time you make a change to the new template in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types</span></code>, re-run the specific unit
+test for your new device type. For example, a new unit test function
+defined as <code class="docutils literal notranslate"><span class="pre">test_foobar_template</span></code> can be run without running the rest
+of the unit tests:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -vcf lava_scheduler_app.tests.test_templates.TestTemplates.test_foobar_template
+</pre></div>
+</div>
+<p>Remember that device type templates are not just configuration files -
+the templates are processed as source code at runtime and can use
+various types of logic to substitute the correct variables and omit
+other variables. <strong>Always</strong> make your changes in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types</span></code> and <strong>always</strong> run the unit
+test to ensure that changes to the template continue to produce a valid
+device configuration after each change.</p>
+<p>Only when the unit test passes should the new device type template be
+copied to <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code>. If the
+scheduler tries to assign a test job to a device using this template, a
+check will be made to ensure that the output of the template and the
+device dictionary is valid. If that check fails, the test job will not
+start and the failure will be logged:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[WARNING] [lava-master] [9] Refusing to reserve for broken V2 device intel-smecher
+</pre></div>
+</div>
+<p>This message indicates that test job ID <code class="docutils literal notranslate"><span class="pre">9</span></code> will never start to run
+until the device dictionary and the device type template for the device
+<code class="docutils literal notranslate"><span class="pre">intel-smecher</span></code> are fixed so that the output is valid. It is common
+for the rendering of new device type templates to cause subtle YAML
+syntax errors. It is also common for the output to be valid YAML but
+not valid device configuration. The unit test <strong>must</strong> check for a
+valid device configuration, not simply valid YAML. In addition,
+whenever it is imperative that a certain value is overridden in the
+device type template compared to the base template, the unit test
+<strong>must</strong> check that this value has been correctly set in the generated
+pipeline. Check the other unit tests in the <code class="docutils literal notranslate"><span class="pre">test_*_templates.py</span></code>
+files to see how this is done. e.g. for QEMU from
+<code class="docutils literal notranslate"><span class="pre">test_qemu_templates.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="k">def</span> <span class="nf">test_qemu_installer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+       <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{</span><span class="si">% e</span><span class="s2">xtends &#39;qemu.jinja2&#39; %}</span>
+<span class="s2">{</span><span class="si">% s</span><span class="s2">et mac_addr = &#39;DE:AD:BE:EF:28:01&#39; %}</span>
+<span class="s2">{</span><span class="si">% s</span><span class="s2">et memory = 512 %}&quot;&quot;&quot;</span>
+       <span class="n">job_ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arch&#39;</span><span class="p">:</span> <span class="s1">&#39;amd64&#39;</span><span class="p">}</span>
+       <span class="n">template_dict</span> <span class="o">=</span> <span class="n">prepare_jinja_template</span><span class="p">(</span><span class="s1">&#39;staging-qemu-01&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">job_ctx</span><span class="o">=</span><span class="n">job_ctx</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+           <span class="s1">&#39;c&#39;</span><span class="p">,</span>
+           <span class="n">template_dict</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">][</span><span class="s1">&#39;boot&#39;</span><span class="p">][</span><span class="s1">&#39;methods&#39;</span><span class="p">][</span><span class="s1">&#39;qemu&#39;</span><span class="p">][</span><span class="s1">&#39;parameters&#39;</span><span class="p">][</span><span class="s1">&#39;boot_options&#39;</span><span class="p">][</span><span class="s1">&#39;boot_order&#39;</span><span class="p">]</span>
+       <span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This section only covers the unit tests in the
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app</span></code> directories in the LAVA codebase. If your
+device integration process requires changes in the
+<code class="docutils literal notranslate"><span class="pre">lava_dispatcher</span></code> directory, a set of unit tests will also be
+required there to ensure that the new code operates correctly.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/device-integration.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:04:11 GMT -->
+</html>

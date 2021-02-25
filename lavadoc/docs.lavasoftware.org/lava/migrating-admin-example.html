@@ -1,0 +1,954 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/migrating-admin-example.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Worked example of migrating a known device &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Other Topics" href="other.html" />
+    <link rel="prev" title="Test Writer use cases" href="pipeline-writer.html" />
+    <link rel="canonical" href="migrating-admin-example.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Worked example of migrating a known device</a><ul>
+<li><a class="reference internal" href="#writing-a-device-configuration-in-yaml">Writing a device configuration in YAML</a><ul>
+<li><a class="reference internal" href="#migrating-a-mustang">Migrating a mustang</a><ul>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#actions">Actions</a></li>
+<li><a class="reference internal" href="#timeouts">Timeouts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#complete-device-yaml">Complete device YAML</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-a-job-submission-in-yaml">Writing a job submission in YAML</a><ul>
+<li><a class="reference internal" href="#migrating-a-job-for-the-mustang">Migrating a job for the mustang</a><ul>
+<li><a class="reference internal" href="#identifying-the-elements-of-the-job">Identifying the elements of the job</a><ul>
+<li><a class="reference internal" href="#deploy">Deploy</a></li>
+<li><a class="reference internal" href="#boot">Boot</a></li>
+<li><a class="reference internal" href="#test">Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#complete-yaml-submission">Complete YAML submission</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-a-device-type-template">Writing a device type template</a><ul>
+<li><a class="reference internal" href="#starting-a-new-device-type-template">Starting a new device type template</a><ul>
+<li><a class="reference internal" href="#completed-mustang-template">Completed mustang template</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-a-device-dictionary-for-the-device">Creating a device dictionary for the device</a></li>
+<li><a class="reference internal" href="#testing-the-template-and-dictionary">Testing the template and dictionary</a><ul>
+<li><a class="reference internal" href="#adapting-the-base-commands-to-the-device-type">Adapting the base commands to the device type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#completing-the-migration">Completing the migration</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-writer.html" title="Previous Chapter: Test Writer use cases"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Test Writer use cases</span>
+    </a>
+  </li>
+  <li>
+    <a href="other.html" title="Next Chapter: Other Topics"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Other Topics &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="worked-example-of-migrating-a-known-device">
+<span id="migrating-known-device-example"></span><span id="index-0"></span><h1>Worked example of migrating a known device<a class="headerlink" href="#worked-example-of-migrating-a-known-device" title="Permalink to this headline">¶</a></h1>
+<p>This guide makes the following assumptions:</p>
+<ol class="arabic simple">
+<li>You have access to a working LAVA instance with pipeline support.</li>
+<li>You have at least one working device of a known device type</li>
+<li>You have at least one working JSON job submission for that device.</li>
+<li>You are migrating to a deployment type and boot type which is
+already supported by the pipeline code.</li>
+<li>You have read access to the current configuration of that device,
+including PDU port numbers and serial port access.</li>
+</ol>
+<p>Things will go more easily if you also have:</p>
+<ol class="arabic simple">
+<li>admin access to the django configuration of the LAVA instance</li>
+<li>root command line access to the dispatcher currently using the device.</li>
+<li>a browser tab open at the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=">Online YAML parser</a></li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">some parts of the refactoring are still in development, so not all of
+the support may be available. However, as YAML supports comments, this data
+is not lost.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer.html#writing-new-job-yaml"><span class="std std-ref">YAML syntax errors</span></a></p>
+</div>
+<p>The objective is to migrate the configuration of the existing device such that
+exactly the same commands are sent to the device as in the current dispatcher
+jobs, with the benefit of pipeline validation, results and metadata.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The specific example follows a real conversion but the hardware
+concerned has since changed to a different deployment method. The examples
+here worked when the example was written but will not work on current
+deployments of the hardware concerned.</p>
+</div>
+<div class="section" id="writing-a-device-configuration-in-yaml">
+<span id="writing-device-config-yaml"></span><h2>Writing a device configuration in YAML<a class="headerlink" href="#writing-a-device-configuration-in-yaml" title="Permalink to this headline">¶</a></h2>
+<p>The current dispatcher configuration is in two parts and these will typically
+be respected in the migration.</p>
+<p>The <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> configuration will become a device type template.</p>
+<p>The device configuration will become a device dictionary.</p>
+<p>However, initially, we need a single YAML file which contains the data that the
+pipeline will send to the dispatcher - a combination of the device type and
+device information. You can see examples of such content when validating
+pipeline jobs. (This is example and has been edited slightly to take out some
+of the noise.):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-dispatch --target devices/bbb-01.yaml bbb-uboot-ramdisk.yaml --validate --output-dir=/tmp/test/
+</pre></div>
+</div>
+<p>Don’t worry about running this example yourself at this stage. The files
+themselves may be useful for reference. The device YAML file comes from the
+lava-dispatcher unit tests:</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/devices/bbb-01.yaml">https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/devices/bbb-01.yaml</a></p>
+<p>The job submission YAML used in the example comes from the lava-team
+refactoring repository of functional tests:</p>
+<p><a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/tree/bbb-uboot-ramdisk.yaml">https://git.linaro.org/lava-team/refactoring.git/tree/bbb-uboot-ramdisk.yaml</a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">device</span><span class="p">:</span> <span class="kt">!!python/object/new:lava_dispatcher.device.NewDevice</span>
+ <span class="nt">dictitems</span><span class="p">:</span>
+   <span class="nt">actions</span><span class="p">:</span>
+     <span class="nt">boot</span><span class="p">:</span>
+       <span class="nt">prompts</span><span class="p">:</span>
+         <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+         <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+       <span class="nt">connections</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">serial</span><span class="p">:</span> <span class="nv">null</span><span class="p p-Indicator">,</span><span class="nt"> ssh</span><span class="p">:</span> <span class="nv">null</span><span class="p p-Indicator">}</span>
+       <span class="nt">methods</span><span class="p">:</span>
+         <span class="nt">u-boot</span><span class="p">:</span>
+           <span class="nt">parameters</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">boot_message</span><span class="p">:</span> <span class="nv">Booting Linux</span><span class="p p-Indicator">,</span><span class="nt"> bootloader_prompt</span><span class="p">:</span> <span class="nv">U-Boot</span><span class="p p-Indicator">}</span>
+           <span class="nt">ramdisk</span><span class="p">:</span>
+             <span class="nt">commands</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">setenv autoload no</span><span class="p p-Indicator">,</span> <span class="nv">setenv initrd_high &#39;0xffffffff&#39;</span><span class="p p-Indicator">,</span> <span class="nv">setenv</span>
+                 <span class="nv">fdt_high &#39;0xffffffff&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">kernel_addr_r</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">{KERNEL_ADDR}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span>
+               <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">initrd_addr_r</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">{RAMDISK_ADDR}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">fdt_addr_r</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">{DTB_ADDR}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span>
+               <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">loadkernel</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">tftp</span><span class="nv"> </span><span class="s">${kernel_addr_r}</span><span class="nv"> </span><span class="s">{KERNEL}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">loadinitrd</span>
+                 <span class="se">&#39;&#39;</span><span class="s">tftp</span><span class="nv"> </span><span class="s">${initrd_addr_r}</span><span class="nv"> </span><span class="s">{RAMDISK};</span><span class="nv"> </span><span class="s">setenv</span><span class="nv"> </span><span class="s">initrd_size</span><span class="nv"> </span><span class="s">${filesize}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span>
+               <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">loadfdt</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">tftp</span><span class="nv"> </span><span class="s">${fdt_addr_r}</span><span class="nv"> </span><span class="s">{DTB}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">bootargs</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">console=ttyO0,115200n8</span>
+                 <span class="s">root=/dev/ram0</span><span class="nv"> </span><span class="s">ip=dhcp</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">bootcmd</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">dhcp;</span><span class="nv"> </span><span class="s">setenv</span><span class="nv"> </span><span class="s">serverip</span>
+                 <span class="s">{SERVER_IP};</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">loadkernel;</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">loadinitrd;</span><span class="nv"> </span><span class="s">run</span><span class="nv"> </span><span class="s">loadfdt;</span><span class="nv"> </span><span class="s">{BOOTX}</span><span class="se">&#39;&#39;</span><span class="s">&#39;</span><span class="p p-Indicator">,</span>
+               <span class="nv">boot</span><span class="p p-Indicator">]</span>
+     <span class="nt">deploy</span><span class="p">:</span>
+       <span class="nt">methods</span><span class="p">:</span>
+         <span class="nt">tftp</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+         <span class="nt">usb</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+   <span class="nt">commands</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">connect</span><span class="p">:</span> <span class="nv">telnet localhost 6000</span><span class="p p-Indicator">}</span>
+   <span class="nt">hostname</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bbb-01</span>
+   <span class="nt">parameters</span><span class="p">:</span>
+     <span class="nt">bootm</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">dtb</span><span class="p">:</span> <span class="s">&#39;0x815f0000&#39;</span><span class="p p-Indicator">,</span><span class="nt"> kernel</span><span class="p">:</span> <span class="s">&#39;0x80200000&#39;</span><span class="p p-Indicator">,</span><span class="nt"> ramdisk</span><span class="p">:</span> <span class="s">&#39;0x81600000&#39;</span><span class="p p-Indicator">}</span>
+     <span class="nt">bootz</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">dtb</span><span class="p">:</span> <span class="s">&#39;0x81f00000&#39;</span><span class="p p-Indicator">,</span><span class="nt"> kernel</span><span class="p">:</span> <span class="s">&#39;0x81000000&#39;</span><span class="p p-Indicator">,</span><span class="nt"> ramdisk</span><span class="p">:</span> <span class="s">&#39;0x82000000&#39;</span><span class="p p-Indicator">}</span>
+   <span class="nt">power_state</span><span class="p">:</span> <span class="s">&#39;off&#39;</span>
+   <span class="nt">timeouts</span><span class="p">:</span>
+     <span class="nt">apply-overlay-image</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">seconds</span><span class="p">:</span> <span class="nv">120</span><span class="p p-Indicator">}</span>
+     <span class="nt">lava-test-shell</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">seconds</span><span class="p">:</span> <span class="nv">30</span><span class="p p-Indicator">}</span>
+     <span class="nt">power_off</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">seconds</span><span class="p">:</span> <span class="nv">5</span><span class="p p-Indicator">}</span>
+     <span class="nt">umount-retry</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">seconds</span><span class="p">:</span> <span class="nv">45</span><span class="p p-Indicator">}</span>
+ <span class="nt">state</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="nv">bbb-01</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>This snippet includes the connection command (<code class="docutils literal notranslate"><span class="pre">telnet</span> <span class="pre">localhost</span> <span class="pre">6000</span></code>) from
+the device configuration and the ramdisk uboot parameters from the device type
+configuration - note that as this is the validation output, no job files have
+been downloaded, so the substitution placeholders remain, <code class="docutils literal notranslate"><span class="pre">{DTB}</span></code>,
+<code class="docutils literal notranslate"><span class="pre">{SERVER_IP}</span></code>, <code class="docutils literal notranslate"><span class="pre">{KERNEL}</span></code> etc. - this is correct and will help with the
+next steps. What isn’t so helpful at the moment is the layout of this YAML
+dump.</p>
+<div class="section" id="migrating-a-mustang">
+<span id="migrating-mustang"></span><h3>Migrating a mustang<a class="headerlink" href="#migrating-a-mustang" title="Permalink to this headline">¶</a></h3>
+<p>Existing configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">device_type</span> <span class="o">=</span> <span class="n">mustang</span>
+<span class="n">hostname</span> <span class="o">=</span> <span class="n">staging</span><span class="o">-</span><span class="n">mustang01</span>
+<span class="n">hard_reset_command</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pduclient</span> <span class="o">--</span><span class="n">daemon</span> <span class="n">services</span> <span class="o">--</span><span class="n">hostname</span> <span class="n">pdu15</span> <span class="o">--</span><span class="n">command</span> <span class="n">reboot</span> <span class="o">--</span><span class="n">port</span> <span class="mi">05</span>
+<span class="n">power_off_cmd</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">pduclient</span> <span class="o">--</span><span class="n">daemon</span> <span class="n">services</span> <span class="o">--</span><span class="n">hostname</span> <span class="n">pdu15</span> <span class="o">--</span><span class="n">command</span> <span class="n">off</span> <span class="o">--</span><span class="n">port</span> <span class="mi">05</span>
+<span class="n">connection_command</span> <span class="o">=</span> <span class="n">telnet</span> <span class="n">serial4</span> <span class="mi">7012</span>
+<span class="n">reset_port_command</span> <span class="o">=</span> <span class="n">flock</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lock</span><span class="o">/</span><span class="n">serial1</span><span class="o">.</span><span class="n">lock</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lab</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">reset</span><span class="o">-</span><span class="n">serial5000</span> <span class="n">serial4</span> <span class="mi">12</span>
+<span class="n">image_boot_msg_timeout</span> <span class="o">=</span> <span class="mi">240</span>
+</pre></div>
+</div>
+<p>Start with a new file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># hostname is irrelevant in the refactoring, the dispatcher uses what it is given.</span>
+<span class="nt">commands</span><span class="p">:</span>
+  <span class="nt">connect</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">telnet serial4 7012</span>
+  <span class="nt">hard_reset</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu15 --command reboot --port 05</span>
+  <span class="nt">power_off</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu15 --command off --port 05</span>
+  <span class="nt">power_on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu15 --command on --port 05</span>
+  <span class="c1"># power_on is new in the refactoring.</span>
+  <span class="c1"># reset_port_command not yet ported:</span>
+  <span class="c1"># reset_port: flock /var/lock/serial1.lock /usr/local/lab-scripts/reset-serial5000 serial4 12</span>
+  <span class="c1"># timeouts are handled later in the file.</span>
+</pre></div>
+</div>
+<p>So far, so good. Now add the device type configuration blocks. This is the
+existing configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client_type</span> <span class="o">=</span> <span class="n">bootloader</span>
+
+<span class="n">bootloader_prompt</span> <span class="o">=</span> <span class="n">Mustang</span>
+<span class="n">uimage_only</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">boot_cmd_timeout</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">text_offset</span> <span class="o">=</span> <span class="mh">0x80000</span>
+
+<span class="n">u_load_addrs</span> <span class="o">=</span>
+   <span class="mh">0x4002000000</span>
+   <span class="mh">0x4004000000</span>
+   <span class="mh">0x4003000000</span>
+
+<span class="n">z_load_addrs</span> <span class="o">=</span>
+   <span class="mh">0x4002000000</span>
+   <span class="mh">0x4004000000</span>
+   <span class="mh">0x4003000000</span>
+
+<span class="n">boot_cmds_nfs</span> <span class="o">=</span>
+   <span class="n">setenv</span> <span class="n">autoload</span> <span class="n">no</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">kernel_addr_r</span> <span class="s2">&quot;&#39;</span><span class="si">{KERNEL_ADDR}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">initrd_addr_r</span> <span class="s2">&quot;&#39;</span><span class="si">{RAMDISK_ADDR}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">fdt_addr_r</span> <span class="s2">&quot;&#39;</span><span class="si">{DTB_ADDR}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">loadkernel</span> <span class="s2">&quot;&#39;tftp $</span><span class="si">{kernel_addr_r}</span><span class="s2"> </span><span class="si">{KERNEL}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">loadinitrd</span> <span class="s2">&quot;&#39;tftp $</span><span class="si">{initrd_addr_r}</span><span class="s2"> </span><span class="si">{RAMDISK}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">loadfdt</span> <span class="s2">&quot;&#39;tftp $</span><span class="si">{fdt_addr_r}</span><span class="s2"> </span><span class="si">{DTB}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">nfsargs</span> <span class="s2">&quot;&#39;setenv bootargs root=/dev/nfs rw nfsroot=</span><span class="si">{SERVER_IP}</span><span class="s2">:</span><span class="si">{NFSROOTFS}</span><span class="s2">,tcp,hard,intr panic=1 console=ttyS0,115200 earlyprintk=uart8250-32bit,0x1c020000 debug ip=dhcp&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">bootcmd</span> <span class="s2">&quot;&#39;dhcp; setenv serverip </span><span class="si">{SERVER_IP}</span><span class="s2">; run loadkernel; run loadinitrd; run loadfdt; run nfsargs; </span><span class="si">{BOOTX}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">boot</span>
+
+<span class="n">boot_cmds_ramdisk</span> <span class="o">=</span>
+   <span class="n">setenv</span> <span class="n">autoload</span> <span class="n">no</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">kernel_addr_r</span> <span class="s2">&quot;&#39;</span><span class="si">{KERNEL_ADDR}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">initrd_addr_r</span> <span class="s2">&quot;&#39;</span><span class="si">{RAMDISK_ADDR}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">fdt_addr_r</span> <span class="s2">&quot;&#39;</span><span class="si">{DTB_ADDR}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">loadkernel</span> <span class="s2">&quot;&#39;tftp $</span><span class="si">{kernel_addr_r}</span><span class="s2"> </span><span class="si">{KERNEL}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">loadinitrd</span> <span class="s2">&quot;&#39;tftp $</span><span class="si">{initrd_addr_r}</span><span class="s2"> </span><span class="si">{RAMDISK}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">loadfdt</span> <span class="s2">&quot;&#39;tftp $</span><span class="si">{fdt_addr_r}</span><span class="s2"> </span><span class="si">{DTB}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">bootargs</span> <span class="s2">&quot;&#39;root=/dev/ram0 rw panic=1 console=ttyS0,115200 earlyprintk=uart8250-32bit,0x1c020000 debug ip=dhcp&#39;&quot;</span><span class="p">,</span>
+   <span class="n">setenv</span> <span class="n">bootcmd</span> <span class="s2">&quot;&#39;dhcp; setenv serverip </span><span class="si">{SERVER_IP}</span><span class="s2">; run loadkernel; run loadinitrd; run loadfdt; </span><span class="si">{BOOTX}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+   <span class="n">boot</span>
+
+<span class="n">boot_cmds</span> <span class="o">=</span>
+   <span class="n">boot</span>
+
+<span class="n">boot_options</span> <span class="o">=</span>
+   <span class="n">boot_cmds</span>
+
+<span class="p">[</span><span class="n">boot_cmds</span><span class="p">]</span>
+<span class="n">default</span> <span class="o">=</span> <span class="n">boot_cmds</span>
+</pre></div>
+</div>
+<p>Extend the existing YAML file, to add:</p>
+<ol class="arabic simple">
+<li>parameters</li>
+<li>actions</li>
+<li>deploy and boot methods</li>
+<li>method parameters</li>
+<li>method commands</li>
+</ol>
+<div class="section" id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
+<p>Note how the existing config just lists the addresses without identifying which
+is the kernel load addr. Although these blocks are the same in this example,
+the addresses can differ between z_load and u_load.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u_load_addrs</span> <span class="o">=</span>
+   <span class="mh">0x4002000000</span>
+   <span class="mh">0x4004000000</span>
+   <span class="mh">0x4003000000</span>
+<span class="n">z_load_addrs</span> <span class="o">=</span>
+   <span class="mh">0x4002000000</span>
+   <span class="mh">0x4004000000</span>
+   <span class="mh">0x4003000000</span>
+</pre></div>
+</div>
+<p>Use a working job log file to identify which is where:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;LAVA_DISPATCHER&gt;2015-06-19 08:32:29 AM DEBUG: boot_cmds(after preprocessing):
+[&#39;setenv autoload no&#39;, u&quot;setenv kernel_addr_r &#39;0x4002000000&#39;&quot;,
+u&quot;setenv initrd_addr_r &#39;0x4004000000&#39;&quot;,
+u&quot;setenv fdt_addr_r &#39;0x4003000000&#39;&quot;,
+u&quot;setenv loadkernel &#39;tftp ${kernel_addr_r} tmplv_wQe/uImage_1.11&#39;&quot;,
+&quot;setenv loadinitrd &#39;tftp ${initrd_addr_r} {RAMDISK}&#39;&quot;,
+u&quot;setenv loadfdt &#39;tftp ${fdt_addr_r} tmplv_wQe/mustang.dtb_1.11&#39;&quot;,
+u&quot;setenv nfsargs &#39;setenv bootargs root=/dev/nfs rw
+nfsroot=10.3.2.1:/var/lib/lava/dispatcher/tmp/tmplv_wQe/tmprhrAXO,tcp,hard,intr
+panic=1 console=ttyS0,115200 earlyprintk=uart8250-32bit,0x1c020000 debug ip=dhcp&#39;&quot;,
+u&quot;setenv bootcmd &#39;dhcp; setenv serverip 10.3.2.1; run loadkernel;
+run loadinitrd; run loadfdt; run nfsargs; bootm ${kernel_addr_r} - ${fdt_addr_r}&#39;&quot;, &#39;boot&#39;]
+</pre></div>
+</div>
+<p>Note here that the action job uses <code class="docutils literal notranslate"><span class="pre">bootm</span></code>, so it is <code class="docutils literal notranslate"><span class="pre">bootm</span></code> parameters we
+need to specify.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">parameters</span><span class="p">:</span>
+  <span class="nt">bootm</span><span class="p">:</span>
+    <span class="nt">kernel</span><span class="p">:</span> <span class="s">&#39;0x4002000000&#39;</span>
+    <span class="nt">ramdisk</span><span class="p">:</span> <span class="s">&#39;0x4004000000&#39;</span>
+    <span class="nt">dtb</span><span class="p">:</span> <span class="s">&#39;0x4003000000&#39;</span>
+</pre></div>
+</div>
+<p>Only add <code class="docutils literal notranslate"><span class="pre">bootz</span></code> support if you know that the U-Boot <code class="docutils literal notranslate"><span class="pre">bootz</span></code> command is
+present in the U-Boot version on the board and that it works with zImage
+kernels. The eventual templates will exist on the server and can be used to
+declare the detailed device support so that test writers know in advance what
+kind of images the device can use.</p>
+</div>
+<div class="section" id="actions">
+<span id="v1-trailing-commas"></span><span id="index-1"></span><h4>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h4>
+<p>For this example, the deployment method is relatively simple - you can see from
+the working job that it is using <code class="docutils literal notranslate"><span class="pre">tftp</span></code> to deploy.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+  <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">methods</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+</pre></div>
+</div>
+<p><strong>Always</strong> check your YAML syntax. The YAML parser can provide links to small
+snippets of YAML, <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=actions%3A%0A++deploy%3A%0A++++methods%3A%0A++++-+tftp%0A&amp;type=json">like the one above</a></p>
+<p>The boot support is where things become more detailed.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">boot</span><span class="p">:</span>
+ <span class="nt">prompts</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+ <span class="nt">methods</span><span class="p">:</span>
+   <span class="nt">u-boot</span><span class="p">:</span>
+     <span class="nt">parameters</span><span class="p">:</span>
+       <span class="nt">bootloader_prompt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mustang</span>
+       <span class="nt">boot_message</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Starting kernel</span>
+</pre></div>
+</div>
+<p>The bootloader prompt (at this stage) comes from the device type configuration.
+The boot message will later be supportable as image-specific. For now, you need
+whatever values work with the current state of the device. The <code class="docutils literal notranslate"><span class="pre">boot_message</span></code>
+is a string emitted during the boot which denotes a successful attempt to boot.
+There is no need to quote the string unless it contains an illegal character in
+YAML like a colon.</p>
+<p>Next are the commands for the deployment method itself:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">nfs</span><span class="p">:</span>
+  <span class="nt">commands</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv autoload no</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv kernel_addr_r &#39;{KERNEL_ADDR}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_addr_r &#39;{RAMDISK_ADDR}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_addr_r &#39;{DTB_ADDR}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadkernel &#39;tftp ${kernel_addr_r} {KERNEL}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadinitrd &#39;tftp ${initrd_addr_r} {RAMDISK}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadfdt &#39;tftp ${fdt_addr_r} {DTB}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="s">&quot;setenv</span><span class="nv"> </span><span class="s">nfsargs</span><span class="nv"> </span><span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">bootargs</span><span class="nv"> </span><span class="s">root=/dev/nfs</span><span class="nv"> </span><span class="s">rw</span><span class="nv"> </span><span class="s">nfsroot={SERVER_IP}:{NFSROOTFS},tcp,hard,intr</span><span class="nv"> </span><span class="s">panic=1</span><span class="nv"> </span><span class="s">console=ttyS0,115200</span><span class="nv"> </span><span class="s">earlyprintk=uart8250-32bit,0x1c020000</span><span class="nv"> </span><span class="s">debug</span><span class="nv"> </span><span class="s">ip=dhcp&#39;&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootcmd &#39;dhcp; setenv serverip {SERVER_IP}; run loadkernel; run loadinitrd; run loadfdt; run nfsargs; {BOOTX}&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+</pre></div>
+</div>
+<p>These are retained with only formatting changes - after all, these are what the
+device needs to be able to boot.</p>
+<ol class="arabic simple">
+<li>Remove <strong>trailing commas</strong> (remnants of the old config)</li>
+<li>Remove one level of quote marks <strong>unless</strong> the command embeds a colon (e.g.
+NFS), in which case the <strong>whole line</strong> is quoted.</li>
+<li>Make each line part of a list by prefixing with a hyphen and a space.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Trailing commas are known to cause problems on devices - check the
+config carefully and be particularly watchful for failures where the device
+reports <code class="docutils literal notranslate"><span class="pre">cannot</span> <span class="pre">find</span> <span class="pre">device</span> <span class="pre">'net0,'</span></code> when working V1 jobs would report
+using <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">'net0'</span></code>. Commas are required in V1 but YAML processing for
+V2 will include trailing commas as part of the string, not part of the
+formatting.</p>
+</div>
+</div>
+<div class="section" id="timeouts">
+<h4>Timeouts<a class="headerlink" href="#timeouts" title="Permalink to this headline">¶</a></h4>
+<p>A process of trial and error will illuminate which timeouts are appropriate to
+set at this level.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">power_off</span><span class="p">:</span>
+    <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="complete-device-yaml">
+<h3>Complete device YAML<a class="headerlink" href="#complete-device-yaml" title="Permalink to this headline">¶</a></h3>
+<p>Untested at this point, but this is the start of the integration.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># hostname is irrelevant in the refactoring, the dispatcher uses what it is given.</span>
+<span class="nt">commands</span><span class="p">:</span>
+  <span class="nt">connect</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">telnet serial4 7012</span>
+  <span class="nt">hard_reset</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu15 --command reboot --port 05</span>
+  <span class="nt">power_off</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu15 --command off --port 05</span>
+  <span class="nt">power_on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu15 --command on --port 05</span>
+  <span class="c1"># power_on is new in the refactoring.</span>
+  <span class="c1"># reset_port_command not yet ported:</span>
+  <span class="c1"># reset_port: flock /var/lock/serial1.lock /usr/local/lab-scripts/reset-serial5000 serial4 12</span>
+  <span class="c1"># timeouts are handled later in the file.</span>
+<span class="nt">parameters</span><span class="p">:</span>
+  <span class="nt">bootm</span><span class="p">:</span>
+    <span class="nt">kernel</span><span class="p">:</span> <span class="s">&#39;0x4002000000&#39;</span>
+    <span class="nt">ramdisk</span><span class="p">:</span> <span class="s">&#39;0x4004000000&#39;</span>
+    <span class="nt">dtb</span><span class="p">:</span> <span class="s">&#39;0x4003000000&#39;</span>
+<span class="nt">actions</span><span class="p">:</span>
+  <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">methods</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+  <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+    <span class="nt">methods</span><span class="p">:</span>
+      <span class="nt">u-boot</span><span class="p">:</span>
+        <span class="nt">parameters</span><span class="p">:</span>
+          <span class="nt">bootloader_prompt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mustang</span>
+          <span class="nt">boot_message</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Starting kernel</span>
+        <span class="nt">nfs</span><span class="p">:</span>
+          <span class="nt">commands</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv autoload no</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv kernel_addr_r &#39;{KERNEL_ADDR}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_addr_r &#39;{RAMDISK_ADDR}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_addr_r &#39;{DTB_ADDR}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadkernel &#39;tftp ${kernel_addr_r} {KERNEL}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadinitrd &#39;tftp ${initrd_addr_r} {RAMDISK}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadfdt &#39;tftp ${fdt_addr_r} {DTB}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;setenv</span><span class="nv"> </span><span class="s">nfsargs</span><span class="nv"> </span><span class="s">&#39;setenv</span><span class="nv"> </span><span class="s">bootargs</span><span class="nv"> </span><span class="s">root=/dev/nfs</span><span class="nv"> </span><span class="s">rw</span><span class="nv"> </span><span class="s">nfsroot={SERVER_IP}:{NFSROOTFS},tcp,hard,intr</span><span class="nv"> </span><span class="s">panic=1</span><span class="nv"> </span><span class="s">console=ttyS0,115200</span><span class="nv"> </span><span class="s">earlyprintk=uart8250-32bit,0x1c020000</span><span class="nv"> </span><span class="s">debug</span><span class="nv"> </span><span class="s">ip=dhcp&#39;&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootcmd &#39;dhcp; setenv serverip {SERVER_IP}; run loadkernel; run loadinitrd; run loadfdt; run nfsargs; {BOOTX}&#39;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">power_off</span><span class="p">:</span>
+    <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="writing-a-job-submission-in-yaml">
+<span id="writing-job-submission-yaml"></span><h2>Writing a job submission in YAML<a class="headerlink" href="#writing-a-job-submission-in-yaml" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do <strong>not</strong> be tempted into writing a script to convert the JSON to
+YAML. You need to understand what the job is doing and why. e.g. the
+original job gives no clue that <code class="docutils literal notranslate"><span class="pre">U-Boot</span></code> is involved nor that the required
+<code class="docutils literal notranslate"><span class="pre">U-Boot</span></code> parameters for this job are <code class="docutils literal notranslate"><span class="pre">bootm</span></code> and not <code class="docutils literal notranslate"><span class="pre">bootz</span></code>. Any such
+attempts would re-introduce assumptions that the refactoring is deliberately
+removing. Just because a file has a particular name or suffix does not mean
+that the job can make any safe assumptions about the content of that file.</p>
+</div>
+<div class="section" id="migrating-a-job-for-the-mustang">
+<h3>Migrating a job for the mustang<a class="headerlink" href="#migrating-a-job-for-the-mustang" title="Permalink to this headline">¶</a></h3>
+<p>Existing JSON:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;actions&quot;</span><span class="p">:</span> <span class="p">[</span>
+       <span class="p">{</span>
+           <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;deploy_linaro_kernel&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+               <span class="s2">&quot;distribution&quot;</span><span class="p">:</span> <span class="s2">&quot;debian&quot;</span>
+           <span class="p">},</span>
+           <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+               <span class="s2">&quot;dtb&quot;</span><span class="p">:</span> <span class="s2">&quot;http://images-internal/mustang/mustang.dtb_1.11&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;kernel&quot;</span><span class="p">:</span> <span class="s2">&quot;http://images-internal/mustang/uImage_1.11&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;login_prompt&quot;</span><span class="p">:</span> <span class="s2">&quot;login:&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;nfsrootfs&quot;</span><span class="p">:</span> <span class="s2">&quot;https://people.linaro.org/~neil.williams/arm64/debian-jessie-arm64-rootfs.tar.gz&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;target_type&quot;</span><span class="p">:</span> <span class="s2">&quot;ubuntu&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;root&quot;</span>
+           <span class="p">}</span>
+       <span class="p">},</span>
+       <span class="p">{</span>
+           <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;boot_linaro_image&quot;</span>
+       <span class="p">},</span>
+       <span class="p">{</span>
+           <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;lava_test_shell&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+               <span class="s2">&quot;testdef_repos&quot;</span><span class="p">:</span> <span class="p">[</span>
+                   <span class="p">{</span>
+                       <span class="s2">&quot;git-repo&quot;</span><span class="p">:</span> <span class="s2">&quot;https://git.linaro.org/people/neil.williams/temp-functional-tests.git&quot;</span><span class="p">,</span>
+                       <span class="s2">&quot;testdef&quot;</span><span class="p">:</span> <span class="s2">&quot;singlenode/singlenode03.yaml&quot;</span>
+                   <span class="p">}</span>
+               <span class="p">],</span>
+               <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="mi">900</span>
+           <span class="p">}</span>
+       <span class="p">},</span>
+       <span class="p">{</span>
+           <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;submit_results&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+               <span class="s2">&quot;server&quot;</span><span class="p">:</span> <span class="s2">&quot;https://staging.validation.linaro.org/RPC2&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="s2">&quot;/anonymous/lava-functional-tests/&quot;</span>
+           <span class="p">}</span>
+       <span class="p">}</span>
+   <span class="p">],</span>
+   <span class="s2">&quot;device_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mustang&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;job_name&quot;</span><span class="p">:</span> <span class="s2">&quot;mustang-singlenode-jessie&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="mi">900</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="identifying-the-elements-of-the-job">
+<h4>Identifying the elements of the job<a class="headerlink" href="#identifying-the-elements-of-the-job" title="Permalink to this headline">¶</a></h4>
+<p>Forget the <code class="docutils literal notranslate"><span class="pre">deploy_linaro_kernel</span></code>, this is a deployment of a kernel, a DTB
+and an NFS root filesystem.</p>
+<p>Start with the top level structures:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mustang</span>
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mustang-singlenode-jessie</span>
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">device_type</span></code> isn’t strictly necessary at this point but it will become
+necessary once this job is able to be submitted via the server rather than
+directly to the dispatcher.</p>
+<p>Now identify the actions - a single deploy, a single boot and a single test.</p>
+<div class="section" id="deploy">
+<h5>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline">¶</a></h5>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+      <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tftp</span>
+      <span class="name tag">kernel</span><span class="punctuation">:</span>
+        <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://images-internal/mustang/uImage_1.11</span>
+        <span class="name tag">type</span><span class="punctuation">:</span> <span class="literal scalar plain">uimage</span>
+      <span class="name tag">nfsrootfs</span><span class="punctuation">:</span>
+        <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://people.linaro.org/~neil.williams/arm64/debian-jessie-arm64-rootfs.tar.gz</span>
+        <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+      <span class="name tag">dtb</span><span class="punctuation">:</span>
+        <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://images-internal/mustang/mustang.dtb_1.11</span>
+</pre>
+</div>
+<div class="section" id="boot">
+<h5>Boot<a class="headerlink" href="#boot" title="Permalink to this headline">¶</a></h5>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">boot</span></code> has the details of the autologin which will occur at the end
+of the boot action.</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+      <span class="punctuation indicator">-</span> <span class="literal string">'root&#64;linaro-nano:'</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">u-boot</span>
+    <span class="name tag">commands</span><span class="punctuation">:</span> <span class="literal scalar plain">nfs</span>
+    <span class="name tag">auto_login</span><span class="punctuation">:</span>
+      <span class="name tag">login_prompt</span><span class="punctuation">:</span> <span class="literal string">&quot;login:&quot;</span>
+      <span class="name tag">username</span><span class="punctuation">:</span> <span class="literal scalar plain">root</span>
+</pre>
+</div>
+<div class="section" id="test">
+<h5>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h5>
+<p>Note how the test action can have a name and the test definition can also have
+a name, separate from the content of the YAML file.</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+      <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">https://git.linaro.org/people/neil.williams/temp-functional-tests.git</span>
+        <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+        <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">singlenode/singlenode03.yaml</span>
+        <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">singlenode-advanced</span>
+</pre>
+</div>
+</div>
+</div>
+<div class="section" id="complete-yaml-submission">
+<h3>Complete YAML submission<a class="headerlink" href="#complete-yaml-submission" title="Permalink to this headline">¶</a></h3>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># mustang devices now use grub-efi, not UBoot</span>
+<span class="c1"># This file exists only as an example of the initial UBoot support.</span>
+
+<span class="n">device_type</span><span class="p">:</span> <span class="n">mustang</span>
+<span class="n">job_name</span><span class="p">:</span> <span class="n">mustang</span> <span class="n">singlenode</span> <span class="k">with</span> <span class="n">Debian</span> <span class="n">jessie</span>
+<span class="n">priority</span><span class="p">:</span> <span class="n">medium</span>
+<span class="n">visibility</span><span class="p">:</span> <span class="n">public</span>
+
+<span class="n">metadata</span><span class="p">:</span>
+  <span class="c1"># please change these fields when modifying this job for your own tests.</span>
+  <span class="n">docs</span><span class="o">-</span><span class="n">source</span><span class="p">:</span> <span class="n">pipeline</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">example</span>
+  <span class="n">docs</span><span class="o">-</span><span class="n">filename</span><span class="p">:</span> <span class="n">mustang</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">example</span><span class="o">-</span><span class="n">job</span><span class="o">.</span><span class="n">yaml</span>
+
+<span class="n">timeouts</span><span class="p">:</span>
+  <span class="n">job</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">15</span>
+  <span class="n">action</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="n">connection</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">actions</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">deploy</span><span class="p">:</span>
+      <span class="n">to</span><span class="p">:</span> <span class="n">tftp</span>
+      <span class="n">kernel</span><span class="p">:</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">images</span><span class="o">-</span><span class="n">internal</span><span class="o">/</span><span class="n">mustang</span><span class="o">/</span><span class="n">uImage_1</span><span class="o">.</span><span class="mi">11</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="n">uimage</span>
+      <span class="n">nfsrootfs</span><span class="p">:</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">people</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/~</span><span class="n">neil</span><span class="o">.</span><span class="n">williams</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">debian</span><span class="o">-</span><span class="n">jessie</span><span class="o">-</span><span class="n">arm64</span><span class="o">-</span><span class="n">rootfs</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+        <span class="n">compression</span><span class="p">:</span> <span class="n">gz</span>
+      <span class="n">dtb</span><span class="p">:</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">images</span><span class="o">-</span><span class="n">internal</span><span class="o">/</span><span class="n">mustang</span><span class="o">/</span><span class="n">mustang</span><span class="o">.</span><span class="n">dtb_1</span><span class="o">.</span><span class="mi">11</span>
+<span class="o">-</span> <span class="n">boot</span><span class="p">:</span>
+    <span class="n">prompts</span><span class="p">:</span>
+      <span class="o">-</span> <span class="s1">&#39;root@linaro-nano:&#39;</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">u</span><span class="o">-</span><span class="n">boot</span>
+    <span class="n">commands</span><span class="p">:</span> <span class="n">nfs</span>
+    <span class="n">auto_login</span><span class="p">:</span>
+      <span class="n">login_prompt</span><span class="p">:</span> <span class="s2">&quot;login:&quot;</span>
+      <span class="n">username</span><span class="p">:</span> <span class="n">root</span>
+<span class="o">-</span> <span class="n">test</span><span class="p">:</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">definitions</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">repository</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">people</span><span class="o">/</span><span class="n">neil</span><span class="o">.</span><span class="n">williams</span><span class="o">/</span><span class="n">temp</span><span class="o">-</span><span class="n">functional</span><span class="o">-</span><span class="n">tests</span><span class="o">.</span><span class="n">git</span>
+        <span class="n">from</span><span class="p">:</span> <span class="n">git</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">singlenode</span><span class="o">/</span><span class="n">singlenode03</span><span class="o">.</span><span class="n">yaml</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">singlenode</span><span class="o">-</span><span class="n">advanced</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="writing-a-device-type-template">
+<h2>Writing a device type template<a class="headerlink" href="#writing-a-device-type-template" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of a template is to move as much common data out of each individual
+template and into the base template for sharing of code. Where parameters
+differ (e.g. the console port), these are supplied as variables. The device
+dictionary then only needs to supply information which is specific to that one
+device - usually including the serial connection command and the power
+commands.</p>
+<p>The first point of reference with a new template is the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>
+<a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/device-types/base.jinja2">base.jinja2</a>
+template and existing examples (e.g. <a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/device-types/beaglebone-black.jinja2">beaglebone-black</a>)
+- templates live on the server, are populated with data from the database and
+the resulting YAML is sent to the dispatcher.</p>
+<div class="section" id="starting-a-new-device-type-template">
+<h3>Starting a new device type template<a class="headerlink" href="#starting-a-new-device-type-template" title="Permalink to this headline">¶</a></h3>
+<p>For example, a new mustang template starts as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="o">%</span> <span class="n">extends</span> <span class="s1">&#39;base.jinja2&#39;</span> <span class="o">%</span><span class="p">}</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">block</span> <span class="n">body</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="p">{</span><span class="o">%</span> <span class="n">endblock</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The content is a jinja2 template based directly on the working device jinja2
+template above. Where there are values, these are provided with defaults
+matching the currently working values. Where there are common blocks of code in
+<code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code>, these are pulled in using Jinja2 templates. The <code class="docutils literal notranslate"><span class="pre">commands</span></code>
+block itself is left to the device dictionary (and picked up by
+<code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">ramdisk</span></code> and <code class="docutils literal notranslate"><span class="pre">nfs</span></code> are particularly common deployment methods, so the
+majority of the commands are already available in <code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code>. These
+commands use <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">console_device</span> <span class="pre">}}</span></code> and <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">baud_rate</span> <span class="pre">}}</span></code>, which need to be
+defined with defaults:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">console_device</span> <span class="o">=</span> <span class="nv">console_device</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;ttyS0&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">baud_rate</span> <span class="o">=</span> <span class="nv">baud_rate</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="m">115200</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x"> parameters:</span>
+<span class="x">   bootm:</span>
+<span class="x">    kernel: &#39;</span><span class="cp">{{</span> <span class="nv">bootm_kernel_addr</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;0x4002000000&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&#39;</span>
+<span class="x">    ramdisk: &#39;</span><span class="cp">{{</span> <span class="nv">bootm_ramdisk_addr</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;0x4004000000&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&#39;</span>
+<span class="x">    dtb: &#39;</span><span class="cp">{{</span> <span class="nv">bootm_dtb_addr</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;0x4003000000&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&#39;</span>
+</pre></div>
+</div>
+<p>The actions are determined by the available support for this device, initially,
+templates can simply support the initial working configuration, more support
+can be added later.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x"> actions:</span>
+<span class="x">   deploy:</span>
+<span class="x">     methods:</span>
+<span class="x">       tftp</span>
+
+<span class="x"> boot:</span>
+<span class="x">   prompts:</span>
+<span class="x">     - &#39;linaro-test&#39;</span>
+<span class="x">     - &#39;root@debian:~#&#39;</span>
+<span class="x">   methods:</span>
+<span class="x">     u-boot:</span>
+<span class="x">       parameters:</span>
+<span class="x">         bootloader_prompt: </span><span class="cp">{{</span> <span class="nv">bootloader_prompt</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Mustang&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">         boot_message: </span><span class="cp">{{</span> <span class="nv">boot_message</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Starting kernel&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">       nfs:</span>
+<span class="x">         commands:</span>
+<span class="cp">{{</span> <span class="nv">base_uboot_commands</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">base_uboot_addr_commands</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">base_tftp_commands</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">         # Always quote the entire string if the command includes a colon to support correct YAML.</span>
+<span class="x">         - &quot;setenv nfsargs &#39;setenv bootargs console=</span><span class="cp">{{</span> <span class="nv">console_device</span> <span class="cp">}}</span><span class="x">,</span><span class="cp">{{</span> <span class="nv">baud_rate</span> <span class="cp">}}</span><span class="x">n8 root=/dev/nfs rw </span><span class="cp">{{</span> <span class="nv">base_nfsroot_args</span> <span class="cp">}}</span><span class="x"> panic=1 earlyprintk=uart8250-32bit,0x1c020000 debug ip=dhcp&#39;&quot;</span>
+<span class="cp">{{</span> <span class="nv">base_uboot_bootcmd</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="section" id="completed-mustang-template">
+<h4>Completed mustang template<a class="headerlink" href="#completed-mustang-template" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">device_type: mustang</span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">console_device</span> <span class="o">=</span> <span class="nv">console_device</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;ttyS0&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">baud_rate</span> <span class="o">=</span> <span class="nv">baud_rate</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="m">115200</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x"> parameters:</span>
+<span class="x">   bootm:</span>
+<span class="x">    kernel: &#39;</span><span class="cp">{{</span> <span class="nv">bootm_kernel_addr</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;0x4002000000&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&#39;</span>
+<span class="x">    ramdisk: &#39;</span><span class="cp">{{</span> <span class="nv">bootm_ramdisk_addr</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;0x4004000000&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&#39;</span>
+<span class="x">    dtb: &#39;</span><span class="cp">{{</span> <span class="nv">bootm_dtb_addr</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;0x4003000000&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&#39;</span>
+
+<span class="x"> actions:</span>
+<span class="x">   deploy:</span>
+<span class="x">     methods:</span>
+<span class="x">     - tftp</span>
+
+<span class="x">   boot:</span>
+<span class="x">     prompts:</span>
+<span class="x">       - &#39;linaro-test&#39;</span>
+<span class="x">       - &#39;root@debian:~#&#39;</span>
+<span class="x">     methods:</span>
+<span class="x">       u-boot:</span>
+<span class="x">         parameters:</span>
+<span class="x">           bootloader_prompt: </span><span class="cp">{{</span> <span class="nv">bootloader_prompt</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Mustang&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">           boot_message: </span><span class="cp">{{</span> <span class="nv">boot_message</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Starting kernel&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">         nfs:</span>
+<span class="x">           commands:</span>
+<span class="x">           - setenv autoload no</span>
+<span class="cp">{{</span> <span class="nv">base_uboot_addr_commands</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">base_tftp_commands</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">           # Always quote the entire string if the command includes a colon to support correct YAML.</span>
+<span class="x">           - &quot;setenv nfsargs &#39;setenv bootargs console=</span><span class="cp">{{</span> <span class="nv">console_device</span> <span class="cp">}}</span><span class="x">,</span><span class="cp">{{</span> <span class="nv">baud_rate</span> <span class="cp">}}</span><span class="x">n8 root=/dev/nfs rw </span><span class="cp">{{</span> <span class="nv">base_nfsroot_args</span> <span class="cp">}}</span><span class="x"> panic=1 earlyprintk=uart8250-32bit,0x1c020000 debug ip=dhcp&#39;&quot;</span>
+<span class="cp">{{</span> <span class="nv">base_uboot_bootcmd</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-a-device-dictionary-for-the-device">
+<h3>Creating a device dictionary for the device<a class="headerlink" href="#creating-a-device-dictionary-for-the-device" title="Permalink to this headline">¶</a></h3>
+<p>Examples of exported device dictionaries exist in the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> <a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/devices/bbb-01.yaml">codebase</a>
+for unit test support. The dictionary extends the new template and provides the
+device-specific values.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;mustang.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_list</span> <span class="o">=</span> <span class="o">[</span><span class="p">‘</span><span class="nv">uart0</span><span class="p">’</span><span class="o">]</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_commands</span> <span class="o">=</span> <span class="o">{</span><span class="p">‘</span><span class="nv">uart0</span><span class="p">’</span><span class="o">:</span> <span class="p">‘</span><span class="nv">telnet</span> <span class="nv">serial4</span> <span class="m">7012</span><span class="p">’</span><span class="o">}</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_tags</span> <span class="o">=</span> <span class="o">{</span><span class="p">‘</span><span class="nv">uart0</span><span class="p">’</span><span class="o">:</span> <span class="o">[</span><span class="p">‘</span><span class="nv">primary</span><span class="p">’</span><span class="o">,</span> <span class="s1">&#39;telnet&#39;</span><span class="o">]}</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">hard_reset_command</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/pduclient --daemon services --hostname pdu15 --command reboot --port 05&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_off_command</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/pduclient --daemon services --hostname pdu15 --command off --port 05&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_on_command</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/pduclient --daemon services --hostname pdu15 --command on --port 05&quot;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-the-template-and-dictionary">
+<span id="testing-templates-dictionaries"></span><h3>Testing the template and dictionary<a class="headerlink" href="#testing-the-template-and-dictionary" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-tool</span></code> has support for comparing the templates with working YAML files
+and this can be done using files already deployed or local changes prior to
+submission. To test the local files, create a new directory, add the YAML file
+used when calling <code class="docutils literal notranslate"><span class="pre">lava-dispatch</span></code> directly and add two sub-directories:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">./</span><span class="n">device</span><span class="o">-</span><span class="n">types</span>
+<span class="n">mkdir</span> <span class="o">./</span><span class="n">devices</span>
+</pre></div>
+</div>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code> into the <code class="docutils literal notranslate"><span class="pre">device-types</span></code> directory, along with your new
+local template. Copy the device dictionary file to <code class="docutils literal notranslate"><span class="pre">devices</span></code>. If your locally
+working jinja2 file is called <code class="docutils literal notranslate"><span class="pre">working.jinja2</span></code>, the comparison would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lava-tool compare-device-conf --wdiff --dispatcher-config-dir . devices/mustang01.yaml working.jinja2
+$ lava-tool compare-device-conf --dispatcher-config-dir . devices/mustang01.yaml working.jinja2
+</pre></div>
+</div>
+<p>Iterate through the changes, testing any changes to the <code class="docutils literal notranslate"><span class="pre">working.jinja2</span></code> at
+each stage, until you have no differences between the generated YAML and the
+working jinja2.</p>
+<p>Pay particular attention to whitespace and indentation which have a direct
+impact on the structure of the object represented by the file. <code class="docutils literal notranslate"><span class="pre">wdiff</span></code> output
+is very useful for identifying content changes and it is often necessary to
+change the order of fields within a single command to get an appropriate match,
+even if that order has no actual effect. By ensuring that the content does
+match, it allows the comparison to show other changes like indents. Be prepared
+to change both the <code class="docutils literal notranslate"><span class="pre">working.jinja2</span></code> and the template so that the indenting is
+the same in each even after commands have been substituted.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The snippets here are just examples. In particular, formatting these
+examples for the documentation has changed some of the indents, so take
+particular care to compare and fix the indents of your files and ensure that
+your working YAML file continues to work as well as to match the output of
+the template.</p>
+</div>
+<div class="section" id="adapting-the-base-commands-to-the-device-type">
+<h4>Adapting the base commands to the device type<a class="headerlink" href="#adapting-the-base-commands-to-the-device-type" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code> for most devices uses the command
+<code class="docutils literal notranslate"><span class="pre">base_uboot_commands</span></code> which expands to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">setenv</span> <span class="n">autoload</span> <span class="n">no</span>
+<span class="o">-</span> <span class="n">setenv</span> <span class="n">initrd_high</span> <span class="s1">&#39;0xffffffff&#39;</span>
+<span class="o">-</span> <span class="n">setenv</span> <span class="n">fdt_high</span> <span class="s1">&#39;0xffffffff&#39;</span>
+</pre></div>
+</div>
+<p>This command works well on 32-bit systems, on the mustang, it causes:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span><span class="nt"> ERROR</span><span class="p">:</span> <span class="nv">Failed to allocate 0xa38c bytes below 0xffffffff.</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="nv">Failed using fdt_high value for Device TreeFDT creation failed! hanging...### ERROR</span> <span class="c1">### Please RESET the board ###}</span>
+</pre></div>
+</div>
+<p>So the mustang template simply omits <code class="docutils literal notranslate"><span class="pre">base_uboot_commands</span></code>, using:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv autoload no</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="completing-the-migration">
+<h2>Completing the migration<a class="headerlink" href="#completing-the-migration" title="Permalink to this headline">¶</a></h2>
+<p>The device dictionary and the template need to be introduced into the
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> configuration and database entries created for the device type
+and device. Helpers may be implemented for this in due course but the process
+involves:</p>
+<ol class="arabic">
+<li><p class="first">Add a device type to lava_scheduler_app in the admin interface</p>
+</li>
+<li><p class="first">Populate fields (you can omit health check for now - pipeline health checks
+are not yet ready).</p>
+</li>
+<li><p class="first">Add a device of the specified type to lava_scheduler_app in the admin
+interface. Set the device as a pipeline device by checking the “Pipeline
+Device” box.</p>
+</li>
+<li><p class="first">Add the template to the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo cp device-types/mustang.jinja2 /etc/lava-server/dispatcher-config/device-types/
+</pre></div>
+</div>
+</li>
+<li><p class="first">Import the device dictionary to provide the device-specific configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage device-dictionary --hostname mustang1 --import mustang1.yaml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Review the generated YAML:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage device-dictionary --hostname mustang1 --review
+</pre></div>
+</div>
+</li>
+<li><p class="first">Submit a test job against <code class="docutils literal notranslate"><span class="pre">localhost</span></code> and ensure it runs to completion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lavacli jobs submit mustang-nfs.yaml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Offer the new template as a <a class="reference internal" href="development-intro.html#contribute-upstream"><span class="std std-ref">code review</span></a>
+against <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/migrating-admin-example.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+</html>

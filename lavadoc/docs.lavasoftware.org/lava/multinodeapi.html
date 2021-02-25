@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/multinodeapi.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MultiNode API &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="VLANd support in LAVA test jobs" href="vland.html" />
+    <link rel="prev" title="Writing MultiNode tests" href="writing-multinode.html" />
+    <link rel="canonical" href="multinodeapi.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">MultiNode API</a><ul>
+<li><a class="reference internal" href="#guidance-in-using-the-api">Guidance in using the API</a></li>
+<li><a class="reference internal" href="#lava-self">lava-self</a><ul>
+<li><a class="reference internal" href="#usage">Usage:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-role">lava-role</a><ul>
+<li><a class="reference internal" href="#id4">Usage:</a></li>
+<li><a class="reference internal" href="#id5">Usage:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-group">lava-group</a><ul>
+<li><a class="reference internal" href="#id7">Usage:</a></li>
+<li><a class="reference internal" href="#id8">Usage:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-send">lava-send</a><ul>
+<li><a class="reference internal" href="#id10">Usage:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-wait">lava-wait</a><ul>
+<li><a class="reference internal" href="#id12">Usage:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-wait-all">lava-wait-all</a><ul>
+<li><a class="reference internal" href="#lava-wait-all-message-id">lava-wait-all &lt;message-id&gt;</a></li>
+<li><a class="reference internal" href="#lava-wait-all-message-id-role">lava-wait-all &lt;message-id&gt; &lt;role&gt;</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-sync">lava-sync</a><ul>
+<li><a class="reference internal" href="#id15">Usage:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-1-simple-client-server-multinode-test">Example 1: Simple client-server MultiNode test</a></li>
+<li><a class="reference internal" href="#example-2-iperf-client-server-test">Example 2: iperf client-server test</a></li>
+<li><a class="reference internal" href="#example-3-variable-number-of-clients">Example 3: variable number of clients</a></li>
+<li><a class="reference internal" href="#example-4-peer-to-peer-application">Example 4: peer-to-peer application</a></li>
+<li><a class="reference internal" href="#using-a-flow-table-to-plan-the-job">Using a flow table to plan the job</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="writing-multinode.html" title="Previous Chapter: Writing MultiNode tests"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Writing Multi...</span>
+    </a>
+  </li>
+  <li>
+    <a href="vland.html" title="Next Chapter: VLANd support in LAVA test jobs"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">VLANd support... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="multinode-api">
+<span id="index-0"></span><span id="id1"></span><h1>MultiNode API<a class="headerlink" href="#multinode-api" title="Permalink to this headline">¶</a></h1>
+<p>The LAVA MultiNode API provides a simple way to pass messages between devices in
+a group, using the connection which is already available through LAVA. The API is
+not intended for transfers of large amounts of data. Test definitions which need to
+transfer files, long messages or other large amounts of data need to set up
+their own network configuration, access and download methods and do the
+transfer in the test definition.</p>
+<div class="section" id="guidance-in-using-the-api">
+<h2>Guidance in using the API<a class="headerlink" href="#guidance-in-using-the-api" title="Permalink to this headline">¶</a></h2>
+<p>It is recommended to avoid doing a lot of calculation within the calls to the
+API. There are times when a script is needed to retrieve data from the test
+shell, but avoid running that script in the call to the API.
+<strong>Always</strong> check the output of the script (e.g. with <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>) and/or
+run the script separately in the test definition run steps so that the output
+appears in the test job logs. Preparing and outputting the data before sending
+it with the API will aid in debugging the test definition.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Debugging of complex test definitions does <strong>not</strong> only happen during
+the initial development. There may be further issues and corner cases,
+uncovered only after a test job was in use for a while. Retain enough
+structure in your test definitions to be able to debug problems later
+without needing to resubmit the MultiNode test job (as some problems may
+be non-deterministic, etc.).</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not recommended to use <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> command in
+conjunction with the MultiNode API calls. The first reason is that
+any errors that might occur within the API will be ignored by the
+lava-test-case and it will be seen as successful by
+<code class="docutils literal notranslate"><span class="pre">lava-test-shell</span></code>. The second reason is that the job will end up with
+duplicate test cases for each API call (one from <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>
+and the other one from API command).</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="hacking-session.html#hacking-session-limitations"><span class="std std-ref">Limitations of hacking sessions</span></a></p>
+</div>
+</div>
+<div class="section" id="lava-self">
+<span id="index-1"></span><span id="id2"></span><h2>lava-self<a class="headerlink" href="#lava-self" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="usage">
+<h3>Usage:<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-self</span></code></div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">lava-self</span></code> reports the job ID, as the dispatcher itself has no
+knowledge of the hostname of the deployed system or the original database
+name of the device. The output of <code class="docutils literal notranslate"><span class="pre">lava-group</span></code> can also be used. (This
+behavior changed in the 2017.9 release.)</p>
+</div>
+</div>
+<div class="section" id="lava-role">
+<span id="index-2"></span><span id="id3"></span><h2>lava-role<a class="headerlink" href="#lava-role" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3>Usage:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-role</span></code></div></blockquote>
+<p>Prints the role the current device is playing in a MultiNode job.</p>
+<p><em>Example.</em> In a directory with several scripts, one for each role involved in
+the test:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./run-$(lava-role)
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>Usage:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-role</span> <span class="pre">list</span></code></div></blockquote>
+<p>Prints a list of all roles within this MultiNode job, separated by
+whitespace.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+for role in `lava-role list`; do
+    echo $role
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="lava-group">
+<span id="index-3"></span><span id="id6"></span><h2>lava-group<a class="headerlink" href="#lava-group" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3>Usage:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-group</span></code></div></blockquote>
+<p>This command will produce in its standard output a representation of the device
+group that is participating in the MultiNode test job.</p>
+<p>The output format contains one line per device, and each line contains the
+job ID and the role that job is playing in the test, separated by a TAB
+character:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">12345</span>     <span class="n">client</span>
+<span class="mi">12346</span>     <span class="n">loadbalancer</span>
+<span class="mi">12347</span>     <span class="n">backend</span>
+<span class="mi">12348</span>     <span class="n">backend</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">This behavior changed in 2017.9 as V2 does not have knowledge
+of the device hostname, only the job ID for each role.</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>Usage:<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-group</span> <span class="pre">&lt;role&gt;</span></code></div></blockquote>
+<p>This command will produce in its standard output a list of the test jobs
+assigned the specified role in the MultiNode test job.</p>
+<p>The output format contains one line per job ID assigned to the specified role.
+The name of the role itself is not printed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lava-group client
+12345
+$ lava-group backend
+12347
+12348
+</pre></div>
+</div>
+<p>If there is no matching role, exits with non-zero status code and outputs
+nothing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lava-group server ; echo $?
+1
+</pre></div>
+</div>
+<p>If your test definition relies on a particular role, one of the first test
+cases should be to check this role has been defined:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">case</span> <span class="n">check</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">role</span> <span class="o">--</span><span class="n">shell</span> <span class="n">lava</span><span class="o">-</span><span class="n">group</span> <span class="n">server</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="lava-send">
+<span id="index-4"></span><span id="id9"></span><h2>lava-send<a class="headerlink" href="#lava-send" title="Permalink to this headline">¶</a></h2>
+<p>Sends a message to the group, optionally passing associated key-value data
+pairs. Sending a message is a non-blocking operation. The message is guaranteed
+to be available to all members of the group, but some of them might never
+retrieve it.</p>
+<p>The message-id will be persistent for the lifetime of the target group managing
+the entire multinode test job. Re-sending a different message with an existing
+message-id is not supported.</p>
+<div class="section" id="id10">
+<h3>Usage:<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-send</span> <span class="pre">&lt;message-id&gt;</span> <span class="pre">[key1=val1</span> <span class="pre">[key2=val2]</span> <span class="pre">...]</span></code></div></blockquote>
+<p>Examples are provided below, together with <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code>.</p>
+</div>
+</div>
+<div class="section" id="lava-wait">
+<span id="index-5"></span><span id="id11"></span><h2>lava-wait<a class="headerlink" href="#lava-wait" title="Permalink to this headline">¶</a></h2>
+<p>Waits until any other device in the group sends a message with the given ID.
+This call will block until such message is sent.</p>
+<div class="section" id="id12">
+<h3>Usage:<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-wait</span> <span class="pre">&lt;message-id&gt;</span></code></div></blockquote>
+<p>If there was data passed in the message, the key-value pairs will be stored in
+the cache file (<code class="docutils literal notranslate"><span class="pre">/tmp/lava_multi_node_cache.txt</span></code> by default), each in one line.
+If no key-values were passed, nothing is stored.</p>
+<p>The message ID data is persistent for the life of the MultiNode group. The data
+can be retrieved at any later stage using <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> and as the data is
+already available, there will be no waiting time for repeat calls. If devices
+continue to send data with the associated message ID, that new data will continue
+to be added to the stored data for that message ID and will be returned by subsequent
+calls to <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> for that message ID. Use different message ID(s) if you
+don’t want this effect.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#flow-tables"><span class="std std-ref">Using a flow table to plan the job</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="lava-wait-all">
+<span id="index-6"></span><span id="id13"></span><h2>lava-wait-all<a class="headerlink" href="#lava-wait-all" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> operates in different ways, depending on the presence of the
+<code class="docutils literal notranslate"><span class="pre">role</span></code> parameter.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span> <span class="pre">&lt;message-id&gt;</span> <span class="pre">[&lt;role&gt;]</span></code></p>
+<p>If data was sent by the other devices with the message, the key-value pairs
+will be stored in the cache file (<code class="docutils literal notranslate"><span class="pre">/tmp/lava_multi_node_cache.txt</span></code> by default),
+each in one line, prefixed with the target name and a colon.</p>
+<p>Some examples for <code class="docutils literal notranslate"><span class="pre">lava-send</span></code>, <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> are given
+below.</p>
+<p>The message returned can include data from other devices which sent a message
+with the relevant message ID, only the wait is dependent on particular devices
+with a specified role.</p>
+<p>As with <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code>, the message ID is persistent for the duration of the
+MultiNode group.</p>
+<div class="section" id="lava-wait-all-message-id">
+<h3>lava-wait-all &lt;message-id&gt;<a class="headerlink" href="#lava-wait-all-message-id" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span> <span class="pre">&lt;message-id&gt;</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> waits until <strong>all</strong> other devices in the group send a message
+with the given message ID. Every device in the group <strong>must</strong> use <code class="docutils literal notranslate"><span class="pre">lava-send</span></code>
+with the same message ID for <code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> to finish, or any device using
+this API call will wait forever (and eventually timeout, failing the
+job).</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> or <code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> in a test definition effectively makes
+all boards in the group run at the speed of the slowest board in the group up
+to the point where the sync or wait is called.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#flow-tables"><span class="std std-ref">Using a flow table to plan the job</span></a></p>
+</div>
+</div>
+<div class="section" id="lava-wait-all-message-id-role">
+<h3>lava-wait-all &lt;message-id&gt; &lt;role&gt;<a class="headerlink" href="#lava-wait-all-message-id-role" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span> <span class="pre">&lt;message-id&gt;</span> <span class="pre">&lt;role&gt;</span></code></p>
+<p>If <code class="docutils literal notranslate"><span class="pre">&lt;role&gt;</span></code> is used, only wait until all devices with that given role send a
+message with the matching message ID. Devices of the given role do <strong>not</strong>
+enter <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code>, but just send the message and continue the test
+definition. Ensure the test continues for long enough for the devices using
+<code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> to pick up the message and act on it. Typically, this
+involves using a <code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> after the <code class="docutils literal notranslate"><span class="pre">lava-send</span></code> on devices with the
+given role and after the completion of the task on the devices which were
+waiting for the message.</p>
+<p>Not all roles in the group need to send a message or wait for a message. One
+role will act as a sender, at least one role will act as a receiver and any
+other roles can continue as normal. Note that this level of fine-grained control
+is usually not needed. It is advisable to draw out the sequence in a table to
+ensure that the correct calls are made.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#flow-tables"><span class="std std-ref">Using a flow table to plan the job</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="lava-sync">
+<span id="index-7"></span><span id="id14"></span><h2>lava-sync<a class="headerlink" href="#lava-sync" title="Permalink to this headline">¶</a></h2>
+<p>Global synchronization primitive. Sends a message, and waits for the same
+message from all of the other devices.</p>
+<div class="section" id="id15">
+<h3>Usage:<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">lava-sync</span> <span class="pre">&lt;message&gt;</span></code></div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">lava-sync</span> <span class="pre">foo</span></code> is effectively the same as <code class="docutils literal notranslate"><span class="pre">lava-send</span> <span class="pre">foo</span></code> followed by
+<code class="docutils literal notranslate"><span class="pre">lava-wait-all</span> <span class="pre">foo</span></code>.</p>
+<p>A <a class="reference internal" href="writing-tests.html#recording-test-result-data"><span class="std std-ref">lava test result</span></a> is generated within the
+current <a class="reference internal" href="results-intro.html#results-test-suite"><span class="std std-ref">Test Suite</span></a>, recording the completion or failure of the
+synchronization.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#flow-tables"><span class="std std-ref">Using a flow table to plan the job</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="example-1-simple-client-server-multinode-test">
+<h2>Example 1: Simple client-server MultiNode test<a class="headerlink" href="#example-1-simple-client-server-multinode-test" title="Permalink to this headline">¶</a></h2>
+<p>Two devices, with roles <code class="docutils literal notranslate"><span class="pre">client</span></code>, <code class="docutils literal notranslate"><span class="pre">server</span></code></p>
+<p>LAVA Test Shell test definition (say, <code class="docutils literal notranslate"><span class="pre">example1.yaml</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>run:
+    steps:
+        - ./run-`lava-role`.sh
+</pre></div>
+</div>
+<p>The test image or the test definition would then provide two scripts, with only
+one being run on each device, according to the role specified.</p>
+<p><code class="docutils literal notranslate"><span class="pre">run-server.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+
+SPACE=`df -h | grep &quot;/$&quot; | awk &#39;{print $4}&#39;`
+echo $SPACE
+lava-send server-ready free-space=$SPACE
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li>To make use of the server-ready message, some kind of client needs
+to do a <code class="docutils literal notranslate"><span class="pre">lava-wait</span> <span class="pre">server-ready</span></code></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">run-client.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+
+lava-wait server-ready
+free-space=$(cat /tmp/lava_multi_node_cache.txt | cut -d = -f 2)
+echo &quot;The free disk space on server is ${free-space}&quot;
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li>The client waits for the server-ready message then get the data
+which was sent by server from /tmp/lava_multi_node_cache.txt</li>
+</ul>
+</div>
+<div class="section" id="example-2-iperf-client-server-test">
+<h2>Example 2: iperf client-server test<a class="headerlink" href="#example-2-iperf-client-server-test" title="Permalink to this headline">¶</a></h2>
+<p>Two devices, with roles <code class="docutils literal notranslate"><span class="pre">client</span></code>, <code class="docutils literal notranslate"><span class="pre">server</span></code></p>
+<p>LAVA Test Shell test definition (say, <code class="docutils literal notranslate"><span class="pre">example1.yaml</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>run:
+    steps:
+        - ./run-`lava-role`.sh
+</pre></div>
+</div>
+<p>The test image or the test definition would then provide two scripts, with only
+one being run on each device, according to the role specified.</p>
+<p><code class="docutils literal notranslate"><span class="pre">run-server.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+
+iperf -s &amp;
+echo $! &gt; /tmp/iperf-server.pid
+IP=`ip route get 8.8.8.8 | head -n 1 | awk &#39;{print $NF}&#39;`
+echo $IP
+lava-send server-ready server-ip=$IP
+lava-wait client-done
+kill -9 `cat /tmp/iperf-server.pid`
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li>iperf server process needs to be run in the background to wait for
+the connection from the client and the process id will be stored
+somewhere for later use.</li>
+<li>To make use of the server-ready message, some kind of client needs
+to do a <code class="docutils literal notranslate"><span class="pre">lava-wait</span> <span class="pre">server-ready</span></code></li>
+<li>There needs to be a support on a client to do the <code class="docutils literal notranslate"><span class="pre">lava-send</span>
+<span class="pre">client-done</span></code> or the server role will fail with a timeout.</li>
+<li>If there was more than one client, the server could call
+<code class="docutils literal notranslate"><span class="pre">lava-wait-all</span> <span class="pre">client-done</span></code> instead.</li>
+<li>iperf server process must be killed after getting client-done
+message, otherwise the test job will not proceed.</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">run-client.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+
+lava-wait server-ready
+server=$(cat /tmp/lava_multi_node_cache.txt | cut -d = -f 2)
+iperf -c $server
+# ... do something with output ...
+lava-send client-done
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li>The client waits for the server-ready message as its first task,
+then does some work, then sends a “done” message so that the server can
+move on and do other tests.</li>
+</ul>
+</div>
+<div class="section" id="example-3-variable-number-of-clients">
+<h2>Example 3: variable number of clients<a class="headerlink" href="#example-3-variable-number-of-clients" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">run-server.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="n">start</span><span class="o">-</span><span class="n">server</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">sync</span> <span class="n">ready</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">sync</span> <span class="n">done</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">run-client.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+
+# refer to the server by name, assume internal DNS works
+server=$(lava-group | grep &#39;server$&#39; | cut -f 1)
+
+lava-sync ready
+run-client
+lava-sync done
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-4-peer-to-peer-application">
+<h2>Example 4: peer-to-peer application<a class="headerlink" href="#example-4-peer-to-peer-application" title="Permalink to this headline">¶</a></h2>
+<p>Single role: <code class="docutils literal notranslate"><span class="pre">peer</span></code>, any number of devices</p>
+<p><code class="docutils literal notranslate"><span class="pre">run-peer.sh</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!bin/sh
+
+initialize-data
+start-p2p-service
+lava-sync running
+
+push-data
+for peer in $(lava-group | cut -f 1); do
+    if [ $peer != $(lava-self) ]; then
+        query-data $peer
+    fi
+done
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-flow-table-to-plan-the-job">
+<span id="flow-tables"></span><h2>Using a flow table to plan the job<a class="headerlink" href="#using-a-flow-table-to-plan-the-job" title="Permalink to this headline">¶</a></h2>
+<p>Synchronization of any type needs to be planned and the simplest way to manage
+the messages between roles within a group is to set out a strict table of the
+flow.</p>
+<p>Set out the call and leave blank rows until that call is matched by the
+appropriate roles, to represent the time that the devices with that role will
+block in a wait loop with the coordinator.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="45%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Server</th>
+<th class="head">Client</th>
+<th class="head">Observer</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>deploy &amp; boot</td>
+<td>deploy &amp; boot</td>
+<td>deploy &amp; boot</td>
+</tr>
+<tr class="row-odd"><td>lava-sync start</td>
+<td>lava-sync start</td>
+<td>lava-sync start</td>
+</tr>
+<tr class="row-even"><td>server_start.sh</td>
+<td>lava-wait-all ready server</td>
+<td>lava-sync fin</td>
+</tr>
+<tr class="row-odd"><td>lava-send ready</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>lava-sync fin</td>
+<td>client-tasks.sh</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>lava-sync fin</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<p>In this overly simplistic table, the Observer role really has nothing useful to
+do but to demonstrate that it will spend most of it’s time in <code class="docutils literal notranslate"><span class="pre">lava-sync</span>
+<span class="pre">fin</span></code>.</p>
+<p>All roles will wait in <code class="docutils literal notranslate"><span class="pre">lava-sync</span> <span class="pre">start</span></code> until all deploy and boot operations
+(or whatever other tasks are put ahead of the call to <code class="docutils literal notranslate"><span class="pre">lava-sync</span></code>) are
+complete. The flow table does not include this delay.</p>
+<p>The Server role runs a script to start a service, sending “ready” when the script
+returns.</p>
+<p>The Client role waits until all devices with the Server role have completed
+<code class="docutils literal notranslate"><span class="pre">lava-send</span> <span class="pre">ready</span></code>. Observer is unaffected and Server moves directly into the
+<code class="docutils literal notranslate"><span class="pre">lava-sync</span> <span class="pre">fin</span></code>. Once the Client completes <code class="docutils literal notranslate"><span class="pre">lava-wait-all</span> <span class="pre">ready</span> <span class="pre">server</span></code>,
+the Client can run the client tasks script. That script finally puts the
+devices with the Client role into <code class="docutils literal notranslate"><span class="pre">lava-sync</span> <span class="pre">fin</span></code> at which point, the Client
+role receives the message that everyone else is already in that sync, the sync
+completes and the flow table ends.</p>
+<p>Tables like this also help visualize how long the timeouts need to be to allow
+the Observer role to wait for all the server tasks and all the client tasks to
+complete.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/multinodeapi.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+</html>

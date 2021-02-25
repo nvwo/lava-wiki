@@ -1,0 +1,1679 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/connections.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:34 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Connections &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dispatcher Action Reference" href="dispatcher-actions.html" />
+    <link rel="prev" title="Media limitations of test devices" href="secondary-media.html" />
+    <link rel="canonical" href="connections.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Connections</a><ul>
+<li><a class="reference internal" href="#connections-in-device-configuration">Connections in device configuration</a></li>
+<li><a class="reference internal" href="#connections-in-test-jobs">Connections in test jobs</a></li>
+<li><a class="reference internal" href="#connections-and-namespaces">Connections and namespaces</a></li>
+<li><a class="reference internal" href="#multiple-serial-port-support">Multiple serial port support</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#isolating-kernel-messages-from-test-output">Isolating kernel messages from test output</a></li>
+<li><a class="reference internal" href="#changes-needed-in-the-test-image">Changes needed in the test image</a></li>
+<li><a class="reference internal" href="#adding-extra-serial-ports-to-a-test-device">Adding extra serial ports to a test device</a></li>
+<li><a class="reference internal" href="#configuring-serial-ports">Configuring serial ports</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-multiple-serial-ports">Using multiple serial ports</a><ul>
+<li><a class="reference internal" href="#example-job-1-simple-beaglebone-black-job-with-a-second-serial-port">Example job 1: Simple beaglebone-black job with a second serial port</a><ul>
+<li><a class="reference internal" href="#deploy-and-boot-the-device">Deploy and boot the device</a></li>
+<li><a class="reference internal" href="#create-the-connection-to-the-second-serial-port">Create the connection to the second serial port</a></li>
+<li><a class="reference internal" href="#tell-the-test-shell-to-use-the-new-connection">Tell the test shell to use the new connection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-job-2-a-more-complicated-setup-including-lxc">Example job 2: A more complicated setup including LXC</a><ul>
+<li><a class="reference internal" href="#define-the-container">Define the container</a></li>
+<li><a class="reference internal" href="#deploy-and-boot-the-container">Deploy and boot the container</a></li>
+<li><a class="reference internal" href="#use-the-container-to-deploy-and-boot-the-device">Use the container to deploy and boot the device</a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example2-boot-connection">Create the connection to the second serial port</a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example2-test-connection">Tell the test shell to use the new connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#limitations-with-multiple-serial-ports">Limitations with multiple serial ports</a></li>
+<li><a class="reference internal" href="#secondary-connection">Secondary Connection</a><ul>
+<li><a class="reference internal" href="#considerations-with-a-secondary-connection">Considerations with a secondary connection</a></li>
+<li><a class="reference internal" href="#connections-and-hacking-sessions">Connections and hacking sessions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-secondary-connections-with-vm-groups">Using secondary connections with VM groups</a><ul>
+<li><a class="reference internal" href="#sequence">Sequence</a></li>
+<li><a class="reference internal" href="#basic-use-cases">Basic use cases</a></li>
+<li><a class="reference internal" href="#advanced-use-cases">Advanced use cases</a><ul>
+<li><a class="reference internal" href="#sample-job-definition-for-the-vm-job">Sample job definition for the VM job</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#primary-remote-connection">Primary remote connection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#devices-supporting-primary-remote-connections">Devices supporting Primary Remote Connections</a><ul>
+<li><a class="reference internal" href="#ssh-as-the-primary-remote-connection">SSH as the primary remote connection</a></li>
+<li><a class="reference internal" href="#security">Security</a></li>
+<li><a class="reference internal" href="#persistence">Persistence</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#disposable-chroot-deployments">Disposable chroot deployments</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="secondary-media.html" title="Previous Chapter: Media limitations of test devices"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Media limitat...</span>
+    </a>
+  </li>
+  <li>
+    <a href="dispatcher-actions.html" title="Next Chapter: Dispatcher Action Reference"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Dispatcher Ac... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="connections">
+<span id="index-0"></span><span id="id1"></span><h1>Connections<a class="headerlink" href="#connections" title="Permalink to this headline">¶</a></h1>
+<p>A <code class="docutils literal notranslate"><span class="pre">connection</span></code> is how LAVA handles talking to a device, for example
+via an automated login session on a serial port on the device or
+within a virtual machine hosted by a device. Some devices can support
+multiple connections. LAVA can use more than one connection in a test
+job, but the first connection is particularly important - this is
+where initial control of booting will happen, and kernel messages will
+normally go here.</p>
+<p>The most common type of connection that LAVA will use is a serial
+connection to the test device, but other connection methods are also
+supported (such as SSH and USB). For a connection method to work, it
+needs to be supported by software in LAVA, services within the
+software running on the device and typically lab infrastructure too,
+e.g. a serial console server.</p>
+<p>As an example, many devices are capable of supporting SSH connections
+as long as:</p>
+<ul class="simple">
+<li>the device can be configured to raise a usable network interface</li>
+<li>the device is booted into a suitable software environment which will
+run an ssh server</li>
+</ul>
+<p>USB connections for Android support can be implemented inside test
+shells using the <a class="reference internal" href="glossary.html#term-lxc"><span class="xref std std-term">LXC</span></a> support.</p>
+<div class="section" id="connections-in-device-configuration">
+<span id="index-1"></span><span id="id2"></span><h2>Connections in device configuration<a class="headerlink" href="#connections-in-device-configuration" title="Permalink to this headline">¶</a></h2>
+<p>For the connections to a device to be made available for test usage,
+they need to be declared in the device configuration, e.g.:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">deploy</span><span class="p">:</span>
+  <span class="nt">methods</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+    <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+
+<span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">connections</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+  <span class="nt">methods</span><span class="p">:</span>
+    <span class="nt">qemu</span><span class="p">:</span>
+  <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connections-in-test-jobs">
+<span id="index-2"></span><span id="id3"></span><h2>Connections in test jobs<a class="headerlink" href="#connections-in-test-jobs" title="Permalink to this headline">¶</a></h2>
+<p>Connections are created in a test job using the <code class="docutils literal notranslate"><span class="pre">boot</span></code> action; it
+must specify the connection <code class="docutils literal notranslate"><span class="pre">method</span></code> as a parameter:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+    <span class="nt">media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tmpfs</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="review-criteria.html#defaults"><span class="std std-ref">Avoid defaults in dispatcher code</span></a> - although <code class="docutils literal notranslate"><span class="pre">serial</span></code> is the traditional
+(and previously default) way of connecting to LAVA devices,
+it is <strong>not</strong> assumed and must be explicitly specified in
+the test job YAML.</p>
+</div>
+<p>The connection created here will be used later by the <code class="docutils literal notranslate"><span class="pre">test</span></code> action
+blocks defined in the test job, so they depend on the <code class="docutils literal notranslate"><span class="pre">boot</span></code> action
+to define the connection. Even where test jobs may not actually cause
+a test device to <em>boot</em> per se, LAVA needs the test job to include a
+<code class="docutils literal notranslate"><span class="pre">boot</span></code> action for this purpose.</p>
+<p>For basic test jobs, this describes all the information that most test
+writers will need to understand. However, there are several more
+advanced connection options that may be useful, depending on the type
+of device and the tests required.</p>
+</div>
+<div class="section" id="connections-and-namespaces">
+<span id="index-3"></span><span id="id4"></span><h2>Connections and namespaces<a class="headerlink" href="#connections-and-namespaces" title="Permalink to this headline">¶</a></h2>
+<p>Internally, LAVA uses a <code class="docutils literal notranslate"><span class="pre">namespace</span></code> structure to track dynamic data
+inside a test job. One of the pieces of data tracked in a namespace is
+the connection in use; this is how the connection created in the
+<code class="docutils literal notranslate"><span class="pre">boot</span></code> action block can be shared throughout the job in further
+actions.</p>
+<p>In a job definition where multiple deploy, boot and test actions are
+specified, there must be a mechanism to describe how the actions are
+connected. This is the primary purpose of a namespace; it is the way
+to tie related actions together. This is important - consider how an
+overlay created during a deploy action will be consumed by a test
+action somewhere down the job definition, for example.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="deploy-lxc.html#namespaces-with-lxc"><span class="std std-ref">Namespaces</span></a>.</p>
+</div>
+<p>In a simple job, it is often not necessary to even consider this use
+of namespaces. If no other namespaces are defined explicitly in a test
+job, LAVA will create an implicit namespace called <code class="docutils literal notranslate"><span class="pre">common</span></code>. The
+default primary serial connection created in the <code class="docutils literal notranslate"><span class="pre">boot</span></code> action block
+will be stored in the <code class="docutils literal notranslate"><span class="pre">common</span></code> namespace, and the <code class="docutils literal notranslate"><span class="pre">test</span></code> action
+block(s) will use it from there.</p>
+<p>If more than one connection is desired in a test job, then the way to
+control which connection is used in each action block is by explicitly
+defining appropriate namespaces. Here’s an example using <code class="docutils literal notranslate"><span class="pre">serial</span></code>
+and <code class="docutils literal notranslate"><span class="pre">lxc</span></code> connections with a Beaglebone device. Look for
+<code class="docutils literal notranslate"><span class="pre">namespace:</span> <span class="pre">inside_lxc</span></code> and <code class="docutils literal notranslate"><span class="pre">namespace:</span> <span class="pre">testdevice</span></code> in the action
+blocks:</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inside_lxc</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">packages</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">usbutils</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">procps</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lsb-release</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">util-linux</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testdevice</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+    <span class="nt">kernel</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/vmlinuz</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zimage</span>
+    <span class="nt">ramdisk</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/initramfs.cpio.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">modules</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/modules.tar.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">dtb</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/dtbs/am335x-bone.dtb</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inside_lxc</span>
+</span>    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testdevice</span>
+</span>    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ramdisk</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="c1"># escape the brackets to ensure that the prompt does not match</span>
+    <span class="c1"># kernel debug lines which may mention initramfs</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;\(initramfs\)&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">testdevice</span>
+</span>    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests-bbb</span>
+</pre></div>
+</td></tr></table></div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/namespace-connections-example1.html">examples/test-jobs/namespace-connections-example1.yaml</a>:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not allowed to combine the <code class="docutils literal notranslate"><span class="pre">common</span></code> namespace with any others
+- it is special-cased. If you are defining more namespaces in your job, give
+them clear descriptive names that are unique within that job.</p>
+</div>
+</div>
+<div class="section" id="multiple-serial-port-support">
+<span id="multiple-serial-support"></span><span id="index-4"></span><h2>Multiple serial port support<a class="headerlink" href="#multiple-serial-port-support" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="background">
+<span id="simple-job-flow"></span><h3>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
+<p>On common test devices where LAVA interacts with the device using a
+serial connection, there is typically a simple flow to the test job,
+running through the action blocks defined in that test job:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">deploy</span></code> block:<ul>
+<li>Set up job artifacts for the test job</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">boot</span></code> block:<ul>
+<li>Start the device</li>
+<li>Connect to the serial port</li>
+<li>Control the boot loader to boot the desired artifacts</li>
+<li>Read kernel boot messages - the serial connection is the kernel
+console</li>
+<li>Wait for the specified prompt to appear, and log in if needed</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">test</span></code> block:<ul>
+<li>Assume the device is waiting for input at a shell prompt</li>
+<li>Send shell commands over the serial connection to run tests</li>
+<li>Read back the results of those tests from that same serial
+connection</li>
+</ul>
+</li>
+<li>(implicit) job cleanup block:<ul>
+<li>Disconnect from the serial port</li>
+<li>Shutdown the device</li>
+</ul>
+</li>
+</ul>
+<p>Even in this simple setup, there is a potential problem. The single
+serial connection is used for output both by the test shell <strong>and</strong>
+the kernel. Ideally, this should not cause any problems, but in the
+real world it is all too common for kernel log messages to be
+interleaved with test output. This could be something simple and
+expected (e.g. a test action bringing up a network interface will
+cause the driver for that interface to announce link state), or it
+could be something unexpected (e.g. the kernel reporting hardware
+failure from an unrelated driver, or a malformed network packet). As
+the kernel messages and the test shell output are interleaved on a
+character-by-character basis, it often is impossible to parse
+each. This can cause tests to fail in unexpected ways, or it can cause
+LAVA to fail to parse test output and so log incomplete or incorrect
+test results.</p>
+<p>Over the years, the LAVA developers have worked to reduce the impact
+of this problem, but it is fundamentally impossible to solve it while
+kernel messages and test shell output are sharing the same
+connection. It <strong>is</strong> possible to change the logging level of the
+kernel to reduce the number or frequency of its messages, but often
+those messages are critical information when debugging a fault so this
+is not a good solution for everybody.</p>
+</div>
+<div class="section" id="isolating-kernel-messages-from-test-output">
+<span id="isolating-kernel-messages"></span><span id="index-5"></span><h3>Isolating kernel messages from test output<a class="headerlink" href="#isolating-kernel-messages-from-test-output" title="Permalink to this headline">¶</a></h3>
+<p>The only reliable way to solve the problem with interleaving and
+corrupted test shell output and kernel messages is to isolate them
+physically, on different connections.</p>
+<p>For some time, LAVA has had support for driving multiple connections
+to a device independently, using <a class="reference internal" href="#secondary-connection"><span class="std std-ref">secondary connections</span></a>. This can be a great solution for many test
+requirements, but doesn’t solve all problems for all people. It
+depends on being able to start extra connections via the network
+(typically SSH or telnet), so on test devices without functional
+networking support it cannot work. It also requires tests to be
+written using the <a class="reference internal" href="glossary.html#term-multinode"><span class="xref std std-term">MultiNode</span></a> protocol, which can add
+considerable complexity to an otherwise simple test job.</p>
+<p>As an alternative, many test devices include more than one hardware
+serial port. Most such devices will use just one of those serial ports
+for firmware, bootloader and kernel messages (a <em>primary
+console</em>). Linux will then start a <code class="docutils literal notranslate"><span class="pre">getty</span></code> process (a serial login
+program) on that primary console. If more serial ports are available,
+connecting those ports and configuring the test OS to spawn more
+<code class="docutils literal notranslate"><span class="pre">getty</span></code> processes is an easy way to get more connections. These
+extra connections are all independent from the primary, so it is safe
+to run test shell commands on these without interleaving test output
+with kernel message output.</p>
+<p>LAVA supports using these multiple serial connections in a simple way,
+avoiding the need for MultiNode complexity.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="test-repositories.html#test-definition-kmsg"><span class="std std-ref">Using kernel messages in a test shell</span></a> for a mitigation of the
+interleaving problem if multiple UART support is not available.</p>
+</div>
+</div>
+<div class="section" id="changes-needed-in-the-test-image">
+<span id="extra-serial-ports-modify-test-image"></span><h3>Changes needed in the test image<a class="headerlink" href="#changes-needed-in-the-test-image" title="Permalink to this headline">¶</a></h3>
+<p>In common with the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> method, the use of multiple serial
+connections involves some risks because the creation of the <code class="docutils literal notranslate"><span class="pre">getty</span></code>
+on the additional serial port(s) is managed by the kernel and rootfs
+of the <strong>test image</strong>. When using multiple serial connections, always
+test that the booted system raises the <code class="docutils literal notranslate"><span class="pre">getty</span></code> correctly and that
+the <code class="docutils literal notranslate"><span class="pre">login</span></code> process works before committing to using this method.</p>
+</div>
+<div class="section" id="adding-extra-serial-ports-to-a-test-device">
+<span id="adding-extra-serial-ports"></span><span id="index-6"></span><h3>Adding extra serial ports to a test device<a class="headerlink" href="#adding-extra-serial-ports-to-a-test-device" title="Permalink to this headline">¶</a></h3>
+<p>There is one hard dependency here: if you want to use multiple serial
+ports, your device must have them available! This can be a
+problem. Some embedded devices may have many UARTs available, but not
+all of them might be exposed for use. If you’re testing x86 devices,
+many computers may only have one serial port. This is not necessarily
+an insurmountable problem. Although the firmware, bootloader and
+kernel may only talk to the primary serial console for boot messages,
+once you have a Linux kernel up and running it’s normally easy to add
+extra ports by simply plugging in a USB serial adapter. Configure the
+test system to start a getty on <code class="docutils literal notranslate"><span class="pre">/dev/ttyUSB0</span></code> and connect
+cables. Don’t get carried away, though - adding more than one USB
+serial adapter can lead to confusion on the device as to which
+connection is which! If you have PCI ports, PCI serial cards are also
+readily available.</p>
+<p>Also consider the cost and complexity of extra cabling (and
+dispatcher-side connections) when adding more serial connections. You
+may benefit from daughter cards or mezzanine boards to expose multiple
+serial connections over one cable.</p>
+</div>
+<div class="section" id="configuring-serial-ports">
+<span id="index-7"></span><span id="id5"></span><h3>Configuring serial ports<a class="headerlink" href="#configuring-serial-ports" title="Permalink to this headline">¶</a></h3>
+<p>To configure LAVA to connect to one or more serial ports of a device, create a
+list of <code class="docutils literal notranslate"><span class="pre">connection_commands</span></code> in the <a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-connections"><span class="std std-ref">device dictionary</span></a>. LAVA will use the command tagged with
+<code class="docutils literal notranslate"><span class="pre">primary</span></code> to open the connection early in test job startup (in the first
+<code class="docutils literal notranslate"><span class="pre">boot</span></code> action) , and will keep this connection open right until the end of
+the test job.</p>
+<p>In earlier versions of LAVA, only a single connection command could be used:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;beaglebone-black.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_off_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command off --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">hard_reset_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command reboot --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_command</span> <span class="o">=</span> <span class="s1">&#39;telnet dispatcher01 7001&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_on_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command on --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>This has worked fine when just using a single serial connection but is now
+deprecated to support working with more than one and other improvements in
+connection handling. The <code class="docutils literal notranslate"><span class="pre">connection_list</span></code> is a more flexible way to
+configure one or more serial ports:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;beaglebone-black.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_off_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command off --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">hard_reset_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command reboot --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_on_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command on --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_list</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;uart0&#39;</span><span class="o">]</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_commands</span> <span class="o">=</span> <span class="o">{</span><span class="s1">&#39;uart0&#39;</span><span class="o">:</span> <span class="s1">&#39;telnet dispatcher01 7001&#39;</span><span class="o">}</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_tags</span> <span class="o">=</span> <span class="o">{</span><span class="s1">&#39;uart0&#39;</span><span class="o">:</span> <span class="o">[</span><span class="s1">&#39;primary&#39;</span><span class="o">,</span> <span class="s1">&#39;telnet&#39;</span><span class="o">]}</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">primary</span></code> denotes the serial connection which will be started automatically
+with each test job.</p>
+<p>Other tags describe how LAVA should close the connection at the end of the
+test job, possible values are <code class="docutils literal notranslate"><span class="pre">telnet</span></code>, <code class="docutils literal notranslate"><span class="pre">ssh</span></code>. If your connection command
+does not use <code class="docutils literal notranslate"><span class="pre">telnet</span></code> or <code class="docutils literal notranslate"><span class="pre">ssh</span></code>, the connection will be forcibly closed
+using <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">-9</span></code>.</p>
+<p>Or with two serial connections:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;beaglebone-black.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_off_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command off --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">hard_reset_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command reboot --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">power_on_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon localhost --hostname pdu01 --command on --port 12&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_list</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;uart0&#39;</span><span class="o">,</span> <span class="s1">&#39;uart1&#39;</span><span class="o">]</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_commands</span> <span class="o">=</span> <span class="o">{</span><span class="s1">&#39;uart0&#39;</span><span class="o">:</span> <span class="s1">&#39;telnet dispatcher01 7001&#39;</span><span class="o">,</span> <span class="s1">&#39;uart1&#39;</span><span class="o">:</span> <span class="s1">&#39;telnet dispatcher01 7002&#39;</span><span class="o">}</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">connection_tags</span> <span class="o">=</span> <span class="o">{</span><span class="s1">&#39;uart0&#39;</span><span class="o">:</span> <span class="o">[</span><span class="s1">&#39;primary&#39;</span><span class="o">,</span> <span class="s1">&#39;telnet&#39;</span><span class="o">],</span> <span class="s1">&#39;uart1&#39;</span><span class="o">:</span> <span class="o">[</span><span class="s1">&#39;telnet&#39;</span><span class="o">]}</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>This defines two serial ports (labeled <code class="docutils literal notranslate"><span class="pre">uart0</span></code> and <code class="docutils literal notranslate"><span class="pre">uart</span></code>), then
+describes how to connect to each one. Finally, it sets a <code class="docutils literal notranslate"><span class="pre">tag</span></code> of
+<code class="docutils literal notranslate"><span class="pre">primary</span></code> on <code class="docutils literal notranslate"><span class="pre">uart0</span></code> - this tells LAVA that <code class="docutils literal notranslate"><span class="pre">uart0</span></code> is the
+primary connection, the one used for boot and kernel messages. This
+makes <code class="docutils literal notranslate"><span class="pre">uart0</span></code> exactly equivalent to the single serial connection
+defined in the previous example. In future, more connection tags might
+be added with extra meaning.</p>
+<p>LAVA now (as of writing in October 2017) supports either of these
+methods to configure serial ports, but at some point in the future the
+older <code class="docutils literal notranslate"><span class="pre">connection_command</span></code> method may be deprecated. <strong>The two
+methods may not be mixed in the same device dictionary - either define
+a single ``connection_command`` or use the new list of connections.</strong></p>
+</div>
+</div>
+<div class="section" id="using-multiple-serial-ports">
+<span id="index-8"></span><span id="id6"></span><h2>Using multiple serial ports<a class="headerlink" href="#using-multiple-serial-ports" title="Permalink to this headline">¶</a></h2>
+<p>For a typical device with multiple serial ports, we can extend our
+<a class="reference internal" href="#simple-job-flow"><span class="std std-ref">simple job flow</span></a> above (changes in <strong>bold</strong>):</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">deploy</span></code> block:<ul>
+<li>Set up job artifacts for the test job</li>
+</ul>
+</li>
+<li>first <code class="docutils literal notranslate"><span class="pre">boot</span></code> block:<ul>
+<li>Start the device</li>
+<li>Connect to the <strong>primary</strong> serial port, <strong>creating an explicit
+namespace for later actions to use it</strong></li>
+<li>Control the boot loader to boot the desired artifacts</li>
+<li>Read kernel boot messages - the <strong>primary</strong> serial connection is
+the kernel console</li>
+<li>Wait for the specified prompt to appear, and log in if needed</li>
+</ul>
+</li>
+<li>(optional) first  <code class="docutils literal notranslate"><span class="pre">test</span></code> block:<ul>
+<li>Tests to run using the <strong>primary</strong> serial port, <strong>via the
+namespace created for it</strong>. <em>(This is likely to be empty, in which
+case you can just leave this test block out altogether)</em></li>
+</ul>
+</li>
+<li><strong>second</strong> <code class="docutils literal notranslate"><span class="pre">boot</span></code> block:<ul>
+<li><strong>Start a new connection to a non-primary serial port, and create
+a new namespace for it</strong></li>
+<li>Wait for the specified prompt to appear <strong>on the non-primary
+serial port</strong>, and log in if needed</li>
+</ul>
+</li>
+<li>second <code class="docutils literal notranslate"><span class="pre">test</span></code> block:<ul>
+<li>Assume the device is waiting for input at a shell prompt</li>
+<li>Send shell commands over the <strong>non-primary</strong> serial connection to
+run tests</li>
+<li>read back the results of those tests on the <strong>non-primary</strong> serial
+connection</li>
+<li><strong>in the background, listen to the existing serial port
+connection for kernel messages (feedback)</strong></li>
+</ul>
+</li>
+<li>(implicit) job cleanup:<ul>
+<li>disconnect from the serial ports</li>
+<li>shutdown the device</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To use the extra serial port here, the operating system
+image on the test device will also need to be configured to
+start a <code class="docutils literal notranslate"><span class="pre">getty</span></code> on the extra serial port. This can be done
+in the image as it is prepared, or alternatively it could be
+started by logging in using the test action on the primary
+console. That latter approach might seem to be the obvious
+path, but <strong>again</strong> beware of serial corruption causing
+problems. The period during and immediately after boot is
+when kernel messages are most likely to be intermingled with
+attempts to control a device on the primary console.</p>
+</div>
+<div class="section" id="example-job-1-simple-beaglebone-black-job-with-a-second-serial-port">
+<span id="multiple-serial-ports-example1"></span><span id="index-9"></span><h3>Example job 1: Simple beaglebone-black job with a second serial port<a class="headerlink" href="#example-job-1-simple-beaglebone-black-job-with-a-second-serial-port" title="Permalink to this headline">¶</a></h3>
+<p>Here’s a simple test job on a common board, a Beaglebone Black. The
+board only exposes one serial port for easy use, so we’ve added a USB
+serial adapter as a second port.</p>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/bbb-2serial.html">examples/test-jobs/bbb-2serial.yaml</a>:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#multiple-serial-ports-example1-boot-device"><span class="std std-ref">Deploy and boot the device</span></a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example1-boot-connection"><span class="std std-ref">Create the connection to the second serial port</span></a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example1-test-connection"><span class="std std-ref">Tell the test shell to use the new connection</span></a></li>
+</ol>
+<div class="section" id="deploy-and-boot-the-device">
+<span id="multiple-serial-ports-example1-boot-device"></span><h4>Deploy and boot the device<a class="headerlink" href="#deploy-and-boot-the-device" title="Permalink to this headline">¶</a></h4>
+<p>This is using a simple Debian Stretch nfs rootfs and initramfs. The
+rootfs is easy to generate using standard tools; the only change in
+there is to define the second serial console on
+/dev/ttyUSB0. <a class="reference external" href="extra_serial_ports_modify_test_image.html">Remember</a> that
+a similar change will likely be needed in any test image you want to
+test this way. Note the explicit namespace <code class="docutils literal notranslate"><span class="pre">bbb</span></code> defined in the
+<code class="docutils literal notranslate"><span class="pre">deploy</span></code> action, and created in the <code class="docutils literal notranslate"><span class="pre">boot</span></code> action:</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bbb</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+    <span class="nt">kernel</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://people.linaro.org/~steve.mcintyre/lava/images/stretch-armhf-multi-serial/vmlinuz-4.9.0-4-armmp</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zimage</span>
+    <span class="nt">ramdisk</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://people.linaro.org/~steve.mcintyre/lava/images/stretch-armhf-multi-serial/initrd.img-4.9.0-4-armmp</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">modules</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://people.linaro.org/~steve.mcintyre/lava/images/stretch-armhf-multi-serial/modules.tar.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">nfsrootfs</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://people.linaro.org/~steve.mcintyre/lava/images/stretch-armhf-multi-serial/stretch-armhf-nfs-extra-getty.tar.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">dtb</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://people.linaro.org/~steve.mcintyre/lava/images/stretch-armhf-multi-serial/dtbs/am335x-boneblack.dtb</span>
+
+<span class="hll"><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+</span>    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bbb</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs</span>
+<span class="hll">    <span class="nt">prompts</span><span class="p">:</span>
+</span><span class="hll">    <span class="p p-Indicator">-</span> <span class="s">&#39;login:&#39;</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="c1"># startup the extra UART</span>
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+</pre></div>
+</td></tr></table></div>
+<p>A <code class="docutils literal notranslate"><span class="pre">boot</span></code> action would typically include an <code class="docutils literal notranslate"><span class="pre">auto_login</span></code> section,
+but in this test we’re not going to be doing any testing using the
+primary serial connection. Hence, we just add a <code class="docutils literal notranslate"><span class="pre">prompts</span></code> section
+looking for <code class="docutils literal notranslate"><span class="pre">login:</span></code> to check when this boot is complete.</p>
+</div>
+<div class="section" id="create-the-connection-to-the-second-serial-port">
+<span id="multiple-serial-ports-example1-boot-connection"></span><h4>Create the connection to the second serial port<a class="headerlink" href="#create-the-connection-to-the-second-serial-port" title="Permalink to this headline">¶</a></h4>
+<p>Next, we use a second <code class="docutils literal notranslate"><span class="pre">boot</span></code> action block to create a new connection
+<strong>in a new namespace</strong> called <code class="docutils literal notranslate"><span class="pre">isolation</span></code>. We’re using the
+<code class="docutils literal notranslate"><span class="pre">new_connection</span></code> method, using the <code class="docutils literal notranslate"><span class="pre">uart1</span></code> connection defined in
+the device dictionary. As we’re going to be using this new connection
+for testing, we now run <code class="docutils literal notranslate"><span class="pre">auto_login</span></code> here.</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="c1"># support auto-login</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">isolation</span>
+</span><span class="hll">    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">new_connection</span>
+</span>    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uart1</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@stretch:&#39;</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="c1"># shorter timeout as the device should exist.</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="c1"># Use the bbb namespace - we depend on that for the deployed data</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="tell-the-test-shell-to-use-the-new-connection">
+<span id="multiple-serial-ports-example1-test-connection"></span><h4>Tell the test shell to use the new connection<a class="headerlink" href="#tell-the-test-shell-to-use-the-new-connection" title="Permalink to this headline">¶</a></h4>
+<p>Finally, we start our tests.</p>
+<ul class="simple">
+<li>The <strong>namespace</strong> of the <code class="docutils literal notranslate"><span class="pre">test</span></code> action <strong>matches</strong> the <code class="docutils literal notranslate"><span class="pre">bbb</span></code>
+namespace used in the <code class="docutils literal notranslate"><span class="pre">deploy</span></code> and <code class="docutils literal notranslate"><span class="pre">boot</span></code> actions of the
+device. This ensures that the test shell has access to the dynamic
+data created by the correct deployment action to be able to know
+what rootfs is in use, and where to find the test shell files on
+that rootfs.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">test</span></code> action also has <code class="docutils literal notranslate"><span class="pre">connection-namespace</span></code> defined to
+<code class="docutils literal notranslate"><span class="pre">isolation</span></code> - this tells it to use the connection tracked in the
+<code class="docutils literal notranslate"><span class="pre">isolation</span></code> namespace, rather than the default connection in the
+<code class="docutils literal notranslate"><span class="pre">bbb</span></code> namespace. <strong>This is the key part of the isolation, running
+tests on the second serial port.</strong></li>
+</ul>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bbb</span>
+</span>    <span class="c1"># Run the test shell using the &quot;isolation&quot; connection</span>
+<span class="hll">    <span class="nt">connection-namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">isolation</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+</pre></div>
+</td></tr></table></div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/bbb-2serial.html">examples/test-jobs/bbb-2serial.yaml</a>:</p>
+</div>
+</div>
+<div class="section" id="example-job-2-a-more-complicated-setup-including-lxc">
+<span id="multiple-serial-ports-example2"></span><span id="index-10"></span><h3>Example job 2: A more complicated setup including LXC<a class="headerlink" href="#example-job-2-a-more-complicated-setup-including-lxc" title="Permalink to this headline">¶</a></h3>
+<p>Here’s a more complicated example job, including the use of LXC for
+deployment. This was the first real-world use case for the multiple
+serial port support, running Linux kernel functional testing on a
+HiKey 6220. The HiKey 6220 hardware includes an extra serial port, but
+deploying to the board is more involved - we use fastboot in an LXC
+container, which means we have <em>another</em> namespace to track in the
+test job. Let’s unpick the test job.</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#multiple-serial-ports-example2-define-container"><span class="std std-ref">Define the container</span></a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example2-boot-container"><span class="std std-ref">Deploy and boot the container</span></a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example2-boot-device"><span class="std std-ref">Use the container to deploy and boot the device</span></a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example2-boot-connection"><span class="std std-ref">Create the connection to the second serial port</span></a></li>
+<li><a class="reference internal" href="#multiple-serial-ports-example2-test-connection"><span class="std std-ref">Tell the test shell to use the new connection</span></a></li>
+</ol>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/multiple-serial-ports-lxc.html">examples/test-jobs/multiple-serial-ports-lxc.yaml</a>:</p>
+<div class="section" id="define-the-container">
+<span id="multiple-serial-ports-example2-define-container"></span><h4>Define the container<a class="headerlink" href="#define-the-container" title="Permalink to this headline">¶</a></h4>
+<p>The distribution and suite of the container, as well as the name, are defined
+using the <code class="docutils literal notranslate"><span class="pre">lava-lxc</span></code> protocol block.</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-lxc</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc-hikey-oe</span>
+    <span class="nt">template</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+    <span class="nt">distribution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="deploy-and-boot-the-container">
+<span id="multiple-serial-ports-example2-boot-container"></span><h4>Deploy and boot the container<a class="headerlink" href="#deploy-and-boot-the-container" title="Permalink to this headline">¶</a></h4>
+<p>The deploy and boot step for the LXC set the timeouts and prompts for this
+container. Note the name of the <code class="docutils literal notranslate"><span class="pre">namespace</span></code> used in these actions.</p>
+<p>The connection to the LXC is defined within the <code class="docutils literal notranslate"><span class="pre">tlxc</span></code> namespace and the
+connection is created in the <code class="docutils literal notranslate"><span class="pre">boot</span></code> action. In the case of LXC support, this
+is done by running <code class="docutils literal notranslate"><span class="pre">lxc-attach</span></code> on the dispatcher instead of a connection
+command from the device configuration.</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">packages</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+</span>    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;hikey:/&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+</pre></div>
+</td></tr></table></div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-boot.html#boot-connection-namespace"><span class="std std-ref">connection-namespace</span></a> and <a class="reference internal" href="deploy-lxc.html#namespaces-with-lxc"><span class="std std-ref">Namespaces</span></a></p>
+</div>
+</div>
+<div class="section" id="use-the-container-to-deploy-and-boot-the-device">
+<span id="multiple-serial-ports-example2-boot-device"></span><h4>Use the container to deploy and boot the device<a class="headerlink" href="#use-the-container-to-deploy-and-boot-the-device" title="Permalink to this headline">¶</a></h4>
+<p>Next, the dispatcher runs commands inside that LXC container to download and
+deploy an OE image to a HiKey 6220 board, then boot it. This example uses the
+<code class="docutils literal notranslate"><span class="pre">hikey-oe</span></code> namespace. The details of how the HiKey 6220 is deployed and
+booted are not relevant to how the multiple serial support operates, but do
+take note of the <code class="docutils literal notranslate"><span class="pre">namespace</span></code> used to <code class="docutils literal notranslate"><span class="pre">boot</span></code> the device. The <code class="docutils literal notranslate"><span class="pre">boot</span></code>
+operation is responsible for creating the connection (in this case by running
+a connection command specified in the device configuration).</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">images</span><span class="p">:</span>
+      <span class="nt">ptable</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/morty/hikey/rpb/4.9/83/bootloader/ptable-linux-8g.img</span>
+        <span class="nt">reboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hard-reset</span>
+      <span class="nt">boot</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/morty/hikey/rpb/linux-mainline/588/boot-0.0+AUTOINC+06e4def583-fb1158a365-r0-hikey-20180128213254-588.uefi.img</span>
+        <span class="nt">reboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hard-reset</span>
+      <span class="nt">system</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/morty/hikey/rpb/linux-mainline/588/rpb-console-image-hikey-20180128213254-588.rootfs.img.gz</span>
+        <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+        <span class="nt">apply-overlay</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="c1"># ensure that this job raises a network interface with DHCP before relying on internet access</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-lxc</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot-deploy</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-power-command</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+</span>    <span class="c1"># terminate monitoring of this connection at login prompt</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;login:&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grub</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">installed</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-lxc</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grub-sequence-action</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-os-command</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="c1"># boot uart0 block</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="multiple-serial-ports-example2-boot-connection">
+<span id="id8"></span><h4>Create the connection to the second serial port<a class="headerlink" href="#multiple-serial-ports-example2-boot-connection" title="Permalink to this headline">¶</a></h4>
+<p>As with making the connection to the LXC and making the connection to the
+primary <a class="reference internal" href="glossary.html#term-uart"><span class="xref std std-term">UART</span></a> of the HiKey 6220 <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>, making the connection to
+the second or additional serial ports involves a <code class="docutils literal notranslate"><span class="pre">boot</span></code> action. The action
+<strong>must</strong> create a new namespace to store the connection to the second serial
+port. (Any subsequent connections to other serial ports would similarly require
+a unique namespace for each connection.) This namespace will be used later to
+isolate a test shell from the primary connection used for the deployment and
+boot actions of the device.</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="c1"># make the connection to the second uart for use in the test shell</span>
+    <span class="c1"># support auto-login</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">isolation</span>
+<span class="hll">    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uart0</span>
+</span>    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@hikey:~#&#39;</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">new_connection</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="c1"># shorter timeout as the device should exist.</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="c1"># test isolation block</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="multiple-serial-ports-example2-test-connection">
+<span id="id9"></span><h4>Tell the test shell to use the new connection<a class="headerlink" href="#multiple-serial-ports-example2-test-connection" title="Permalink to this headline">¶</a></h4>
+<p>This is where it all comes together.</p>
+<ul>
+<li><p class="first">The <strong>namespace</strong> of the test shell <strong>matches</strong> the namespace of the
+<strong>deployment and boot actions of the device</strong>. This ensures that the test
+shell has access to the dynamic data created by the correct deployment action
+to be able to know what rootfs is in use and where to find the test shell
+files on that rootfs.</p>
+<p>In this example, the test shell needs a <strong>namespace</strong> of <code class="docutils literal notranslate"><span class="pre">hikey-oe</span></code></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#multiple-serial-ports-example2-boot-device"><span class="std std-ref">Use the container to deploy and boot the device</span></a></p>
+</div>
+</li>
+<li><p class="first">The <strong>connection-namespace</strong> of the same test shell <strong>matches</strong> the namespace
+of the <strong>boot action of the second serial port</strong>. This ensures that the test
+shell communicates with the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> over the isolated connection instead
+of the connection which is stored in the main namespace.</p>
+<p>In this example, the test shell needs a <strong>connection-namespace</strong> of
+<code class="docutils literal notranslate"><span class="pre">isolation</span></code></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#multiple-serial-ports-example2-boot-connection"><span class="std std-ref">Create the connection to the second serial port</span></a></p>
+</div>
+</li>
+</ul>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+</span><span class="hll">    <span class="nt">connection-namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">isolation</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests-basic-oe</span>
+</pre></div>
+</td></tr></table></div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/multiple-serial-ports-lxc.html">examples/test-jobs/multiple-serial-ports-lxc.yaml</a>:</p>
+</div>
+</div>
+</div>
+<div class="section" id="limitations-with-multiple-serial-ports">
+<span id="multiple-serial-ports-limitations"></span><span id="index-11"></span><h2>Limitations with multiple serial ports<a class="headerlink" href="#limitations-with-multiple-serial-ports" title="Permalink to this headline">¶</a></h2>
+<p>The method described here is reasonably simple to configure and use,
+but it is does have limitations. While LAVA will read from multiple
+connections (almost) in parallel this way, it will only write to one
+of them at once. The others will all be read-only. This may well suit
+your needs, but if not then there is another option - using MultiNode
+with <a class="reference internal" href="#secondary-connection"><span class="std std-ref">secondary connections</span></a>. This is more
+powerful, but much more complex to describe in a test job.</p>
+</div>
+<div class="section" id="secondary-connection">
+<span id="index-12"></span><span id="id11"></span><h2>Secondary Connection<a class="headerlink" href="#secondary-connection" title="Permalink to this headline">¶</a></h2>
+<p>Secondary Connections are a way to have two simultaneous connections
+to the same physical device, equivalent to two logins. Each connection
+needs to be supported by a distinct TestJob, so a MultiNode group
+needs to be created so that the output of each connection can be
+viewed as the output of a single TestJob, just as if you had two
+terminals. The second connection does not have to use the same
+connection method as the current connection and many devices can only
+support secondary connections over a network interface, for example
+SSH or telnet.</p>
+<p>A Secondary Connection has a deploy step and the device is already
+providing output over the primary connection (typically serial) before
+the secondary connection is established. This is closer to having the
+machine on your desk. The TestJob supplies the kernel and rootfs or
+image to boot the device and can optionally use the secondary
+connection to push other files to the device (for example, an <code class="docutils literal notranslate"><span class="pre">ssh</span></code>
+secondary connection would use <code class="docutils literal notranslate"><span class="pre">scp</span></code>).</p>
+<p>A Secondary Connection can have control over the daemon via the
+deployment using the primary connection. The client connection is
+still made by the dispatcher.</p>
+<p>Secondary Connections require authorization to be configured, so the
+deployment must specify the authorization method. This allows the
+overlay for this deployment to contain a token (e.g. the ssh public
+key) which will allow the connection to be made. The token will be
+added to the overlay tarball alongside the directories containing the
+test definitions.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tmpfs</span>
+    <span class="nt">authorize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">kernel</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://....</span>
+    <span class="nt">nfsrootfs</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://...</span>
+    <span class="nt">dtb</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://....</span>
+</pre></div>
+</div>
+<p>Certain deployment Actions (like SSH) will also copy the token to a particular
+location (e.g. <code class="docutils literal notranslate"><span class="pre">/root/.ssh/authorized_keys</span></code>) but test writers can also add a
+run step which enables authorization for a different user, if the test requires
+this.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">/root/.ssh/authorized_keys</span></code> file will be replaced when the
+LAVA overlay is unpacked, if it exists in the test image already. This is a
+security precaution (so that test images can be shared easily without
+allowing unexpected access). Hacking sessions append to this file after the
+overlay has been unpacked.</p>
+</div>
+<p>Deployment can also include delivering the LAVA overlay files, including the
+LAVA test shell support scripts and the test definitions specified by the
+submitter, to the <strong>host</strong> device to be executed over the secondary connection.
+So for SSH, the secondary connection typically has a test action defined and
+uses <code class="file docutils literal notranslate"><span class="pre">scp</span></code> to put the overlay into place before connecting using
+<code class="file docutils literal notranslate"><span class="pre">ssh</span></code> and executing the tests. The creation of the overlay is part of the
+deployment, the delivery of the overlay is part of the boot process of the
+secondary connection, i.e. deploy is passive, boot is active. To support this,
+use the MultiNode protocol on the host to declare the IP address of the host
+and communicate that to the guest as part of the guest deployment. Then the
+guest uses the data to copy the files and make the connection as part of the
+boot action. See <a class="reference internal" href="pipeline-writer-secondary.html#writing-secondary-connection-jobs"><span class="std std-ref">Writing jobs using Secondary Connections</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A failure to connect to a <a class="reference internal" href="#primary-remote-connection"><span class="std std-ref">Primary remote connection</span></a>
+would be an <a class="reference internal" href="dispatcher-design.html#infrastructure-error-exception"><span class="std std-ref">InfrastructureError Exception</span></a>. A failure to
+connect to a <a class="reference internal" href="#secondary-connection"><span class="std std-ref">Secondary Connection</span></a> is a
+<a class="reference internal" href="dispatcher-design.html#test-error-exception"><span class="std std-ref">TestError Exception</span></a>.</p>
+</div>
+<div class="section" id="considerations-with-a-secondary-connection">
+<span id="host-role"></span><h3>Considerations with a secondary connection<a class="headerlink" href="#considerations-with-a-secondary-connection" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>The number of host devices</li>
+<li>Which secondary connections connect to which host device</li>
+</ol>
+<p>In LAVA, this is handled using the MultiNode <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> using the following
+rules:</p>
+<ol class="arabic simple">
+<li>All connections declare a <code class="docutils literal notranslate"><span class="pre">host_role</span></code> which is the <code class="docutils literal notranslate"><span class="pre">role</span></code> label for the
+host device for that connection. e.g. if the connection has a declared role
+of <code class="docutils literal notranslate"><span class="pre">client</span></code> and declares a <code class="docutils literal notranslate"><span class="pre">host_role</span></code> of <code class="docutils literal notranslate"><span class="pre">host</span></code>, then every
+<code class="docutils literal notranslate"><span class="pre">client</span></code> connection will be expected to be able to connect to the <code class="docutils literal notranslate"><span class="pre">host</span></code>
+device.</li>
+<li>The TestJob for each connection with the same <code class="docutils literal notranslate"><span class="pre">role</span></code> will be started on a
+single dispatcher which is local to the device with the <code class="docutils literal notranslate"><span class="pre">role</span></code> matching
+the specified <code class="docutils literal notranslate"><span class="pre">host_role</span></code>.</li>
+<li>There is no guarantee that a connection will be possible to any other device
+in the MultiNode group other than devices assigned to a <code class="docutils literal notranslate"><span class="pre">role</span></code> which
+matches the <code class="docutils literal notranslate"><span class="pre">host_role</span></code> requirement of the connection.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">count</span></code> of any <code class="docutils literal notranslate"><span class="pre">role</span></code> acting as the <code class="docutils literal notranslate"><span class="pre">host_role</span></code> <strong>must</strong> be
+set to 1. Multiple roles can be defined, each set as a <code class="docutils literal notranslate"><span class="pre">host_role</span></code> by at
+least one of the other roles, if more than one device in the MultiNode group
+needs to host secondary connections in the one submission. Multiple
+connections can be made to devices of any one <code class="docutils literal notranslate"><span class="pre">host_role</span></code>.</p>
+</div>
+<p>This allows for devices to be hosted in private networks where only a local
+dispatcher can access the device, without requiring that all devices are
+accessible (as root) from all dispatchers as that would require all devices to
+be publicly accessible.</p>
+<p>Secondary connections are affected by <a class="reference internal" href="#security"><span class="std std-ref">Security</span></a> issues due to
+the requirements of automation.</p>
+<p>The device providing a Secondary Connection is running a TestJob and the
+deployment will be erased when the job completes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Avoid confusing <code class="docutils literal notranslate"><span class="pre">host_role</span></code> with <a class="reference internal" href="actions-protocols.html#lava-start"><span class="std std-ref">expect_role</span></a>.
+<code class="docutils literal notranslate"><span class="pre">host_role</span></code> is used by the scheduler to ensure that the job assignment
+operates correctly and does not affect the dispatcher or delayed start
+support. The two values may often have the same value with secondary
+connections but do not mean the same thing.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Avoid using constrained resources (like <code class="docutils literal notranslate"><span class="pre">dpkg</span></code> or <code class="docutils literal notranslate"><span class="pre">apt</span></code>) from
+multiple tests (unless you take care with synchronization calls to ensure
+that each operation happens independently). Check through the test
+definitions for installation steps or direct calls to <code class="docutils literal notranslate"><span class="pre">apt</span></code> and change the
+test definitions.</p>
+</div>
+</div>
+<div class="section" id="connections-and-hacking-sessions">
+<h3>Connections and hacking sessions<a class="headerlink" href="#connections-and-hacking-sessions" title="Permalink to this headline">¶</a></h3>
+<p>A hacking session using a <a class="reference internal" href="#secondary-connection"><span class="std std-ref">Secondary Connection</span></a> is the only situation
+where the client is configurable by the user <strong>and</strong> the daemon can be
+controlled by the test image. It is possible to adjust the hacking session test
+definitions to use different commands and options - as long as both daemon and
+client use compatible options. As such, a hacking session user retains security
+over their private keys at the cost of the loss of automation.</p>
+<p>Hacking sessions can be used with secondary connections, depending on
+the use case.</p>
+</div>
+</div>
+<div class="section" id="using-secondary-connections-with-vm-groups">
+<span id="using-secondary-connections"></span><h2>Using secondary connections with VM groups<a class="headerlink" href="#using-secondary-connections-with-vm-groups" title="Permalink to this headline">¶</a></h2>
+<p>One example of the use of a secondary connection is to launch a VM on a device
+already running a test image. This allows the test writer to control both the
+kernel on the bare metal and the kernel in the VM as well as having a
+connection on the host machine and the guest virtual machine.</p>
+<p>The implementation of VMGroups created a role for a delayed start MultiNode
+job. This would allow one job to operate over serial, publish the IP address,
+start an SSH server and signal the second job that a connection is ready to be
+established. This may be useful for situations where a debugging shell needs to
+be opened around a virtualization boundary.</p>
+<p>There is an option for downloading or preparing the guest VM image on the host
+device within a test shell, prior to the VM delayed start. Alternatively, a
+deploy stage can be used which would copy a downloaded image from the
+dispatcher to the host device.</p>
+<p>Each connection is a different job in a MultiNode group so that the output of
+each connection is tracked separately and can be monitored separately.</p>
+<div class="section" id="sequence">
+<h3>Sequence<a class="headerlink" href="#sequence" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>The host device is deployed with a test image and booted.</li>
+<li>LAVA then manages the download of the files necessary to create
+the secondary connection.<ul>
+<li>e.g. for QEMU, this would be a bootable image file</li>
+</ul>
+</li>
+<li>LAVA also creates a suitable overlay containing the test definitions to be
+run inside the virtual machine.</li>
+<li>The test image <strong>must</strong> start whatever servers are required to provide the
+secondary connections, e.g. ssh. It does not matter whether this is done
+using install steps in the test definition or pre-existing packages in the
+test image or manual setup. The server <strong>must</strong> be configured to allow the
+(insecure) LAVA automation SSH private key to log in as authorized - this
+key is available in the
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/python3/dist-packages/lava_dispatcher/device/dynamic_vm_keys</span></code>
+directory when lava-dispatcher is installed or in the lava-dispatcher <a class="reference external" href="https://git.lavasoftware.org/lava/lava/tree/master/lava_dispatcher/dynamic_vm_keys">git
+tree</a>.</li>
+<li>The test image on the host device starts a test definition over the existing
+(typically serial) connection. At this point, the image file and overlay for
+the guest VM are available <strong>on the host</strong> for the host device test
+definition to inspect, although only the image file should actually be
+modified.</li>
+<li>The test definition includes a signal to the LAVA <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> which
+allows the VM to start. The signal includes an identifier for which VM to
+start, if there is more than one.</li>
+<li>The second job in the MultiNode group waits until the signal is received
+from the coordinator. Upon receipt of the signal, the <code class="docutils literal notranslate"><span class="pre">lava</span> <span class="pre">dispatch</span></code>
+process running the second job will initiate the secondary connection to the
+host device, e.g. over SSH, using the specified private key. The connection
+is used to run a set of commands in the test image running on the host
+device. It is a TestError if any of these commands fail. The last of these
+commands <strong>must</strong> hold the connection open for as long as the test writer
+needs to execute the task inside the VM. Once those tasks are complete, the
+test definition running in the test image on the host device signals that
+the VM has completed.</li>
+</ol>
+<p>The test writer is given full control over the commands issued inside the test
+image on the host device, including those commands which are responsible for
+launching the VM. The test writer is also responsible for making the
+<strong>overlay</strong> available inside the VM. This could be by passing arguments to the
+commands to mount the overlay alongside the VM or by unpacking the overlay
+inside the VM image before calling QEMU. If set in the job definition, the test
+writer can ask LAVA to unpack the overlay inside the image file for the VM and
+this will be done on the host device before the host device boots the test
+image - however, this will require an extra boot of the host device, e.g. using
+the dynamic master support.</p>
+</div>
+<div class="section" id="basic-use-cases">
+<h3>Basic use cases<a class="headerlink" href="#basic-use-cases" title="Permalink to this headline">¶</a></h3>
+<p>Prebuilt files can be downloaded, kernel, ramdisk, dtb, rootfs or complete
+image. These will be downloaded to the host device and the paths to these files
+substituted into the commands issued to start the VM, in the same way as with
+bootloader like u-boot. This provides support for tests within the VM using
+standard, packaged tools. To simplify these tests further, it is recommended to
+use NFS for the root filesystem of the host device boot - it leads to a quicker
+deployment as the files for the VM can be downloaded directly to the NFS share
+by the dispatcher. Deployments of the host device system to secondary media,
+e.g. SATA, require additional steps and the job will take longer to get to a
+point where the VM can be started.</p>
+<p>The final launch of the VM will occur using a shell script (which will then be
+preserved in the results alongside the overlay), containing the parsed
+commands.</p>
+</div>
+<div class="section" id="advanced-use-cases">
+<h3>Advanced use cases<a class="headerlink" href="#advanced-use-cases" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to use a test shell to build files to be used when launching the
+VM. This allows for a test shell to operate on the host device, building,
+downloading or compiling whatever files are necessary for the operation of the
+VM, directly controlled by the test shell.</p>
+<p>To avoid confusion and duplication, LAVA does not support downloading some
+files via the dispatcher and some via the test shell. If there are files needed
+for the test job which are not to be built or generated within the test shell,
+the test shell will need to use <code class="docutils literal notranslate"><span class="pre">wget</span></code> or <code class="docutils literal notranslate"><span class="pre">curl</span></code> or some other tool present
+in the test image to obtain the files. This also means that LAVA is not able to
+verify that such URLs are correct during the validation of the job, so test
+writers need to be aware that LAVA will not be able to fail a job early if the
+URL is incorrect as would happen in the basic use case.</p>
+<p>Any overlay containing the test definitions and LAVA test scripts which are to
+be executed inside the VM after the VM has booted still needs to be downloaded
+from the dispatcher. The URL of this overlay (a single tarball containing all
+files in a self-contained directory) will be injected into the test shell files
+on the host device, in a similar way to how the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> provides
+dynamic data from other devices in the group.</p>
+<p>The test writer is responsible for extracting this tarball so that it is
+present or is bind mounted into the root directory of the VM so that the
+scripts can be launched immediately after login.</p>
+<p>The test shell needs to create the final shell script, just as the basic use
+case does. This allows the dispatcher running the VM to connect to the host
+device and use a common interface to launch the VM in each use case.</p>
+<p>LAVA initiates and controls the connection to the VM, using this script, so
+that all output is tracked in the MultiNode job assigned to the VM.</p>
+<div class="section" id="sample-job-definition-for-the-vm-job">
+<h4>Sample job definition for the VM job<a class="headerlink" href="#sample-job-definition-for-the-vm-job" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># second half of a new-style VM group job</span>
+<span class="c1"># each connection is a different job</span>
+<span class="c1"># even if only one physical device is actually powered up.</span>
+<span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm-arm</span>
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">wandboard-qemu</span>
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+  <span class="nt">action</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="nt">target_group</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">asd243fdgdfhgf-45645hgf</span>
+<span class="nt">group_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">parameters</span><span class="p">:</span>
+  <span class="c1"># the test definition on the host device manages how</span>
+  <span class="c1"># the overlay is applied to the VM image.</span>
+  <span class="nt">overlay</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">manual</span>  <span class="c1"># use automatic for LAVA to do the overlay</span>
+<span class="c1"># An ID appended to the signal to start this VM to distinguish</span>
+<span class="c1"># it from any other VMs which may start later or when this one</span>
+<span class="c1"># completes.</span>
+<span class="nt">vm_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gdb_session</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+
+ <span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="c1"># as kvm-arm, this happens in a test image via</span>
+    <span class="c1"># the other half of this MultiNode job</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="c1"># alternative to u-boot</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">vm</span>
+    <span class="c1"># any way to launch a vm</span>
+    <span class="nt">commands</span><span class="p">:</span>
+      <span class="c1"># full access to the commands to run on the other device</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">qemu-system-arm -hda {IMAGE}</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+
+ <span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm-basic-singlenode</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+          <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+          <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="primary-remote-connection">
+<span id="index-13"></span><span id="id12"></span><h3>Primary remote connection<a class="headerlink" href="#primary-remote-connection" title="Permalink to this headline">¶</a></h3>
+<p>When a test device does not have support at all for a primary serial
+connection, there is another, more limited way of using it in LAVA -
+the Primary Remote Connection. For this to work, the test device must
+boot automatically and start a remote login daemon (e.g. sshd) with
+configured authentication. The TestJob for a primary remote connection
+then skips the deploy stage and uses a simple boot method which just
+establishes the connection. A device providing a primary remote
+connection in LAVA only provides access to that connection via a
+single submitted TestJob at a time. A MultiNode job can make multiple
+connections, but other jobs will see the device as busy and not be
+able to start their connections.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Primary remote connections can raise issues of
+<a class="reference internal" href="#persistence"><span class="std std-ref">Persistence</span></a> - the test writer is solely responsible for
+deleting any sensitive data copied, prepared or downloaded using a
+primary remote connection. Do not leave sensitive data for the next
+TestJob to find. Wherever possible, use primary remote connections
+with <code class="docutils literal notranslate"><span class="pre">schroot</span></code> support so that each job is kept within a
+<a class="reference internal" href="#disposable-chroot"><span class="std std-ref">temporary chroot</span></a>, thereby also allowing
+more than one primary (schroot) remote connection on a single
+machine.</p>
+</div>
+<p>It is not necessarily required that a device offering a primary remote
+connection is permanently powered on. The only connections being made
+to the device are done via the scheduler, which ensures that only one
+TestJob can use any one device at a time. Depending on how long it
+takes to boot the device, it is feasible to have a device offering
+primary remote connections which is powered down between jobs.</p>
+<p>A Primary Remote Connection is established by the dispatcher, and is
+therefore constrained in the options which are available to the client
+requesting the connection, The TestJob has <strong>no</strong> control over the
+arguments passed to the connection.</p>
+<p>Primary remote connections are affected by <a class="reference internal" href="#security"><span class="std std-ref">Security</span></a> issues due
+to the requirements of automation.</p>
+</div>
+</div>
+<div class="section" id="devices-supporting-primary-remote-connections">
+<span id="primary-remote-connection-devices"></span><h2>Devices supporting Primary Remote Connections<a class="headerlink" href="#devices-supporting-primary-remote-connections" title="Permalink to this headline">¶</a></h2>
+<p>A device offering a primary remote connection needs a particular
+configuration in the device dictionary table:</p>
+<ol class="arabic simple">
+<li>Only primary remote connection deployment methods defined in the
+<code class="docutils literal notranslate"><span class="pre">deploy_methods</span></code> parameter, e,g, <code class="docutils literal notranslate"><span class="pre">ssh</span></code>.</li>
+<li>Support in the device_type template to replace the list of deployment
+methods with the list supplied in the <code class="docutils literal notranslate"><span class="pre">deploy_methods</span></code> parameter.</li>
+<li>No <code class="docutils literal notranslate"><span class="pre">serial</span></code> connection support in the <code class="docutils literal notranslate"><span class="pre">boot</span></code> connections list.</li>
+<li>No <code class="docutils literal notranslate"><span class="pre">methods</span></code> in the boot parameters.</li>
+<li>No <a class="reference internal" href="dispatcher-testing.html#power-commands"><span class="std std-ref">Power Commands</span></a> can be used in the <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a>.</li>
+</ol>
+<p>This prevents other jobs being submitted which would cause the device
+to be rebooted or have a different deployment prepared. This can be
+further enhanced with <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> support.</p>
+<p>Hacking sessions can also be supported with primary remote
+connections, depending on the use case.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Remember that in addition to issues related to the
+<a class="reference internal" href="#persistence"><span class="std std-ref">Persistence</span></a> of a primary remote connection device, hacking
+sessions on primary remote connections also have all of the issues
+of a shared access device - do not copy, prepare or download
+sensitive data when using a shared access device.</p>
+</div>
+<div class="section" id="ssh-as-the-primary-remote-connection">
+<span id="id13"></span><h3>SSH as the primary remote connection<a class="headerlink" href="#ssh-as-the-primary-remote-connection" title="Permalink to this headline">¶</a></h3>
+<p>Certain devices can support SSH as the primary remote connection - the
+filesystems on such devices are not erased at the end of a TestJob and
+provide <a class="reference internal" href="#persistence"><span class="std std-ref">Persistence</span></a> for certain tasks. These devices declare
+this support in the device configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">deploy</span><span class="p">:</span>
+  <span class="c1"># primary remote connection device has only connections as deployment methods</span>
+  <span class="nt">methods</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+<span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">connections</span><span class="p">:</span>  <span class="c1"># not serial</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+</pre></div>
+</div>
+<p>TestJobs then use SSH as a boot method which simply acts as a login to
+establish a connection:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">deploy</span></code> action in this case simply prepares the LAVA overlay containing
+the test shell definitions and copies those to a pre-determined location on the
+device. This location will be removed at the end of the TestJob. The <code class="docutils literal notranslate"><span class="pre">os</span></code>
+parameter is specified so that any LAVA overlay scripts are able to pick up the
+correct shell, package manager and other deployment data items in order to run
+the lava test shell definitions.</p>
+</div>
+<div class="section" id="security">
+<span id="id14"></span><h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h3>
+<p>A primary SSH connection from the dispatcher needs to be controlled through the
+device configuration, allowing the use of a private SSH key which is at least
+hidden from test writers. (<a class="reference internal" href="review-criteria.html#essential-components"><span class="std std-ref">Only protect the essential components</span></a>).</p>
+<p>The key is declared as a path on the dispatcher, so is device-specific. Devices
+on the same dispatcher can share the same key or may have a unique key - all
+keys still need to not have any passphrase - as long as all devices supported
+by the SSH host have the relevant keys configured as authorized for login as
+root. <a class="footnote-reference" href="#admin1" id="id15">[1]</a></p>
+<table class="docutils footnote" frame="void" id="admin1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id15">[1]</a></td><td>Securing such private keys when the admin process is managed in a
+public VCS is left as an exercise for the admin teams.</td></tr>
+</tbody>
+</table>
+<p>LAVA provides a default (completely insecure) private key which can be used for
+these connections. This key is installed within lava-dispatcher and is readable
+by anyone inspecting the lava-dispatcher codebase in git. (This has not been
+changed in the refactoring.)</p>
+<p>It is conceivable that a test image could be suitably configured before being
+submitted to LAVA, with a private key included inside a second job which
+deploys normally and executes the connection <strong>instead</strong> of running a test
+definition. However, anyone with access to the test image would still be able
+to obtain the private key. Keys generated on a per job basis would still be
+open for the lifetime of the test job itself, up to the job timeout specified.
+While this could provide test writers with the ability to control the options
+and commands used to create the connection, any additional security is minimal
+and support for this has not been implemented, yet.</p>
+<p>See also the <a class="reference internal" href="#host-role"><span class="std std-ref">Considerations with a secondary connection</span></a> for information on how access to devices is
+managed.</p>
+</div>
+<div class="section" id="persistence">
+<span id="index-14"></span><span id="id16"></span><h3>Persistence<a class="headerlink" href="#persistence" title="Permalink to this headline">¶</a></h3>
+<p>Devices supporting primary SSH connections have persistent deployments and this
+has implications, some positive, some negative - depending on your use case.</p>
+<ol class="arabic simple">
+<li><strong>Fixed OS</strong> - the operating system (OS) you get is the OS of the device and
+this <strong>must not</strong> be changed or upgraded.</li>
+<li><strong>Package interference</strong> - if another user installs a conflicting package,
+your test can <strong>fail</strong>.</li>
+<li><strong>Process interference</strong> - another process could restart (or crash) a daemon
+upon which your test relies, so your test will <strong>fail</strong>.</li>
+<li><strong>Contention</strong> - another job could obtain a lock on a constrained resource,
+e.g. <code class="docutils literal notranslate"><span class="pre">dpkg</span></code> or <code class="docutils literal notranslate"><span class="pre">apt</span></code>, causing your test to <strong>fail</strong>.</li>
+<li><strong>Reusable scripts</strong> - scripts and utilities your test leaves behind can be
+reused (or can interfere) with subsequent tests.</li>
+<li><strong>Lack of reproducibility</strong> - an artifact from a previous test can make it
+impossible to rely on the results of a subsequent test, leading to wasted
+effort with false positives and false negatives.</li>
+<li><strong>Maintenance</strong> - using persistent filesystems in a test action results in
+the overlay files being left in that filesystem. Depending on the size of
+the test definition repositories, this could result in an inevitable
+increase in used storage becoming a problem on the machine hosting the
+persistent location. Changes made by the test action can also require
+intermittent maintenance of the persistent location.</li>
+</ol>
+<p>Only use persistent deployments when essential and <strong>always</strong> take great care
+to avoid interfering with other tests. Users who deliberately or frequently
+interfere with other tests can have their submit privilege revoked.</p>
+<p>See <a class="reference internal" href="#disposable-chroot"><span class="std std-ref">Disposable chroot deployments</span></a> for a solution to some of these issues but the
+choice of operating system (and the versions of that OS available) within the
+chroot is down to the lab admins, not the test writer. The principal way to get
+full control over the deployment is to use a <a class="reference internal" href="#secondary-connection"><span class="std std-ref">Secondary Connection</span></a>.</p>
+</div>
+</div>
+<div class="section" id="disposable-chroot-deployments">
+<span id="disposable-chroot"></span><h2>Disposable chroot deployments<a class="headerlink" href="#disposable-chroot-deployments" title="Permalink to this headline">¶</a></h2>
+<p>Some devices can support mechanisms like <a class="reference external" href="https://debian-administration.org/article/410/A_simple_introduction_to_working_with_LVM">LVM snapshots</a> which allow for a
+self-contained environment to be unpacked for a single session and then
+discarded at the end of the session. These deployments do not suffer the same
+entanglement issues as simple SSH deployments and can provide multiple
+environments, not just the OS installed on the SSH host system.</p>
+<p>This support is similar to how distributions can offer “porter boxes” which
+allow upstream teams and community developers to debug platform issues in a
+native environment. It also allows tests to be run on a different operating
+system or different release of an operating system. Unlike distribution “porter
+boxes”, however, LAVA does not allow more than one TestJob to have access to
+any one device at the same time.</p>
+<p>A device supporting disposable chroots will typically follow the
+configuration of <a class="reference internal" href="#primary-remote-connection-devices"><span class="std std-ref">Devices supporting Primary Remote Connections</span></a>. The device
+will show as busy whenever a job is active, but although it <strong>is</strong>
+possible to use a secondary connection as well, the deployment methods
+of the device would have to disallow access to the media upon which
+the chroots are installed or deployed or upon which the software to
+manage the chroots is installed. e.g. a device offering disposable
+chroots on SATA could offer ramdisk or NFS tests.</p>
+<p>LAVA support for disposable chroots is implemented via <code class="docutils literal notranslate"><span class="pre">schroot</span></code> (forming the
+replacement for the dummy-schroot device in the old dispatcher).</p>
+<p>Typical device configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">deploy</span><span class="p">:</span>
+  <span class="c1"># list of deployment methods which this device supports</span>
+  <span class="nt">methods</span><span class="p">:</span>
+    <span class="nt">ssh</span><span class="p">:</span>
+    <span class="nt">schroot</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">unstable</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">trusty</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">jessie</span>
+<span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">connections</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+</pre></div>
+</div>
+<p>Optional device configuration allowing secondary connections:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">deploy</span><span class="p">:</span>
+  <span class="c1"># list of deployment methods which this device supports</span>
+  <span class="nt">methods</span><span class="p">:</span>
+    <span class="nt">tftp</span><span class="p">:</span>
+    <span class="nt">ssh</span><span class="p">:</span>
+    <span class="nt">schroot</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">unstable</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">trusty</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">jessie</span>
+<span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">connections</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+</pre></div>
+</div>
+<p>The test job YAML would simply specify:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">chroot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unstable</span>
+    <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The OS still needs to be specified, LAVA <a class="reference internal" href="review-criteria.html#keep-dispatcher-dumb"><span class="std std-ref">does not guess</span></a> based on the chroot name. There is nothing to stop
+an schroot being <cite>named</cite> <code class="docutils literal notranslate"><span class="pre">testing</span></code> but actually being upgraded or replaced
+with something else.</p>
+</div>
+<p>The deployment of an schroot involves unpacking the schroot into a logical
+volume with LVM. It is an <a class="reference internal" href="dispatcher-design.html#infrastructure-error-exception"><span class="std std-ref">InfrastructureError Exception</span></a> if this step
+fails, for example if the volume group has insufficient available space.</p>
+<p><code class="docutils literal notranslate"><span class="pre">schroot</span></code> also supports directories and tarballs but LVM is recommended as it
+avoids problems of <a class="reference internal" href="#persistence"><span class="std std-ref">Persistence</span></a>. See the <a class="reference external" href="http://manpages.debian.org/cgi-bin/man.cgi?query=schroot&amp;apropos=0&amp;sektion=0&amp;manpath=Debian+unstable+sid&amp;format=html&amp;locale=en">schroot man page</a>
+for more information on <code class="docutils literal notranslate"><span class="pre">schroot</span></code>. A common way to create an <code class="docutils literal notranslate"><span class="pre">schroot</span></code> is
+to use tools packaged with <a class="reference external" href="https://tracker.debian.org/pkg/sbuild">sbuild</a> or you can <a class="reference external" href="https://wiki.debian.org/Schroot">use debootstrap</a>.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/connections.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:41 GMT -->
+</html>

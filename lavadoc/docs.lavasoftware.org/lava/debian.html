@@ -1,0 +1,987 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/debian.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:41 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Developing LAVA on Debian &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Packaging lava-server for distributions" href="packaging.html" />
+    <link rel="prev" title="Testing the design" href="dispatcher-testing.html" />
+    <link rel="canonical" href="debian.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Developing LAVA on Debian</a><ul>
+<li><a class="reference internal" href="#why-debian">Why Debian?</a></li>
+<li><a class="reference internal" href="#options-for-other-distributions">Options for other distributions</a></li>
+<li><a class="reference internal" href="#preparing-for-lava-development">Preparing for LAVA development</a></li>
+<li><a class="reference internal" href="#developer-package-build">Developer package build</a><ul>
+<li><a class="reference internal" href="#changes-from-2018-10-onwards">Changes from 2018.10 onwards</a></li>
+<li><a class="reference internal" href="#which-branch-to-use-for-changes">Which branch to use for changes</a></li>
+<li><a class="reference internal" href="#local-version-strings">Local version strings</a></li>
+<li><a class="reference internal" href="#distribution-differences">Distribution differences</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#developer-build-versions">Developer build versions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#development-using-python3">Development using Python3</a></li>
+<li><a class="reference internal" href="#quick-fixes-and-testing">Quick fixes and testing</a></li>
+<li><a class="reference internal" href="#viewing-changes">Viewing changes</a></li>
+<li><a class="reference internal" href="#migrating-postgresql-versions">Migrating postgresql versions</a><ul>
+<li><a class="reference internal" href="#determining-the-active-cluster">Determining the active cluster</a></li>
+<li><a class="reference internal" href="#performing-the-migration">Performing the migration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dependency-requirements">Dependency Requirements</a><ul>
+<li><a class="reference internal" href="#outputting-the-requirements-txt-format">Outputting the requirements.txt format</a></li>
+<li><a class="reference internal" href="#outputting-a-list-of-binary-package-names">Outputting a list of binary package names</a></li>
+<li><a class="reference internal" href="#adding-packages-needed-for-the-unittests">Adding packages needed for the unittests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#javascript-handling">Javascript handling</a><ul>
+<li><a class="reference internal" href="#javascript-and-security">Javascript and security</a></li>
+<li><a class="reference internal" href="#javascript-maintenance">Javascript maintenance</a></li>
+<li><a class="reference internal" href="#packaging-changes">Packaging changes</a></li>
+<li><a class="reference internal" href="#building-for-other-architectures">Building for other architectures</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-django-issues">Debugging Django issues</a><ul>
+<li><a class="reference internal" href="#installing">Installing</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#performance-overhead">Performance overhead</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="dispatcher-testing.html" title="Previous Chapter: Testing the design"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Testing the design</span>
+    </a>
+  </li>
+  <li>
+    <a href="packaging.html" title="Next Chapter: Packaging lava-server for distributions"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Packaging lav... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="developing-lava-on-debian">
+<span id="lava-on-debian"></span><span id="index-0"></span><h1>Developing LAVA on Debian<a class="headerlink" href="#developing-lava-on-debian" title="Permalink to this headline">¶</a></h1>
+<p>LAVA no longer supports development on Ubuntu.</p>
+<p>Packages for LAVA are available for:</p>
+<ul class="simple">
+<li>Debian Buster (testing)</li>
+<li>Debian Sid (unstable)</li>
+</ul>
+<p>When using the packages to develop LAVA, there is a change to the workflow
+compared to the old lava-deployment-tool buildouts.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Changes to build dependencies between Debian versions can
+cause changes to the builds for each suite. Always ensure that you
+build packages for unstable using unstable and build packages for
+stable using a chroot or VM or other stable environment. If a
+package built on unstable does not install on stable, rebuild the
+same changes in a stable environment and re-install. Backports to
+stable in Debian are always built in a stable chroot or VM for this
+reason.</p>
+</div>
+<div class="section" id="why-debian">
+<h2>Why Debian?<a class="headerlink" href="#why-debian" title="Permalink to this headline">¶</a></h2>
+<p>In the very early stages, LAVA was deployed using a custom script based
+on PyPi and a lot of manual effort. This deployment tool frequently
+failed in complex and unexpected ways. It become clear that this would
+block successful and reliable deployment and upgrades of LAVA,
+particularly in larger scale environments.</p>
+<p>The main LAVA developer at the time was also a Debian developer with
+the rights and familiarity with Debian to convert the deployment tool
+into a packaged format which solved these issues.</p>
+<p>LAVA is not inherently tied to Debian but following the route of
+packaging LAVA in Debian solved many issues very easily. By using a
+well supported and readily understood distribution as our base, many
+users have been able to install and operate LAVA without needing direct
+help from the developers. We have also gained a stable and reliable
+platform for our internal CI which was an enormous aid during the V2
+development cycle.</p>
+<p>Whilst it might seem that lots of developer time is spent doing Debian
+specific development, equivalent (and possibly more) work would be
+needed to develop and support LAVA on any platform. Debian provides a
+very large collection of packaged software, removing the need for us to
+package and maintain the full stack which LAVA needs.</p>
+</div>
+<div class="section" id="options-for-other-distributions">
+<span id="lava-on-other-distros"></span><span id="index-1"></span><h2>Options for other distributions<a class="headerlink" href="#options-for-other-distributions" title="Permalink to this headline">¶</a></h2>
+<p>Although LAVA is not inherently tied to the Debian distribution, there
+would be some work involved to ensure that another method of
+deploying LAVA would work well enough for the upstream LAVA team to
+officially support that method.</p>
+<p>On top of developing LAVA itself, full support of LAVA in Debian
+includes:</p>
+<ol class="arabic">
+<li><p class="first">Maintenance of packaging code, either upstream or in a public git
+repository.</p>
+</li>
+<li><p class="first">Preparation of LAVA releases for inclusion into the distribution.</p>
+</li>
+<li><p class="first">Rights to upload LAVA releases to the distribution and access
+within the distribution to apply local patches, upload security
+fixes and provide for backporting newer dependencies to maintain
+support for existing releases.</p>
+</li>
+<li><p class="first">Maintenance of a LAVA lab using this distribution and running CI
+on LAVA devices. (This is to ensure that the functionality of LAVA
+is being tested on this distribution. It would be very useful, for
+example. for such a lab to participate in functional testing of LAVA
+upstream.)</p>
+</li>
+<li><p class="first">Sufficient involvement in the distribution and familiarity with
+the distribution release process to provide full support for both
+installing new instances and smoothly upgrading established
+instances to each new release of the distribution.</p>
+<p>This includes planning ahead to ensure that new dependencies are
+packaged for the distribution in time for the next distribution
+release.</p>
+</li>
+<li><p class="first">Maintenance of LAVA releases within the distribution across more
+than one distribution release cycle, at the same time.</p>
+<p>This is to ensure that users have continuity of support and can
+choose when to migrate the base operating system of their labs.</p>
+</li>
+<li><p class="first">Involvement on IRC and mailing lists to promptly support users
+experiencing problems with using LAVA on the distribution.</p>
+</li>
+<li><p class="first">Maintenance of the LAVA documentation covering how to use LAVA on
+the distribution.</p>
+</li>
+<li><p class="first">Triage and fixing of issues in LAVA which are specific to the
+distribution.</p>
+</li>
+<li><p class="first">Discussion with the rest of LAVA Software Community Project
+development team around issues related to this distribution.</p>
+</li>
+<li><p class="first">Use of all available tools within the distribution to anticipate
+problems. Where possible, implementation of fixes before users are
+affected.</p>
+</li>
+<li><p class="first">Maintenance of dependencies using <code class="docutils literal notranslate"><span class="pre">./share/requires.py</span></code> to enable
+automated testing. This includes testing the versions of specific
+dependencies and ensuring that the minimum version is available in
+all supported releases of the distribution.</p>
+</li>
+<li><p class="first">Maintenance of scripts which build Docker images for and using that
+distribution, including publishing such images. These images will be
+required to support the internal CI.</p>
+</li>
+<li><p class="first">Maintenance of upstream LAVA CI using that distribution in Docker to
+run the unit tests as well as build and test the packaging of LAVA
+for that distribution. This CI will involve, at a minimum, running
+such tests on the currently supported distribution release <strong>and</strong>
+the candidate for the next distribution release.</p>
+</li>
+<li><p class="first">Maintenance of upstream CI using <code class="docutils literal notranslate"><span class="pre">gitlab-runner</span></code> on a machine
+running the relevant distribution so that CI jobs on the new
+distribution run in parallel to the CI jobs running on Debian.</p>
+</li>
+<li><p class="first">Maintenance of LAVA tools and support scripts for running a LAVA lab
+using the distribution.</p>
+</li>
+<li><p class="first">Consideration that support for the distribution may involve
+supporting more than one system architecture.</p>
+</li>
+</ol>
+<p>As an example from LAVA’s history, support for migrations between
+releases was the main problem for LAVA support of Ubuntu. It became
+impossible to provide a smooth upgrade path from one Ubuntu LTS release
+(14.04 Trusty) to the next LTS release (16.04 Xenial). LAVA needs to
+provide long term stability to provide reliable CI whilst keeping up
+with changes across supported distributions and tools. For the sake of
+lab admin workload, support needs to concentrate on LTS or server level
+releases rather than developer releases or interim updates. Even though
+Ubuntu is closely related to Debian, the timing of Ubuntu releases made
+it very difficult to manage complex transitions like the change from
+Django 1.4 to 1.8 and this was also a concern for the transition to
+Python3.</p>
+<p>You may find that more than one person will be required to meet all
+these criteria and to maintain that support across several releases of
+the distribution. The current LAVA Software Community Project team does
+not have enough resources to do this work for any distribution other
+than Debian.</p>
+<p><a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">Talk to us</span></a> before spending time on such work.</p>
+</div>
+<div class="section" id="preparing-for-lava-development">
+<span id="developer-preparations"></span><span id="index-2"></span><h2>Preparing for LAVA development<a class="headerlink" href="#preparing-for-lava-development" title="Permalink to this headline">¶</a></h2>
+<p>LAVA provides a <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> package which supplies all the dependencies which
+are required <a class="reference internal" href="#dev-builds"><span class="std std-ref">to build local LAVA packages</span></a>. This package is
+intended primarily for developers working on laptops and other systems where
+a full desktop environment is already installed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install lava-dev
+</pre></div>
+</div>
+<p>If you want to build local packages on a headless box or a system with limited
+space, you can trim the set of dependencies by pre-installing
+<code class="docutils literal notranslate"><span class="pre">pinentry-curses</span></code> instead of the default <code class="docutils literal notranslate"><span class="pre">pinentry-gtk2</span></code>. QEMU is still
+required and will bring in some X11 dependencies but these are minimal compared
+to the full dependencies of <code class="docutils literal notranslate"><span class="pre">pinentry-gtk2</span></code> which is brought in via
+<code class="docutils literal notranslate"><span class="pre">gnupg2</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install pinentry-curses
+$ sudo apt-get --purge remove pinentry-gtk2
+$ sudo apt-get --purge autoremove
+$ sudo apt install lava-dev
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#unit-test-dependencies"><span class="std std-ref">Dependencies required to run unit tests</span></a></p>
+</div>
+</div>
+<div class="section" id="developer-package-build">
+<span id="dev-builds"></span><span id="index-3"></span><h2>Developer package build<a class="headerlink" href="#developer-package-build" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#developer-preparations"><span class="std std-ref">Preparing for LAVA development</span></a> and
+<a class="reference internal" href="contribution.html#development-pre-requisites"><span class="std std-ref">Pre-requisites to start with development</span></a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The supported suite for LAVA development is now Buster. The
+developer package build now defaults to expecting Buster and
+therefore uses Python3 exclusively. Support for building Python2 has
+been removed, the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch only builds Python3. See
+<a class="reference external" href="https://lists.lavasoftware.org/pipermail/lava-announce/2018-January/000046.html">https://lists.lavasoftware.org/pipermail/lava-announce/2018-January/000046.html</a></p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> package includes a helper script which is also present
+in the source code in <code class="docutils literal notranslate"><span class="pre">lava-server/share/</span></code>. The script requires a
+normal Debian package build environment (i.e. <code class="docutils literal notranslate"><span class="pre">dpkg-dev</span></code>), the
+<code class="docutils literal notranslate"><span class="pre">git-buildpackage</span></code> helper and the build-dependencies of the package
+itself. The helper checks for package dependencies using
+<code class="docutils literal notranslate"><span class="pre">dpkg-checkbuilddeps</span></code> which halts upon failure with a message showing
+which packages need to be installed.</p>
+<div class="section" id="changes-from-2018-10-onwards">
+<h3>Changes from 2018.10 onwards<a class="headerlink" href="#changes-from-2018-10-onwards" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>the Debian packaging files are now included upstream, so merge
+requests can include changes to the packaging directly. The helper
+script converts the package to a “native” package to allow for
+unreleased changes.</li>
+<li><strong>ALL</strong> local changes must be committed to a local branch before
+attempting a build - the helper will fail with an error if
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">ls-files</span> <span class="pre">-m</span> <span class="pre">-o</span> <span class="pre">--exclude-standard</span></code> reports any output.</li>
+<li>Builds are executed in a temporary scratch branch called
+<code class="docutils literal notranslate"><span class="pre">lavadevscratch</span></code> which is based on the current local branch and
+which is deleted at the end of the operation. This is required so
+that the packaging can be temporarily switched to a developer build.</li>
+<li>The helper script no longer accepts the <code class="docutils literal notranslate"><span class="pre">-p</span></code> option, the name
+of the package is determined from the upstream Debian packaging.</li>
+<li>The helper script not longer accepts the <code class="docutils literal notranslate"><span class="pre">-b</span></code> option to change
+the packaging branch as the packaging is now part of the same
+branch as the build.</li>
+</ul>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ /usr/share/lava-server/debian-dev-build.sh
+</pre></div>
+</div>
+<p>From time to time, dependencies may need to vary between the current Debian
+stable release and the unstable suite and the package building tools expect
+to build for unstable. If you are building a package to update an instance
+running a different suite, pass that suite using the <code class="docutils literal notranslate"><span class="pre">-s</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./share/debian-dev-build.sh -s buster
+</pre></div>
+</div>
+<p>By default, the packages will be built in the <code class="docutils literal notranslate"><span class="pre">../build-area/</span></code>
+directory, this can be changed with the <code class="docutils literal notranslate"><span class="pre">-o</span></code> option. Packages are
+build using a version string based on the output of <code class="docutils literal notranslate"><span class="pre">./lava_common/version.py</span></code>,
+except that hyphens <code class="docutils literal notranslate"><span class="pre">-</span></code> are replaced with period <code class="docutils literal notranslate"><span class="pre">.</span></code> to comply with
+the rules for a native Debian package. The helper script outputs the
+relative location of all the files generated by the build at the end of
+a successful build, ready for use with <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">dpkg</span> <span class="pre">-i</span>
+<span class="pre">&lt;path_to_dot_deb_file&gt;</span></code>, repeated for every file or <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">debi</span> <span class="pre">-u</span>
+<span class="pre">&lt;path_to_lava_dot_changes_file&gt;</span></code> which will upgrade matching packages
+which are already installed but skip ones which are not installed.
+e.g.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo dpkg -i ../build-area/lava-common_2018.7-15-g64824c402-1_all.deb
+$ sudo dpkg -i ../build-area/lava-dispatcher_2018.7-15-g64824c402-1_amd64.deb
+...
+</pre></div>
+</div>
+<p>or all in one command:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo debi -u ../build-area/lava_2018.7-15-g64824c402-1_amd64.changes
+</pre></div>
+</div>
+<p>To install any package, including the developer build packages, the
+corresponding package <strong>must</strong> already be installed at the current production
+release version (or better), on the same machine. This ensures that all of the
+runtime dependencies already exist on the system.</p>
+</div>
+<div class="section" id="which-branch-to-use-for-changes">
+<span id="devel-branches"></span><h3>Which branch to use for changes<a class="headerlink" href="#which-branch-to-use-for-changes" title="Permalink to this headline">¶</a></h3>
+<p>Any and all changes for inclusion into a future release need to be based on the
+current git master branch and will need rebasing from time to time as master
+moves ahead.</p>
+<p>All testing of the LAVA source code is based on the relevant master branch
+which is then merged into the staging branch for testing as a release
+candidate. The final release involves merging staging into the release branch.
+Git tags are based on the release branch.</p>
+<p>When using existing git tags or the release branch, create a new local branch
+and commit your changes to ensure that a <a class="reference internal" href="#local-version-strings"><span class="std std-ref">local version string</span></a> is used.</p>
+<p>There can also be new dependencies added by changes in master and
+staging before those changes are merged into release or uploaded as
+a production release. When these changes are merged into master, the
+packaging will also be updated.</p>
+</div>
+<div class="section" id="local-version-strings">
+<span id="id1"></span><h3>Local version strings<a class="headerlink" href="#local-version-strings" title="Permalink to this headline">¶</a></h3>
+<p>The local version is built (using <code class="docutils literal notranslate"><span class="pre">./lava_common/version.py</span></code>) from these components:</p>
+<ul>
+<li><p class="first">package name</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code> - (dashes replaced by dots):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./lava_common/version.py
+2018.7.35.gb022cde9
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The latest git hash is a reference to the latest commit. If you have
+not committed local changes (e.g. you are on a local branch based on a
+tag) then the short hash can be used to lookup the commit in the master
+branch, omitting the <code class="docutils literal notranslate"><span class="pre">g</span></code> prefix, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">lavasoftware</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lava</span><span class="o">/</span><span class="n">lava</span><span class="o">/</span><span class="n">commit</span><span class="o">/</span><span class="n">b022cde9</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="distribution-differences">
+<span id="id2"></span><h3>Distribution differences<a class="headerlink" href="#distribution-differences" title="Permalink to this headline">¶</a></h3>
+<p><strong>Always</strong> build packages on the suite you expect to use for installation.</p>
+<p>Packages available from the <a class="reference internal" href="installing_on_debian.html#lava-repositories"><span class="std std-ref">LAVA repositories</span></a> are built on
+the correct suite (using sbuild) using the <a class="reference external" href="https://git.linaro.org/lava/lava-buildd.git">lava-buildd scripts</a>.</p>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>The helper supports <code class="docutils literal notranslate"><span class="pre">lava</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install lava-dev
+$ git clone https://git.lavasoftware.org/lava/lava.git
+$ cd lava
+$ ./share/debian-dev-build.sh
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> has architecture-dependent dependencies. By
+default, the package is built for the native architecture and can only
+be installed on that architecture. To build for a different
+architecture, e.g. arm64, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ /usr/share/lava-server/debian-dev-build.sh -a arm64 -B
+</pre></div>
+</div>
+<p>This does a <em>binary build</em>, so the source is not included, which allows
+these builds to be included in a local repository, e.g. using
+<code class="docutils literal notranslate"><span class="pre">reprepro</span></code>.</p>
+<p>Helpers for other distributions may be added in due course. Patches
+welcome.</p>
+</div>
+<div class="section" id="developer-build-versions">
+<span id="developer-build-version"></span><h3>Developer build versions<a class="headerlink" href="#developer-build-versions" title="Permalink to this headline">¶</a></h3>
+<p>LAVA uses git tags and the developer build adds a suffix to the tag for
+each local build - the suffix is formed from the output of <code class="docutils literal notranslate"><span class="pre">git</span>
+<span class="pre">describe</span></code></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#local-version-strings"><span class="std std-ref">Local version strings</span></a> for information on how to
+look up the commit information from the version string.</p>
+</div>
+<p>From August 2015, LAVA uses git tags without a leading zero on the
+month number, in accordance with PEP440, so the git tag will be
+<code class="docutils literal notranslate"><span class="pre">2015.8</span></code> instead of <code class="docutils literal notranslate"><span class="pre">2015.07</span></code> used for the previous release tag.</p>
+</div>
+</div>
+<div class="section" id="development-using-python3">
+<span id="developer-python3"></span><span id="index-4"></span><h2>Development using Python3<a class="headerlink" href="#development-using-python3" title="Permalink to this headline">¶</a></h2>
+<p>LAVA has moved to exclusive Python3 support as the final stage of the
+migration to V2. See
+<a class="reference external" href="https://lists.lavasoftware.org/pipermail/lava-announce/2017-June/000032.html">https://lists.lavasoftware.org/pipermail/lava-announce/2017-June/000032.html</a></p>
+<p>Both lava-server and lava-dispatcher only support running the unit tests with
+Python3. <strong>All</strong> reviews <strong>must</strong> pass the unit tests when run with Python3.</p>
+<p>Builds for Debian Jessie have ceased, support for Python2 has been dropped and
+<strong>only</strong> Python3 is be supported.</p>
+<p>Python3 and other dependencies are tracked using files in
+<code class="docutils literal notranslate"><span class="pre">share/requirements</span></code> using the <code class="docutils literal notranslate"><span class="pre">./share/requires.py</span></code> script.
+Required arguments are:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-d, --distribution    Name of a distribution directory in ./share/requirements
+-s, --suite           Name of a suite in the specified distribution directory
+-p, --package         A LAVA package name in the distribution and suite
+</pre></div>
+</div>
+<p>Optional arguments are:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-n, --names           List the distribution package names
+-u, --unittests       Distribution package names for unittest support -
+                      requires --names
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./share/requires.py --distribution debian --suite buster --package lava-dispatcher --names
+python3-configobj python3-guestfs python3-jinja2 python3-magic
+python3-netifaces python3-pexpect python3-pyudev
+python3-requests python3-setproctitle python3-tz python3-yaml
+python3-zmq
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#developer-workflow"><span class="std std-ref">Developer workflows</span></a> and <a class="reference internal" href="development.html#running-black"><span class="std std-ref">Blackened source code</span></a></p>
+</div>
+</div>
+<div class="section" id="quick-fixes-and-testing">
+<span id="quick-fixes"></span><h2>Quick fixes and testing<a class="headerlink" href="#quick-fixes-and-testing" title="Permalink to this headline">¶</a></h2>
+<p>The paths to execute LAVA python scripts and run unit tests have
+changed and developing LAVA based on packages has a different workflow.</p>
+<p>Modified files can be copied to the equivalent python path. The current LAVA
+packages use python3, so the path is beneath
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/python3/dist-packages/</span></code> with sudo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo cp &lt;git-path&gt; /usr/lib/python3/dist-packages/&lt;git-path&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="viewing-changes">
+<h2>Viewing changes<a class="headerlink" href="#viewing-changes" title="Permalink to this headline">¶</a></h2>
+<p>Different actions are needed for local changes to take effect, depending on the
+type of file(s) updated:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>templates/*/*.html</td>
+<td>next browser refresh (F5/Ctrl-R)</td>
+</tr>
+<tr class="row-even"><td>device-types/*.jinja2</td>
+<td>next testjob submission</td>
+</tr>
+<tr class="row-odd"><td>devices/*.jinja2</td>
+<td>next testjob submission</td>
+</tr>
+<tr class="row-even"><td>*_app/*.py</td>
+<td><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">apache2ctl</span> <span class="pre">restart</span></code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="migrating-postgresql-versions">
+<span id="index-5"></span><span id="id3"></span><h2>Migrating postgresql versions<a class="headerlink" href="#migrating-postgresql-versions" title="Permalink to this headline">¶</a></h2>
+<p>LAVA installs the <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> package which installs the current default
+version of postgresql. When this default changes in Debian, a second package
+will be added to your system which will start with no actual data.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">postgresql</span></code> <strong>will disable database access</strong> during the
+migration and this will interfere with the running instance. There is
+typically no rush to do the migration, so this is usually a task for a
+scheduled maintenance window. Declare a time when all devices can be taken
+offline and put a replacement site in place of the apache configuration to
+prevent database access during the migration.</p>
+</div>
+<div class="section" id="determining-the-active-cluster">
+<h3>Determining the active cluster<a class="headerlink" href="#determining-the-active-cluster" title="Permalink to this headline">¶</a></h3>
+<p>The output of <code class="docutils literal notranslate"><span class="pre">pg_lsclusters</span></code> includes the port number of each cluster.
+To ensure that the correct cluster is upgraded, check the <code class="docutils literal notranslate"><span class="pre">LAVA_DB_PORT</span></code>
+setting in <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/instance.conf</span></code> for the current instance. If
+multiple clusters are shown, <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> will upgrade to the latest version,
+so ensure that any intermediate clusters are also stopped before starting the
+migration.</p>
+</div>
+<div class="section" id="performing-the-migration">
+<h3>Performing the migration<a class="headerlink" href="#performing-the-migration" title="Permalink to this headline">¶</a></h3>
+<p>Debian gives a notice similar to this when a new version of postgres is
+installed:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Default clusters and upgrading
+------------------------------
+When installing a postgresql-X.Y package from scratch, a default
+cluster &#39;main&#39; will automatically be created. This operation is
+equivalent to doing &#39;pg_createcluster X.Y main --start&#39;.
+
+Due to this default cluster, an immediate attempt to upgrade an
+earlier &#39;main&#39; cluster to a new version will fail and you need to
+remove the newer default cluster first. E. g., if you have
+postgresql-8.2 installed and want to upgrade to 8.3, you first install
+postgresql-8.3:
+
+ apt install postgresql-8.3
+
+Then drop the default 8.3 cluster:
+
+ pg_dropcluster 8.3 main --stop
+
+And then upgrade the 8.2 cluster to 8.3:
+
+ pg_upgradecluster 8.2 main
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Upgrading a cluster combines <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> and <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code> (making
+two copies of the database at one point). Ensure that you have enough
+available space on the disc, especially with a large database. If
+<code class="docutils literal notranslate"><span class="pre">pg_upgradecluster</span></code> is interrupted by the lack of disc space it will
+not harm the system and full rollback will be applied automatically.</p>
+</div>
+<p>See also
+<a class="reference external" href="https://askubuntu.com/questions/66194/how-do-i-migrate-my-postgres-data-from-8-4-to-9-1">https://askubuntu.com/questions/66194/how-do-i-migrate-my-postgres-data-from-8-4-to-9-1</a></p>
+<p>Check your existing clusters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo pg_lsclusters
+</pre></div>
+</div>
+<p>Stop postgresql (stops both versions):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo service postgresql stop
+</pre></div>
+</div>
+<p>Drop the <strong>main</strong> cluster of the <strong>NEW</strong> postgres as this is empty:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo pg_dropcluster 9.4 main --stop
+</pre></div>
+</div>
+<p>Postgresql knows which version is the current default, so just tell postgresql
+which is the old version to migrate the data into the (empty) new one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo pg_upgradecluster 9.3 main
+Disabling connections to the old cluster during upgrade...
+Restarting old cluster with restricted connections...
+Creating new cluster 9.4/main ...
+ config /etc/postgresql/9.4/main
+ data   /var/lib/postgresql/9.4/main
+ locale en_GB.UTF-8
+ port   5433
+Disabling connections to the new cluster during upgrade...
+Roles, databases, schemas, ACLs...
+Fixing hardcoded library paths for stored procedures...
+Upgrading database postgres...
+Analyzing database postgres...
+Fixing hardcoded library paths for stored procedures...
+Upgrading database lavaserver...
+Analyzing database lavaserver...
+Fixing hardcoded library paths for stored procedures...
+Upgrading database devel...
+Analyzing database devel...
+Fixing hardcoded library paths for stored procedures...
+Upgrading database template1...
+Analyzing database template1...
+Re-enabling connections to the old cluster...
+Re-enabling connections to the new cluster...
+Copying old configuration files...
+Copying old start.conf...
+Copying old pg_ctl.conf...
+Stopping target cluster...
+Stopping old cluster...
+Disabling automatic startup of old cluster...
+Configuring old cluster to use a different port (5433)...
+Starting target cluster on the original port...
+Success. Please check that the upgraded cluster works. If it does,
+you can remove the old cluster with
+
+ pg_dropcluster 9.3 main
+</pre></div>
+</div>
+<p>Check that the instance is still running. Note that the port of the new
+postgresql server will have been upgraded to the port used for the old
+postgresql server automatically. Check that this is the case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ grep port /etc/postgresql/9.4/main/postgresql.conf
+port = 5432
+</pre></div>
+</div>
+<p>Drop the old cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo pg_dropcluster 9.3 main
+</pre></div>
+</div>
+<p>Now the old database package can be removed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt remove postgresql-9.3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dependency-requirements">
+<span id="index-6"></span><span id="id4"></span><h2>Dependency Requirements<a class="headerlink" href="#dependency-requirements" title="Permalink to this headline">¶</a></h2>
+<p>LAVA needs to control and output the list of dependencies in a variety
+of formats. Building Docker images and running unit tests in an LXC
+need an updated list of binary package names suitable for the
+distribution and suite of the LXC. Each needs to cope with dependencies
+outside the specified suite, e.g. stable releases which need backports.
+Building the LAVA Debian packages themselves also requires a properly
+up to date list of dependencies - including minimum versions. Each set
+of dependencies needs to be specific to each LAVA binary package -
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> has different dependencies to <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lava-common</span></code>.</p>
+<p>LAVA has several dependencies which are not available via PyPi or pip
+and the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file is therefore misleading. However, the
+format of this file is still useful in building the LAVA packages.</p>
+<p>Therefore, LAVA has the <code class="docutils literal notranslate"><span class="pre">./share/requires.py</span></code> script which can be
+used to output the preferred format, depending on the arguments. The
+script is also included in the <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> package as
+<code class="docutils literal notranslate"><span class="pre">/usr/share/lava-server/requires.py</span></code>.</p>
+<p>The dependencies <strong>MUST</strong> be installed in the specified release of the
+specified distribution for LAVA to work, so take care before pushing a
+merge request to add package names to the support. Make sure your merge
+request includes a change to the relevant requirement YAML files for
+<strong>all</strong> supported distributions or the CI will fail.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#developer-workflow"><span class="std std-ref">Developer workflows</span></a></p>
+</div>
+<p>Some distributions support <code class="docutils literal notranslate"><span class="pre">Recommends</span></code> level dependencies. These are
+typically intended to be installed by ~90% of installations but give
+flexibility for other use cases. <code class="docutils literal notranslate"><span class="pre">Recommends</span></code> are <strong>not</strong> handled by
+<code class="docutils literal notranslate"><span class="pre">requires.py</span></code> at all. The packages must be listed explicitly by the
+maintainer of the packaging for the distribution. <code class="docutils literal notranslate"><span class="pre">requires.py</span></code>
+exists so that automated processes, like CI, can have a reliable but
+minimal set of packages which must be installed for the specified
+package to be installable. To use a minimal installation, each package
+listed by <cite>./share/requires.py`</cite> can be installed without its
+recommended packages using the <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span> <span class="pre">--no-install-recommends</span>
+<span class="pre">&lt;packages&gt;</span></code> syntax.</p>
+<p><code class="docutils literal notranslate"><span class="pre">requires.py</span></code> does not currently support dependencies based on the
+architecture of the installation. (Currently, only <code class="docutils literal notranslate"><span class="pre">Recommends</span></code>
+includes architecture-sensitive packages.)</p>
+<div class="section" id="outputting-the-requirements-txt-format">
+<h3>Outputting the requirements.txt format<a class="headerlink" href="#outputting-the-requirements-txt-format" title="Permalink to this headline">¶</a></h3>
+<p>Processes which need the version string can use the original output
+format which mimics <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./share/requires.py --package lava-server --distribution debian --suite buster
+django&gt;=1.10
+PyYAML
+docutils&gt;=0.6
+jinja2
+psycopg2
+pytz
+pyzmq
+requests
+simplejson
+voluptuous&gt;=0.8.8
+</pre></div>
+</div>
+</div>
+<div class="section" id="outputting-a-list-of-binary-package-names">
+<h3>Outputting a list of binary package names<a class="headerlink" href="#outputting-a-list-of-binary-package-names" title="Permalink to this headline">¶</a></h3>
+<p>This is intended to be passed directly to a package installer like
+<code class="docutils literal notranslate"><span class="pre">apt-get</span></code> together with the other required commands and options.</p>
+<p>The caller determines the <code class="docutils literal notranslate"><span class="pre">suite</span></code>, so to use with buster-backports,
+the <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">buster-backports</span></code> option would also be added to the
+other <code class="docutils literal notranslate"><span class="pre">apt-get</span></code> commands before appending the list of packages.</p>
+<p>(Line breaks are added for readability only):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ ./share/requires.py --package lava-server --distribution debian --suite buster --names
+python3-django python3-yaml python3-docutils \
+python3-jinja2 python3-psycopg2 python3-tz python3-zmq python3-requests \
+python3-simplejson python3-voluptuous
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-packages-needed-for-the-unittests">
+<h3>Adding packages needed for the unittests<a class="headerlink" href="#adding-packages-needed-for-the-unittests" title="Permalink to this headline">¶</a></h3>
+<p>Some packages are only required to allow the unittests to pass. To add
+these packages, use the <code class="docutils literal notranslate"><span class="pre">--unittest</span></code> option, in combination with
+<code class="docutils literal notranslate"><span class="pre">--names</span></code>. These packages need to be added to the installation as
+well as the base list of packages using <code class="docutils literal notranslate"><span class="pre">--names</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./share/requires.py --package lava-server --distribution debian --suite unstable --names --unittest
+python3-pytest-django python3-pytest python3-pytest-cov
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./share/requires.py --package lava-dispatcher --distribution debian --suite unstable --names --unittest
+pyocd-flashtool gdb-multiarch git schroot lxc img2simg simg2img u-boot-tools docker.io xnbd-server telnet qemu-system-x86 qemu-system-arm
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="javascript-handling">
+<span id="index-7"></span><span id="id5"></span><h2>Javascript handling<a class="headerlink" href="#javascript-handling" title="Permalink to this headline">¶</a></h2>
+<p>Javascript has particular issues in distributions, often the version of a
+Javascript file is out of step with the version available in the distribution
+or not packaged at all. <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> embeds javascript files in the
+<code class="docutils literal notranslate"><span class="pre">static/js</span></code> directories and maintains a list of files which are replaced with
+symlinks during a Debian package build. The list is in
+<code class="file docutils literal notranslate"><span class="pre">share/javascript.yaml</span></code> and the replacement of matching files is done
+using <code class="file docutils literal notranslate"><span class="pre">share/javascript.py</span></code>. Other distribution builds are invited to use
+the same script or provide patches if the paths within the script need
+modification.</p>
+<p>After 2015.12 release, all of the .min.js files in the package are removed from
+VCS and minified files are created at build time. Templates in the system use
+only minified versions of the javascript files so after the release package
+rebuild will be mandatory.</p>
+<div class="section" id="javascript-and-security">
+<span id="javascript-security"></span><h3>Javascript and security<a class="headerlink" href="#javascript-and-security" title="Permalink to this headline">¶</a></h3>
+<p>The primary concern is security fixes. Distributions release with a particular
+release of LAVA and may need to fix security problems in that release. If the
+file is replaced by a symlink to an external package in the distribution, then
+the security problem and fix migrate to that package. LAVA tracks these files
+in <code class="file docutils literal notranslate"><span class="pre">share/javascript.yaml</span></code>. Files which only exist in LAVA or exist at a
+different version to the one available in the distribution, need to be patched
+within LAVA. Javascript files created by LAVA are packaged as editable source
+code and patches to these files will take effect in LAVA after a simple restart
+of apache and a clearing of any browser cache. Problems arise when the
+javascript files in the LAVA source code have been <a class="reference external" href="https://en.wikipedia.org/wiki/Minification_(programming)">minified</a>, resulting in a
+<code class="file docutils literal notranslate"><span class="pre">.min.js</span></code> file which is <strong>not</strong> suitable for editing or patching.</p>
+<p>The source code for the minified JS used in LAVA is provided in the LAVA source
+code, alongside the minified version. <strong>However</strong>, there is a lack of suitable
+tools to convert changes to the source file into a comparable minified file. If
+these files need changes, the correct fix would be to patch the unminified
+javascript and copy the modified file over the top of the minified version.
+This loses the advantages of minification but gains the benefit of a known
+security fix.</p>
+</div>
+<div class="section" id="javascript-maintenance">
+<span id="id6"></span><h3>Javascript maintenance<a class="headerlink" href="#javascript-maintenance" title="Permalink to this headline">¶</a></h3>
+<p>Work is ongoing upstream to resolve the remaining minified javascript
+files:</p>
+<ol class="arabic simple">
+<li><strong>Identify</strong> the upstream location of all javascript not listed in
+<code class="file docutils literal notranslate"><span class="pre">share/javascript.yaml</span></code> and not written by LAVA, specify this location
+in a <code class="file docutils literal notranslate"><span class="pre">README</span></code> in the relevant <code class="file docutils literal notranslate"><span class="pre">js/</span></code> directory along with
+details, if any, of how a modified file can be minified or whether a
+modified file should simply replace the minified file.</li>
+<li><strong>Replace</strong> the use of the remaining minified JS where the change to
+unminified has a negligible or acceptable performance change. If no upstream
+can be identified, LAVA will need to take over maintenance of the javascript
+itself, at which point minified files will be dropped until other LAVA
+javascript can also be minified.</li>
+<li><strong>Monitor</strong> availability of packages for all javascript files not written by
+LAVA and add to the listing in <code class="file docutils literal notranslate"><span class="pre">share/javascript.yaml</span></code> when packages
+become available.</li>
+<li><strong>Maintain</strong> - only minify javascript written by LAVA <strong>if</strong> a suitable
+minify tool is available to be used during the build of the packages and to
+add such support to <code class="file docutils literal notranslate"><span class="pre">share/javascript.py</span></code> so that minification happens
+at the same point as replacement of embedded javascript with symlinks to
+externally provided files.</li>
+</ol>
+</div>
+<div class="section" id="packaging-changes">
+<span id="testing-packaging"></span><h3>Packaging changes<a class="headerlink" href="#packaging-changes" title="Permalink to this headline">¶</a></h3>
+<p>From time to time, there can be packaging changes required to handle changes in
+the LAVA upstream codebase. If you have write access to the packaging
+repository, changes to the packaging can be tested by pushing to your
+fork of lava.git and making a local commit. Then build as normal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ /usr/share/lava-server/debian-dev-build.sh
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-for-other-architectures">
+<span id="architecture-builds"></span><h3>Building for other architectures<a class="headerlink" href="#building-for-other-architectures" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-server</span></code> is the same for all architectures but <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> has a
+different set of dependencies depending on the build architecture. To build an
+<code class="docutils literal notranslate"><span class="pre">arm64</span></code> package of lava-dispatcher using the developer scripts, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ /usr/share/lava-server/debian-dev-build.sh -a arm64 -B
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="debugging-django-issues">
+<span id="django-debug-toolbar"></span><h2>Debugging Django issues<a class="headerlink" href="#debugging-django-issues" title="Permalink to this headline">¶</a></h2>
+<p>When trying to investigate LAVA web pages generation we advise you to use
+<a class="reference external" href="https://django-debug-toolbar.readthedocs.org/">django-debug-toolbar</a>. This is
+a Django application that provide more information on how the page was
+rendered, including:</p>
+<ul class="simple">
+<li>SQL queries</li>
+<li>templates involved</li>
+<li>HTTP headers</li>
+</ul>
+<p>For instance, the toolbar is a really helpful resource to debug the Django
+<abbr title="Object Relational Model">ORM</abbr>.</p>
+<div class="section" id="installing">
+<h3>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h3>
+<p>On a Debian system, just run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt-get install python-django-debug-toolbar
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">python-django-debug-toolbar</span></code> package is installed, the toolbar
+needs to be enabled in the instance. Two settings are required in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;DEBUG&quot;:</span> <span class="pre">true,</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;USE_DEBUG_TOOLBAR&quot;:</span> <span class="pre">true,</span></code></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">settings.conf</span></code> is JSON syntax, so ensure that the previous
+line ends with a comma and that the resulting file validates as JSON.
+Use <a class="reference external" href="https://jsonlint.com/">JSONLINT</a></p>
+</div>
+<p>The toolbar can be disabled without disabling django debug but django must be
+in debug mode for the toolbar to be loaded at all.</p>
+<p>Restart the <code class="docutils literal notranslate"><span class="pre">django</span></code> related services to complete the installation of the
+toolbar:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">gunicorn</span> <span class="n">restart</span>
+<span class="n">sudo</span> <span class="n">apache2ctl</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<p>Installation can be checked using <code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">shell</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">django.conf</span> <span class="k">import</span> <span class="n">settings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;debug_toolbar&#39;</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#developer-access-to-django-shell"><span class="std std-ref">Developer access to django shell</span></a></p>
+</div>
+<p>In order to see the toolbar, you should also check the value of <a class="reference external" href="https://docs.djangoproject.com/en/1.9/ref/settings/#internal-ips">INTERNAL_IPS</a>. Local
+addresses <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> and <code class="docutils literal notranslate"><span class="pre">::1</span></code> are enabled by default.</p>
+<p>To add more addresses, set <code class="docutils literal notranslate"><span class="pre">INTERNAL_IPS</span></code> to a list of addresses in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>, (JSON syntax) for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;INTERNAL_IPS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;192.168.0.5&quot;</span><span class="p">,</span> <span class="s2">&quot;10.0.0.6&quot;</span><span class="p">],</span>
+</pre></div>
+</div>
+<p>These value depends on your setup. But if you don’t see the toolbar that’s the
+first think to look at.</p>
+<p>Apache then needs access to django-debug-toolbar CSS and JS files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">static</span><span class="o">/</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">/</span><span class="n">dist</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">debug_toolbar</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">debug_toolbar</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> remove the reference to htdocs in
+<code class="docutils literal notranslate"><span class="pre">STATICFILES_DIRS</span></code>. Django-debug-toolbar does check that all directories
+listed in <code class="docutils literal notranslate"><span class="pre">STATICFILES_DIRS</span></code> exists. While this is only a leftover from
+previous versions of LAVA installer that is not needed anymore.</p>
+<p>Once the changes are complete, ensure the settings are loaded by restarting
+both apache2 and django:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">gunicorn</span> <span class="n">restart</span>
+<span class="n">sudo</span> <span class="n">apache2ctl</span> <span class="n">restart</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="performance-overhead">
+<h3>Performance overhead<a class="headerlink" href="#performance-overhead" title="Permalink to this headline">¶</a></h3>
+<p>Keep in mind that django-debug-toolbar has some overhead on the web page
+generation and should only be used while debugging.</p>
+<p>Django-debug-toolbar can be disabled, while not debugging, by changing the
+value of <code class="docutils literal notranslate"><span class="pre">USE_DEBUG_TOOLBAR</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> to
+<code class="docutils literal notranslate"><span class="pre">false</span></code> or by changing the <code class="docutils literal notranslate"><span class="pre">̀DEBUG</span></code> level in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> to <code class="docutils literal notranslate"><span class="pre">DEBUG:</span> <span class="pre">false</span></code>.</p>
+<p>Ensure the settings are reloaded by restarting both apache2 and django:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">gunicorn</span> <span class="n">restart</span>
+<span class="n">sudo</span> <span class="n">apache2ctl</span> <span class="n">restart</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/debian.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:41 GMT -->
+</html>

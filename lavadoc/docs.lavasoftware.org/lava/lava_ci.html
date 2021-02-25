@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/lava_ci.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:02 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Continuous Integration &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Writing Tests" href="developing-tests.html" />
+    <link rel="prev" title="Adding your first devices" href="first-devices.html" />
+    <link rel="canonical" href="lava_ci.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Continuous Integration</a><ul>
+<li><a class="reference internal" href="#summary-of-ci-best-practices">Summary of CI best practices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-and-ci">LAVA and CI</a></li>
+<li><a class="reference internal" href="#automation-ci">Automation &amp; CI</a><ul>
+<li><a class="reference internal" href="#how-does-this-affect-testing-with-lava">How does this affect testing with LAVA?</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="first-devices.html" title="Previous Chapter: Adding your first devices"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Adding your f...</span>
+    </a>
+  </li>
+  <li>
+    <a href="developing-tests.html" title="Next Chapter: Writing Tests"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Writing Tests &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="continuous-integration">
+<span id="index-0"></span><span id="id1"></span><h1>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h1>
+<p>Continuous Integration (CI) is a development model. Developers make changes
+which are continuously integrated into the main development tree. Testing of
+that tree then allows those developers to know if their changes have introduced
+new bugs, regressions of old bugs or exposed side-effects in other systems or
+components. CI depends on the testing done at each integration to work. Tests
+need to be:</p>
+<ol class="arabic simple">
+<li><strong>Relevant</strong> to the developer - providing meaningful results with enough
+information that the developer can identify the actual problem, not a
+symptom.</li>
+<li><strong>Reproducible</strong> - results which the developer can reproduce locally make
+for a quicker and more reliable fix.</li>
+<li><strong>Timely</strong> - the turnaround time for the test of each integration step needs
+to be within a window where the developer is still working on that system or
+can quickly switch back to it. Other developers are basing their own
+development and testing on the development tree, a failure in one
+integration step needs to be identified before more development is
+integrated into the same tree.</li>
+</ol>
+<p>These principles underpin the idea of “closing the CI loop”. The loop starts
+with the developer change being integrated into the tree. A trigger then causes
+a build which is submitted for testing and validation. Obtaining the results is
+only one step, the results need to get back to the developer and provide the
+developer with enough information to close the loop by making a further change
+to fix problems identified by the testing.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://en.wikipedia.org/wiki/Continuous_integration">https://en.wikipedia.org/wiki/Continuous_integration</a> for
+background on CI workflow and best practices and <a class="reference internal" href="custom-result-handling.html#ci-loop"><span class="std std-ref">Closing the CI loop</span></a> for an
+example of how LAVA can work within a CI loop.</p>
+</div>
+<div class="section" id="summary-of-ci-best-practices">
+<span id="index-1"></span><h2>Summary of CI best practices<a class="headerlink" href="#summary-of-ci-best-practices" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of other resources available for background on CI, these are
+reproduced here to show how automation and LAVA relate to CI:</p>
+<ol class="arabic simple">
+<li>Use version control</li>
+<li>Automate the build</li>
+<li>Make the build self-testing<ul>
+<li>LAVA provides extensions here to in-build testing by testing the build on
+real hardware separately from the in-build tests on the build hardware.
+The build itself is separate from the LAVA test.</li>
+</ul>
+</li>
+<li>Everyone commits to baseline regularly (e.g. daily)</li>
+<li>Every commit to baseline is built (and tested)</li>
+<li>Keep the build (and test) fast</li>
+<li>Test in a clone of the production environment<ul>
+<li>This is where automation can have complications as a true production
+environment closes the access methods used by automation</li>
+</ul>
+</li>
+<li>Everyone can see the results</li>
+<li>Automate deployment<ul>
+<li>Although LAVA does automated deployment, it does so with the requirement
+that the deployment is still accessible to the automation to determine
+that the deployment is successful. This can have implications for how the
+deployment to a production-clone test instance is done. For example,
+within the LAVA software team, deployments to the staging instance are
+<strong>not</strong> done with LAVA but using standard OS build and upgrade tools. This
+is in addition to using these same build and upgrade tools within
+virtualized containers to test fresh installs and clean upgrades.</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="lava-and-ci">
+<span id="index-2"></span><span id="id2"></span><h1>LAVA and CI<a class="headerlink" href="#lava-and-ci" title="Permalink to this headline">¶</a></h1>
+<p>LAVA is focused on kernel and system validation as part of a CI loop and
+provides a way to test on a wide variety of different hardware to aid
+portability and develop multi-platform systems.</p>
+<p>CI requires that the testing is useful to the developer and this has important
+implications for LAVA. Tests submitted to LAVA need to follow a basic rule to
+be able to produce meaningful and relevant output.</p>
+<ul class="simple">
+<li><strong>Test one element at a time</strong> - the basic scientific method. If the test
+changes the kernel, the deployment method and the OS at the same time, there
+is no way to produce relevant or useful output when that test fails. Any one
+of those elements may have contributed to the failure.<ul>
+<li>Test a modified kernel build using a deployment method which is known to
+work for previous builds and using an OS and a test definition which is
+known to work for previous builds.</li>
+<li>Test a modified deployment method using a known kernel, OS and test
+definition.</li>
+<li>Describe the purpose of each test in the job name, comments and metadata.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="automation-ci">
+<span id="automation-and-ci"></span><span id="index-3"></span><h1>Automation &amp; CI<a class="headerlink" href="#automation-ci" title="Permalink to this headline">¶</a></h1>
+<p>LAVA is an automated architecture and automation itself can have implications
+for how relevant the results will be to the developers.</p>
+<ol class="arabic simple">
+<li>Automation might be required to use methods which do not match user methods.</li>
+<li>Automation can involve hardware or software modifications which do not match
+the user experience.</li>
+<li>Automation requires that devices are always recovered from a test failure,
+i.e. often termed “unbrickable”.</li>
+<li>Automation requires a level of administrative setup and integration of new
+devices far beyond what would be needed for setting up a single device for
+human testing.</li>
+</ol>
+<div class="section" id="how-does-this-affect-testing-with-lava">
+<span id="automation-and-lava"></span><h2>How does this affect testing with LAVA?<a class="headerlink" href="#how-does-this-affect-testing-with-lava" title="Permalink to this headline">¶</a></h2>
+<p>A server or development board can be tested in a similar way to user testing
+because the interface available on the board is likely to be command-line only.
+e.g. using SSH. However, this test still requires that the device is configured
+to recover from failed deployments by enabling remote power control and
+ensuring that the boot process can be interrupted reliably.</p>
+<p>A device with a graphical user interface (GUI) is much harder to test in a way
+that the user would test the device. Video capture is possible but needs extra
+hardware and only compares static images. Some GUI systems support automation
+by recording clicks/taps and movement. However, this does <strong>not</strong> mean that
+LAVA is the best choice of test system for these systems.</p>
+<ul class="simple">
+<li><strong>LAVA is aimed at kernel and system development</strong> and testing across a wide
+variety of hardware platforms. By the time the test has got to the level of
+automating a GUI, there have been multiple layers of abstraction between the
+hardware, the kernel, the core system and the components being tested.
+Following the core principle of testing one element at a time, this means
+that such tests quickly become platform-independent. This reduces the
+usefulness of the LAVA systems, moving the test into scope for other CI
+systems which consider all devices as equivalent slaves. The overhead of LAVA
+can become an unnecessary burden.</li>
+<li><strong>CI needs a timely response</strong> - it takes time for a LAVA device to be
+re-deployed with a system which has already been tested. In order to test a
+component of the system which is independent of the hardware, kernel or core
+system a lot of time has been consumed before the “test” itself actually
+begins. LAVA can support testing pre-deployed systems but this severely
+restricts the usefulness of such devices for actual kernel or hardware
+testing.</li>
+<li><strong>Automation may need to rely on insecure access</strong>. Production builds
+(hardware and software) take steps to prevent systems being released with
+known login identities or keys, backdoors and other security holes.
+Automation relies on at least one of these access methods being exposed,
+typically a way to access the device as the root or admin user. User
+identities for login <strong>must</strong> be declared in the submission and be <strong>the same
+across multiple devices</strong> of the same type. These access methods must also be
+exposed consistently and without requiring any manual intervention or
+confirmation. For example, mobile devices <strong>must</strong> be deployed with systems
+which enable debug access which all production builds will need to block.</li>
+<li><strong>Automation relies on remote power control</strong> - battery powered devices can
+be a significant problem in this area. On the one hand, testing can be
+expected to involve tests of battery performance, low power conditions and
+recharge support. However, testing will also involve broken builds and failed
+deployments where the only recourse is to hard reset the device by killing
+power. With a battery in the loop, this becomes very complex, sometimes
+involving complex electrical bodges to the hardware to allow the battery to
+be switched out of the circuit. These changes can themselves change the
+performance of the battery control circuitry. For example, some devices fail
+to maintain charge in the battery when held in particular states
+artificially, so the battery gradually discharges despite being connected to
+mains power. Devices which have no battery can still be a challenge as some
+are able to draw power over the serial circuitry or USB attachments, again
+interfering with the ability of the automation to recover the device from
+being “bricked”, i.e. unresponsive to the control methods used by the
+automation and requiring manual admin intervention.</li>
+<li><strong>Automation relies on unique identification</strong> - all devices in an automation
+lab <strong>must</strong> be uniquely identifiable at all times, in all modes and all
+active power states. Too many components and devices within labs fail to
+allow for the problems of scale. Details like serial numbers, MAC addresses,
+IP addresses and bootloader timeouts <strong>must</strong> be configurable and persistent
+once configured.</li>
+<li><strong>LAVA is not a complete CI solution</strong> - even including the hardware support
+available from some LAVA instances, there are a lot more tools required
+outside of LAVA before a CI loop will actually work. The triggers from your
+development workflow to the build farm (which is not LAVA), the submission to
+LAVA from that build farm are completely separate and outside the scope of
+this documentation. LAVA can help with the extraction of the results into
+information for the developers but LAVA output is generic and most teams will
+benefit from some “frontend” which extracts the data from LAVA and generates
+relevant output for particular development teams.</li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/LAVA-CI.svg"><img alt="A CI Loop" src="_images/LAVA-CI.svg" width="70%" /></a>
+</div>
+<ul class="simple">
+<li><strong>LAVA is not a build farm</strong> - equally LAVA is not useful as a validator of
+production builds which are about to be shrink-wrapped and released to the
+public. It is not possible to deploy a “secure” system and then test that the
+system has even been deployed successfully as any properly secure system will
+lock out the method used by the automation. Any failures in the deployment
+will go completely unnoticed until the product is handed by the user. To test
+such systems requires some form of user-like robotic or human testing,
+involving unlocking the device or interface, configuring services and
+accounts, starting and closing applications via a <abbr title="GUI">Graphical User
+Interface</abbr> and evaluating whether the device produces the correct
+graphical output.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="custom-result-handling.html#custom-result-handling"><span class="std std-ref">Custom result handling</span></a> and <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/lava_ci.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:03 GMT -->
+</html>

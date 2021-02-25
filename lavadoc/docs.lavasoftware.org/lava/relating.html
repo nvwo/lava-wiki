@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/relating.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:46 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Correlating a test result with the source code &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using tables in LAVA" href="tables.html" />
+    <link rel="prev" title="Custom result handling" href="custom-result-handling.html" />
+    <link rel="canonical" href="relating.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Correlating a test result with the source code</a><ul>
+<li><a class="reference internal" href="#problems-within-test-suites">Problems within test suites</a><ul>
+<li><a class="reference internal" href="#avoid-reliance-on-the-total-count">Avoid reliance on the total count</a></li>
+<li><a class="reference internal" href="#control-the-test-operations">Control the test operations</a></li>
+<li><a class="reference internal" href="#control-the-output">Control the output</a></li>
+<li><a class="reference internal" href="#control-the-base-system">Control the base system</a></li>
+<li><a class="reference internal" href="#control-the-build-system">Control the build system</a></li>
+<li><a class="reference internal" href="#control-the-list-of-tests">Control the list of tests</a></li>
+<li><a class="reference internal" href="#distinguish-between-ci-tests-and-functional-tests">Distinguish between CI tests and functional tests</a></li>
+<li><a class="reference internal" href="#manage-testing-of-complete-software-stacks">Manage testing of complete software stacks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#metadata">Metadata</a></li>
+<li><a class="reference internal" href="#reproducing-test-jobs">Reproducing test jobs</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="custom-result-handling.html" title="Previous Chapter: Custom result handling"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Custom result...</span>
+    </a>
+  </li>
+  <li>
+    <a href="tables.html" title="Next Chapter: Using tables in LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Using tables in LAVA &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="correlating-a-test-result-with-the-source-code">
+<span id="linking-results-to-code"></span><span id="index-0"></span><h1>Correlating a test result with the source code<a class="headerlink" href="#correlating-a-test-result-with-the-source-code" title="Permalink to this headline">¶</a></h1>
+<p>As part of a CI loop, the results of the LAVA test job may indicate a
+bug or regression in the source code which initiated the CI loop. These
+issues would be distinct from infrastructure or job errors and
+reporting these issues is a customized process for each team involved.</p>
+<p>The details of how and why the test failed will typically be essential
+to identifying how to fix the issue, so developers need help from test
+writers and from LAVA to provide information, logs and build artefacts
+to be able to reproduce the issue.</p>
+<p>However, it is common for a test failure to occur due to an earlier
+failure in the test job, e.g. changes in dependencies. It is also
+common for tests to report the error briefly at one point within the
+log and then provide more verbose content at another point.</p>
+<p>So the first problem can be correlating the test output with the actual
+failure. Test writers often need to modify how the original test
+behaves, to be able to identify which pieces of output are relevant to
+any particular test failure. Each test is different and uses different
+ways to describe, summarize, report and fail test operations. Test
+writers already need to write customized wrappers to run different
+tests in similar ways. To be able to relate the failures back to the
+source code, a lot more customization is likely to be required.</p>
+<p>Overall, LAVA can only be one part of the effort to triage test
+failures and debug the original source code. Results need to be
+presented to developers using a <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a>, test writers need to
+write scripts to wrap test suites and there needs to be enough other
+tests being run that developers have a reliable way of knowing all the
+details leading up to the failure.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="custom-result-handling.html#custom-result-handling"><span class="std std-ref">Custom result handling</span></a>, <a class="reference internal" href="writing-tests.html#setup-custom-scripts"><span class="std std-ref">Custom scripts</span></a>
+and <a class="reference internal" href="lava_ci.html#continuous-integration"><span class="std std-ref">Continuous Integration</span></a></p>
+</div>
+<div class="section" id="problems-within-test-suites">
+<h2>Problems within test suites<a class="headerlink" href="#problems-within-test-suites" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="avoid-reliance-on-the-total-count">
+<h3>Avoid reliance on the total count<a class="headerlink" href="#avoid-reliance-on-the-total-count" title="Permalink to this headline">¶</a></h3>
+<p>Test suites which discover the list of tests automatically can be a
+particular problem. Each test job could potentially add, remove or skip
+test results differently to previous test jobs, based on the same
+source code changes that triggered the test in the first place. Test
+writers may need to take control of the list of tests which will be
+executed, adding new tests individually and highlighting tests which
+were run in previous jobs but which are now missing.</p>
+<p>For example, if a developer is waiting for a large number of CI
+results, automated test suites which add one test whilst removing
+another could easily mislead the developer into thinking that a
+particular test passed when it was actually omitted. This is made worse
+if the test suite has wide coverage as the developer might not be aware
+of the context or purpose of the added test result.</p>
+<p>The LAVA <a class="reference internal" href="glossary.html#term-chart"><span class="xref std std-term">Charts</span></a> are only intended as a generic summary
+of the results, it is all too easy to miss a test being replaced if the
+report sent to the developer is only tracking the number of passes over
+time.</p>
+</div>
+<div class="section" id="control-the-test-operations">
+<h3>Control the test operations<a class="headerlink" href="#control-the-test-operations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Keep the test itself stable, this includes the wrappers and the
+reporting.</li>
+<li>Use staging instances for all components, including LAVA and any
+<a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontends</span></a> where each and every change is tested
+against known working components.</li>
+<li>Avoid downloading from third-party URLs. Use tools from the existing
+base system or build known working versions of the tools into the
+base system so that every test always uses the same tools.<ul>
+<li>Use checksums on all downloaded content if this is not implemented
+by the base system itself. (For example, <code class="docutils literal notranslate"><span class="pre">apt</span></code> and <code class="docutils literal notranslate"><span class="pre">dpkg</span></code> use
+checksums and other cryptographic methods extensively, to ensure
+that downloads are from verified locations and of verified
+content.)</li>
+</ul>
+</li>
+<li>Push your changes upstream. Avoid the burden of forks by working with
+each upstream to improve the tools and test scripts themselves.</li>
+<li>Split the test operations into logical blocks. A combined test job
+can still be run separately but there are advantages to running more
+test jobs, each of shorter duration:<ul>
+<li>test jobs can be run in parallel across a pool of devices.</li>
+<li>logs are smaller and easier to triage.</li>
+<li>failures are easier to reproduce.</li>
+<li>shorter test jobs can make it easier to build and run the full
+matrix of jobs which results from only changing one element at a
+time. Not all tests need to be run to know that the firmware is
+working correctly.</li>
+</ul>
+</li>
+<li>Use descriptive commit messages in the test shell version control and
+use code review.</li>
+<li>Consider formal bug tracking for the test shell scripts, distinct
+from other bugs.</li>
+<li>Implement ways to resubmit after infrastructure failures, using the
+same automated submitter, metadata, artefacts and tests.</li>
+</ul>
+</div>
+<div class="section" id="control-the-output">
+<h3>Control the output<a class="headerlink" href="#control-the-output" title="Permalink to this headline">¶</a></h3>
+<p>Established test suites often lack any standard way of outputting the
+process of running the results, the format of errors and the layout of
+the result summary.</p>
+<p>Each of these elements may need to be taken over by the test writer to
+allow the developer a way to identify a specific test and the section
+of the LAVA logs to which it relates.</p>
+<p>This can cause issues if, for example, a wrapper has to wait until the
+end of the test process to obtain the relevant information. The test
+job may appear to stall and later produce a flood of output. If the
+wrapper or the underlying test fail in an unexpected way, it is very
+easy to produce a LAVA test job with no useful output for any of the
+results.</p>
+<p>To be able to properly correlate the test results to the source code,
+it may become necessary to rewrite the test suite itself and then
+consider pushing the changes upstream.</p>
+<p>LAVA is investigating ways to help test writers standardize the ways
+of running tests to be able to provide more benefit from automated
+log files. <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">Talk to us</span></a> if you have ideas for or
+experience of such changes.</p>
+</div>
+<div class="section" id="control-the-base-system">
+<h3>Control the base system<a class="headerlink" href="#control-the-base-system" title="Permalink to this headline">¶</a></h3>
+<p>Most tests require some level of system to be executing and some level
+of dependencies within that system. The choice of which system to use
+can impact the triage of the results obtained.</p>
+<ul class="simple">
+<li>If the system is continuously changing (at the source code level),
+then results from last month may be completely invalid for comparing
+with the most recent failure.</li>
+<li>If the system is based on a distribution which supports reproducing
+an identical system at a later time, this may make it much simpler
+to triage failures and bisect regressions.</li>
+</ul>
+<p>Consider the impact of the base system carefully - triage and bisection
+may require weeks of historical data to be able to identify the root of
+any reported issues. Test one thing at a time.</p>
+</div>
+<div class="section" id="control-the-build-system">
+<h3>Control the build system<a class="headerlink" href="#control-the-build-system" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Avoid changing the name of files between builds unless those files
+have actually changed.</li>
+<li>Avoid reliance on build numbers when not everything in the build has
+changed.<ul>
+<li>Use version strings which relate directly to the versions used by
+the source code for that binary.</li>
+</ul>
+</li>
+<li>Make changelogs available for the components that have changed
+between builds.</li>
+<li>Always publish checksums for all build artefacts.</li>
+</ul>
+<p>This is to make it easier, during triage, to use known working versions
+of each component whilst changing just one component. It can be very
+difficult to relate a build number from a URL to an upstream code
+change, especially if the build system removes build URLs after a
+period of time.</p>
+<p>Remember that every component has it’s own upstream team and it’s own
+upstream source code versioning. If a bug is found in one component,
+locating the source code for that component will involve knowing the
+exact upstream version string that was actually used in the test.</p>
+</div>
+<div class="section" id="control-the-list-of-tests">
+<h3>Control the list of tests<a class="headerlink" href="#control-the-list-of-tests" title="Permalink to this headline">¶</a></h3>
+<p>It may be necessary to remove the auto-detection support within the
+test suite and explicitly set which tests are to be run and which are
+skipped.</p>
+<p>Avoid executing tests which are known to fail. Developers reading the
+final report need to be able to pick out which tests have failed
+without the distraction of then filtering out tests which have never
+passed.</p>
+<p>Avoid hiding the list of tests inside test scripts. Ensure that the
+report sent to developers discloses the tests which were submitted and
+the tests which were skipped. Provide changelogs when the lists are
+changed.</p>
+<p>Review the list of skipped tests regularly. This can be done by
+submitting LAVA test jobs which only execute tests which are skipped in
+other test jobs. Again, ensure that only one element is changed at a
+time, so choose the most stable kernel, root filesystem and firmware
+available as the base for executing these skipped tests on an
+occasional basis.</p>
+</div>
+<div class="section" id="distinguish-between-ci-tests-and-functional-tests">
+<h3>Distinguish between CI tests and functional tests<a class="headerlink" href="#distinguish-between-ci-tests-and-functional-tests" title="Permalink to this headline">¶</a></h3>
+<p>CI tests need to use lots of support to relate the results back to the
+reason for running the test in the first place.</p>
+<p>Functional tests exist to test the elements outside the test job and
+include things like <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health checks</span></a> and sample
+jobs used for unit tests.</p>
+<p>The objective of a CI test job is to test the changes made by
+developers.</p>
+<p>The objective of a functional test job is to test the functionality of
+the CI system.</p>
+<p>Health checks are not the only functional tests - sometimes there is
+functionality which cannot be put into a health check. For example, if
+additional hardware is available on some devices of a particular
+<a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>, the health check may report a failure when run on
+the devices without that hardware. This may need to be taken into
+account when deciding what qualifies as a new <a class="reference internal" href="devicetypes.html#device-types"><span class="std std-ref">device type</span></a>. Functional tests can be submitted automatically, using
+notifications to alert admins to failures of additional hardware.</p>
+</div>
+<div class="section" id="manage-testing-of-complete-software-stacks">
+<h3>Manage testing of complete software stacks<a class="headerlink" href="#manage-testing-of-complete-software-stacks" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to test a complete software stack in automation,
+however, unpicking that stack to isolate a problem can consume very
+large amounts of engineering time. This only gets worse when the
+problem itself is intermittent due to the inherent complexity of
+identifying which component is at fault.</p>
+<p>Wherever possible, break up the stack and test each change
+independently, building the stack vertically from the lowest base able
+to run a test.</p>
+<ul class="simple">
+<li>Boot test the kernel with an unchanging root filesystem and a known
+working build of firmware. Ensure that each kernel build is boot
+tested before functional tests are submitted.</li>
+<li>Test the modified root filesystem with a known working kernel and
+known working firmware.<ul>
+<li>Test with and without installing the dependencies required for the
+later tests. Check that the system works reliably to be able to
+prepare the dependencies.</li>
+</ul>
+</li>
+<li>Break the test into components and test each block separately.</li>
+<li>Only change the “gold standard” files when absolutely essential,
+this includes firmware, kernel, root filesystem and any dependencies
+required by the test as well as the code running the test itself.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="metadata">
+<h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="standard-test-jobs.html#job-metadata"><span class="std std-ref">Metadata</span></a>.</p>
+</div>
+<p>Any link between a test result in LAVA and a line of source code will
+rely on metadata.</p>
+<ul class="simple">
+<li>Pre-installed dependencies of the test, including versions and
+original source. Using a reproducible distribution for this can
+provide confidence that the test result arises from the tests and
+not the base operating system.</li>
+<li>the git commit hash of the source code used in the build</li>
+<li>the git commit hash of the test code executing the tests as this
+is often external to the source code being tested. LAVA provides the
+commit hash of the Lava Test Shell Definition but scripts executed
+by LAVA will need to be tracked separately.</li>
+<li>the filename of the code running the test. (Remember that the result
+of any test may be due to a bug in the function running the test, as
+well as a bug in the code being executed outside the test function.)</li>
+<li>the filename(s) within the source code for each error produced by the
+test. (Most test suites do not have this support or may only infer it
+via the name of the test function. The affected code could easily be
+moved to a different file without changing the test function name.)</li>
+<li>the location of the source code<ul>
+<li>how to construct a URL to the file at the specified version at
+the location. This differs according to the chosen web service
+for the repository.</li>
+</ul>
+</li>
+<li>control the metadata and the queries which use it. Users and admins
+will frequently copy and paste job submissions to retry particular
+issues. Always ensure that queries and reports look at the metadata
+only from a known automated submitter.</li>
+</ul>
+</div>
+<div class="section" id="reproducing-test-jobs">
+<h2>Reproducing test jobs<a class="headerlink" href="#reproducing-test-jobs" title="Permalink to this headline">¶</a></h2>
+<p>LAVA can support developers who want to reproduce a test job locally
+but the details depend a lot on the actual device being used. Some
+devices will need significant amounts of (sometimes expensive or
+difficult to obtain) support hardware. However, once an alternative
+rig is assembled, developers can use <code class="docutils literal notranslate"><span class="pre">lava-run</span></code> to re-run the test
+job locally.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="dispatcher-design.html#running-lava-run"><span class="std std-ref">Running lava-run directly</span></a></p>
+</div>
+<p>Other options include:</p>
+<ul>
+<li><p class="first"><strong>emulation</strong> - depending on the nature of the failure, it may be
+possible to emulate the test job locally and in LAVA.</p>
+</li>
+<li><p class="first"><strong>local workers</strong> - if devices are available locally, a
+<a class="reference internal" href="glossary.html#term-worker"><span class="xref std std-term">worker</span></a> can be configured to run test jobs using a remote
+master.</p>
+</li>
+<li><p class="first"><strong>portability</strong> - the best option is when the issue can be reproduced
+without needing the original hardware. If the scripts used in LAVA
+are portable, developers can run the test process without needing
+automation.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="writing-tests.html#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a></p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/relating.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:46 GMT -->
+</html>

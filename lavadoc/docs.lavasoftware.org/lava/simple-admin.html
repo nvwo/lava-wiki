@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/simple-admin.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:06 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Simple Administration &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User permissions and authorization" href="authorization.html" />
+    <link rel="prev" title="Using tables in LAVA" href="tables.html" />
+    <link rel="canonical" href="simple-admin.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Simple Administration</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#outline">Outline</a></li>
+<li><a class="reference internal" href="#debian-system-administration">Debian system administration</a><ul>
+<li><a class="reference internal" href="#debian-package-management">Debian package management</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#infrastructure">Infrastructure</a></li>
+<li><a class="reference internal" href="#start-small">Start small</a></li>
+<li><a class="reference internal" href="#problems-with-simplistic-testing">Problems with simplistic testing</a><ul>
+<li><a class="reference internal" href="#connect-and-test">Connect and test</a></li>
+<li><a class="reference internal" href="#ssh-instead-of-serial">ssh instead of serial</a></li>
+<li><a class="reference internal" href="#test-everything-at-the-same-time">test everything at the same time</a></li>
+<li><a class="reference internal" href="#i-already-have-builds">I already have builds</a></li>
+<li><a class="reference internal" href="#automation-can-do-everything">Automation can do everything</a></li>
+<li><a class="reference internal" href="#users-are-all-admins-too">Users are all admins too</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#roles-of-lava-administrators">Roles of LAVA administrators</a></li>
+<li><a class="reference internal" href="#best-practice">Best practice</a></li>
+<li><a class="reference internal" href="#triage">Triage</a><ul>
+<li><a class="reference internal" href="#problems-affecting-test-jobs">Problems affecting test jobs</a><ul>
+<li><a class="reference internal" href="#power-up-failures">Power up failures</a></li>
+<li><a class="reference internal" href="#compatibility-failures">Compatibility failures</a></li>
+<li><a class="reference internal" href="#checking-for-multinode-issues">Checking for MultiNode issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-to-find-debug-information">Where to find debug information</a><ul>
+<li><a class="reference internal" href="#jinja2-templates">Jinja2 Templates</a></li>
+<li><a class="reference internal" href="#log-files">Log files</a></li>
+<li><a class="reference internal" href="#testjob-data">TestJob data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-configuration-files">LAVA configuration files</a><ul>
+<li><a class="reference internal" href="#lava-coordinator">lava-coordinator</a></li>
+<li><a class="reference internal" href="#lava-dispatcher">lava-dispatcher</a></li>
+<li><a class="reference internal" href="#lava-server">lava-server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#overriding-device-configuration">Overriding device configuration</a><ul>
+<li><a class="reference internal" href="#overriding-device-constants">Overriding device constants</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-more-devices">Adding more devices</a></li>
+<li><a class="reference internal" href="#adding-users-and-groups">Adding users and groups</a><ul>
+<li><a class="reference internal" href="#local-users">Local Users</a></li>
+<li><a class="reference internal" href="#ldap-users">LDAP Users</a></li>
+<li><a class="reference internal" href="#local-groups">Local Groups</a></li>
+<li><a class="reference internal" href="#owners-and-physical-access">Owners and physical access</a><ul>
+<li><a class="reference internal" href="#setting-owners-and-physical-access">Setting owners and physical access</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="tables.html" title="Previous Chapter: Using tables in LAVA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Using tables in LAVA</span>
+    </a>
+  </li>
+  <li>
+    <a href="authorization.html" title="Next Chapter: User permissions and authorization"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">User permissi... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="simple-administration">
+<span id="simple-admin"></span><span id="index-0"></span><h1>Simple Administration<a class="headerlink" href="#simple-administration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>You need to be familiar with these sections:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="first-installation.html#installation"><span class="std std-ref">First steps installing LAVA</span></a></li>
+<li><a class="reference internal" href="pipeline-server.html#setting-up-pipeline-instance"><span class="std std-ref">creating a pipeline worker</span></a>.</li>
+<li><a class="reference internal" href="pipeline-server.html#adding-pipeline-devices-to-worker"><span class="std std-ref">Adding devices to a worker</span></a></li>
+<li><a class="reference internal" href="installing_on_debian.html#create-superuser"><span class="std std-ref">Superuser</span></a></li>
+<li><a class="reference internal" href="first_steps.html#logging-in"><span class="std std-ref">Logging In</span></a> (as superuser)</li>
+<li><a class="reference internal" href="devicetypes.html#device-types"><span class="std std-ref">Device types</span></a> and <a class="reference internal" href="devicetypes.html#device-type-elements"><span class="std std-ref">Database elements for a device type</span></a></li>
+<li><a class="reference internal" href="first-devices.html#first-devices"><span class="std std-ref">Adding your first devices</span></a></li>
+<li><a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">Creating Backups</span></a></li>
+</ol>
+</div>
+<div class="section" id="outline">
+<span id="simple-admin-outline"></span><h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<p>LAVA is complex and administering a LAVA instance can be an open-ended task
+covering a wide range of skills.</p>
+<ul class="simple">
+<li><strong>Debian system administration</strong></li>
+<li><strong>Device integration</strong></li>
+<li><strong>Network configuration</strong></li>
+<li><strong>Writing tests</strong></li>
+<li><strong>Triage</strong></li>
+<li><strong>Python/Django knowledge</strong> - for debugging</li>
+</ul>
+</div>
+<div class="section" id="debian-system-administration">
+<h2>Debian system administration<a class="headerlink" href="#debian-system-administration" title="Permalink to this headline">¶</a></h2>
+<p>At a simple level, LAVA requires a variety of Debian system administration
+tasks, including:</p>
+<ul>
+<li><p class="first">installing, upgrading and maintaining the installed packages and apt sources</p>
+</li>
+<li><p class="first">configuring services outside LAVA, including:</p>
+<ul>
+<li><p class="first">apache - LAVA provides an example apache configuration but many instances
+will need to adapt this for their own hosting requirements.</p>
+</li>
+<li><p class="first">DHCP - Most <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">devices</span></a> will need networking support using DHCP.</p>
+</li>
+<li><p class="first">configuration management - LAVA has a variety of configuration files and
+a number of other services and tools will also need to be configured, for
+example serial console services, TFTP services and authentication services.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">Creating Backups</span></a></p>
+</div>
+</li>
+<li><p class="first">email - LAVA can use email for notifications, if test writers include
+appropriate requests in the test job submissions. To send email, LAVA
+relies on the basic Django email support using a standard sendmail
+interface. Only the master needs to be configured to send email,
+notifications from workers are handled via the master.</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="debian-package-management">
+<h3>Debian package management<a class="headerlink" href="#debian-package-management" title="Permalink to this headline">¶</a></h3>
+<p>The rest of the system needs updates to be applied, especially security
+updates. If you are upgrading a python package on an instance already
+running LAVA, especially if that package is directly listed as a
+dependency of LAVA, then all LAVA daemons should be restarted. All LAVA
+daemons are safe to restart without affecting running tasks. There will
+be a brief moment where the UI will pause but that is all:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>service lava-server-gunicorn restart
+service lava-publisher restart
+service lava-scheduler restart
+service lava-worker restart
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This applies to workers as well as masters but the
+<code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> daemon has only minimal dependencies. Most of the
+work is done by lava-run which gets a new process at the start of
+each test job. It is NOT possible to restart lava-run - any affected
+test jobs will need to be resubmitted but this is considered
+unlikely.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="advanced-installation.html#unattended-upgrades"><span class="std std-ref">Unattended upgrades</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">¶</a></h2>
+<p>LAVA instances will need some level of infrastructure, including:</p>
+<ul class="simple">
+<li><abbr title="Uninterruptible Power Supply">UPS</abbr></li>
+<li>network switches</li>
+<li>remote power control hardware</li>
+<li>master and worker hardware</li>
+</ul>
+<p>Many instances will also require specialized hardware to assist with the
+automation of specific <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">devices</span></a>, including switchable USB hubs or
+specialized relay boards.</p>
+</div>
+<div class="section" id="start-small">
+<span id="simple-admin-small"></span><h2>Start small<a class="headerlink" href="#start-small" title="Permalink to this headline">¶</a></h2>
+<p>These rules may seem harsh or obvious or tedious. However, multiple people have
+skipped one or more of these requirements and have learned that these steps
+provide valuable advice and assistance that can dramatically improve your
+experience of LAVA. Everyone setting up LAVA, is <strong>strongly</strong> advised to follow
+all of these rules.</p>
+<ol class="arabic">
+<li><p class="first"><strong>Start with a minimal LAVA install</strong> with at most one or two devices - at
+this stage only QEMU devices should be considered. This provides the best
+platform for learning LAVA, before learning how to administer a LAVA
+instance.</p>
+</li>
+<li><p class="first"><strong>Use the worked examples</strong> in the documentation which refer back to
+standard builds and proven test jobs. There will be enough to do in becoming
+familiar with how to fix problems and issues local to your own instance
+without adding the complexity of devices or kernel builds to which only you
+have access.</p>
+</li>
+<li><p class="first"><strong>Avoid rushing to your custom device</strong> - device integration into <em>any</em>
+automated system is <strong>hard</strong>. It does not become any easier if you are
+trying to learn how to use the automation as well.</p>
+</li>
+<li><p class="first"><strong>Plan how to test</strong></p>
+<ul class="simple">
+<li>use the examples and <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device types</span></a> which are
+<strong>known</strong> to work.</li>
+<li>Read through all the worked examples before starting your planning, there
+are likely to be useful ways to do what you want to do and advice on
+<strong>why</strong> it is a bad idea to do some of the things you may have considered
+at the start.</li>
+<li>plan out how to do the testing of other custom devices by looking for
+similar device support already available in other LAVA instances.</li>
+<li><strong>Avoid shortcuts</strong> - it may seem that you only want to <em>connect &amp; test</em>
+but there are <a class="reference internal" href="#simplistic-testing-problems"><span class="std std-ref">known problems with overly simplistic approaches</span></a> and you are likely to need to use
+<code class="docutils literal notranslate"><span class="pre">deploy</span></code> actions and <code class="docutils literal notranslate"><span class="pre">boot</span></code> actions to be able to produce reliable
+results.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Have at least one test instance</strong>. A single instance of LAVA is never
+sufficient for any important testing. Everyone needs at least one test
+instance in a VM or on another machine to have confidence that
+administrative changes will not interfere with test jobs.</p>
+</li>
+<li><p class="first"><strong>Control your changes</strong> - configuration, test job definitions, test shell
+definitions, <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionaries</span></a>, template
+changes and any code changes - all need to be in <strong>version control</strong>.</p>
+</li>
+<li><p class="first"><strong>Control access to the dispatcher and devices</strong> - device configuration
+details like the connection command and remote power commands can be viewed
+by <strong>all users</strong> who are able to submit to that device. In many cases, these
+details are sufficient to allow anyone with the necessary access to
+administer those devices, including modifying bootloader configuration. Only
+administrators should have access to <strong>any</strong> machine which itself has access
+to the serial console server and/or remote power control services.
+Typically, this will be controlled using SSH keys.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="dispatcher-testing.html#power-commands"><span class="std std-ref">Power Commands</span></a> and <a class="reference internal" href="dispatcher-design.html#running-lava-run"><span class="std std-ref">Running lava-run directly</span></a></p>
+</div>
+</li>
+<li><p class="first"><strong>Subscribe</strong> to the <a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">Mailing lists</span></a> where you will find others who
+have setup their own LAVA instances. IRC is fine for quick queries but it is
+trivial to lose track of previous comments, examples and links when the
+channel gets busy. Mailing lists have public archives which are fully
+indexed by search engines. The archives will help you solve your current
+issue and help many others find answers for their own issues later.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="problems-with-simplistic-testing">
+<span id="simplistic-testing-problems"></span><span id="index-1"></span><h2>Problems with simplistic testing<a class="headerlink" href="#problems-with-simplistic-testing" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of common fallacies relating to automation. Check your test
+ideas against these before starting to make your plans:</p>
+<div class="section" id="connect-and-test">
+<span id="id1"></span><h3>Connect and test<a class="headerlink" href="#connect-and-test" title="Permalink to this headline">¶</a></h3>
+<p>Seems simple enough - it doesn’t seem as if you need to deploy a new kernel or
+rootfs every time, no need to power off or reboot between tests. <em>Just</em> connect
+and run stuff.  After all, you already have a way to manually deploy stuff to
+the board.</p>
+<ul class="simple">
+<li>The biggest problem with this method is <a class="reference internal" href="connections.html#persistence"><span class="std std-ref">Persistence</span></a> - LAVA keeps the
+LAVA components separated from each other but tests frequently need to
+install support which will persist after the test, write files which can
+interfere with other tests or break the manual deployment in unexpected ways
+when things go wrong.</li>
+<li>The second problem within this fallacy is simply the power drain of leaving
+the devices constantly powered on. In manual testing, you would apply power
+at the start of your day and power off at the end. In automated testing,
+these devices would be on all day, every day, because test jobs could be
+submitted at any time.</li>
+</ul>
+</div>
+<div class="section" id="ssh-instead-of-serial">
+<span id="ssh-vs-serial"></span><h3>ssh instead of serial<a class="headerlink" href="#ssh-instead-of-serial" title="Permalink to this headline">¶</a></h3>
+<p>This is an over-simplification which will lead to new and unusual bugs and is
+only a short step on from <em>connect &amp; test</em> with many of the same problems. A
+core strength of LAVA is demonstrating differences between types of devices by
+controlling the boot process. By the time the system has booted to the point
+where <code class="docutils literal notranslate"><span class="pre">sshd</span></code> is running, many of those differences have been swallowed up in
+the boot process.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ssh</span></code> can be useful within LAVA tests but using <code class="docutils literal notranslate"><span class="pre">ssh</span></code> to the exclusion of
+serial means that the boot process is hidden from the logs, including any
+errors and warnings. If the boot process results in a system which cannot start
+<code class="docutils literal notranslate"><span class="pre">sshd</span></code> or cannot expose <code class="docutils literal notranslate"><span class="pre">ssh</span></code> over the network, the admin has no way to
+determine the cause of the failure. If the userspace tests fail, the test
+writer cannot be sure that the boot process was not a partial cause of the
+failure as the boot process messages are not visible. This leads to test
+writers repeatedly submitting the same jobs and wasting a lot of time in triage
+because critical information is hidden by the choice of using <code class="docutils literal notranslate"><span class="pre">ssh</span></code> instead
+of serial.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">ssh</span></code> without a boot process at all has all the same problems as
+<a class="reference internal" href="#connect-and-test"><span class="std std-ref">Connect and test</span></a>.</p>
+<p>Limiting all your tests to userspace without changing the running kernel is not
+making the best use of LAVA. LAVA has a steep learning curve, but trying to cut
+corners won’t help you in the long run. If you see <cite>ssh</cite> as a shortcut, it is
+probable that your use case may be better served by a different tool which does
+not control the boot process, for example tools based on containers and virtual
+machines.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Using serial also requires some level of automated power control. The
+connection is made first, then power is applied and there is no allowance
+for manual intervention in applying power. LAVA is designed as a fully
+automated system where test jobs can run reliably without any manual
+operations.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="index.html#what-is-lava-not"><span class="std std-ref">What is LAVA not?</span></a>, <a class="reference internal" href="first-installation.html#serial-connections"><span class="std std-ref">Setting Up Serial Connections to LAVA Devices</span></a> and
+<a class="reference internal" href="advanced-installation.html#power-control-infrastructure"><span class="std std-ref">Remote power control</span></a></p>
+</div>
+</div>
+<div class="section" id="test-everything-at-the-same-time">
+<span id="test-all-the-things"></span><h3>test everything at the same time<a class="headerlink" href="#test-everything-at-the-same-time" title="Permalink to this headline">¶</a></h3>
+<p>You’ve built an entire system and now you put the entire thing onto the device
+and do all the tests at the same time. There are numerous problems with this
+approach:</p>
+<ol class="arabic simple">
+<li><strong>Breaking the basic scientific method</strong> of test one thing at a time. The
+single system contains multiple components, like the kernel and the rootfs
+and the bootloader. Each one of those components can fail in ways which can
+only be picked up when some later component produces a completely misleading
+and unexpected error message.</li>
+<li><strong>Timing</strong> - simply deploying the entire system for every single test job
+wastes inordinate amounts of time when you do finally identify that the
+problem is a configuration setting in the bootloader or a missing module for
+the kernel.</li>
+<li><strong>Reproducibility</strong> - the larger the deployment, the more complex the boot
+and the tests become. Many LAVA devices are prototypes and development
+boards, not production servers. These devices <strong>will</strong> fail in unpredictable
+places from time to time. Testing a kernel build multiple times is much more
+likely to give you consistent averages for duration, performance and other
+measurements than if the kernel is only tested as part of a complete system.</li>
+<li><strong>Automated recovery</strong> - deploying an entire system can go wrong, whether an
+interrupted copy or a broken build, the consequences can mean that the
+device simply does not boot any longer.<ul>
+<li><strong>Every component</strong> involved in your test <strong>must</strong> allow for automated
+recovery. This means that the boot process must support being interrupted
+<strong>before</strong> that component starts to load. With a suitably configured
+bootloader, it is straightforward to test kernel builds with fully
+automated recovery on most devices. Deploying a new build of the
+bootloader <strong>itself</strong> is much more problematic. Few devices have the
+necessary management interfaces with support for secondary console access
+or additional network interfaces which respond very early in boot. It is
+possible to chainload some bootloaders, allowing the known working
+bootloader to be preserved.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="i-already-have-builds">
+<span id="existing-builds"></span><h3>I already have builds<a class="headerlink" href="#i-already-have-builds" title="Permalink to this headline">¶</a></h3>
+<p>This may be true, however, automation puts extra demands on what those builds
+are capable of supporting. When testing manually, there are any number of times
+when a human will decide that something needs to be entered, tweaked, modified,
+removed or ignored which the automated system needs to be able to understand.
+Examples include:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/resolv.conf</span></code> - it is common for many build tools to generate or copy
+a working <code class="docutils literal notranslate"><span class="pre">/etc/resolv.conf</span></code> based on the system within which the build
+tool is executed. This is a frequent cause of test jobs failing due to being
+unable to lookup web addresses using <abbr title="Domain Name System">DNS</abbr>. It is
+also common for an automated system to be in a different network subnet to
+the build tool, again causing the test job to be unable to use DNS due to the
+wrong data in <code class="docutils literal notranslate"><span class="pre">/etc/resolv.conf</span></code>.</li>
+<li><strong>Customised tools</strong> - using non-standard build tools or putting custom
+scripts, binaries and programs into a root filesystem is a common reason for
+test jobs to fail when users migrate to updated builds.</li>
+<li><strong>Comparability</strong> - LAVA has various ways to <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">support</span></a>
+local admins but to make sense of logs or bug reports, the test job needs to
+be comparable to one already known to work elsewhere.</li>
+</ul>
+<p>Make use of the <a class="reference internal" href="gold-standards.html#providing-gold-standard-files"><span class="std std-ref">standard files</span></a> for known
+working device types. These files come with details of how to rebuild the
+files, logs of the each build and checksums to be sure the download is correct.</p>
+</div>
+<div class="section" id="automation-can-do-everything">
+<span id="automate-everything"></span><h3>Automation can do everything<a class="headerlink" href="#automation-can-do-everything" title="Permalink to this headline">¶</a></h3>
+<p>It is <strong>not</strong> possible to automate every test method. Some kinds of tests and
+some kinds of devices lack critical elements that do not work well with
+automation. These are not problems in LAVA, these are design limitations of the
+kind of test and the device itself. Your preferred test plan may be infeasible
+to automate and some level of compromise will be required.</p>
+</div>
+<div class="section" id="users-are-all-admins-too">
+<span id="all-users-are-admins"></span><h3>Users are all admins too<a class="headerlink" href="#users-are-all-admins-too" title="Permalink to this headline">¶</a></h3>
+<p>This will come back to bite! However, there are other ways in which this can
+occur even after administrators have restricted users to limited access. Test
+jobs (including hacking sessions) have full access to the device as root.
+Users, therefore, can modify the device during a test job and it depends on the
+device hardware support and device configuration as to what may happen next.
+Some devices store bootloader configuration in files which are accessible from
+userspace after boot. Some devices lack a management interface that can
+intervene when a device fails to boot. Put these two together and admins can
+face a situation where a test job has corrupted, overridden or modified the
+bootloader configuration such that the device no longer boots without
+intervention. Some operating systems require a debug setting to be enabled
+before the device will be visible to the automation (e.g. the Android Debug
+Bridge). It is trivial for a user to mistakenly deploy a default or production
+system which does not have this modification.</p>
+<p>Administrators need to be mindful of the situations from which users can
+(mistakenly or otherwise) modify the device configuration such that the device
+is unable to boot without intervention when the next job starts. This is one of
+the key reasons for <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health checks</span></a> to run sufficiently
+often that the impact on other users is minimized.</p>
+</div>
+</div>
+<div class="section" id="roles-of-lava-administrators">
+<span id="lava-admin-roles"></span><span id="index-2"></span><h2>Roles of LAVA administrators<a class="headerlink" href="#roles-of-lava-administrators" title="Permalink to this headline">¶</a></h2>
+<p>The ongoing roles of administrators include:</p>
+<ul>
+<li><p class="first">monitor the number of devices which are online</p>
+</li>
+<li><p class="first">identify the reasons for health check failures</p>
+</li>
+<li><p class="first">communicate with users when a test job has made the device unbootable (i.e.
+<em>bricked</em>)</p>
+</li>
+<li><p class="first">recover devices which have gone offline</p>
+</li>
+<li><p class="first">restrict command line access to the dispatcher(s) and device(s) to only other
+administrators. This includes access to the serial console server and the
+remote power control service. Ideally, users must not have any access to the
+same subnet as the dispatchers and devices, <strong>except</strong> for the purposes of
+accessing devices during <a class="reference internal" href="hacking-session.html#hacking-session"><span class="std std-ref">LAVA Hacking Sessions</span></a>. This may involve port
+forwarding or firewall configuration and is <strong>not</strong> part of the LAVA software
+support.</p>
+</li>
+<li><p class="first">to keep the instance at a sufficiently high level of reliability that
+<a class="reference internal" href="lava_ci.html#continuous-integration"><span class="std std-ref">Continuous Integration</span></a> produces results which are themselves reliable
+and useful to the developers. To deliver this reliability, administrators do
+need to sometimes prevent users from making mistakes which are likely to take
+devices offline.</p>
+</li>
+<li><p class="first">prepare and routinely test backups and disaster recovery support. Many lab
+admin teams use <code class="docutils literal notranslate"><span class="pre">salt</span></code> or <code class="docutils literal notranslate"><span class="pre">ansible</span></code> or other configuration management
+software. Always ensure you have a fast way of deploying a replacement worker
+or master in case of hardware failure.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">Creating Backups</span></a> for details of what to backup and test.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="best-practice">
+<span id="best-admin-practices"></span><span id="index-3"></span><h2>Best practice<a class="headerlink" href="#best-practice" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">Creating Backups</span></a></p>
+</div>
+<ul class="simple">
+<li>Before you upgrade the server or dispatcher, run the standard test jobs and a
+few carefully chosen stable jobs of your own as a set of <em>functional tests</em> -
+just as the LAVA team do upstream.</li>
+<li>Keep all the servers and dispatchers <em>regularly updated</em> with regard to
+security updates and bug fixes. The more often you run the upgrades, the
+fewer packages will be involved in each upgrade and so the easier it will be
+to spot that one particular upgrade may be misbehaving.</li>
+<li>Repeat your functional tests after all upgrades.</li>
+<li>Use <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health checks</span></a> and tweak the frequency so that busy
+devices run health checks often enough to catch problems early.</li>
+<li>Add standard investigative tools. You may choose to use <a class="reference external" href="https://www.nagios.org/about/">nagios</a> and / or
+<a class="reference external" href="http://munin-monitoring.org/">munin</a> or other similar tools.</li>
+<li>Use configuration management. Various LAVA instances use <a class="reference external" href="https://s.saltstack.com/community/">salt</a> or <a class="reference external" href="https://github.com/puppetlabs/puppet">puppet</a>
+or <a class="reference external" href="https://www.ansible.com/">ansible</a>. Test out various tools and make your own choice.</li>
+</ul>
+</div>
+<div class="section" id="triage">
+<span id="admin-triage"></span><span id="index-4"></span><h2>Triage<a class="headerlink" href="#triage" title="Permalink to this headline">¶</a></h2>
+<p>When you come across problems with your LAVA instance, there are some basic
+information sources, methods and tools which will help you identify the
+problem(s).</p>
+<div class="section" id="problems-affecting-test-jobs">
+<h3>Problems affecting test jobs<a class="headerlink" href="#problems-affecting-test-jobs" title="Permalink to this headline">¶</a></h3>
+<p>Administrators may be asked to help with debugging test jobs or may need to
+use test jobs to investigate some administration problems, especially health
+checks.</p>
+<ul class="simple">
+<li>Start with the <a class="reference internal" href="debugging.html#debugging-test-failures"><span class="std std-ref">triage guidelines</span></a> if the
+problem shows up in test jobs.</li>
+<li>Check the <a class="reference internal" href="lava-scheduler-job.html#failure-comments"><span class="std std-ref">Job failure comment</span></a> for information on exactly what happened.</li>
+<li>Specific <a class="reference internal" href="lava-scheduler-job.html#lava-failure-messages"><span class="std std-ref">LAVA Failure messages</span></a> may relate directly to an admin issue.</li>
+<li>Try to reproduce the failure with smaller and less complex test jobs, where
+possible.</li>
+</ul>
+<p>Some failure comments in test jobs are directly related to administrative
+problems.</p>
+<div class="section" id="power-up-failures">
+<span id="admin-test-power-fail"></span><h4>Power up failures<a class="headerlink" href="#power-up-failures" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">If the device dictionary contains errors, it is possible that the test job
+is trying to turn on power to or read serial input from the wrong ports. This
+will show up as a timeout when trying to connect to the device.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Either the PDU command or the connection command could be wrong. If
+the device previously operated normally, check the details of the power on
+and connection commands in previous jobs. Also, try running the <code class="docutils literal notranslate"><span class="pre">power</span>
+<span class="pre">on</span></code> command followed by the <code class="docutils literal notranslate"><span class="pre">connection</span> <span class="pre">command</span></code> manually (as root) on
+the relevant worker.</p>
+</div>
+<ul class="simple">
+<li>If the ports are correct, check that the specified PDU port is actually
+delivering power when the state of the port is reported as <code class="docutils literal notranslate"><span class="pre">ON</span></code> and
+switching off power when reporting <code class="docutils literal notranslate"><span class="pre">OFF</span></code>. It is possible for individual
+relays in a PDU to fail, reporting a certain state but failing to switch
+the relay when the state is reported as changing. Once a PDU starts to fail
+in this way, the PDU should be replaced as other ports may soon fail in the
+same manner. (Checking the light or LED on the PDU port may be
+insufficient. Try connecting a fail safe device to the port, like a desk
+light etc. This may indicate whether the board itself has a hardware
+problem.)</li>
+<li>If the command itself is wrong or returns non-zero, the test job will
+report an Infrastructure Error</li>
+</ul>
+</li>
+<li><p class="first">If the connection is refused, it is possible that the device node does not
+(yet) exist on the worker. e.g. check the <code class="docutils literal notranslate"><span class="pre">ser2net</span></code> configuration and the
+specified device node for the port being used.</p>
+</li>
+<li><p class="first">Check whether the device needs specialized support to avoid issues with
+power reset buttons or other hardware modes where the device does not start
+to boot as soon as power is applied. Check that any such support is actually
+working.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="compatibility-failures">
+<span id="index-5"></span><span id="id2"></span><h4>Compatibility failures<a class="headerlink" href="#compatibility-failures" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Dispatcher unable to meet job compatibility requirement.
+</pre></div>
+</div>
+<p>The master uses the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> code on the server to calculate a
+compatibility number - the highest integer in the strategy classes used for
+that job. The worker also calculates the number and unless these match, the job
+is failed.</p>
+<p>The compatibility check allows the master to detect if the worker is running
+older software, allowing the job to fail early. Compatibility is changed when
+existing support is removed, rather than when new code is added. Admins remain
+responsible for ensuring that if a new device needs new functionality, the
+worker will need to be running updated code.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-job.html#missing-method-failures"><span class="std std-ref">Missing methods</span></a> and
+<a class="reference internal" href="lava-scheduler-job.html#python-traceback-failures"><span class="std std-ref">Python traceback messages</span></a>. Also the <a class="reference internal" href="development-intro.html#compatibility-developer"><span class="std std-ref">developer documentation</span></a> for more information on how developers set the
+compatibility for test jobs.</p>
+</div>
+</div>
+<div class="section" id="checking-for-multinode-issues">
+<span id="multinode-admin-debug"></span><span id="index-6"></span><h4>Checking for MultiNode issues<a class="headerlink" href="#checking-for-multinode-issues" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Check the contents of <code class="docutils literal notranslate"><span class="pre">/etc/lava-coordinator/lava-coordinator.conf</span></code> on the
+worker. If you have multiple workers, all workers must have coordinator
+configuration pointing at a single lava-coordinator which serves all workers
+on that instance (you can also have one coordinator for multiple instances).</p>
+</li>
+<li><p class="first">Check the output of the <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> logs in
+<code class="docutils literal notranslate"><span class="pre">/var/log/lava-coordinator.log</span></code>.</p>
+</li>
+<li><p class="first">Run the status check script provided by <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ /usr/share/lava-coordinator/status.py
+status check complete. No errors
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use the <a class="reference internal" href="writing-multinode.html#running-multinode-tests"><span class="std std-ref">example test jobs</span></a> to distinguish
+between administration errors and test job errors. Simplify and make your test
+conditions portable. MultiNode is necessarily complex and can be hard to
+debug.</p>
+<ul class="simple">
+<li>Use QEMU to allow the test job to be submitted to other instances.</li>
+<li>Use anonymous git repositories for test definitions that just show the
+problem, without needing to access internal resources</li>
+<li>Use <a class="reference internal" href="writing-tests.html#inline-test-definitions"><span class="std std-ref">inline test definitions</span></a> so that the
+steps can be seen directly in the test job submission. This makes it easier
+to tweak and test as well as making it easier for others to help in the
+work.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="where-to-find-debug-information">
+<span id="admin-debug-information"></span><h3>Where to find debug information<a class="headerlink" href="#where-to-find-debug-information" title="Permalink to this headline">¶</a></h3>
+<p>index:: jinja2 template administration</p>
+<div class="section" id="jinja2-templates">
+<span id="jinja-template-triage"></span><h4>Jinja2 Templates<a class="headerlink" href="#jinja2-templates" title="Permalink to this headline">¶</a></h4>
+<p>LAVA uses <a class="reference external" href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> to allow devices to be configured using common data blocks,
+inheritance and the device-specific <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a>. Templates are
+developed as part of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> with supporting unit tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">lava_scheduler_app</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">device</span><span class="o">-</span><span class="n">types</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Building a new package using the <a class="reference internal" href="debian.html#developer-build-version"><span class="std std-ref">developer scripts</span></a> will cause the updated templates to be installed
+into:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">dispatcher</span><span class="o">-</span><span class="n">config</span><span class="o">/</span><span class="n">device</span><span class="o">-</span><span class="n">types</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The jinja2 templates support conditional logic, iteration and default arguments
+and are considered as part of the codebase of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>. Changing the
+templates can adversely affect other test jobs on the instance. All changes
+should be made first as a <a class="reference internal" href="development-intro.html#developer-jinja2-support"><span class="std std-ref">developer</span></a>. New
+templates should be accompanied by new unit tests for that template.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although these are configuration files and package updates will
+respect any changes you make, please <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk to us</span></a>
+about changes to existing templates maintained within the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>
+package.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#overriding-device-configuration"><span class="std std-ref">Overriding device configuration</span></a>,
+<a class="reference internal" href="migrating-admin-example.html#migrating-known-device-example"><span class="std std-ref">Worked example of migrating a known device</span></a>, <a class="reference internal" href="development-intro.html#developer-guide"><span class="std std-ref">Guide to development within LAVA</span></a>
+and <a class="reference internal" href="devicetypes.html#template-mismatch"><span class="std std-ref">Matching the template</span></a>.</p>
+</div>
+</div>
+<div class="section" id="log-files">
+<span id="index-7"></span><h4>Log files<a class="headerlink" href="#log-files" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><strong>lava-scheduler</strong> - controls how all devices are assigned:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">scheduler</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>lava-worker</strong> - controls the operation of the test job on the worker.
+Includes details of the test results recorded and job exit codes. Logs are
+created on the worker:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">dispatcher</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">worker</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>apache</strong> - includes XML-RPC logs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>gunicorn</strong> - details of the <abbr title="Web Server Gateway Interface">WSGI</abbr>
+operation for django:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">gunicorn</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="testjob-data">
+<h4>TestJob data<a class="headerlink" href="#testjob-data" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><strong>slave logs</strong> are transmitted to the master - temporary files used by the
+testjob are deleted when the test job ends.</p>
+</li>
+<li><p class="first"><strong>job validation</strong> - the master retains the output from the validation of the
+testjob performed by the slave. The logs is stored on the master as the
+<code class="docutils literal notranslate"><span class="pre">lavaserver</span></code> user - so for job ID 4321:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo su lavaserver
+$ ls /var/lib/lava-server/default/media/job-output/job-4321/description.yaml
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>other testjob data</strong> - also stored in the same location on the  master
+are the complete log file (<code class="docutils literal notranslate"><span class="pre">output.yaml</span></code>) and the logs for each specific
+action within the job in a directory tree below the <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> directory.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="lava-configuration-files">
+<span id="admin-configuration-files"></span><h3>LAVA configuration files<a class="headerlink" href="#lava-configuration-files" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">Creating Backups</span></a></p>
+</div>
+<div class="section" id="lava-coordinator">
+<h4>lava-coordinator<a class="headerlink" href="#lava-coordinator" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first"><strong>lava-coordinator.conf</strong> - <code class="docutils literal notranslate"><span class="pre">/etc/lava-coordinator/lava-coordinator.conf</span></code>
+contains the lookup information for workers to find the <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code>
+for <a class="reference internal" href="glossary.html#term-multinode"><span class="xref std std-term">MultiNode</span></a> test jobs. Each worker <strong>must</strong> share a single
+<code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> with all other workers attached to the same instance.
+Instances may share a <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> with other instances or can choose
+to have one each, depending on expected load and maintenance priorities. The
+<code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> daemon itself does not need to be installed on a master
+but that is the typical way to use the coordinator.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Restarting <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> will cause errors for <strong>any</strong>
+running MultiNode test job. However, changes to
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-coordinator/lava-coordinator.conf</span></code> on a worker can be made
+without needing to restart the <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> daemon itself.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="lava-dispatcher">
+<h4>lava-dispatcher<a class="headerlink" href="#lava-dispatcher" title="Permalink to this headline">¶</a></h4>
+<p>Files and directories in <code class="docutils literal notranslate"><span class="pre">/etc/lava-dispatcher/</span></code>:</p>
+<ul class="simple">
+<li><strong>lava-worker</strong> - Each worker needs configuration to be able to locate the
+correct server using HTTP.</li>
+</ul>
+</div>
+<div class="section" id="lava-server">
+<h4>lava-server<a class="headerlink" href="#lava-server" title="Permalink to this headline">¶</a></h4>
+<p>Files and directories in <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/</span></code>:</p>
+<ul>
+<li><p class="first"><strong>dispatcher.d</strong> - worker specific configuration. Files in this directory
+need to be created by the admin and have a filename which matches the
+reported hostname of the worker in <code class="docutils literal notranslate"><span class="pre">/var/log/lava-server/lava-master.log</span></code>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-admin.html#dispatcher-configuration"><span class="std std-ref">Extra dispatcher configuration</span></a></p>
+</div>
+</li>
+<li><p class="first"><strong>dispatcher-config</strong> - contains V2 device configuration, including
+<a class="reference internal" href="pipeline-admin.html#device-type-templates"><span class="std std-ref">Device type templates</span></a> and V2 <a class="reference internal" href="healthchecks.html#health-checks"><span class="std std-ref">health checks</span></a>.</p>
+</li>
+<li><p class="first"><strong>env.yaml</strong> - Configures the environment that will be used by the server and
+the dispatcher. This can be used to modify environment variables to support a
+proxy or other lab-specific requirements. The file is part of the
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package and contains comments on how changes can be made.</p>
+</li>
+<li><p class="first"><strong>instance.conf</strong> - Local database configuration for the master. This file is
+managed by the package installation process.</p>
+</li>
+<li><p class="first"><strong>lava-server-gunicorn.service</strong> - example file for a systemd service to run
+<code class="docutils literal notranslate"><span class="pre">lava-server-gunicorn</span></code> instead of letting systemd generate a service file
+from the sysvinit support included in the package.</p>
+</li>
+<li><p class="first"><strong>secret_key.conf</strong> - This key is used by Django to ensure the security of
+various cookies and # one-time values. To learn more please visit:
+<a class="reference external" href="https://docs.djangoproject.com/en/1.8/ref/settings/#secret-key">https://docs.djangoproject.com/en/1.8/ref/settings/#secret-key</a>.</p>
+</li>
+<li><p class="first"><strong>settings.conf</strong> - Instance-specific settings used by Django and lava-server
+including authentication backends, branding support and event notifications.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#lava-instance-settings"><span class="std std-ref">Instance settings</span></a></p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="overriding-device-configuration">
+<span id="index-8"></span><span id="id3"></span><h2>Overriding device configuration<a class="headerlink" href="#overriding-device-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Some device configuration can be overridden without making changes to the
+<a class="reference internal" href="#jinja-template-triage"><span class="std std-ref">Jinja2 Templates</span></a>. This does require some understanding of how
+template engines like jinja2 operate.</p>
+<ul class="simple">
+<li>Values hard-coded into the jinja2 template cannot be overridden. The
+template would need to be modified and re-tested.</li>
+<li>Variables in the jinja2 template typically have a default value.</li>
+<li>Variables in the jinja2 template can be override the default in the
+following sequence:<ol class="arabic">
+<li>by the next template</li>
+<li>by the device dictionary or, if neither of those set the variable</li>
+<li>by the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>.</li>
+</ol>
+</li>
+</ul>
+<p>To identify which variables can be overridden, check the template for
+placeholders. A commonly set value for QEMU device types is the amount of
+memory (on the dispatcher) which QEMU will be allowed to use for each test job:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">- -m </span><span class="cp">{{</span> <span class="nv">memory</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="m">512</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Most administrators will need to set the <code class="docutils literal notranslate"><span class="pre">memory</span></code> constraint in the
+<a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> so that test jobs cannot allocate all the available
+memory and cause the dispatcher to struggle to provide services to other test
+jobs. An example device dictionary to override the default (and also prevent
+test jobs from setting a different value) would be:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;qemu.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">memory</span> <span class="o">=</span> <span class="m">1024</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Admins need to balance the memory constraint against the number of other
+devices on the same dispatcher. There are occasions when multiple test jobs
+can start at the same time, so admins may also want to limit the number of
+emulated devices on any one dispatcher to the number of cores on that
+dispatcher and set the amount of memory so that with all devices in use there
+remains some memory available for the system itself.</p>
+<p>Most administrators will <strong>not</strong> set the <code class="docutils literal notranslate"><span class="pre">arch</span></code> variable of a QEMU device so
+that test writers can use the one device to run test jobs using a variety of
+architectures by setting the architecture in the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>. The QEMU
+template has conditional logic for this support:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">arch</span> <span class="o">==</span> <span class="s1">&#39;arm64&#39;</span> <span class="k">or</span> <span class="nv">arch</span> <span class="o">==</span> <span class="s1">&#39;aarch64&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">           qemu-system-aarch64</span>
+<span class="cp">{%</span> <span class="k">elif</span> <span class="nv">arch</span> <span class="o">==</span> <span class="s1">&#39;arm&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">           qemu-system-arm</span>
+<span class="cp">{%</span> <span class="k">elif</span> <span class="nv">arch</span> <span class="o">==</span> <span class="s1">&#39;amd64&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">           qemu-system-x86_64</span>
+<span class="cp">{%</span> <span class="k">elif</span> <span class="nv">arch</span> <span class="o">==</span> <span class="s1">&#39;i386&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">           qemu-system-x86</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Limiting QEMU to specific architectures on dispatchers which are not
+able to safely emulate an x86_64 machine due to limited memory or number of
+cores is an advanced admin task. <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">Device tags</span></a> will be
+needed to ensure that test jobs are properly scheduled.</p>
+</div>
+<div class="section" id="overriding-device-constants">
+<span id="overriding-constants"></span><span id="index-9"></span><h3>Overriding device constants<a class="headerlink" href="#overriding-device-constants" title="Permalink to this headline">¶</a></h3>
+<p>The dispatcher uses a variety of constants and some of these can be overridden
+in the device configuration.</p>
+<p>A common override used when operating devices on your desk or when a
+<a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a> is not available, allows the dispatcher to recognize a soft reboot.
+Another example is setting up the kernel starting message that the LAVA will
+recognize during boot time.
+This uses the <code class="docutils literal notranslate"><span class="pre">shutdown_message</span></code> and <code class="docutils literal notranslate"><span class="pre">boot_message</span></code> keys in the
+<code class="docutils literal notranslate"><span class="pre">constants</span></code> section of the device config:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;my-device.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">shutdown_message</span> <span class="o">=</span> <span class="s2">&quot;reboot: Restarting system&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">boot_message</span> <span class="o">=</span> <span class="s2">&quot;Booting Linux&quot;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Some of the constants can also be overridden in the test job definition, i.e.
+looking at the same example <code class="docutils literal notranslate"><span class="pre">shutdown-message</span></code> parameter support in the
+<code class="docutils literal notranslate"><span class="pre">u-boot</span></code> boot action:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+   <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+   <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ramdisk</span>
+   <span class="nt">parameters</span><span class="p">:</span>
+     <span class="nt">shutdown-message</span><span class="p">:</span> <span class="nt">&quot;reboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Restarting system&quot;</span>
+   <span class="nt">prompts</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-more-devices">
+<span id="admin-adding-devices"></span><span id="index-10"></span><h2>Adding more devices<a class="headerlink" href="#adding-more-devices" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are considering using MultiNode in your Test Plan, now is the
+time to ensure that MultiNode jobs can run successfully on your instance.</p>
+</div>
+<p>Once you have a couple of QEMU devices running and you are happy with how to
+maintain, debug and test using those devices, start adding <strong>known working</strong>
+devices. These are devices which already have templates in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">dispatcher</span><span class="o">-</span><span class="n">config</span><span class="o">/</span><span class="n">device</span><span class="o">-</span><span class="n">types</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The majority of the known device types are low-cost ARM developer boards which
+are readily available. Even if you are not going to use these boards for your
+main testing, you are <strong>recommended</strong> to obtain a couple of these devices as
+these will make it substantially easier to learn how to administer LAVA for any
+devices other than emulators.</p>
+<p>Physical hardware like these dev-boards have hardware requirements like:</p>
+<ul class="simple">
+<li>serial console servers</li>
+<li>remote power control</li>
+<li>network infrastructure</li>
+<li>uninterruptible power supplies</li>
+<li>shelving</li>
+<li>cables</li>
+<li>removable media</li>
+</ul>
+<p>Understanding how all of those bits fit together to make a functioning LAVA
+instance is much easier when you use devices which are known to work in LAVA.</p>
+<p>Early admin stuff:</p>
+<ul class="simple">
+<li>recommendations on how to do admin:<ul>
+<li>start simple using our examples</li>
+<li>build complexity slowly</li>
+<li>only once you’re confident, start adding novel devices</li>
+</ul>
+</li>
+<li>where to find logs and debug information</li>
+<li>device configuration and templates</li>
+<li>getting a number of cheap ARMv7 development boards</li>
+</ul>
+</div>
+<div class="section" id="adding-users-and-groups">
+<span id="admin-adding-users"></span><span id="index-11"></span><h2>Adding users and groups<a class="headerlink" href="#adding-users-and-groups" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="authentication.html#user-authentication"><span class="std std-ref">Configuring user authentication</span></a> and <a class="reference internal" href="installing_on_debian.html#create-superuser"><span class="std std-ref">Superuser</span></a></p>
+</div>
+<p>Users and groups can be added and modified in the <a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">Django administration interface</span></a>
+or from the command line.</p>
+<p>Newly created users will need permission to submit test jobs. This can be done
+by adding the user to a group which already has the <code class="docutils literal notranslate"><span class="pre">Can</span> <span class="pre">cancel</span> <span class="pre">or</span> <span class="pre">resubmit</span>
+<span class="pre">test</span> <span class="pre">jobs</span></code> permission or by adding this permission for each individual user.</p>
+<div class="section" id="local-users">
+<h3>Local Users<a class="headerlink" href="#local-users" title="Permalink to this headline">¶</a></h3>
+<p>Local django user accounts can be created with the <code class="docutils literal notranslate"><span class="pre">manage</span> <span class="pre">users</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage users add &lt;username&gt;  --passwd &lt;password&gt;
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">--passwd</span></code> is omitted, a random password is generated and output by
+the script.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">users</span> <span class="pre">add</span> <span class="pre">--help</span></code> for more information
+and available options.</p>
+</div>
+<div class="section" id="ldap-users">
+<h3>LDAP Users<a class="headerlink" href="#ldap-users" title="Permalink to this headline">¶</a></h3>
+<p>If <a class="reference internal" href="authentication.html#user-authentication"><span class="std std-ref">Configuring user authentication</span></a> is configured, users can be added directly from
+LDAP, retaining the configured LDAP password and email address:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage addldapuser --username {username}
+</pre></div>
+</div>
+</div>
+<div class="section" id="local-groups">
+<h3>Local Groups<a class="headerlink" href="#local-groups" title="Permalink to this headline">¶</a></h3>
+<p>Local Django groups can be created with the <code class="docutils literal notranslate"><span class="pre">manage</span> <span class="pre">groups</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage groups add &lt;name&gt;
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">groups</span> <span class="pre">add</span> <span class="pre">--help</span></code> or <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">lava-server</span>
+<span class="pre">manage</span> <span class="pre">groups</span> <span class="pre">update</span> <span class="pre">--help</span></code> for more information and available options.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="installing_on_debian.html#create-superuser"><span class="std std-ref">Superuser</span></a></p>
+</div>
+</div>
+<div class="section" id="owners-and-physical-access">
+<h3>Owners and physical access<a class="headerlink" href="#owners-and-physical-access" title="Permalink to this headline">¶</a></h3>
+<p>A device can be linked to two kinds of users or groups:</p>
+<ul class="simple">
+<li><strong>Owners</strong> will be able to submit jobs to a restricted device.</li>
+<li><strong>Physical Access</strong> is a way of providing information to test writers on who
+to contact for problems with the physical hardware or questions about what
+peripherals may be available.</li>
+</ul>
+<p>Only one user or one group can be set for the owner or for physical access at
+any one time.</p>
+<div class="section" id="setting-owners-and-physical-access">
+<h4>Setting owners and physical access<a class="headerlink" href="#setting-owners-and-physical-access" title="Permalink to this headline">¶</a></h4>
+<p>Devices can be modified in the <a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">Django administration interface</span></a> or from the
+command line. An existing user can be listed as the owner or
+the user with physical access to a specified device which must already exist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage devices update {hostname} --owner {username}
+$ sudo lava-server manage devices update {hostname} --physical-user {username}
+</pre></div>
+</div>
+<p>Once at least one group has been created, the owner and physical access details
+can also be set as groups:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage devices update {hostname} --group {group_name}
+$ sudo lava-server manage devices update {hostname} --physical-group {group_name}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/simple-admin.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:08 GMT -->
+</html>

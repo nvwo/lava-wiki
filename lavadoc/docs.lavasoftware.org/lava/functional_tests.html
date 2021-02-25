@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/functional_tests.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:14 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Functional testing of LAVA source code &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adding new device types" href="device-integration.html" />
+    <link rel="prev" title="State machine" href="scheduler.html" />
+    <link rel="canonical" href="functional_tests.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Functional testing of LAVA source code</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#meta-lava">meta-lava</a><ul>
+<li><a class="reference internal" href="#future-plans">Future plans</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#purpose-of-functional-tests">Purpose of functional tests</a><ul>
+<li><a class="reference internal" href="#requirements-for-a-functional-test-job">Requirements for a functional test job</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-the-functional-test-frontend">Using the functional test frontend</a><ul>
+<li><a class="reference internal" href="#dedicated-workers">Dedicated workers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="scheduler.html" title="Previous Chapter: State machine"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; State machine</span>
+    </a>
+  </li>
+  <li>
+    <a href="device-integration.html" title="Next Chapter: Adding new device types"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Adding new de... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="functional-testing-of-lava-source-code">
+<span id="functional-testing"></span><span id="index-0"></span><h1>Functional testing of LAVA source code<a class="headerlink" href="#functional-testing-of-lava-source-code" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>Unit tests are routinely run against each change in a review and again
+nightly against the master branch, as well as during development.
+However, unit tests cannot properly test the <code class="docutils literal notranslate"><span class="pre">run()</span></code> functions or
+performance of the code with real hardware. Two extra levels of testing
+are available:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#meta-lava"><span class="std std-ref">meta-lava</span></a> - tests the <code class="docutils literal notranslate"><span class="pre">run()</span></code> functions against static log
+files. This is useful for devices which are not available to a
+particular instance but will need updating if changes in the code
+cause differences in the messages sent to the device.</li>
+<li><a class="reference internal" href="#purpose-functional-tests"><span class="std std-ref">Functional testing</span></a> - running test
+jobs on real hardware. The extra cost of infrastructure,
+administration and maintenance is worthwhile to ensure that changes
+actually perform the required work. Also provides opportunities to
+test the scheduling of the queue and can highlight resource
+limitations.</li>
+</ul>
+<p>The LAVA UI is <strong>not</strong> part of functional testing. Wherever possible,
+unit tests are used for the UI. Functional testing relates to the code
+paths required to schedule, run and cleanup test jobs.</p>
+</div>
+<div class="section" id="meta-lava">
+<span id="index-1"></span><span id="id1"></span><h2>meta-lava<a class="headerlink" href="#meta-lava" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">meta-lava</span></code> is a way of running idealized test jobs to test changes
+in the LAVA codebase. It was developed to provide limited test coverage
+when suitable hardware was not available. It can be used to provide
+test coverage for code which detects unusual or intermittent behavior
+by replaying a static log against changes in the codebase.
+<code class="docutils literal notranslate"><span class="pre">meta-lava</span></code> creates a DummySys device based on real log files and
+then checks that the inputs from LAVA are correct for that specific use
+case.</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/meta-lava">https://git.lavasoftware.org/lava/meta-lava</a></p>
+<p><code class="docutils literal notranslate"><span class="pre">meta-lava</span></code> is a python script that will:</p>
+<ul class="simple">
+<li>build lava-server and lava-dispatcher docker image<ul>
+<li>install lava-server or lava-dispatcher using debian packaging</li>
+<li>fetch the source from git and add the right symlinks</li>
+</ul>
+</li>
+<li>start the containers and link them in the same network (lava-worker,
+lava-server-gunicorn)</li>
+<li>during the startup, fetch the last git commits (in case the docker
+image were build with an old version)</li>
+<li>wait for the xmlrpc api to show up</li>
+<li>wait for the worker to be up and running (polling the xmlrpc api)</li>
+<li>run a bunch of lava jobs and compare the results with the expected
+ones.</li>
+</ul>
+<p>Currently we test:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">tests/health-checks</span></code>: Check that lava is sending exactly the same
+set of commands and providing the right binaries (ramdisk, kernel,
+dtb over tftp)</li>
+<li><code class="docutils literal notranslate"><span class="pre">tests/bootloader</span></code>: Check that lava is detecting and classifying
+common bootloader errors</li>
+<li><code class="docutils literal notranslate"><span class="pre">tests/notitications</span></code>: Check that lava is sending the notifications
+as expected (no irc or emails yet)</li>
+</ul>
+<div class="section" id="future-plans">
+<h3>Future plans<a class="headerlink" href="#future-plans" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Add more use cases and job output (logs).</li>
+<li>Make test runs public</li>
+</ul>
+</div>
+</div>
+<div class="section" id="purpose-of-functional-tests">
+<span id="purpose-functional-tests"></span><h2>Purpose of functional tests<a class="headerlink" href="#purpose-of-functional-tests" title="Permalink to this headline">¶</a></h2>
+<p>Functional tests serve to check the changes in the codebase against
+unchanging test job images, resources, metadata, submitter and results
+running on real hardware.</p>
+<p>Functional tests are similar to health checks and both differ from test
+jobs used elsewhere in your CI due to fundamentally different
+objectives.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Often, functional tests are developed from the sample test
+jobs submitted as part of <a class="reference internal" href="development.html#developer-commit-for-review"><span class="std std-ref">code reviews</span></a> to merge changes to <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">integrate a
+new device-type</span></a>. Unit tests will need all
+URLs to be permanent to be able to check the code being reviewed.</p>
+</div>
+<p>In particular, functional tests exist to test code paths involved in
+running test jobs which cannot be tested using other means, e.g. unit
+tests or meta-lava. Testing the LAVA codebase using real hardware is
+not without problems; infrastructure failures need to be isolated from
+the results and issues like resource starvation need to be managed.
+Where possible, testing the LAVA codebase needs to be done within the
+codebase using unit tests or using meta-lava.</p>
+<p>Functional tests are measured on a binary <strong>Complete</strong> or
+<strong>Incomplete</strong> for each submitted test job.</p>
+<p>For a successful run, the suite of functional tests provides a clean
+set of Complete test job results. To be able to identify all test jobs
+in the functional test run, always use a dedicated submitter for
+functional tests, distinct from user tests and other automated tests.</p>
+<div class="section" id="requirements-for-a-functional-test-job">
+<span id="functional-requirements"></span><h3>Requirements for a functional test job<a class="headerlink" href="#requirements-for-a-functional-test-job" title="Permalink to this headline">¶</a></h3>
+<p>The overriding principle for a functional test is that the job is
+testing the LAVA software code, not the deployed system. This is
+similar to a <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health check</span></a> which is designed to test the DUT and
+related infrastructure to provide an assurance that test jobs will be
+able to run successfully.</p>
+<ol class="arabic">
+<li><p class="first">Image files used in functional tests need to remain static, and they
+need to be stored in static locations. Do not rely on files that may
+change easily, e.g. releases on snapshots.linaro.org. If you need
+those files, copy them to a stable location.</p>
+</li>
+<li><p class="first">Use stable, unchanging tools (e.g from the stable release of a Linux
+distribution like Debian).</p>
+</li>
+<li><p class="first">Use the deployment tools from the distribution to ensure that the
+behavior of those tools does not change unexpectedly.</p>
+</li>
+<li><p class="first">Use checksums to ensure the downloaded files have not changed.</p>
+</li>
+<li><p class="first">Separate out single and multiple deployment test jobs. If the DUT
+can support OE and AOSP or ramdisk and NFS, submit one test job for
+each variant <strong>as well as</strong> a functional test explicitly designed to
+test that the DUT can run a test in one environment and be
+redeployed with a new environment, if that can be supported.</p>
+</li>
+<li><p class="first">Ensure that advanced LAVA software functionality is also covered by
+submitting representative <a class="reference internal" href="glossary.html#term-multinode"><span class="xref std std-term">MultiNode</span></a> test jobs, especially if
+the staging instance is capable of supporting <a class="reference internal" href="glossary.html#term-vland"><span class="xref std std-term">VLANd</span></a></p>
+</li>
+<li><p class="first">Unreliable functional tests need to be triaged and removed if the
+problems cannot be fixed. This may lead to the underlying code
+support being deprecated or removed, including a device-type
+template.</p>
+</li>
+<li><p class="first">Unreliable devices need to be triaged and test jobs using those
+devices removed from the functional tests if the problems cannot be
+fixed. If those devices are the sole use of a particular deployment
+method or boot method, then that code support needs to be reviewed
+and possibly removed.</p>
+</li>
+<li><p class="first">If firmware has to be upgraded on devices and the functional test
+needs changes, create a new functional test with new metadata.
+Remove the old functional test unless devices running the old
+firmware remain available using a separate device-type.</p>
+</li>
+<li><p class="first">Removing a functional test requires a review to remove source code
+support for a deployment method, boot method, device-type template
+etc.</p>
+</li>
+<li><p class="first">Email notifications are optional but can be useful. Use sparingly
+to avoid flooding the developers with noise.</p>
+</li>
+<li><p class="first">If a particular device or deployment method or boot method is not
+covered by at least one functional test, add a new functional test
+and/or add meta-lava support.</p>
+<p>If a test job exists which cannot be made into a functional test,
+and meta-lava support is not available, the code support for the
+affected method will need to be reviewed with a view to probable
+removal.</p>
+</li>
+<li><p class="first">Test job definitions also remain static.</p>
+<ol class="arabic simple">
+<li>No changes in prompts, metadata, image files, checksums, LXC
+suites or submitter.</li>
+<li>Changes to timeouts only by code review to handle resource
+limitations.</li>
+<li>Infrastructure to remain static, as far as possible. Only change
+ports (PDU, USB etc.) when failures have been identified. As much
+as possible, leave the devices undisturbed in the racks.</li>
+<li>Minimal work done in the test shell definitions. Smoke tests and
+setup checks if specific external hardware is configured, e.g.
+ARM Energy Probe. Any setup code <strong>must</strong> use <code class="docutils literal notranslate"><span class="pre">lava-test-raise</span></code>
+for all known failure modes.</li>
+</ol>
+</li>
+<li><p class="first">Devices are checked as per the current <code class="docutils literal notranslate"><span class="pre">master</span></code> branch
+configuration.</p>
+<ol class="arabic simple">
+<li>Devices which do not have full support already merged are <strong>not</strong>
+candidates for functional testing.</li>
+<li>Test job use cases for which the device support is still in
+development are <strong>not</strong> candidates for functional testing.</li>
+<li>Test jobs which download third-party software which may change
+outside the control of the functional test are <strong>not</strong> candidates
+for functional testing.</li>
+</ol>
+</li>
+</ol>
+<p>Test jobs and use cases outside of these requirements can still be
+submitted on a regular basis but <strong>not</strong> using the same metadata or
+job submitter as the functional tests. Completion of these test jobs
+will <strong>not</strong> count towards the functional test report. Consider using
+the notification support to send email to developers when such tests
+finish in state Incomplete as there will be no other coverage for
+such failures.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debugging.html#change-one-thing"><span class="std std-ref">Change one thing at a time</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="using-the-functional-test-frontend">
+<h2>Using the functional test frontend<a class="headerlink" href="#using-the-functional-test-frontend" title="Permalink to this headline">¶</a></h2>
+<p>The LAVA software team will be setting up a dedicated frontend to run
+functional tests across multiple instances to increase the functional
+test coverage to include devices not available in the current
+instances.</p>
+<p>This service will coordinate:</p>
+<ul class="simple">
+<li>The list of test job submissions used in functional testing.</li>
+<li>The set of test shell definitions used in functional testing.</li>
+<li>The submission of functional tests to instances according to device
+availability, as determined using the XML-RPC API.</li>
+<li>The selection of the appropriate workers for available devices on
+each instance, using the relevant build of the master branch.</li>
+<li>The retrieval of functional test results from multiple instances.</li>
+<li>The display of a summary of the functional tests for a specific
+build of the master branch.</li>
+</ul>
+<div class="section" id="dedicated-workers">
+<h3>Dedicated workers<a class="headerlink" href="#dedicated-workers" title="Permalink to this headline">¶</a></h3>
+<p>If your instance has a mix of devices, some with upstream LAVA support
+and some without (or with support in development / review), then one or
+more dedicated workers will be needed to work with the functional test
+frontend.</p>
+<p>Any one piece of hardware can run multiple <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> processes, as
+long as the <code class="docutils literal notranslate"><span class="pre">hostname</span></code> option is unique.</p>
+<p>For functional testing, the worker will need to be running a specific
+build of the master branch, so docker based workers will need to be
+available.</p>
+<p>During the functional tests, the relevant devices will be switched to
+the functional test worker in the relevant docker container (API is yet
+to be scoped) before test job submissions start. When all functional
+test jobs are complete, the devices are switched back to the original
+worker.</p>
+<p>Currently, functional testing occurs on
+<a class="reference external" href="https://staging.validation.linaro.org/">https://staging.validation.linaro.org/</a> and more work is needed to
+support combining results across multiple staging instances. More
+content will be added here as the relevant services are developed.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/functional_tests.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:14 GMT -->
+</html>

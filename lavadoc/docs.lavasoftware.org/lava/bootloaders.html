@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/bootloaders.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:24 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Bootloader/Firmware Testing and Recovery &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Migrating to LAVA V2" href="migration.html" />
+    <link rel="prev" title="Integration Stories" href="integration-stories.html" />
+    <link rel="canonical" href="bootloaders.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Bootloader/Firmware Testing and Recovery</a><ul>
+<li><a class="reference internal" href="#what-is-recovery-mode">What is recovery mode?</a></li>
+<li><a class="reference internal" href="#bootloader-recovery-criteria">Bootloader recovery criteria</a><ul>
+<li><a class="reference internal" href="#reliability">Reliability</a></li>
+<li><a class="reference internal" href="#uniqueness">Uniqueness</a></li>
+<li><a class="reference internal" href="#scalability">Scalability</a></li>
+<li><a class="reference internal" href="#deployment">Deployment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comparison-of-barriers-to-bootloader-testing-and-recovery">Comparison of barriers to bootloader testing and recovery</a><ul>
+<li><a class="reference internal" href="#defensive-testing">Defensive testing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#problems-with-bootloader-execution">Problems with bootloader execution</a></li>
+<li><a class="reference internal" href="#problems-with-bootloader-storage">Problems with bootloader storage</a></li>
+<li><a class="reference internal" href="#problems-with-full-system-images">Problems with full system images</a></li>
+<li><a class="reference internal" href="#hikey-6220">HiKey 6220</a><ul>
+<li><a class="reference internal" href="#id8">Recovery deployment</a></li>
+<li><a class="reference internal" href="#aosp-deployment">AOSP deployment</a></li>
+<li><a class="reference internal" href="#openembedded-deployment">OpenEmbedded deployment</a></li>
+<li><a class="reference internal" href="#limits-of-hikey-6220-recovery">Limits of HiKey 6220 recovery</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#juno">Juno</a><ul>
+<li><a class="reference internal" href="#id9">Recovery deployment</a></li>
+<li><a class="reference internal" href="#u-boot-boot-action">U-Boot boot action</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#x15-gpevm">X15 GPEVM</a><ul>
+<li><a class="reference internal" href="#id10">Recovery deployment</a></li>
+<li><a class="reference internal" href="#id11">OpenEmbedded deployment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="integration-stories.html" title="Previous Chapter: Integration Stories"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Integration Stories</span>
+    </a>
+  </li>
+  <li>
+    <a href="migration.html" title="Next Chapter: Migrating to LAVA V2"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Migrating to LAVA V2 &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="bootloader-firmware-testing-and-recovery">
+<span id="bootloader-testing-recovery"></span><span id="index-0"></span><h1>Bootloader/Firmware Testing and Recovery<a class="headerlink" href="#bootloader-firmware-testing-and-recovery" title="Permalink to this headline">¶</a></h1>
+<p>LAVA supports deploying new bootloader/firmware builds with recovery
+from broken builds on boards which meet full bootloader automation
+criteria. When using LAVA as a part of <a class="reference internal" href="lava_ci.html#continuous-integration"><span class="std std-ref">Continuous Integration</span></a>,
+it is expected that some of the bootloader builds will fail due to new
+bugs or regressions, just as with any other software being tested.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For the purposes of this documentation, LAVA does not make
+any distinction between firmware and bootloader on the boards that
+it supports. Support depends simply on the ability to recover the
+board after a deployment of a broken build.</p>
+</div>
+<p>A reliable, effective and low-operational-cost automation methodology
+requires automated recovery without any manual intervention. <a class="footnote-reference" href="#f1" id="id1">[1]</a> In
+an environment where there is a mixed user pool, a board needs to be
+available for the next test job in the queue, using a known working
+bootloader build, as soon as the recovery from the previous test job is
+complete.</p>
+<p>Recovery should be a conditional element of every bootloader test job
+using a second deploy and boot action. LAVA has support for fixing up a
+broken bootloader build by running a <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health check</span></a> test job to
+deploy a known working build, as long as the breakage can be reliably
+detected. The bootloader deployment and recovery test job should raise
+an infrastructure error to automatically trigger a health check.</p>
+<p>Bootloader testing on boards which do not provide for automated
+recovery cannot be supported by automation.</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>A smaller number of boards support automated installation of a
+bootloader but don’t support automated recovery. In an environment
+where failures are expected, introducing manual recovery steps in an
+otherwise automated testing environment should be considered very
+carefully.</td></tr>
+</tbody>
+</table>
+<div class="section" id="what-is-recovery-mode">
+<span id="recovery-mode"></span><span id="index-1"></span><h2>What is recovery mode?<a class="headerlink" href="#what-is-recovery-mode" title="Permalink to this headline">¶</a></h2>
+<p>Recovery mode is a hardware feature which allows boards to be
+<a class="reference external" href="https://en.wikipedia.org/wiki/Brick_(electronics)">unbricked</a> after
+a serious system error or a failed update of the bootloader, kernel or
+operating system. Recovery mode is not necessarily the same as the
+methods used to deploy firmware to a bare metal device during
+manufacture.</p>
+<ul class="simple">
+<li>Recovery mode needs to implement a way to write a new
+bootloader build which must be fully usable even if the bootloader is
+absent or invalid, i.e. without any attempt to execute the current
+bootloader.</li>
+<li>Recovery mode must be able to write a new bootloader to the
+board directly after applying power to the device and then allow the
+board to execute the new bootloader to continue operation upon
+leaving recovery mode.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#bootloader-execution"><span class="std std-ref">Problems with bootloader execution</span></a></p>
+</div>
+</div>
+<div class="section" id="bootloader-recovery-criteria">
+<span id="index-2"></span><span id="id2"></span><h2>Bootloader recovery criteria<a class="headerlink" href="#bootloader-recovery-criteria" title="Permalink to this headline">¶</a></h2>
+<p>Juno, HiKey 6220 and X15 GPEVM are the only boards capable of supporting
+bootloader testing and recovery out of the hundreds of boards which
+have been integrated into LAVA over the years.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Of the supported boards, the HiKey 6220 has noticeable
+limitations. It is possible to workaround some difficulties on some
+boards but this will limit the usefulness and scope of any
+bootloader testing on those boards.</p>
+<div class="last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#limits-of-hikey-6220"><span class="std std-ref">Limits of HiKey 6220 recovery</span></a></p>
+</div>
+</div>
+<p>The difficulties cover a number of areas:</p>
+<div class="section" id="reliability">
+<h3>Reliability<a class="headerlink" href="#reliability" title="Permalink to this headline">¶</a></h3>
+<p>All aspects of bootloader testing and recovery need to be reliable
+for <a class="reference internal" href="lava_ci.html#continuous-integration"><span class="std std-ref">CI</span></a> to operate:</p>
+<ul class="simple">
+<li>Entering and leaving recovery mode</li>
+<li>Appearance of interfaces to transfer data within recovery mode</li>
+<li>Transfer of data during recovery</li>
+<li>Stability of the hardware during recovery (considering that the
+files being transferred - and executed - are untested, may contain
+invalid sequences or be corrupted during the build).</li>
+</ul>
+</div>
+<div class="section" id="uniqueness">
+<h3>Uniqueness<a class="headerlink" href="#uniqueness" title="Permalink to this headline">¶</a></h3>
+<p>Automation relies on being able to identify one board out of hundreds,
+some of which will be in the same or very similar states to the one
+board in use for this test job.</p>
+<ul>
+<li><p class="first">Every board needs to expose a distinct identifier across all
+interfaces.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The HiKey 6220 cannot do this in recovery mode and is
+therefore restricted to only one board for each worker. This
+dramatically reduces the availability of bootloader testing and
+recovery using this board.</p>
+<div class="last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#limits-of-hikey-6220"><span class="std std-ref">Limits of HiKey 6220 recovery</span></a></p>
+</div>
+</div>
+</li>
+<li><p class="first">All identifiers must be independent of the software deployed on the
+device. If identifiers change when firmware is updated, the board
+will effectively disappear underneath the automation.</p>
+</li>
+<li><p class="first">All identifiers must be stable across reboots and test jobs.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="scalability">
+<h3>Scalability<a class="headerlink" href="#scalability" title="Permalink to this headline">¶</a></h3>
+<p><strong>Keep Things Simple</strong>. Every item below adds to the complexity of the
+final test jobs and failure rates will rise, in a non-linear manner,
+with each increase in complexity.</p>
+<ul>
+<li><p class="first">Jumpers require relays which require software control interfaces</p>
+</li>
+<li><p class="first">Relays will eventually fail after a finite number of operations.</p>
+</li>
+<li><p class="first">Recovery mode devices which appear or disappear after a hardware
+timeout will be a cause of intermittent failures.</p>
+</li>
+<li><p class="first">Hardware modifications cause deviations from the original or final
+product, potentially invalidating some results.</p>
+</li>
+<li><p class="first">Not all automation admin teams have the necessary hardware experience
+to make modifications to a board.</p>
+</li>
+<li><p class="first">Custom hardware peripherals can interfere with board hardware or
+software causing intermittent failures or non-standard behavior.</p>
+</li>
+<li><p class="first">Security requirements of a production / consumer device are typically
+incompatible with automation requirements. Access to recovery mode
+may be removed to prevent consumer access to protected content.
+Nonetheless, try to get as much of the recovery mode support
+available out-of-the-box as possible to manage the failure rate.</p>
+</li>
+<li><p class="first">The further the automation infrastructure diverges from the
+manufacturer infrastructure, the harder it will be to triage and fix
+the problems with the bootloader. This is a particular problem for
+intermittent failures.</p>
+<p>If the manufacturer has a custom rig used to deploy the original
+firmware, a copy of such a rig may be a significant advantage when
+automating bootloader testing and recovery. The lack of such a rig
+has blocked bootloader testing and recovery on several boards.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="deployment">
+<span id="recovery-deployment"></span><h3>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h3>
+<p>Automation must always be able to interrupt the boot process at a stage
+<strong>lower</strong> than the stage being tested. This is why a BMC is so useful,
+provided that the operation of the BMC is stable, reliable and
+deterministic.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://www.slideshare.net/linaroorg/hkg18tr10-best-practices-for-getting-devices-in-lava">HKG18-TR10 - Best practices for getting devices in
+LAVA (slides)</a>
+Video also available: <a class="reference external" href="https://youtu.be/jHyanD1II90">https://youtu.be/jHyanD1II90</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="comparison-of-barriers-to-bootloader-testing-and-recovery">
+<span id="barriers-to-automated-recovery"></span><h2>Comparison of barriers to bootloader testing and recovery<a class="headerlink" href="#comparison-of-barriers-to-bootloader-testing-and-recovery" title="Permalink to this headline">¶</a></h2>
+<p>LAVA has a low tolerance for failure so that issues can be detected
+early, avoiding a <strong>false positive</strong> where a test passes because an
+error was not detected. Developers will need reliable result data from
+the automated bootloader testing and recovery to avoid wasting time on
+spurious <strong>false negative</strong> reports which mis-report a failure as being
+caused by the code when it was due to the automation infrastructure.
+The hardest problems to solve are intermittent faults in a complex
+stack Every requirement which is not fully supported adds complexity to
+the final automation and risks increasing the failure rate.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="21%" />
+<col width="7%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Requirement</th>
+<th class="head">HiKey 6220 BL</th>
+<th class="head">Juno</th>
+<th class="head">X15 GPEVM BL</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Interrupt boot before bootloader <a class="footnote-reference" href="#f2" id="id3">[2]</a></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>Presence of a recovery mode <a class="footnote-reference" href="#f3" id="id4">[3]</a></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>Automated access to recovery <a class="footnote-reference" href="#f4" id="id5">[4]</a></td>
+<td>Needs relays</td>
+<td>Yes</td>
+<td>Needs relays</td>
+</tr>
+<tr class="row-odd"><td>Writing data in recovery mode <a class="footnote-reference" href="#f5" id="id6">[5]</a></td>
+<td>Dynamic USB TTY</td>
+<td>Yes</td>
+<td>Dynamic USB TTY</td>
+</tr>
+<tr class="row-even"><td>Unique identification in recovery <a class="footnote-reference" href="#f6" id="id7">[6]</a></td>
+<td><strong>NO</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>Stable operation in recovery</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>See <a class="reference internal" href="#recovery-deployment"><span class="std std-ref">Deployment</span></a> - most boards in LAVA cannot
+provide this support.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[3]</a></td><td>See <a class="reference internal" href="#recovery-mode"><span class="std std-ref">What is recovery mode?</span></a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[4]</a></td><td><p class="first">Consumer devices need to be protected from accidentally entering
+recovery mode, so manufacturers put constraints on how recovery mode
+is accessed. For example, having to press multiple buttons at the
+same time or in a specific order or hold down until something shows
+on the screen. For recovery mode to be used in automation, access to
+recovery mode must be as simple as possible - complexity always
+increases the failure rate.</p>
+<p class="last">HiKey 6220 and X15 GPEVM have jumpers to select recovery mode which is
+easier to automate than buttons but still requires external hardware which
+then needs additional software to be written to automate the control
+of the board. Attaching relays to jumpers is very different to
+soldering connections onto a DIP switch. Many lab admin teams do not
+include a hardware engineer.</p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[5]</a></td><td>The use of dynamic devices like <code class="docutils literal notranslate"><span class="pre">/dev/ttyUSB*</span></code> requires
+unique identification in recovery mode.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[6]</a></td><td>The HiKey 6220 dynamic USB TTY device does not have a unique
+identifier on the host. If board-01 is already in recovery mode and
+board-02 enters recovery mode whilst connected to the same host,
+board-01 becomes inaccessible. This limits the use of recovery mode
+to one board per host.</td></tr>
+</tbody>
+</table>
+<div class="section" id="defensive-testing">
+<h3>Defensive testing<a class="headerlink" href="#defensive-testing" title="Permalink to this headline">¶</a></h3>
+<p>Avoid creating a burden on all boards to support bootloader testing and
+recovery from only some test jobs. Once intermittent errors occur with
+boards which need some level of custom support for recovery mode, it
+will be much harder to investigate if the failure cannot be tested on
+boards which do not have recovery mode support. It would be better to
+have two <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device types</span></a>, one with recovery mode
+support and one without, whenever there is any doubt about the
+reliability of the recovery mode support.</p>
+</div>
+</div>
+<div class="section" id="problems-with-bootloader-execution">
+<span id="bootloader-execution"></span><h2>Problems with bootloader execution<a class="headerlink" href="#problems-with-bootloader-execution" title="Permalink to this headline">¶</a></h2>
+<p>Some boards can support replacing the bootloader within a test job but
+still rely on the current bootloader to execute to allow the board to
+boot to a stage where that functionality is available. For example, it
+is possible to write new U-Boot files to many U-Boot devices once
+booted into a ramdisk from within a test job. Alternatively,
+<code class="docutils literal notranslate"><span class="pre">fastboot</span></code> devices support writing a new fastboot binary at the same
+stage as writing a new kernel or system image. This <strong>does not qualify
+as recovery mode</strong> because those same files must be executed before the
+board can boot to the stage where new files can be written.</p>
+<p>Two serious failures are possible:</p>
+<ul class="simple">
+<li>the new files fail to execute in the ways required by the automation,
+requiring manual intervention</li>
+<li>the new files contain a failure not executed by the automation,
+potentially requiring a product recall</li>
+</ul>
+<p>Therefore, the bootloader files must undergo manual testing before
+being made available and this dramatically limits the opportunity for
+CI on those bootloader files.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> mode is not recovery mode for two reasons:</p>
+<ul class="simple">
+<li>the <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> binary can be overwritten (by <code class="docutils literal notranslate"><span class="pre">fastboot</span></code>) within
+normal operation of a test job and therefore rendered corrupt or
+missing,</li>
+<li>every <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> binary needs to be executed to write a
+replacement of itself.</li>
+</ul>
+<p>Similarly, <a class="reference external" href="https://en.wikipedia.org/wiki/Android_software_development#ADB">ADB</a>
+cannot provide recovery mode support because it relies on the board
+being booted into userspace and userspace must be configured to allow
+access.</p>
+</div>
+<div class="section" id="problems-with-bootloader-storage">
+<span id="bootloader-file-storage"></span><h2>Problems with bootloader storage<a class="headerlink" href="#problems-with-bootloader-storage" title="Permalink to this headline">¶</a></h2>
+<p>It remains possible for any test job to corrupt any filesystem to which
+the test job kernel has access. Boards which host the bootloader files
+on a partition of the primary storage media are particularly vulnerable
+to bricking through this method. Many U-Boot devices suffer from this
+problem and LAVA uses TFTP on most of these devices to limit the number
+of failures.</p>
+</div>
+<div class="section" id="problems-with-full-system-images">
+<span id="full-system-images"></span><h2>Problems with full system images<a class="headerlink" href="#problems-with-full-system-images" title="Permalink to this headline">¶</a></h2>
+<p>Some boards host the bootloader files on the same storage medium as the
+kernel and/or operating system and then expect to write a full system
+image to that storage. The best way to manage such boards is to use a
+<a class="reference internal" href="glossary.html#term-bmc"><span class="xref std std-term">BMC</span></a>. If that is not available, ensure that the bootloader build
+used in the system images is <strong>never</strong> changed until it has been
+tested and the update has been approved by the lab admins. i.e. treat
+the bootloader part of the system image build in exactly the same way
+as a firmware or bootloader update on any other board which lacks
+bootloader testing and recovery support.</p>
+<p>It is not recommended to allow full system images to change more than
+one component of the image in a single test job.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>A primary objective of CI and LAVA is to find breakages
+in places which developers did not expect to be present, whether
+those are new bugs or regressions. Every change in every element of
+the device and the entire software stack needs to be tested in
+isolation. Only change that one element at a time, keeping all other
+components identical to other test jobs. Every part of a board and
+every part of the software stack must be considered as untested and
+unreliable until proven otherwise.</p>
+<p class="last">Not all testing needs to happen in LAVA or even in automation. Not
+all test operations can be supported in automation.</p>
+</div>
+</div>
+<div class="section" id="hikey-6220">
+<span id="hikey-6220-recovery"></span><h2>HiKey 6220<a class="headerlink" href="#hikey-6220" title="Permalink to this headline">¶</a></h2>
+<p>This board provides jumpers which can be bridged and connected to
+relays to change the boot order when power is applied. Custom software
+is needed to select recovery mode boot by setting the correct jumpers.
+Once in recovery mode, the board offers a USB TTY device which can be
+used to deploy the firmware using custom software from the
+manufacturer. Once the firmware is transferred, the board comes up in
+<code class="docutils literal notranslate"><span class="pre">fastboot</span></code> mode and the rest of the boot files can be transferred
+over the USB OTG port.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#limits-of-hikey-6220"><span class="std std-ref">Limits of HiKey 6220 recovery</span></a> and
+<a class="reference internal" href="#bootloader-recovery-criteria"><span class="std std-ref">Bootloader recovery criteria</span></a></p>
+</div>
+<p>The HiKey 6220 uses a combined deployment of UEFI firmware and a
+fastboot client which is then executed to deploy the boot and system
+images.</p>
+<p>If the firmware fails, the board can be switched back to recovery mode
+without needing to interact with the device and a known working build
+can be deployed instead (using a health check or a second deploy stage
+of the test job itself). By using the control of the jumpers, the board
+can be forced into recovery mode without any need to interact with the
+bootloader.</p>
+<p>An example test job for the hikey 6220 using recovery mode includes
+three deploy actions: recovery, fastboot, and operating system
+(OpenEmbedded or AOSP). This is to ensure that the firmware is tested
+in a wide range of modes after being deployed. (Specifically, the test
+ensures that the firmware continues to allow changes to the partition
+tables without affecting serial numbers or other device behavior.)
+This example is used as a health check, deploying a known good build of
+the firmware, so can be used to recover from a broken build.</p>
+<div class="section" id="id8">
+<h3>Recovery deployment<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="hll">    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">recovery</span>
+</span>    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">recovery</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="aosp-deployment">
+<h3>AOSP deployment<a class="headerlink" href="#aosp-deployment" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="hll">    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+</span>    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="openembedded-deployment">
+<h3>OpenEmbedded deployment<a class="headerlink" href="#openembedded-deployment" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">45</span>
+<span class="hll">    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+</span>    <span class="c1"># OE deployment</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+</pre></div>
+</td></tr></table></div>
+<p><a class="reference external" href="examples/test-jobs/hi6220-hikey-bl.html">Download / view complete hikey</a> complete test job YAML.</p>
+</div>
+<div class="section" id="limits-of-hikey-6220-recovery">
+<span id="limits-of-hikey-6220"></span><h3>Limits of HiKey 6220 recovery<a class="headerlink" href="#limits-of-hikey-6220-recovery" title="Permalink to this headline">¶</a></h3>
+<p>There are limits on how the HiKey 6220 operates in recovery mode:</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#barriers-to-automated-recovery"><span class="std std-ref">Comparison of barriers to bootloader testing and recovery</span></a></p>
+</div>
+<ol class="arabic">
+<li><p class="first">Requires external hardware (switchable USB hub, relays for the
+jumpers and custom serial hardware or cables.)</p>
+</li>
+<li><p class="first">Transfers over a hardware USB TTY device which does not identify
+itself uniquely to the worker. Only one board can be attached to
+any one worker.</p>
+</li>
+<li><p class="first">Fastboot method requires the use of <a class="reference internal" href="glossary.html#term-lxc"><span class="xref std std-term">LXC</span></a> or a custom
+<a class="reference internal" href="docker-admin.html#lava-docker-images"><span class="std std-ref">Docker image</span></a></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="deploy-lxc.html#deploy-using-lxc"><span class="std std-ref">Deploying test images using LXC</span></a></p>
+</div>
+</li>
+<li><p class="first">There is no support for a recovery firmware image to be kept on the
+board alongside the test software. Admins need to identify a known
+working build which can be used in health checks.</p>
+</li>
+<li><p class="first">At times, the firmware software itself has not supported a smooth
+rollback to previous versions. This takes the device offline as soon
+as a health check tries to deploy the previously known working
+version. Admins then need to establish a new known working version
+before bootloader testing can continue.</p>
+</li>
+</ol>
+<p>These limits mean that boards with the necessary jumper support must be
+isolated from boards without jumper support. Despite the HiKey only
+supporting UEFI and not U-Boot or another bootloader, the recovery mode
+cannot be used for all test jobs due to these limits.</p>
+</div>
+</div>
+<div class="section" id="juno">
+<span id="juno-recovery"></span><h2>Juno<a class="headerlink" href="#juno" title="Permalink to this headline">¶</a></h2>
+<p>The Juno board provides a <a class="reference internal" href="glossary.html#term-bmc"><span class="xref std std-term">BMC</span></a> which allows LAVA to deploy a new
+build of bootloader without interacting with the current bootloader.
+Juno also supports testing two different deployments, <a class="reference internal" href="integrate-uboot.html#integrating-uboot"><span class="std std-ref">U-Boot</span></a> bootloader and <a class="reference internal" href="integrate-uefi.html#integrating-uefi"><span class="std std-ref">UEFI</span></a>
+firmware.</p>
+<p>The BMC is accessible before the bootloader is executed, so if the
+test job determines that the bootloader has failed, a known working
+build can be deployed to recover the board.</p>
+<div class="section" id="id9">
+<h3>Recovery deployment<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">recovery</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="hll">    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">vemsd</span>
+</span></pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="u-boot-boot-action">
+<h3>U-Boot boot action<a class="headerlink" href="#u-boot-boot-action" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+    <span class="nt">connection-namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">recovery</span>
+<span class="hll">    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+</span>    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">norflash</span>
+</pre></div>
+</td></tr></table></div>
+<p><a class="reference external" href="examples/test-jobs/juno-recovery.html">Download / view complete juno</a> test job YAML.</p>
+<p>The Juno can support either U-Boot or UEFI. The BMC on Juno is
+sufficiently reliable that all test jobs use recovery deployments to
+ensure that the test job starts with a known bootloader. (Test jobs
+would otherwise fail when sending U-Boot commands if the previous test
+job deployed UEFI firmware and vice versa.)</p>
+</div>
+</div>
+<div class="section" id="x15-gpevm">
+<h2>X15 GPEVM<a class="headerlink" href="#x15-gpevm" title="Permalink to this headline">¶</a></h2>
+<p>Most of the TI boards provide means to load bootloader using
+serial interface. This is the case for X15 GPEVM. As compared to
+other X15 family boards, GPEVM is wired to provide jumpers to switch
+boot mode. The only HW modification required is populating J5 in order
+to avoid board powering down before bootloader is loaded to memory and
+started.</p>
+<p>In order to start board in recovery mode, the following HW settings
+should be set:</p>
+<ol class="arabic simple">
+<li>Jumpers J3, J4 and J6 should have 1-2 link closed</li>
+<li>Jumper J5 should be populated and closed</li>
+</ol>
+<p>Example LAVA recovery test job loads ‘known good’ u-boot to memory and
+follows with flashing the same u-boot to eMMC. This means that host has
+to have the board connected as USB slave. Example LAVA settings assume that
+all jumpers are controlled with relay.</p>
+<div class="section" id="id10">
+<h3>Recovery deployment<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="hll">    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">recovery</span>
+</span>    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">recovery</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="id11">
+<h3>OpenEmbedded deployment<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="hll">    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+</span>    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">droid</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+</pre></div>
+</td></tr></table></div>
+<p><a class="reference external" href="examples/test-jobs/x15-recovery.html">Download / view complete x15</a> complete test job YAML.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/bootloaders.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:33 GMT -->
+</html>

@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/standard-qemu-kernel.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:11 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Standard test job for QEMU - Sid arm64 &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Standard test job for beaglebone-black" href="standard-armmp-ramdisk-bbb.html" />
+    <link rel="prev" title="Standard test job for QEMU - Stretch amd64" href="standard-qemu-stretch.html" />
+    <link rel="canonical" href="standard-qemu-kernel.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Standard test job for QEMU - Sid arm64</a><ul>
+<li><a class="reference internal" href="#qemu-with-kernel-and-initramfs">QEMU with kernel and initramfs</a><ul>
+<li><a class="reference internal" href="#job-context">Job context</a></li>
+<li><a class="reference internal" href="#deploying-the-kernel">Deploying the kernel</a></li>
+<li><a class="reference internal" href="#booting-the-kernel">Booting the kernel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="standard-qemu-stretch.html" title="Previous Chapter: Standard test job for QEMU - Stretch amd64"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Standard test...</span>
+    </a>
+  </li>
+  <li>
+    <a href="standard-armmp-ramdisk-bbb.html" title="Next Chapter: Standard test job for beaglebone-black"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Standard test... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="standard-test-job-for-qemu-sid-arm64">
+<span id="standard-qemu-kernel"></span><span id="index-0"></span><h1>Standard test job for QEMU - Sid arm64<a class="headerlink" href="#standard-test-job-for-qemu-sid-arm64" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="standard-qemu-stretch.html#standard-amd64-stretch-qemu"><span class="std std-ref">first standard QEMU job</span></a> uses a kernel,
+initramfs, modules and configuration. This is a simple boot test - a test shell
+is not supported as the ramdisk is not unpacked for QEMU.</p>
+<div class="section" id="qemu-with-kernel-and-initramfs">
+<span id="standard-kernel-initramfs"></span><span id="index-1"></span><h2>QEMU with kernel and initramfs<a class="headerlink" href="#qemu-with-kernel-and-initramfs" title="Permalink to this headline">¶</a></h2>
+<p>This example will show how to boot an arm64 Debian kernel and initramfs in
+LAVA.</p>
+<p>The initramfs needs to include all kernel modules which are needed to run the
+tests required by the test writer. The Debian initramfs includes modules
+automatically. There is no support for adding modules to the initramfs for QEMU
+in LAVA.</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">device_type</span><span class="p">:</span> <span class="n">qemu</span>
+<span class="n">job_name</span><span class="p">:</span> <span class="n">qemu</span> <span class="n">arm64</span> <span class="n">ramdisk</span>
+
+<span class="n">timeouts</span><span class="p">:</span>
+  <span class="n">job</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">15</span>
+  <span class="n">action</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="n">connection</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">3</span>
+
+<span class="n">priority</span><span class="p">:</span> <span class="n">medium</span>
+<span class="n">visibility</span><span class="p">:</span> <span class="n">public</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="examples/test-jobs/qemu-kernel-standard-sid.html">Download / view qemu-kernel-standard-sid.yaml</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This example uses the Debian kernel which is a modular build. When
+modifying the standard qemu test jobs, <strong>always</strong> keep the builds of the
+kernel and initramfs in sync or provide a replacement kernel with all
+necessary modules built in.</p>
+</div>
+<div class="section" id="job-context">
+<h3>Job context<a class="headerlink" href="#job-context" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="name tag">context</span><span class="punctuation">:</span>
+  <span class="name tag">arch</span><span class="punctuation">:</span> <span class="literal scalar plain">arm64</span>
+  <span class="name tag">machine</span><span class="punctuation">:</span> <span class="literal scalar plain">virt</span>
+  <span class="name tag">netdevice</span><span class="punctuation">:</span> <span class="literal scalar plain">user</span>
+  <span class="name tag">cpu</span><span class="punctuation">:</span> <span class="literal scalar plain">cortex-a57</span>
+  <span class="name tag">extra_options</span><span class="punctuation">:</span>
+  <span class="punctuation indicator">-</span> <span class="literal scalar plain">-smp</span>
+  <span class="punctuation indicator">-</span> <span class="literal scalar plain">1</span>
+</pre>
+<p>The <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> for this example specifies the default <code class="docutils literal notranslate"><span class="pre">machine</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cpu</span></code> values for the <code class="docutils literal notranslate"><span class="pre">arm64</span></code> architecture using the <code class="docutils literal notranslate"><span class="pre">qemu</span></code> template. (The
+<code class="docutils literal notranslate"><span class="pre">arm64</span></code> architecture can also be specified as <code class="docutils literal notranslate"><span class="pre">aarch64</span></code> with this
+template.)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">extra_options</span></code> list can contain any option which is understood by QEMU.
+The name of the option and the value of that option should be listed as
+separate items in the <code class="docutils literal notranslate"><span class="pre">extra_options</span></code> list for correct parsing by QEMU.</p>
+<p>Test writers can choose which QEMU options are specified as <code class="docutils literal notranslate"><span class="pre">extra_options</span></code>
+and which as <code class="docutils literal notranslate"><span class="pre">image_arg</span></code>. In some situations, this can matter as some
+options to QEMU need to be in a specific order. <code class="docutils literal notranslate"><span class="pre">extra_options</span></code> are added to
+the command line <strong>before</strong> <code class="docutils literal notranslate"><span class="pre">image_arg</span></code> and <code class="docutils literal notranslate"><span class="pre">image_arg</span></code> are added in the
+order specified in the test job.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Check the syntax carefully - the option is <strong>-smp</strong> so the line in
+<code class="docutils literal notranslate"><span class="pre">extra_options</span></code> uses a hyphen to continue the list in YAML, then a space,
+then the option which itself starts with a hyphen.</p>
+</div>
+</div>
+<div class="section" id="deploying-the-kernel">
+<h3>Deploying the kernel<a class="headerlink" href="#deploying-the-kernel" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tmpfs</span>
+    <span class="name tag">images</span><span class="punctuation">:</span>
+      <span class="name tag">kernel</span><span class="punctuation">:</span>
+        <span class="name tag">image_arg</span><span class="punctuation">:</span> <span class="literal scalar plain">-kernel {kernel} --append 'root=/dev/ram0 rw rootwait rootdelay=5 console=ttyAMA0,38400n8 init=/sbin/init'</span>
+        <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/sid/arm64/8/vmlinuz-4.9.0-2-arm64</span>
+        <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">4dc0363bafc93f48e5b60ada3502394f61d9f1cfbf9059ceed30533aca16d706</span>
+      <span class="name tag">initrd</span><span class="punctuation">:</span>
+        <span class="name tag">image_arg</span><span class="punctuation">:</span> <span class="literal scalar plain">-initrd {initrd}</span>
+        <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/sid/arm64/8/initrd.img-4.9.0-2-arm64</span>
+        <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">4dfdcf9053bea72d7bc1c37f77f43c4447422c68f4ea8b99c6690de2e7f6e3e4</span>
+</pre>
+<p>Deploying a kernel and initramfs without a root filesystem can be done using
+the <code class="docutils literal notranslate"><span class="pre">image_arg</span></code> support. In this example, the kernel command line is built
+using the <code class="docutils literal notranslate"><span class="pre">--append</span></code> option to QEMU.</p>
+<p>The example also uses the <code class="docutils literal notranslate"><span class="pre">sha256sum</span></code> checksum support to ensure that the
+correct files are downloaded.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">The initramfs in this test job comes from a Debian build,
+<strong>however</strong> the initramfs itself is <strong>not</strong> a full Debian system. In
+particular, it uses <code class="docutils literal notranslate"><span class="pre">busybox</span></code> for the shell and various utilities like
+<code class="docutils literal notranslate"><span class="pre">mount</span></code>. To handle this, the deployment <strong>must</strong> specify the operating
+system as <code class="docutils literal notranslate"><span class="pre">oe</span></code> so that LAVA can operate within the initramfs using only
+minimal tools.</p>
+</div>
+</div>
+<div class="section" id="booting-the-kernel">
+<h3>Booting the kernel<a class="headerlink" href="#booting-the-kernel" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">qemu</span>
+    <span class="name tag">media</span><span class="punctuation">:</span> <span class="literal scalar plain">tmpfs</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">2</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'\(initramfs\)'</span>
+</pre>
+<p>As this system will boot into the initramfs, the <code class="docutils literal notranslate"><span class="pre">'\(initramfs\)'</span></code> prompt is
+specified.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/standard-qemu-kernel.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:13 GMT -->
+</html>

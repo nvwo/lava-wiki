@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/first-installation.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>First steps installing LAVA &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installing on a Debian system" href="installing_on_debian.html" />
+    <link rel="prev" title="Standard test job for beaglebone-black" href="standard-armmp-ramdisk-bbb.html" />
+    <link rel="canonical" href="first-installation.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">First steps installing LAVA</a><ul>
+<li><a class="reference internal" href="#initial-lava-installation">Initial LAVA Installation</a></li>
+<li><a class="reference internal" href="#requirements-to-consider-before-installing-lava">Requirements to Consider Before Installing LAVA</a><ul>
+<li><a class="reference internal" href="#elements-of-the-master">Elements of the Master</a></li>
+<li><a class="reference internal" href="#elements-of-the-worker">Elements of the Worker</a></li>
+<li><a class="reference internal" href="#software-requirements">Software Requirements</a></li>
+<li><a class="reference internal" href="#hardware-requirements">Hardware Requirements</a></li>
+<li><a class="reference internal" href="#device-requirements">Device requirements</a></li>
+<li><a class="reference internal" href="#multinode-hardware-requirements">MultiNode hardware requirements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#which-release-to-install">Which release to install</a></li>
+<li><a class="reference internal" href="#installation-types">Installation Types</a><ul>
+<li><a class="reference internal" href="#single-master-instance-installation">Single Master Instance installation</a></li>
+<li><a class="reference internal" href="#master-with-one-or-more-workers">Master with one or more workers</a><ul>
+<li><a class="reference internal" href="#configuration-outline-start-simple">Configuration outline - start simple…</a></li>
+<li><a class="reference internal" href="#then-expand">…then expand</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-coordinator-setup">LAVA Coordinator setup</a></li>
+<li><a class="reference internal" href="#setting-up-serial-connections-to-lava-devices">Setting Up Serial Connections to LAVA Devices</a><ul>
+<li><a class="reference internal" href="#ser2net-daemon">Ser2net daemon</a></li>
+<li><a class="reference internal" href="#startech-rackmount-usb">StarTech rackmount usb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contact-and-bug-reports">Contact and bug reports</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="standard-armmp-ramdisk-bbb.html" title="Previous Chapter: Standard test job for beaglebone-black"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Standard test...</span>
+    </a>
+  </li>
+  <li>
+    <a href="installing_on_debian.html" title="Next Chapter: Installing on a Debian system"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Installing on... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="first-steps-installing-lava">
+<span id="installation"></span><span id="index-0"></span><h1>First steps installing LAVA<a class="headerlink" href="#first-steps-installing-lava" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="initial-lava-installation">
+<h2>Initial LAVA Installation<a class="headerlink" href="#initial-lava-installation" title="Permalink to this headline">¶</a></h2>
+<p>The default installation provides an Apache2 config suitable for a simple LAVA
+server at <code class="docutils literal notranslate"><span class="pre">http://localhost/</span></code> once enabled.</p>
+<p>See <a class="reference internal" href="packaging.html#packaging-distribution"><span class="std std-ref">Packaging lava-server for distributions</span></a> for more information or for debugging.</p>
+</div>
+<div class="section" id="requirements-to-consider-before-installing-lava">
+<span id="lava-requirements"></span><h2>Requirements to Consider Before Installing LAVA<a class="headerlink" href="#requirements-to-consider-before-installing-lava" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/arch-overview.svg" src="_images/arch-overview.svg" /><p>A LAVA <code class="docutils literal notranslate"><span class="pre">instance</span></code> consists of two primary components - a server and a
+<a class="reference internal" href="glossary.html#term-worker"><span class="xref std std-term">worker</span></a>. The simplest possible configuration is to run the master and
+worker components on a single machine, but a larger instance can also be
+configured to support multiple workers controlling a larger number of attached
+devices.</p>
+<div class="section" id="elements-of-the-master">
+<h3>Elements of the Master<a class="headerlink" href="#elements-of-the-master" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Web interface</strong> - This is built using the Apache web server, the uWSGI
+application server and the Django web framework. It also provides XML-RPC
+access and the REST API.</li>
+<li><strong>Database</strong> - This uses PostgreSQL locally on the master, with no external
+access.</li>
+<li><strong>Scheduler</strong> - This is the piece that causes jobs to be run - periodically
+this will scan the database to check for queued test jobs and available test
+devices, starting jobs when the needed resources become available.</li>
+<li><strong>lava-server-gunicorn daemon</strong> - This communicates with the worker(s) using HTTP</li>
+</ul>
+</div>
+<div class="section" id="elements-of-the-worker">
+<h3>Elements of the Worker<a class="headerlink" href="#elements-of-the-worker" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>lava-worker daemon</strong> - This receives control messages from the server.</li>
+<li><strong>Dispatcher</strong> - This manages all the operations on the device under test,
+according to the job submission and device parameters sent by the master.</li>
+<li><strong>Device Under Test (DUT)</strong></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although the Dispatcher interacts directly with the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>, all
+the device configuration is sent from the server.</p>
+</div>
+</div>
+<div class="section" id="software-requirements">
+<h3>Software Requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">LAVA is developed using Debian packaging to ensure that daemons and
+system-wide configuration is correctly updated with changes in the codebase.
+There is <strong>no official support for pypi or python virtual environments or
+installing directly from a git directory</strong>. See <a class="reference internal" href="installing_on_debian.html#debian-installation"><span class="std std-ref">Installing on a Debian system</span></a> for
+detailed instructions.</p>
+</div>
+<p>We currently recommend installing LAVA on <a class="reference external" href="https://www.debian.org/">Debian</a> buster or
+unstable.</p>
+<p>LAVA software has now moved to Python3 support. This also means that Jessie
+is no longer supported.</p>
+<p>Contributions to support other distributions are welcome.</p>
+<p>If you’d like to help us provide support for other distributions, feel free to
+contact us using the <a class="reference internal" href="support.html#lava-devel"><span class="std std-ref">lava-devel</span></a> mailing list.</p>
+</div>
+<div class="section" id="hardware-requirements">
+<h3>Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Permalink to this headline">¶</a></h3>
+<p>A small LAVA instance can be deployed on fairly modest hardware. We recommend
+at least 1GB of RAM to cover the runtime needs of the database server, the
+application server and the web server. For storage, reserve about 20GB for
+application data, especially if you wish to mirror the current public Linaro
+LAVA instance.  LAVA uses append-only models, so storage requirements will grow
+over time.</p>
+<p>If you are deploying many devices and expect to be running large numbers of
+jobs, you will obviously need more RAM and disk space.</p>
+</div>
+<div class="section" id="device-requirements">
+<h3>Device requirements<a class="headerlink" href="#device-requirements" title="Permalink to this headline">¶</a></h3>
+<p>Devices you wish to deploy in LAVA need to be:</p>
+<ul class="simple">
+<li>Physically connected to the server via usb, usb-serial, or serial; or</li>
+<li>connected over the network via a serial console server; or</li>
+<li>a fastboot capable device accessible from the server; or</li>
+<li>a virtual machine or simulator that emulates a serial connection</li>
+</ul>
+</div>
+<div class="section" id="multinode-hardware-requirements">
+<span id="id1"></span><h3>MultiNode hardware requirements<a class="headerlink" href="#multinode-hardware-requirements" title="Permalink to this headline">¶</a></h3>
+<p>If the instance is going to be sent any job submissions from third parties or
+if your own job submissions are going to use MultiNode, there are additional
+considerations for hardware requirements.</p>
+<p>MultiNode is explicitly designed to synchronize test operations across multiple
+test devices and running MultiNode jobs on a particular instance will have
+implications for the workload of that instance. This can become a particular
+problem if the instance is running on virtualized hardware with shared I/O, a
+limited amount of RAM or a limited number of available cores.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Downloading, preparing and deploying test images can result in a lot
+of synchronous I/O and if a single machine is running both the LAVA server
+and dispatcher, running synchronized MultiNode jobs can cause the load on
+that machine to rise significantly, possibly causing the server to become
+unresponsive. For this reason, it is strongly recommended that MultiNode
+instances use a separate dispatcher running on non-virtualized hardware so
+that the (possibly virtualized) server can continue to operate.</p>
+</div>
+<p>Also, consider the number of test devices connected to any one dispatcher.
+MultiNode jobs will commonly compress and decompress several large test image
+files in parallel. Even with a powerful multi-core machine, this can cause high
+load. It is worth considering matching the number of devices to the number of
+cores for parallel decompression, and matching the amount of available RAM to
+the number and size of test images which are likely to be in use.</p>
+</div>
+</div>
+<div class="section" id="which-release-to-install">
+<span id="index-1"></span><h2>Which release to install<a class="headerlink" href="#which-release-to-install" title="Permalink to this headline">¶</a></h2>
+<p>The LAVA team makes regular releases (called <code class="docutils literal notranslate"><span class="pre">production</span> <span class="pre">releases</span></code>),
+typically monthly. These are installed onto Linaro’s central instance
+<a class="reference external" href="https://validation.linaro.org/">https://validation.linaro.org/</a> and they are also uploaded to Debian unstable
+and backports (see <a class="reference internal" href="installing_on_debian.html#debian-installation"><span class="std std-ref">Installing on a Debian system</span></a>). These <code class="docutils literal notranslate"><span class="pre">production</span> <span class="pre">releases</span></code>
+using tags on the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch.</p>
+<p>Interim releases are made available from the <a class="reference internal" href="installing_on_debian.html#lava-repositories"><span class="std std-ref">daily builds</span></a>.</p>
+<p>If in doubt, install the <code class="docutils literal notranslate"><span class="pre">production</span></code> release of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> from
+official distribution mirrors. (Backports are included on Debian mirrors.)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> package includes scripts to assist in local developer builds
+directly from local git working copies which allows for builds using unreleased
+code, development code and patches under review.</p>
+</div>
+<div class="section" id="installation-types">
+<span id="install-types"></span><h2>Installation Types<a class="headerlink" href="#installation-types" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="single-master-instance-installation">
+<span id="single-instance"></span><h3>Single Master Instance installation<a class="headerlink" href="#single-master-instance-installation" title="Permalink to this headline">¶</a></h3>
+<p>A single instance runs the web interface, the database, the scheduler and the
+dispatcher on a single machine. If this machine is also running tests, the
+device (or devices) under test (<a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>) will also need to be connected to
+this machine, possibly over the network, using USB or using serial cables.</p>
+<p>To install a single master instance and create a superuser, refer to
+<a class="reference internal" href="installing_on_debian.html#debian-installation"><span class="std std-ref">Installing on a Debian system</span></a> installation.</p>
+<p>LAVA V1 used to support a <cite>distributed_instance</cite> installation method. This has
+been <strong>removed</strong> in V2; instead there is a much improved architecture for
+remote workers using HTTP.</p>
+<p>Detailed instructions for setting up workers follows - first, think about the
+kind of configuration needed for your instance.</p>
+</div>
+<div class="section" id="master-with-one-or-more-workers">
+<h3>Master with one or more workers<a class="headerlink" href="#master-with-one-or-more-workers" title="Permalink to this headline">¶</a></h3>
+<p>You can choose whether the master has devices configured locally or only uses
+devices via one or more remote workers. If you are installing and learning how
+to use LAVA for the first time, it is recommended to keep things simple and
+stick to a <a class="reference internal" href="#single-instance"><span class="std std-ref">Single Master Instance installation</span></a> to start with.</p>
+<div class="section" id="configuration-outline-start-simple">
+<h4>Configuration outline - start simple…<a class="headerlink" href="#configuration-outline-start-simple" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Configure the master as a <a class="reference internal" href="#single-instance"><span class="std std-ref">Single Master Instance installation</span></a>. It will need the
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> packages installed.</li>
+<li>Use the Django administrative interface or command line tools to define the
+device types likely to be used with this instance.</li>
+<li>Prepare Device Dictionaries for your devices.</li>
+<li>Run some health check tests and see how things work.</li>
+</ul>
+</div>
+<div class="section" id="then-expand">
+<h4>…then expand<a class="headerlink" href="#then-expand" title="Permalink to this headline">¶</a></h4>
+<p>Once you are happy with your basic single-machine installation and are ready to
+expand beyond that, start adding workers one at a time. For this configuration:</p>
+<ul>
+<li><p class="first">The master needs the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package installed, just as on a
+<a class="reference internal" href="#single-instance"><span class="std std-ref">Single Master Instance installation</span></a>.</p>
+</li>
+<li><p class="first">A worker only needs the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> package installed.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-server.html#setting-up-pipeline-instance"><span class="std std-ref">pipeline installation</span></a>.</p>
+</div>
+</li>
+</ul>
+<p>As you expand your setup, you will also need to do some configuration of
+communications between the master and the worker(s), which rely on HTTP
+as an underlying technology. Workers on the same (trusted) network as the
+master can work fine without using authentication and encryption, but if you
+are going to be hosting workers on a remote network then it is <strong>strongly</strong>
+recommended to use HTTPS to communicate with the server</p>
+<ul class="simple">
+<li>On your new worker, configure <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> to look for the server</li>
+<li>On the master, use the Django administration interface to add
+details of the new worker to the database.</li>
+<li>On the master, configure the Device Dictionaries for all the devices
+attached to the new worker.</li>
+<li>Assign devices to the new worker.</li>
+<li>Run health checks and be sure that all the devices on the new worker
+are properly configured and working.</li>
+<li>Repeat for additional workers as needed.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="lava-coordinator-setup">
+<span id="index-2"></span><h3>LAVA Coordinator setup<a class="headerlink" href="#lava-coordinator-setup" title="Permalink to this headline">¶</a></h3>
+<p>If you are expecting to support MultiNode jobs in your LAVA setup, there is a
+third component needed. The LAVA Coordinator manages the extra message passing
+needed between the various nodes in a MultiNode group of devices. Nodes connect
+to the LAVA Coordinator daemon via TCP (default port: 3079). A single
+coordinator can manage groups from multiple instances if desired. If the
+network configuration uses a firewall, ensure that this port is open for
+connections from MultiNode dispatchers.</p>
+<p>If multiple coordinators are necessary on a single machine (e.g. to test
+different versions of the coordinator during development), each coordinator
+needs to be configured for a different port.</p>
+<p>If the dispatcher is installed on the same machine as the coordinator, the
+dispatcher can use the packaged configuration file with the default hostname of
+<code class="docutils literal notranslate"><span class="pre">localhost</span></code>.</p>
+<p>Each dispatcher then needs a copy of the LAVA Coordinator configuration file
+(JSON syntax), modified to point back to the hostname of the coordinator:</p>
+<p>Example JSON, modified for a coordinator on a machine with a fully qualified
+domain name:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">3079</span><span class="p">,</span>
+  <span class="nt">&quot;blocksize&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span>
+  <span class="nt">&quot;poll_delay&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="nt">&quot;coordinator_hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;control.lab.org&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>An IP address can be specified instead, if appropriate.</p>
+<p>Each dispatcher needs to use the same port number and blocksize as is
+configured for the Coordinator on the specified machine. The poll_delay is the
+number of seconds each node will wait before polling the coordinator again.</p>
+</div>
+<div class="section" id="setting-up-serial-connections-to-lava-devices">
+<span id="serial-connections"></span><h3>Setting Up Serial Connections to LAVA Devices<a class="headerlink" href="#setting-up-serial-connections-to-lava-devices" title="Permalink to this headline">¶</a></h3>
+<p>LAVA controls the DUT using a serial connection, except for emulated devices
+like QEMU.</p>
+<p>LAVA can support <a class="reference internal" href="connections.html#connections"><span class="std std-ref">multiple serial connections</span></a> per
+DUT. The recommended method for creating a serial connection is to use
+<a class="reference internal" href="#ser2net"><span class="std std-ref">Ser2net daemon</span></a> to provide a connection using the telnet client. This
+allows simple and clean disconnection and allows LAVA to use the
+connection over the network. Other tools (conmux, minicom) have been
+tried but showed reliability problems when used at scale. LAVA is not
+able to directly access a device node.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="growing_your_lab.html#growing-your-lab"><span class="std std-ref">Growing your lab</span></a> and <a class="reference internal" href="advanced-installation.html#serial-console-support"><span class="std std-ref">Serial console support</span></a>
+for information about hardware.</p>
+</div>
+<p><cite>ser2net</cite> is the recommendation based on several million test jobs.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="advanced-installation.html#serial-console-support"><span class="std std-ref">Serial console support</span></a> for information about hardware.</p>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Make sure your serial connection configuration is <a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">backed up</span></a> as it can be an awkward process to manually establish which
+path in <code class="docutils literal notranslate"><span class="pre">/dev/serial/by-id</span></code> is which cable and therefore connected to
+which device.</p>
+</div>
+<div class="section" id="ser2net-daemon">
+<span id="ser2net"></span><h4>Ser2net daemon<a class="headerlink" href="#ser2net-daemon" title="Permalink to this headline">¶</a></h4>
+<p>ser2net provides a way for a user to connect from a network connection to a
+serial port, usually over telnet.</p>
+<p><a class="reference external" href="http://ser2net.sourceforge.net/">http://ser2net.sourceforge.net/</a></p>
+<p><code class="docutils literal notranslate"><span class="pre">ser2net</span></code> is a dependency of <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>, so will be
+installed automatically.</p>
+<p>Example config (in /etc/ser2net.conf):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#port:connectiontype:idle_timeout:serial_device:baudrate databit parity stopbit</span>
+<span class="mi">7001</span><span class="p">:</span><span class="n">telnet</span><span class="p">:</span><span class="mi">0</span><span class="p">:</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">serial</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="nb">id</span><span class="o">/</span><span class="n">serial_path</span><span class="p">:</span><span class="mi">115200</span> <span class="mi">8</span><span class="n">DATABITS</span> <span class="n">NONE</span> <span class="mi">1</span><span class="n">STOPBIT</span> <span class="n">LOCAL</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the above example we have the idle_timeout as 0 which specifies a
+infinite idle_timeout value. 0 is the recommended value. If the user prefers
+to give a positive finite idle_timeout value, then there is a possibility
+that long running jobs may terminate due to inactivity on the serial
+connection.</p>
+<p>Always use paths in <code class="docutils literal notranslate"><span class="pre">/dev/serial/by-id/</span></code> in the configuration to prevent
+connections being lost when devices reenumerate.</p>
+<p class="last">The LOCAL flag is necessary if you connect modem control lines (for example a
+full RS232 cable) to prevent connection aborts on DUT power cycling.</p>
+</div>
+</div>
+<div class="section" id="startech-rackmount-usb">
+<h4>StarTech rackmount usb<a class="headerlink" href="#startech-rackmount-usb" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">udev rules:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SUBSYSTEM</span><span class="o">==</span><span class="s2">&quot;tty&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;0403&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;6001&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">serial</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;ST167570&quot;</span><span class="p">,</span> <span class="n">SYMLINK</span><span class="o">+=</span><span class="s2">&quot;rack-usb02&quot;</span>
+<span class="n">SUBSYSTEM</span><span class="o">==</span><span class="s2">&quot;tty&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;0403&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;6001&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">serial</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;ST167569&quot;</span><span class="p">,</span> <span class="n">SYMLINK</span><span class="o">+=</span><span class="s2">&quot;rack-usb01&quot;</span>
+<span class="n">SUBSYSTEM</span><span class="o">==</span><span class="s2">&quot;tty&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;0403&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;6001&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">serial</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;ST167572&quot;</span><span class="p">,</span> <span class="n">SYMLINK</span><span class="o">+=</span><span class="s2">&quot;rack-usb04&quot;</span>
+<span class="n">SUBSYSTEM</span><span class="o">==</span><span class="s2">&quot;tty&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;0403&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;6001&quot;</span><span class="p">,</span> <span class="n">ATTRS</span><span class="p">{</span><span class="n">serial</span><span class="p">}</span><span class="o">==</span><span class="s2">&quot;ST167571&quot;</span><span class="p">,</span> <span class="n">SYMLINK</span><span class="o">+=</span><span class="s2">&quot;rack-usb03&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This will create a symlink in /dev called rack-usb01 etc. which can then be
+addressed in the <a class="reference internal" href="#ser2net"><span class="std std-ref">Ser2net daemon</span></a> config file.</p>
+</div>
+</div>
+</div>
+<div class="section" id="contact-and-bug-reports">
+<span id="index-3"></span><h2>Contact and bug reports<a class="headerlink" href="#contact-and-bug-reports" title="Permalink to this headline">¶</a></h2>
+<p>Please report bugs using the LAVA Users mailing list:
+<a class="reference external" href="https://lists.lavasoftware.org/mailman/listinfo/lava-users">https://lists.lavasoftware.org/mailman/listinfo/lava-users</a></p>
+<p>You can also report bugs using <code class="docutils literal notranslate"><span class="pre">reportbug</span></code> and the Debian Bug Tracking
+System: <a class="reference external" href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=lava-server">https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=lava-server</a></p>
+<p>Feel free to contact us at validation (at) linaro (dot) org and on
+the <code class="docutils literal notranslate"><span class="pre">#linaro-lava</span></code> channel on OFTC but note that IRC is not well suited to
+some discussions. Problems with device configuration or test job failures
+usually benefit from being able to attach the full configuration to an email
+to the lava-users mailing list.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/first-installation.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:33 GMT -->
+</html>

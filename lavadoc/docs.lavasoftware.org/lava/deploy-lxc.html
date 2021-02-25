@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/deploy-lxc.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:46 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Deploying test images using LXC &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MultiNode LAVA" href="multinode.html" />
+    <link rel="prev" title="User notifications in LAVA" href="user-notifications.html" />
+    <link rel="canonical" href="deploy-lxc.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Deploying test images using LXC</a><ul>
+<li><a class="reference internal" href="#using-lxc-as-device-type">Using LXC as Device Type</a><ul>
+<li><a class="reference internal" href="#protocol-elements">Protocol elements</a></li>
+<li><a class="reference internal" href="#sample-job-definition">Sample Job Definition</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#namespaces">Namespaces</a></li>
+<li><a class="reference internal" href="#using-the-lxc-protocol-to-support-android">Using the LXC protocol to support Android</a><ul>
+<li><a class="reference internal" href="#lava-android-naming-conventions">LAVA Android Naming Conventions</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#requirements-and-limitations">Requirements and Limitations</a></li>
+<li><a class="reference internal" href="#id2">Protocol elements</a></li>
+<li><a class="reference internal" href="#feedback-from-the-device">Feedback from the device</a></li>
+<li><a class="reference internal" href="#differences-between-lxc-releases">Differences between LXC releases</a></li>
+<li><a class="reference internal" href="#id3">Sample Job Definition</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="user-notifications.html" title="Previous Chapter: User notifications in LAVA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; User notifica...</span>
+    </a>
+  </li>
+  <li>
+    <a href="multinode.html" title="Next Chapter: MultiNode LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">MultiNode LAVA &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="deploying-test-images-using-lxc">
+<span id="deploy-using-lxc"></span><span id="index-0"></span><h1>Deploying test images using LXC<a class="headerlink" href="#deploying-test-images-using-lxc" title="Permalink to this headline">¶</a></h1>
+<p>Containers are lightweight virtualization technology. LXC is a userspace
+interface for the Linux kernel containment features. Through a powerful API and
+simple tools, it lets Linux users easily create and manage system or
+application containers. The container provides a lightweight method to allow
+custom software to be used on the dispatcher. The container is used to provide
+transparent access.</p>
+<p>LAVA supports LXC containers both as a standalone device type and as dynamic
+transparent environments in order to interact with external devices. In either
+case the <a class="reference internal" href="actions-protocols.html#lxc-protocol-reference"><span class="std std-ref">LXC protocol</span></a> is used.</p>
+<div class="section" id="using-lxc-as-device-type">
+<span id="lava-lxc-device-type"></span><h2>Using LXC as Device Type<a class="headerlink" href="#using-lxc-as-device-type" title="Permalink to this headline">¶</a></h2>
+<p>LXC is a <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> of its own and devices could be added to
+dispatchers under this device type. A device of LXC device type is created
+within the dispatcher in which the device is configured, as illustrated in the
+following figure:</p>
+<div align="center" class="align-center"><img alt="LXC standalone" src="_images/lxc-standalone.svg" /></div>
+<p>The LXC <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> uses the <a class="reference internal" href="actions-protocols.html#lxc-protocol-reference"><span class="std std-ref">LXC protocol</span></a> in order to share data elements across different
+actions within the job.</p>
+<div class="section" id="protocol-elements">
+<h3>Protocol elements<a class="headerlink" href="#protocol-elements" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-lxc</span><span class="punctuation">:</span>
+    <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">pipeline-lxc-test</span>
+    <span class="name tag">distribution</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+    <span class="name tag">release</span><span class="punctuation">:</span> <span class="literal scalar plain">sid</span>
+    <span class="name tag">arch</span><span class="punctuation">:</span> <span class="literal scalar plain">amd64</span>
+</pre>
+</div>
+<div class="section" id="sample-job-definition">
+<h3>Sample Job Definition<a class="headerlink" href="#sample-job-definition" title="Permalink to this headline">¶</a></h3>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">device_type</span><span class="p">:</span> <span class="n">lxc</span>
+<span class="n">job_name</span><span class="p">:</span> <span class="n">lxc</span><span class="o">-</span><span class="n">debian</span>
+<span class="n">timeouts</span><span class="p">:</span>
+  <span class="n">job</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">30</span>
+  <span class="n">action</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+<span class="n">priority</span><span class="p">:</span> <span class="n">medium</span>
+<span class="n">visibility</span><span class="p">:</span> <span class="n">public</span>
+<span class="n">metadata</span><span class="p">:</span>
+  <span class="n">source</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">team</span><span class="o">/</span><span class="n">refactoring</span><span class="o">.</span><span class="n">git</span>
+  <span class="n">path</span><span class="p">:</span> <span class="n">lxc</span><span class="o">-</span><span class="n">debian</span><span class="o">.</span><span class="n">yaml</span>
+<span class="n">protocols</span><span class="p">:</span>
+  <span class="n">lava</span><span class="o">-</span><span class="n">lxc</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">pipeline</span><span class="o">-</span><span class="n">lxc</span><span class="o">-</span><span class="n">test</span>
+    <span class="n">distribution</span><span class="p">:</span> <span class="n">debian</span>
+    <span class="n">release</span><span class="p">:</span> <span class="n">sid</span>
+    <span class="n">arch</span><span class="p">:</span> <span class="n">amd64</span>
+<span class="n">actions</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">deploy</span><span class="p">:</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">30</span>
+    <span class="n">to</span><span class="p">:</span> <span class="n">lxc</span>
+<span class="o">-</span> <span class="n">boot</span><span class="p">:</span>
+    <span class="n">prompts</span><span class="p">:</span>
+    <span class="o">-</span> <span class="s1">&#39;[root@(.*) /]#&#39;</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">lxc</span>
+<span class="o">-</span> <span class="n">test</span><span class="p">:</span>
+    <span class="n">timeout</span><span class="p">:</span>
+      <span class="n">minutes</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">definitions</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">repository</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">team</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">functional</span><span class="o">-</span><span class="n">tests</span><span class="o">.</span><span class="n">git</span>
+      <span class="n">from</span><span class="p">:</span> <span class="n">git</span>
+      <span class="n">path</span><span class="p">:</span> <span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">shell</span><span class="o">/</span><span class="n">smoke</span><span class="o">-</span><span class="n">tests</span><span class="o">-</span><span class="n">basic</span><span class="o">.</span><span class="n">yaml</span>
+      <span class="n">name</span><span class="p">:</span> <span class="n">smoke</span><span class="o">-</span><span class="n">tests</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="namespaces">
+<span id="namespaces-with-lxc"></span><span id="index-1"></span><h2>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline">¶</a></h2>
+<p>Namespaces were introduced to handle use-cases specific to LXC, but the
+principle can be expanded to other use-cases as and when required. In a job
+definition where multiple deploy, boot and test actions are specified, there
+must be a mechanism to describe how the actions are connected. This is the
+primary purpose of a namespace; it is the way to tie related actions together.
+The namespace itself is simply a label, test writers are advised to make the
+label chosen for each namespace meaningful for the purposes of the test job.</p>
+<p>In the example below, there are two namespaces - one for the deploy, boot and
+test actions to perform inside the LXC and one for the deploy, boot and test
+actions to be performed on the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>. To support this particular device,
+the test job needs to:</p>
+<ol class="arabic simple">
+<li>deploy the container, including:<ul>
+<li>install software inside the container to control the device. In this
+case <code class="docutils literal notranslate"><span class="pre">android-tools-fastboot</span></code>.</li>
+</ul>
+</li>
+<li>boot the container</li>
+<li>deploy files to the device<ul>
+<li>In this case, this connects to and turns on power to the device then
+uses software in the container to push files to the device using the
+bootloader.</li>
+</ul>
+</li>
+<li>boot the device</li>
+<li>run a test shell on the device</li>
+<li>run a test shell in the container.</li>
+</ol>
+<p>Note how the deploy, boot and test actions are interleaved. The use of
+namespaces is essential for the test shell in the container to be able to find
+and execute commands in the container. In this example, the software running in
+the container and the software running on the device need to be handled quite
+differently in each test shell. For example, when installing dependencies
+inside the container running Debian, the <code class="docutils literal notranslate"><span class="pre">apt</span></code> package manager is available.
+When installing dependencies in the test shell on the device, running
+OpenEmbedded, there might not be any package manager support. The namespace
+data is used to let each test shell identify the default shell and other data
+about the environment in each namespace.</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">packages</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">android-tools-fastboot</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+</span>    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;hikey:/&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+</span>    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">images</span><span class="p">:</span>
+      <span class="nt">ptable</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/morty/hikey/rpb/4.9/83/bootloader/ptable-linux-8g.img</span>
+        <span class="nt">reboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hard-reset</span>
+      <span class="nt">boot</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/morty/hikey/rpb/4.9/83/boot-0.0+AUTOINC+06e4def583-fb1158a365-r0-hikey-20170713193031-83.uefi.img</span>
+        <span class="nt">reboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hard-reset</span>
+      <span class="nt">system</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/openembedded/lkft/morty/hikey/rpb/4.9/83/rpb-console-image-hikey-20170808001820-83.rootfs.img.gz</span>
+        <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+        <span class="nt">apply-overlay</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="c1"># ensure that this job raises a network interface with DHCP before relying on internet access</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+        <span class="nt">lava-lxc</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot-deploy</span>
+          <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-power-command</span>
+          <span class="nt">timeout</span><span class="p">:</span>
+              <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+</span>    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@hikey:~#&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uefi-menu</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-lxc</span><span class="p">:</span>
+      <span class="c1"># other action could be boot-fastboot</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uefi-commands</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-os-command</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests-basic-oe</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+<span class="hll">    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+</span>    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests-basic-ubuntu</span>
+</pre></div>
+</td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The two test shells are <em>almost</em> identical but remember that all the
+results of this one test job will be reported together. The name of each
+test shell definition needs to be different for each test action. So the
+example uses <code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">smoke-tests-basic-oe</span></code> for the <code class="docutils literal notranslate"><span class="pre">hikey-oe</span></code> namespace
+and <code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">smoke-tests-basic-ubuntu</span></code> for the <code class="docutils literal notranslate"><span class="pre">tlxc</span></code> namespace.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">Namespace in the glossary</span></a>,
+<a class="reference internal" href="connections.html#connections-and-namespaces"><span class="std std-ref">Connections and namespaces</span></a></p>
+</div>
+</div>
+<div class="section" id="using-the-lxc-protocol-to-support-android">
+<span id="lava-lxc-protocol-android"></span><h2>Using the LXC protocol to support Android<a class="headerlink" href="#using-the-lxc-protocol-to-support-android" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lava-android-naming-conventions">
+<span id="id1"></span><h3>LAVA Android Naming Conventions<a class="headerlink" href="#lava-android-naming-conventions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>production image</strong> - a build of Android which, when deployed to a device,
+means that the device is <strong>not</strong> visible to <code class="docutils literal notranslate"><span class="pre">adb</span></code>. This is typically how a
+device is configured when first sold to the consumer.</li>
+<li><strong>developer image</strong> - a build of Android which, when deployed to a device,
+means that the device <strong>is visible</strong> to <code class="docutils literal notranslate"><span class="pre">adb</span></code>. Devices configured this way
+will be able to have the image replaced using any machine, just by connecting
+a suitable cable, so these images are not typically deployed onto hardware
+which will be sold to the customer without having this image replaced with a
+production image.</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>Installing tools like <code class="docutils literal notranslate"><span class="pre">adb</span></code> and <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> on the dispatcher can be
+problematic. Some of these issues arise from the need to put many different
+types of devices onto a single dispatcher, other issues arise from needing to
+use different versions of the build on the devices. Testing an old system may
+require downgrading support like <code class="docutils literal notranslate"><span class="pre">openjdk</span></code>, new devices or new builds may
+require upgrading the same support. Containers isolate this variation so that
+each testjob can have a suitable container instead of needing to deal with
+changes on the dispatcher:</p>
+<ol class="arabic simple">
+<li><strong>Shared lock issues</strong> - Tools can require use of <code class="docutils literal notranslate"><span class="pre">flock</span></code> and similar
+methods to distinguish a connection to one device from another.</li>
+<li><strong>Version disparities</strong> - different device versions, different OS versions,
+may require different support in debug tools like <code class="docutils literal notranslate"><span class="pre">adb</span></code> and <code class="docutils literal notranslate"><span class="pre">fastboot</span></code>.</li>
+<li><strong>hardware issues</strong> - USB hub variability.</li>
+</ol>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="admin-lxc-deploy.html#lxc-deploy"><span class="std std-ref">Deploying LXC devices</span></a> for more information on the administration of
+LXC for LAVA.</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/lxc.svg"><img alt="LXC in LAVA" src="_images/lxc.svg" width="80%" /></a>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">lava-lxc</span></code> protocol, a Lava Test Shell is provided inside the LXC
+to support installing and configuring whatever tools, packages and files which
+the testjob will need to use. Installing <code class="docutils literal notranslate"><span class="pre">adb</span></code> in this test shell removes the
+need to have a POSIX type shell on the device. Files can be pushed and pulled
+from the device and executed using the Android support in the image.</p>
+</div>
+<div class="section" id="requirements-and-limitations">
+<span id="lava-android-requirements"></span><h3>Requirements and Limitations<a class="headerlink" href="#requirements-and-limitations" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>The image deployed to the device <strong>must</strong> enable the Android Debug Bridge,
+i.e. a <a class="reference internal" href="glossary.html#term-developer-image"><span class="xref std std-term">developer image</span></a>. This means enabling developer access over
+USB or TCP. This rules out the use of production images.</li>
+<li>A list of packages to install into the bare container to provide the
+necessary tools to communicate with the device.</li>
+<li>The LXC depends on underlying kernel architecture. For armel, armhf, etc.
+dispatcher should run on these architectures.</li>
+<li>Each distribution has its own template and the templates do not have common
+options. It can be difficult to have generic support for all distributions.</li>
+<li><a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">namespaces</span></a> to relate different job actions to run in the
+LXC and for the device.</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3>Protocol elements<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-lxc</span><span class="punctuation">:</span>
+    <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc-hikey-test</span>
+    <span class="name tag">template</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+    <span class="name tag">distribution</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+    <span class="name tag">release</span><span class="punctuation">:</span> <span class="literal scalar plain">jessie</span>
+    <span class="name tag">mirror</span><span class="punctuation">:</span> <span class="literal scalar plain">http://mirror.bytemark.co.uk/debian</span>
+    <span class="name tag">verbose</span><span class="punctuation">:</span> <span class="literal scalar plain">true</span>
+
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="comment single"># DEPLOY_LXC_BLOCK</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">tlxc</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc</span>
+    <span class="name tag">packages</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">android-tools-adb</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">android-tools-fastboot</span>
+
+<span class="comment single"># BOOT_LXC_BLOCK</span>
+</pre>
+</div>
+<div class="section" id="feedback-from-the-device">
+<span id="feedback-using-lxc"></span><span id="index-2"></span><h3>Feedback from the device<a class="headerlink" href="#feedback-from-the-device" title="Permalink to this headline">¶</a></h3>
+<p>Actions within the LXC can cause the device to emit messages on the serial
+console. Some devices can have problems maintaining the serial connection if
+this data is not flushed and the data itself can be useful to test writers to
+debug issues and failures.</p>
+<p>LAVA automatically reads from all other <a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">namespaces</span></a> whilst
+processing the test shell in another namespace and outputs this as <code class="docutils literal notranslate"><span class="pre">feedback</span></code>
+data. When viewing a test job log file, feedback can be turned on or off using
+the buttons at the top of the log file.</p>
+<p>To support feedback, the <code class="docutils literal notranslate"><span class="pre">lava-test-shell</span></code>
+<a class="reference internal" href="timeouts.html#individual-connection-timeout-overrides"><span class="std std-ref">Individual connection overrides</span></a> is set to 10 seconds by default.
+(There are no suitable prompts to match, so reading feedback continues until
+the connection timeout is reached, without failing the test shell itself.)</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a></p>
+</div>
+</div>
+<div class="section" id="differences-between-lxc-releases">
+<h3>Differences between LXC releases<a class="headerlink" href="#differences-between-lxc-releases" title="Permalink to this headline">¶</a></h3>
+<p>The release specified in the <code class="docutils literal notranslate"><span class="pre">lava-lxc</span></code> protocol will determine some of the
+packages which will need to be installed in the container. In particular, any
+container based on a Debian later than <code class="docutils literal notranslate"><span class="pre">jessie</span></code> will need two packages to be
+added to the setup of the container before the container can be used:
+<code class="docutils literal notranslate"><span class="pre">systemd</span></code> and <code class="docutils literal notranslate"><span class="pre">systemd-sysv</span></code>. These two packages <strong>must</strong> be specified in
+the deployment list.</p>
+<p>In addition, some packages will have been renamed between releases. For example,
+<code class="docutils literal notranslate"><span class="pre">android-tools-adb</span></code> exists in Debian unstable but it is an old build and will
+at some point be replaced by <code class="docutils literal notranslate"><span class="pre">adb</span></code> which is also available in unstable but not
+in <code class="docutils literal notranslate"><span class="pre">jessie</span></code>.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Always check the availability of the packages needed for particular
+releases by using a local chroot or VM. Only packages which are included in
+the specified release can be installed using the deployment list. Packages
+from other repositories will have to be installed using the test definition.</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Sample Job Definition<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="name tag">device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">hi6220-hikey</span>
+<span class="name tag">job_name</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc-hi6220-hikey</span>
+<span class="name tag">timeouts</span><span class="punctuation">:</span>
+  <span class="name tag">job</span><span class="punctuation">:</span>
+    <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">60</span>
+  <span class="name tag">action</span><span class="punctuation">:</span>
+    <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">15</span>
+  <span class="name tag">connection</span><span class="punctuation">:</span>
+    <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">2</span>
+<span class="name tag">priority</span><span class="punctuation">:</span> <span class="literal scalar plain">medium</span>
+<span class="name tag">visibility</span><span class="punctuation">:</span> <span class="literal scalar plain">public</span>
+
+<span class="name tag">metadata</span><span class="punctuation">:</span>
+  <span class="name tag">source</span><span class="punctuation">:</span> <span class="literal scalar plain">https://git.linaro.org/lava-team/refactoring.git</span>
+  <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">hi6220-hikey.yaml</span>
+
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-lxc</span><span class="punctuation">:</span>
+    <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc-hikey-test</span>
+    <span class="name tag">template</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+    <span class="name tag">distribution</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+    <span class="name tag">release</span><span class="punctuation">:</span> <span class="literal scalar plain">jessie</span>
+    <span class="name tag">mirror</span><span class="punctuation">:</span> <span class="literal scalar plain">http://mirror.bytemark.co.uk/debian</span>
+    <span class="name tag">verbose</span><span class="punctuation">:</span> <span class="literal scalar plain">true</span>
+
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="comment single"># DEPLOY_LXC_BLOCK</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">tlxc</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc</span>
+    <span class="name tag">packages</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">android-tools-adb</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">android-tools-fastboot</span>
+
+<span class="comment single"># BOOT_LXC_BLOCK</span>
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">tlxc</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'root&#64;(.*):'</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">'hikey</span><span class="punctuation">:</span> <span class="literal string">'</span>
+    <span class="literal string">timeout:</span>
+      <span class="literal string">minutes:</span><span class="name variable"> </span><span class="literal string">5</span>
+    <span class="literal string">method:</span><span class="name variable"> </span><span class="literal string">lxc</span>
+
+<span class="literal string">#</span><span class="name variable"> </span><span class="literal string">DEPLOY_TARGET_BLOCK</span>
+<span class="literal string">-</span><span class="name variable"> </span><span class="literal string">deploy:</span>
+    <span class="literal string">timeout:</span>
+      <span class="literal string">minutes:</span><span class="name variable"> </span><span class="literal string">15</span>
+    <span class="literal string">namespace:</span><span class="name variable"> </span><span class="literal string">droid</span>
+    <span class="literal string">to:</span><span class="name variable"> </span><span class="literal string">fastboot</span>
+    <span class="literal string">images:</span>
+      <span class="literal string">ptable:</span>
+        <span class="literal string">url:</span><span class="name variable"> </span><span class="literal string">http://example.com/hikey/ptable-aosp-8g.img</span>
+        <span class="literal string">reboot:</span><span class="name variable"> </span><span class="literal string">hard-reset</span>
+      <span class="literal string">boot:</span>
+        <span class="literal string">url:</span><span class="name variable"> </span><span class="literal string">http://example.com/hikey/boot.img.xz</span>
+        <span class="literal string">compression:</span><span class="name variable"> </span><span class="literal string">xz</span>
+        <span class="literal string">reboot:</span><span class="name variable"> </span><span class="literal string">hard-reset</span>
+      <span class="literal string">cache:</span>
+        <span class="literal string">url:</span><span class="name variable"> </span><span class="literal string">http://example.com/hikey/cache.img.xz</span>
+        <span class="literal string">compression:</span><span class="name variable"> </span><span class="literal string">xz</span>
+      <span class="literal string">userdata:</span>
+        <span class="literal string">url:</span><span class="name variable"> </span><span class="literal string">http://example.com/hikey/userdata.img.xz</span>
+        <span class="literal string">compression:</span><span class="name variable"> </span><span class="literal string">xz</span>
+      <span class="literal string">system:</span>
+        <span class="literal string">url:</span><span class="name variable"> </span><span class="literal string">http://example.com/hikey/system.img.xz</span>
+        <span class="literal string">sha256sum:</span><span class="name variable"> </span><span class="literal string">e0e82b5adfae84ff97f4f6488e5b4c64b0dfc7ad8a37b4bcbb887d9f85a6be0a</span>
+        <span class="literal string">compression:</span><span class="name variable"> </span><span class="literal string">xz</span>
+    <span class="literal string">protocols:</span>
+      <span class="literal string">lava-lxc:</span>
+      <span class="literal string">-</span><span class="name variable"> </span><span class="literal string">action:</span><span class="name variable"> </span><span class="literal string">fastboot-deploy</span>
+        <span class="literal string">request:</span><span class="name variable"> </span><span class="literal string">pre-power-command</span>
+        <span class="literal string">timeout:</span>
+          <span class="literal string">minutes:</span><span class="name variable"> </span><span class="literal string">2</span>
+
+<span class="literal string">#</span><span class="name variable"> </span><span class="literal string">BOOT_TARGET_BLOCK</span>
+<span class="literal string">-</span><span class="name variable"> </span><span class="literal string">boot:</span>
+    <span class="literal string">namespace:</span><span class="name variable"> </span><span class="literal string">droid</span>
+    <span class="literal string">prompts:</span>
+    <span class="literal string">-</span><span class="name variable"> </span><span class="literal string">'</span><span class="literal scalar plain">root&#64;(.*):/#'</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'hikey:/'</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">15</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">fastboot</span>
+
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">tlxc</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">10</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">inline</span>
+      <span class="name tag">repository</span><span class="punctuation">:</span>
+        <span class="name tag">metadata</span><span class="punctuation">:</span>
+          <span class="name tag">format</span><span class="punctuation">:</span> <span class="literal scalar plain">Lava-Test Test Definition 1.0</span>
+          <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">check-devices</span>
+          <span class="name tag">description</span><span class="punctuation">:</span> <span class="literal string">&quot;LXC</span><span class="name variable"> </span><span class="literal string">dev</span><span class="name variable"> </span><span class="literal string">list&quot;</span>
+        <span class="name tag">run</span><span class="punctuation">:</span>
+          <span class="name tag">steps</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">/sbin/ifconfig</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc-dev-inline</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">inline/lxc-dev.yaml</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">https://git.linaro.org/lava-team/refactoring.git/</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">android/lava-android-basic-lxc.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">v2-make-adb-connection</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/deploy-lxc.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+</html>

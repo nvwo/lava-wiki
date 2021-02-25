@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/actions-timeout.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:20:55 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Timeout Reference &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User notifications in LAVA" href="user-notifications.html" />
+    <link rel="prev" title="Protocol Reference" href="actions-protocols.html" />
+    <link rel="canonical" href="actions-timeout.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Timeout Reference</a><ul>
+<li><a class="reference internal" href="#job-timeout">Job timeout</a></li>
+<li><a class="reference internal" href="#action-timeout">Action timeout</a><ul>
+<li><a class="reference internal" href="#individual-action-timeouts">Individual action timeouts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#connection-timeout">Connection timeout</a><ul>
+<li><a class="reference internal" href="#individual-connection-timeouts">Individual connection timeouts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="actions-protocols.html" title="Previous Chapter: Protocol Reference"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Protocol Reference</span>
+    </a>
+  </li>
+  <li>
+    <a href="user-notifications.html" title="Next Chapter: User notifications in LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">User notifica... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="timeout-reference">
+<span id="dispatcher-timeouts"></span><h1>Timeout Reference<a class="headerlink" href="#timeout-reference" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The behavior of actions and connections has changed during the
+development of the V2 dispatcher. See <a class="reference internal" href="#connection-timeout"><span class="std std-ref">Connection timeout</span></a> and
+<a class="reference internal" href="#default-action-timeout"><span class="std std-ref">Action timeout</span></a>. Action timeouts can be specified for the
+default for all actions or for a specific action. Connection timeouts can be
+specified as the default for all connections or for the connections made by
+a specific action.</p>
+</div>
+<p>Timeouts now provide more detailed support. Individual actions have uniquely
+addressable timeouts.</p>
+<p>Timeouts are specified explicitly in days, hours, minutes and seconds. Any
+unspecified value is set to zero.</p>
+<p>The pipeline automatically records the amount of time elapsed for the complete
+run of each action class as <code class="docutils literal notranslate"><span class="pre">duration</span></code> as well as the action which sets the
+current timeout. Server side processing can now identify when jobs are
+submitted with excessively long timeouts and highlight exactly which actions
+can use shorter timeouts.</p>
+<div class="section" id="job-timeout">
+<span id="total-job-timeout"></span><h2>Job timeout<a class="headerlink" href="#job-timeout" title="Permalink to this headline">¶</a></h2>
+<p>The entire job will have an overall timeout - the job will fail if this timeout
+is exceeded, whether or not any other timeout is longer. Action timeouts longer
+than job timeout are deprecated and will result in a warning during job
+submission.</p>
+<p>A timeout for a job means that the current action will be allowed to complete
+and the job will then fail.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="action-timeout">
+<span id="default-action-timeout"></span><h2>Action timeout<a class="headerlink" href="#action-timeout" title="Permalink to this headline">¶</a></h2>
+<p>Each action has a default timeout which is handled differently according to
+whether the action has a current connection to the device.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This timeout covers each action class, not per top level action. i.e.
+the top level <code class="docutils literal notranslate"><span class="pre">boot</span></code> action includes many actions, from interrupting the
+bootloader and substituting commands to waiting for a shell session or login
+prompt once the boot starts. Each action class within the pipeline is given
+the action timeout unless overridden using <a class="reference internal" href="#individual-action-timeout"><span class="std std-ref">Individual action timeouts</span></a>.</p>
+</div>
+<p>Think of the action timeout as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;no single operation of this class should possibly take longer than ...&quot;</span>
+</pre></div>
+</div>
+<p>along with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;the pipeline should wait no longer than ... to determine that the device is</span>
+<span class="ow">not</span> <span class="n">responding</span><span class="o">.</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>When changing timeouts, review the pipeline logs for each top level action,
+<code class="docutils literal notranslate"><span class="pre">deploy</span></code>, <code class="docutils literal notranslate"><span class="pre">boot</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code>.  Check the duration of each action within
+each section and set the timeout for that top level action. Specific actions
+can be extended using the <a class="reference internal" href="#individual-action-timeout"><span class="std std-ref">Individual action timeouts</span></a> support.</p>
+<p>Action timeouts only determine the operation of the action, not the operation
+of any connection used by the action. See <a class="reference internal" href="#connection-timeout"><span class="std std-ref">Connection timeout</span></a>.</p>
+<p>If no action timeout is given in the job, the <strong>default action timeout of 30
+seconds</strong> will be used.</p>
+<p>A timeout for these actions interrupts the executing action and marks the job
+as Incomplete.</p>
+<ul>
+<li><p class="first">Log message is of the form: <code class="docutils literal notranslate"><span class="pre">${name}:</span> <span class="pre">timeout</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">log</span><span class="p">:</span> <span class="s2">&quot;git-repo-action: timeout. 45 seconds&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The action timeout covers the entire operation of that action and the action
+will be terminated if the timeout is exceeded.</p>
+<p>The log structure shows the action responsible for the command running within
+the specified timeout.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">action</span><span class="p">:</span>
+  <span class="n">seconds</span><span class="p">:</span> <span class="mi">45</span>
+</pre></div>
+</div>
+<div class="section" id="individual-action-timeouts">
+<span id="individual-action-timeout"></span><h3>Individual action timeouts<a class="headerlink" href="#individual-action-timeouts" title="Permalink to this headline">¶</a></h3>
+<p>Individual actions can also be specified by name - see the pipeline description
+output by the <code class="docutils literal notranslate"><span class="pre">validate</span></code> command or the Pipeline Description on the job
+definition page to see the full name of action classes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">timeouts</span><span class="p">:</span>
+  <span class="n">job</span><span class="p">:</span>
+    <span class="n">minutes</span><span class="p">:</span> <span class="mi">15</span>
+  <span class="n">action</span><span class="p">:</span>
+    <span class="n">extract</span><span class="o">-</span><span class="n">nfsrootfs</span><span class="p">:</span>
+      <span class="n">seconds</span><span class="p">:</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<p>Individual actions can be referenced by the <a class="reference internal" href="glossary.html#term-action-level"><span class="xref std std-term">action level</span></a> and the job
+ID, in the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">INSTANCE_URL</span><span class="o">&gt;/</span><span class="n">scheduler</span><span class="o">/</span><span class="n">job</span><span class="o">/&lt;</span><span class="n">JOB_ID</span><span class="o">&gt;/</span><span class="n">definition</span><span class="c1">#&lt;ACTION_LEVEL&gt;</span>
+</pre></div>
+</div>
+<p>The level string represents the sequence within the pipeline and is a key
+component of how the pipeline data is organized. See also
+<a class="reference internal" href="dispatcher-design.html#pipeline-construction"><span class="std std-ref">Pipeline construction and flow</span></a>.</p>
+<p>This allows typical action timeouts to be as short as practical, so that jobs
+fail quickly, while allowing for individual actions to take longer.</p>
+<p>Typical actions which may need timeout extensions:</p>
+<ol class="arabic simple">
+<li><strong>lava-test-shell</strong> - unless changed, the <a class="reference internal" href="#default-action-timeout"><span class="std std-ref">Action timeout</span></a>
+applies to running the all individual commands inside each test definition.
+If <code class="docutils literal notranslate"><span class="pre">install:</span> <span class="pre">deps:</span></code> are in use, it could take a lot longer to update,
+download, unpack and setup the packages than to run any one test within the
+definition.</li>
+<li><strong>expect-shell-connection</strong> - used to allow time for the device to boot and
+then wait for a standard prompt (up to the point of a login prompt or shell
+prompt if no login is offered). If the device is expected to raise a network
+interface at boot using DHCP, this could add an appreciable amount of time.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="connection-timeout">
+<span id="id1"></span><h2>Connection timeout<a class="headerlink" href="#connection-timeout" title="Permalink to this headline">¶</a></h2>
+<p>Actions retain the action timeout for the complete duration of the action
+<code class="docutils literal notranslate"><span class="pre">run()</span></code> function. If that function uses a connection to interact with the
+device, each connection operation uses the <strong>connection_timeout</strong>, so the
+action timeout <strong>must</strong> allow enough time for all the connection operations to
+complete within expectations of normal latency.</p>
+<ul>
+<li><p class="first">Log message is of the form: <code class="docutils literal notranslate"><span class="pre">${name}:</span> <span class="pre">Wait</span> <span class="pre">for</span> <span class="pre">prompt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">log</span><span class="p">:</span> <span class="s2">&quot;expect-shell-connection: Wait for prompt. 24 seconds&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Before the connection times out, a message will be sent to help prevent serial
+corruption from interfering with the expected prompt.</p>
+<ul>
+<li><p class="first">Warning message is of the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">Warning</span> <span class="n">command</span> <span class="n">timed</span> <span class="n">out</span><span class="p">:</span> <span class="n">Sending</span> <span class="o">...</span> <span class="ow">in</span> <span class="n">case</span> <span class="n">of</span> <span class="n">corruption</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The character used depends on the type of connection - a connection which
+expects a POSIX shell will use <code class="docutils literal notranslate"><span class="pre">#</span></code> as this is a neutral / comment operation.</p>
+<p>A timeout for the connection interrupts the executing action and marks the job
+as Incomplete.</p>
+<ul>
+<li><p class="first">Log message is of the form: <code class="docutils literal notranslate"><span class="pre">${name}:</span> <span class="pre">timeout</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">log</span><span class="p">:</span> <span class="s2">&quot;git-repo-action: timeout. 45 seconds&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Individual actions may make multiple calls on the connection - different
+actions are used when a particular operation is expected to take longer than
+other calls, e.g. boot.</p>
+<p>Set the default connection timeout which all actions will use when using a
+connection:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">connection</span><span class="p">:</span>
+    <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+</pre></div>
+</div>
+<div class="section" id="individual-connection-timeouts">
+<h3>Individual connection timeouts<a class="headerlink" href="#individual-connection-timeouts" title="Permalink to this headline">¶</a></h3>
+<p>A specific action can be given an individual connection timeout which will be
+used by whenever that action uses a connection: If the action does not use a
+connection, this timeout will have no effect.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">connections</span><span class="p">:</span>
+    <span class="nt">uboot-retry</span><span class="p">:</span>
+      <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">120</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note the difference between <code class="docutils literal notranslate"><span class="pre">connection</span></code> followed by a value for
+the default connection timeout and <code class="docutils literal notranslate"><span class="pre">connections</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;action_name&gt;</span></code>
+followed by a value for the individual connection timeout for that action.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/actions-timeout.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:20:55 GMT -->
+</html>

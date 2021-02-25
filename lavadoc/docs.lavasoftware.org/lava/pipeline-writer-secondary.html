@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-writer-secondary.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:46 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Writing jobs using Secondary Connections &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Replacing VMGroups using Secondary Connections" href="pipeline-writer-vmgroups.html" />
+    <link rel="prev" title="Advanced Use Cases" href="pipeline-usecases.html" />
+    <link rel="canonical" href="pipeline-writer-secondary.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Writing jobs using Secondary Connections</a><ul>
+<li><a class="reference internal" href="#secure-shell-connections-ssh">Secure Shell connections (ssh)</a><ul>
+<li><a class="reference internal" href="#delaying-the-start-of-a-job-using-multinode">Delaying the start of a job using Multinode</a></li>
+<li><a class="reference internal" href="#picking-up-the-data-in-the-guest-role">Picking up the data in the guest role</a></li>
+<li><a class="reference internal" href="#test-definition-for-the-host-role">Test definition for the host role</a></li>
+<li><a class="reference internal" href="#test-definition-for-the-guest-role">Test definition for the guest role</a></li>
+<li><a class="reference internal" href="#complete-multinode-test-definition">Complete Multinode test definition</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-usecases.html" title="Previous Chapter: Advanced Use Cases"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Advanced Use Cases</span>
+    </a>
+  </li>
+  <li>
+    <a href="pipeline-writer-vmgroups.html" title="Next Chapter: Replacing VMGroups using Secondary Connections"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Replacing VMG... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="writing-jobs-using-secondary-connections">
+<span id="writing-secondary-connection-jobs"></span><span id="index-0"></span><h1>Writing jobs using Secondary Connections<a class="headerlink" href="#writing-jobs-using-secondary-connections" title="Permalink to this headline">¶</a></h1>
+<p>Secondary connections involve Multinode submissions and some of the setup can
+require some thought. As with other Multinode test writing tasks, it is helpful
+to draw out the flow of each role, matching the synchronization points, to make
+it clear which role is waiting at each point of the test.</p>
+<p>Even if the test definitions will eventually reside in external repositories,
+it is helpful to do the planning stage using inline definitions. See
+<a class="reference internal" href="actions-test.html#inline-test-definition-example"><span class="std std-ref">Inline test definition example</span></a>.</p>
+<div class="section" id="secure-shell-connections-ssh">
+<span id="secure-secondary-shells"></span><span id="index-1"></span><h2>Secure Shell connections (ssh)<a class="headerlink" href="#secure-shell-connections-ssh" title="Permalink to this headline">¶</a></h2>
+<p><code class="file docutils literal notranslate"><span class="pre">ssh</span></code> involves deploying and booting a test device to host the server
+daemon and delaying the start of the secondary connection(s) until this daemon
+is ready. As the deployment of the test device acting as the host is specified
+by the test writer, the IP address of the host device and therefore the ssh
+server is unknown at submission. So there are two problems to resolve:</p>
+<ol class="arabic simple">
+<li>The secondary connections must wait for the host to be ready</li>
+<li>The secondary connections must know the IP address of the host
+once the host is ready and before attempting to connect.</li>
+</ol>
+<p>The flow for the job will be:</p>
+<ol class="arabic simple">
+<li>The job will use <a class="reference internal" href="actions-protocols.html#lava-start"><span class="std std-ref">lava-start API call</span></a> to resolve the first problem.</li>
+<li>The job will also use <a class="reference internal" href="actions-protocols.html#passing-data-at-startup"><span class="std std-ref">Passing data at startup</span></a> to resolve the second
+problem.</li>
+</ol>
+<table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>host role</strong></th>
+<th class="head"><strong>guest role(s)</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Multinode group start</td>
+<td>Multinode group start</td>
+</tr>
+<tr class="row-odd"><td>Deploy to test device</td>
+<td>Wait for lava-start</td>
+</tr>
+<tr class="row-even"><td>Boot test device</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>Login</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>Start test definition</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>install openssh-server</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>obtain IP address</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">lava-send</span></code> ipv4</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">lava-send</span></code> lava_start</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> clients</td>
+<td>Deployment starts</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Action retrieves ipv4</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>Boot starts</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>host_address set to ipv4</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td>scp overlay to host</td>
+</tr>
+<tr class="row-even"><td>&#160;</td>
+<td>Start test definition</td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td><code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> clients</td>
+</tr>
+<tr class="row-even"><td>further test actions</td>
+<td>further test actions</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> finish</td>
+<td><code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> finish</td>
+</tr>
+<tr class="row-even"><td>further test actions</td>
+<td>Finalize action &amp; logout</td>
+</tr>
+<tr class="row-odd"><td>Finalize action &amp; power off</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Secondary connections rely on the host device remaining powered
+on and the server daemon continuing to operate. The guest roles <strong>must</strong>
+always finish before (or at the same time) as the host or the guest job will
+fail with a broken connection. To ensure this, the jobs need to use a final
+file:<cite>lava-sync</cite> operation - the host can continue to do test actions after
+that sync has completed.</p>
+</div>
+<div class="section" id="delaying-the-start-of-a-job-using-multinode">
+<span id="delayed-start-multinode"></span><span id="index-2"></span><h3>Delaying the start of a job using Multinode<a class="headerlink" href="#delaying-the-start-of-a-job-using-multinode" title="Permalink to this headline">¶</a></h3>
+<p>The real device in this example has the role label <strong>host</strong>. The guest
+secondary connections over SSH are testjobs with the role <strong>guest</strong>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> request implements the delayed start of the guest
+connections by expecting a message from the device with the <strong>host</strong> role,
+allowing 15 minutes from the time the Multinode group jobs start for the device
+to boot and for the server to be installed and ready for connections.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="c1"># expect_role is used by the dispatcher and is part of delay_start</span>
+  <span class="c1"># host_role is used by the scheduler, unrelated to delay_start.</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="nt">host</span><span class="p">:</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">beaglebone-black</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="nt">guest</span><span class="p">:</span>
+        <span class="c1"># protocol API call to make during protocol setup</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-start</span>
+        <span class="c1"># set the role for which this role will wait</span>
+        <span class="nt">expect_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+        <span class="c1"># no device_type, just a connection</span>
+        <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+        <span class="c1"># each ssh connection will attempt to connect to the device of role &#39;host&#39;</span>
+        <span class="nt">host_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+</pre></div>
+</div>
+<p>Ignoring the deploy or boot sections for now, the test action for the <strong>host</strong>
+role then needs to arrange for the server to be installed, start it and
+identify the IP address at which the server can be contacted. Then the <strong>host</strong>
+role can tell the <strong>guest</strong> role to start by using the Multinode API.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The IP address is gathered using a LAVA helper and sent to the
+guests before the start is requested. The guest has a <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> call but
+sending early means that the guest does not need to wait. This new helper
+(<code class="file docutils literal notranslate"><span class="pre">lava-echo-ipv4</span></code> uses the same parsing as <code class="file docutils literal notranslate"><span class="pre">lava-network</span></code> but
+does not need the guest to collect data and wait for the entire group to
+broadcast. It can be used in any test definitions using the <a class="reference internal" href="glossary.html#term-pipeline"><span class="xref std std-term">pipeline</span></a>
+or the current dispatcher.</p>
+</div>
+</div>
+<div class="section" id="picking-up-the-data-in-the-guest-role">
+<h3>Picking up the data in the guest role<a class="headerlink" href="#picking-up-the-data-in-the-guest-role" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA <a class="reference internal" href="actions-protocols.html#multinode-protocol"><span class="std std-ref">MultiNode Protocol</span></a> has support for Multinode API calls outside
+of the test definition by making a request based on a named action within the
+pipeline for the job.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>  <span class="c1"># timeout for the connection attempt</span>
+      <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-multinode</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+          <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+          <span class="nt">message</span><span class="p">:</span>
+              <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+          <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+      <span class="nt">timeout</span><span class="p">:</span>  <span class="c1"># delay_start timeout</span>
+        <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+</pre></div>
+</div>
+<p>This data also needs to be available to the boot action which will actually
+make the <code class="docutils literal notranslate"><span class="pre">ssh</span></code> login, so the boot action needs to know exactly which value to
+retrieve from the Multinode data:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+      <span class="nt">hostID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+      <span class="nt">host_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipaddr</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">hostID</span></code> needs to match the <code class="docutils literal notranslate"><span class="pre">messageID</span></code>, the <code class="docutils literal notranslate"><span class="pre">host_key</span></code> needs to
+match the key of the <code class="docutils literal notranslate"><span class="pre">message</span></code>. The value of the message can then be
+retrieved.</p>
+</div>
+<div class="section" id="test-definition-for-the-host-role">
+<h3>Test definition for the host role<a class="headerlink" href="#test-definition-for-the-host-role" title="Permalink to this headline">¶</a></h3>
+<p>This definition needs to install the server daemon, obtain the local IP address
+and send that to the group, allow the guests to start and wait for the guests
+to complete their own actions.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+   <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">install-ssh-server</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+   <span class="nt">definitions</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span>
+              <span class="nt">metadata</span><span class="p">:</span>
+                  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+                  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">install-ssh</span>
+                  <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;install</span><span class="nv"> </span><span class="s">step&quot;</span>
+                  <span class="nt">os</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+                  <span class="nt">scope</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+              <span class="nt">install</span><span class="p">:</span>
+                  <span class="nt">deps</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">openssh-server</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate</span>
+              <span class="nt">run</span><span class="p">:</span>
+                  <span class="nt">steps</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate-debian</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send lava_start</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+         <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-inline</span>
+         <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-install.yaml</span>
+       <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+         <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+         <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+   <span class="nt">role</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-definition-for-the-guest-role">
+<h3>Test definition for the guest role<a class="headerlink" href="#test-definition-for-the-guest-role" title="Permalink to this headline">¶</a></h3>
+<p>In this example, the guest runs other tasks before calling the sync as the
+final operation.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+   <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">guest-secondary</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+   <span class="nt">definitions</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+         <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+         <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+         <span class="c1"># run the inline last as the host is waiting for this final sync.</span>
+       <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span>
+              <span class="nt">metadata</span><span class="p">:</span>
+                  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+                  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">client-ssh</span>
+                  <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;client</span><span class="nv"> </span><span class="s">complete&quot;</span>
+                  <span class="nt">os</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+                  <span class="nt">scope</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+              <span class="nt">run</span><span class="p">:</span>
+                  <span class="nt">steps</span><span class="p">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">df -h</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">free</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+         <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-client</span>
+         <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-client.yaml</span>
+   <span class="nt">role</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complete-multinode-test-definition">
+<span id="complete-secondary-connection"></span><span id="index-3"></span><h3>Complete Multinode test definition<a class="headerlink" href="#complete-multinode-test-definition" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">prompts</span></code> list and <code class="docutils literal notranslate"><span class="pre">auto-login</span></code> details for the SSH
+deployment <strong>must</strong> be identical to the <code class="docutils literal notranslate"><span class="pre">prompts</span></code> list and
+<code class="docutils literal notranslate"><span class="pre">auto-login</span></code> details for the host device - it is the same system
+in each case.</p>
+</div>
+<p><a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/plain/release/bbb-ssh-guest.yaml">https://git.linaro.org/lava-team/refactoring.git/plain/release/bbb-ssh-guest.yaml</a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># submission YAML prototype for connecting to a BBB over ssh</span>
+<span class="c1"># as secondary connection.</span>
+<span class="c1"># whichever role is operating as the &quot;host&quot; must specify how to</span>
+<span class="c1"># authorize connections from other roles using the authorize: key</span>
+<span class="c1"># in the deployment. This allows the relevant Action to deploy the</span>
+<span class="c1"># necessary support. e.g. /root/.ssh/authorized_keys</span>
+
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bbb-guest-ssh</span>
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+  <span class="nt">action</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+  <span class="nt">connection</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="nt">visibility</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://git.linaro.org/lava-team/refactoring.git</span>
+  <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">release/bbb-ssh-guest.yaml</span>
+  <span class="nt">lava.series</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">release-testing</span>
+  <span class="nt">build-readme</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/debian-armmp-armhf-readme.html</span>
+  <span class="nt">build-script</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/armmp-nfs.sh</span>
+
+<span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="c1"># expect_role is used by the dispatcher and is part of delay_start</span>
+    <span class="c1"># host_role is used by the scheduler, unrelated to delay_start.</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="nt">host</span><span class="p">:</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">beaglebone-black</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="nt">guest</span><span class="p">:</span>
+        <span class="c1"># protocol API call to make during protocol setup</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-start</span>
+        <span class="c1"># set the role for which this role will wait</span>
+        <span class="nt">expect_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+        <span class="c1"># no device_type, just a connection</span>
+        <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+        <span class="c1"># each ssh connection will attempt to connect to the device of role &#39;host&#39;</span>
+        <span class="nt">host_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+      <span class="nt">role</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+      <span class="nt">timeout</span><span class="p">:</span>
+        <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+      <span class="c1"># authorize for ssh adds the ssh public key to authorized_keys</span>
+      <span class="nt">authorize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+      <span class="nt">kernel</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/vmlinuz</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zimage</span>
+      <span class="nt">ramdisk</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/initramfs.cpio.gz</span>
+        <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+      <span class="nt">modules</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/modules.tar.gz</span>
+        <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+      <span class="nt">nfsrootfs</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/jessie-armhf-nfs.tar.gz</span>
+        <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+      <span class="nt">dtb</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/jessie/armhf/4/dtbs/am335x-boneblack.dtb</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+      <span class="nt">role</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+  <span class=" -Error">  </span><span class="nt">timeout</span><span class="p">:</span>  <span class="c1"># timeout for the ssh connection attempt</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+      <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+      <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+      <span class="nt">protocols</span><span class="p">:</span>
+        <span class="nt">lava-multinode</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+          <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+          <span class="c1"># messageID matches hostID</span>
+          <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+          <span class="nt">message</span><span class="p">:</span>
+            <span class="c1"># the key of the message matches value of the host_key</span>
+            <span class="c1"># the value of the message gets substituted</span>
+            <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+        <span class="nt">timeout</span><span class="p">:</span>  <span class="c1"># delay_start timeout</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+
+  <span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+      <span class="nt">role</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+      <span class="nt">timeout</span><span class="p">:</span>
+        <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+      <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+      <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs</span>
+      <span class="nt">auto_login</span><span class="p">:</span>
+        <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+        <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+      <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@jessie:&#39;</span>
+      <span class="nt">parameters</span><span class="p">:</span>
+        <span class="nt">shutdown-message</span><span class="p">:</span> <span class="nt">&quot;reboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Restarting system&quot;</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@jessie:&#39;</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+      <span class="nt">hostID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>  <span class="c1"># messageID</span>
+      <span class="nt">host_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipaddr</span>  <span class="c1"># message key</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">install-ssh</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;install</span><span class="nv"> </span><span class="s">step&quot;</span>
+          <span class="nt">os</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+          <span class="nt">scope</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get update -q</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DEBIAN_FRONTEND=noninteractive lava-test-case install-base --shell apt-get -q -y install -o Dpkg::Options::=&quot;--force-confold&quot; openssh-server ntpdate net-tools</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate-debian</span>
+          <span class="c1"># messageID matches, message_key as the key.</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send lava_start</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-inline</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-install.yaml</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/single-node/singlenode02.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-intermediate</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+      <span class="c1"># run the inline last as the host is waiting for this final sync.</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">client-ssh</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;client</span><span class="nv"> </span><span class="s">complete&quot;</span>
+          <span class="nt">os</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+          <span class="nt">scope</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">df -h</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">free</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-client</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-client.yaml</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/single-node/singlenode03.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-writer-secondary.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:46 GMT -->
+</html>

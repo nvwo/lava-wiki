@@ -1,0 +1,1548 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/writing-tests.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:10 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Writing a Lava-Test Test Definition 1.0 &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test definitions in version control" href="test-repositories.html" />
+    <link rel="prev" title="Timeouts" href="timeouts.html" />
+    <link rel="canonical" href="writing-tests.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Writing a Lava-Test Test Definition 1.0</a><ul>
+<li><a class="reference internal" href="#writing-a-test-definition-yaml-file">Writing a test definition YAML file</a><ul>
+<li><a class="reference internal" href="#metadata">Metadata</a><ul>
+<li><a class="reference internal" href="#optional-metadata">Optional metadata</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deprecated-installation-commands">Deprecated installation commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-commands-to-run-on-the-device">Writing commands to run on the device</a></li>
+<li><a class="reference internal" href="#using-inline-test-definitions">Using inline test definitions</a></li>
+<li><a class="reference internal" href="#terminology-reference">Terminology reference</a><ul>
+<li><a class="reference internal" href="#lava-test-job">LAVA Test Job</a></li>
+<li><a class="reference internal" href="#lava-test-shell-definition">LAVA Test Shell Definition</a></li>
+<li><a class="reference internal" href="#lava-test-helpers">LAVA Test Helpers</a><ul>
+<li><a class="reference internal" href="#supporting-os-variants">Supporting OS variants</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-writer-scripts">Test Writer Scripts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-custom-scripts-to-support-tests">Writing custom scripts to support tests</a><ul>
+<li><a class="reference internal" href="#advantages-of-custom-scripts">Advantages of custom scripts</a><ul>
+<li><a class="reference internal" href="#detailed-knowledge-of-the-output">Detailed knowledge of the output</a></li>
+<li><a class="reference internal" href="#increased-portability">Increased portability</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#script-interpreters">Script interpreters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-commands-as-test-cases">Using commands as test cases</a></li>
+<li><a class="reference internal" href="#recording-test-case-results">Recording test case results</a></li>
+<li><a class="reference internal" href="#recording-test-case-measurements-and-units">Recording test case measurements and units</a></li>
+<li><a class="reference internal" href="#recording-sets-of-test-cases">Recording sets of test cases</a></li>
+<li><a class="reference internal" href="#recording-test-case-references">Recording test case references</a></li>
+<li><a class="reference internal" href="#test-shell-parameters">Test shell parameters</a></li>
+<li><a class="reference internal" href="#obtaining-information-about-the-device">Obtaining information about the device</a></li>
+<li><a class="reference internal" href="#recording-test-case-data">Recording test case data</a><ul>
+<li><a class="reference internal" href="#simple-strings">Simple strings</a></li>
+<li><a class="reference internal" href="#files">Files</a></li>
+<li><a class="reference internal" href="#measurements">Measurements</a></li>
+<li><a class="reference internal" href="#the-lava-test-results">The lava test results</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#best-practices-for-writing-a-lava-test-job">Best practices for writing a LAVA test job</a><ul>
+<li><a class="reference internal" href="#write-portable-test-definitions">Write portable test definitions</a></li>
+<li><a class="reference internal" href="#rely-less-on-install-steps">Rely less on install: steps</a></li>
+<li><a class="reference internal" href="#use-different-test-definitions-for-different-test-areas">Use different test definitions for different test areas</a></li>
+<li><a class="reference internal" href="#use-different-jobs-for-different-test-environments">Use different jobs for different test environments</a></li>
+<li><a class="reference internal" href="#use-a-limited-number-of-test-definitions-per-job">Use a limited number of test definitions per job</a></li>
+<li><a class="reference internal" href="#retain-at-least-some-debug-output-in-the-final-test-definitions">Retain at least some debug output in the final test definitions</a></li>
+<li><a class="reference internal" href="#mock-up-the-device-output-to-test-the-scripts">Mock up the device output to test the scripts</a></li>
+<li><a class="reference internal" href="#use-functional-tests-to-validate-common-functionality">Use functional tests to validate common functionality</a></li>
+<li><a class="reference internal" href="#check-for-specific-support-as-a-test-case">Check for specific support as a test case</a></li>
+<li><a class="reference internal" href="#check-custom-scripts-for-side-effects">Check custom scripts for side-effects</a></li>
+<li><a class="reference internal" href="#call-lava-test-raise-if-setup-fails">Call lava-test-raise if setup fails</a><ul>
+<li><a class="reference internal" href="#inline">Inline</a></li>
+<li><a class="reference internal" href="#using-a-repository">Using a repository</a><ul>
+<li><a class="reference internal" href="#shell-library">Shell library</a></li>
+<li><a class="reference internal" href="#calling-shell-script">Calling shell script</a></li>
+<li><a class="reference internal" href="#test-shell-definition">Test shell definition</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setup-custom-scripts">Custom scripts</a></li>
+<li><a class="reference internal" href="#example-of-lava-test-raise">Example of lava-test-raise</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#control-the-amount-of-output-from-scripts-and-tools">Control the amount of output from scripts and tools</a><ul>
+<li><a class="reference internal" href="#specific-tools">Specific tools</a></li>
+<li><a class="reference internal" href="#problems-with-output">Problems with output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#control-the-number-of-test-cases-reported">Control the number of test cases reported</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="timeouts.html" title="Previous Chapter: Timeouts"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Timeouts</span>
+    </a>
+  </li>
+  <li>
+    <a href="test-repositories.html" title="Next Chapter: Test definitions in version control"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Test definiti... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="writing-a-lava-test-test-definition-1-0">
+<span id="writing-tests-1-0"></span><span id="index-0"></span><h1>Writing a Lava-Test Test Definition 1.0<a class="headerlink" href="#writing-a-lava-test-test-definition-1-0" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A Lava Test Shell Definition is distinct from a test job
+definition, although both use YAML. Typically, the test job definition
+includes URLs for one or more test shell definitions. The
+<a class="reference internal" href="lava_test_shell.html#lava-test-shell"><span class="std std-ref">Lava-Test Test Definition 1.0</span></a> action then executes the test shell definitions and
+reports results as part of the test job. See also <a class="reference internal" href="first-job.html#first-job-definition"><span class="std std-ref">job definition</span></a> and <a class="reference internal" href="standard-test-jobs.html#job-metadata"><span class="std std-ref">Metadata</span></a>.</p>
+</div>
+<p>A LAVA Test Definition comprises</p>
+<ol class="arabic simple">
+<li>Metadata describing the test definition, used by the test writers but not
+read by LAVA.</li>
+<li>The actions and parameters to set up the test(s)</li>
+<li>The instructions or steps to run as part of the test(s)</li>
+</ol>
+<p>For certain tests, the instructions can be included inline with the actions.
+For more complex tests or to share test definitions across multiple devices,
+environments and purposes, the test can use a repository of YAML files.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="test-repositories.html#test-repos"><span class="std std-ref">Test definitions in version control</span></a> and <a class="reference internal" href="test-repositories.html#test-definition-kmsg"><span class="std std-ref">Using kernel messages in a test shell</span></a>.</p>
+</div>
+<div class="section" id="writing-a-test-definition-yaml-file">
+<span id="test-definition-yaml"></span><h2>Writing a test definition YAML file<a class="headerlink" href="#writing-a-test-definition-yaml-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="metadata">
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h3>
+<p>The YAML is downloaded from the repository (or handled inline) and installed
+into the test image, either as a single file or as part of a git repository.
+(See <a class="reference internal" href="test-repositories.html#test-repos"><span class="std std-ref">Test definitions in version control</span></a>)</p>
+<p>Each test definition YAML file contains metadata and instructions.
+Metadata includes:</p>
+<ol class="arabic simple">
+<li>A format string recognized by LAVA</li>
+<li>A short name of the purpose of the file</li>
+<li>A description of the instructions contained in the file.</li>
+</ol>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="nt">&quot;Advanced (level 3)</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">single node test commands for Linux Linaro ubuntu Images&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the short name of the purpose of the test definition, i.e.,
+value of field <strong>name</strong>, must not contain any non-ascii
+characters or special characters from the following list,
+including white space(s): <code class="docutils literal notranslate"><span class="pre">$&amp;</span> <span class="pre">&quot;'`()&lt;&gt;/\|;</span></code></p>
+</div>
+<p>If the file is not under version control (i.e. not in a git repository),
+the <strong>version</strong> of the file must also be specified in the metadata:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">metadata</span><span class="p">:</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="nt">&quot;Advanced (level 3)</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">single node test commands for Linux Linaro ubuntu Images&quot;</span>
+    <span class="nt">version</span><span class="p">:</span> <span class="s">&quot;1.0&quot;</span>
+</pre></div>
+</div>
+<div class="section" id="optional-metadata">
+<h4>Optional metadata<a class="headerlink" href="#optional-metadata" title="Permalink to this headline">¶</a></h4>
+<p>There are also optional metadata fields:</p>
+<ol class="arabic simple">
+<li>The email address of the maintainer of this file.</li>
+<li>A list of the operating systems which this file can support.</li>
+<li>A list of devices which are expected to be able to run these
+instructions.</li>
+</ol>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">maintainer</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user.user@linaro.org</span>
+<span class="nt">os</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ubuntu</span>
+<span class="nt">scope</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+<span class="nt">devices</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kvm</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">arndale</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">panda</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">beaglebone-black</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">beagle-xm</span>
+</pre></div>
+</div>
+<p>These fields are ignored by LAVA itself; they exist only for test
+writers to use for their own requirements.</p>
+</div>
+</div>
+<div class="section" id="deprecated-installation-commands">
+<h3>Deprecated installation commands<a class="headerlink" href="#deprecated-installation-commands" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">install</span></code> element of Lava-Test Test Definition 1.0
+is <strong>DEPRECATED</strong>. See <a class="reference internal" href="#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a>. Newly
+written Lava-Test Test Definition 1.0 files should not use
+<code class="docutils literal notranslate"><span class="pre">install</span></code>.</p>
+</div>
+<p>The instructions within the YAML file can include installation requirements for
+images based on supported distributions (currently, Ubuntu or Debian):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">install</span><span class="p">:</span>
+    <span class="nt">deps</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">curl</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">realpath</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lsb-release</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">usbutils</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">for an <cite>install</cite> step to work, the test <strong>must</strong> first raise
+a usable network interface without running any instructions
+from the rest of the YAML file. If this is not possible,
+raise a network interface manually as a <cite>run</cite> step and
+install or build the components directly then.</p>
+</div>
+<p>When an external PPA or package repository (specific to debian based distributions)
+is required for installation of packages, it can be added in the <cite>install</cite>
+section as follows:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">install</span><span class="p">:</span>
+    <span class="nt">keys</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">7C751B3F</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">6CCD4038</span>
+    <span class="nt">sources</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">https://security.debian.org</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ppa:linaro-maintainers/tools</span>
+    <span class="nt">deps</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">curl</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lavacli</span>
+</pre></div>
+</div>
+<p>Debian and Ubuntu repositories must be signed for the apt package management
+tool to trust them as package sources. To tell the system to trust extra
+repositories listed here, add references to the PGP keys used in the <cite>keys</cite>
+list. These may be either the names of Debian keyring packages (already
+available in the standard Debian archive), or PGP key IDs. If using key IDs,
+LAVA will import them from a key server (<cite>pgp.mit.edu</cite>). PPA keys will be
+automatically imported using data from <cite>launchpad.net</cite>. For more information,
+see the documentation of <code class="docutils literal notranslate"><span class="pre">apt-add-repository</span></code>, <a class="reference external" href="https://manpages.debian.org/cgi-bin/man.cgi?query=apt-add-repository&amp;apropos=0&amp;sektion=0&amp;manpath=Debian+8+jessie&amp;format=html&amp;locale=en">man 1 apt-add-repository</a></p>
+<p>See <a class="reference external" href="https://git.linaro.org/people/senthil.kumaran/test-definitions.git/blob_plain/92406804035c450fd7f3b0ab305ab9d2c0bf94fe:/debian/ppa.yaml">Debian apt source addition</a>
+and <a class="reference external" href="https://git.linaro.org/people/senthil.kumaran/test-definitions.git/blob_plain/92406804035c450fd7f3b0ab305ab9d2c0bf94fe:/ubuntu/ppa.yaml">Ubuntu PPA addition</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When a new source is added and there are no ‘deps’ in the
+‘install’ section, then it is the test writer’s
+responsibility to run <cite>apt update</cite> before attempting any
+other <cite>apt</cite> operation elsewhere in the test definition.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When <cite>keys</cite> are not added for an apt source repository
+listed in the <cite>sources</cite> section, packages may fail to
+install if the repository is not trusted. LAVA does not add
+the <cite>–force-yes</cite> option during <cite>apt</cite> operations which would
+over-ride the trust check.</p>
+</div>
+<p>The principal purpose of the test definitions in the YAML file is to
+run commands on the device. These are specified in the run steps:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+    <span class="nt">steps</span><span class="p">:</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="writing-commands-to-run-on-the-device">
+<span id="writing-test-commands"></span><h2>Writing commands to run on the device<a class="headerlink" href="#writing-commands-to-run-on-the-device" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">All commands need to be executables available on the device. This is why the
+metadata section includes an “os” flag, so that commands specific to that
+operating system can be accessed.</p>
+</li>
+<li><p class="first">All tests will be run in a dedicated working directory. If a test repository
+is used, the local checkout of that repository will also be located within
+that same directory.</p>
+</li>
+<li><p class="first">Avoid assumptions about the base system - if a test needs a particular
+interpreter, executable or environment, ensure that this is available. That
+can be done either by using the <cite>install</cite> step in the test definition, or by
+building or installing the components as a series of commands in the <cite>run</cite>
+steps. Many images will not contain any servers or compilers and many will
+only have a limited range of interpreters pre-installed. Some of those may
+also have reduced functionality compared to versions on other systems.</p>
+</li>
+<li><p class="first">Keep the YAML files relatively small and clean to promote easier reuse in
+other tests or devices. It is often better to have many YAML files to be run
+in sequence than to have a large overly complex YAML file within which some
+tests will fail due to changed assumptions. e.g. a smoke test YAML file
+which checks for USB devices is not useful on devices where <code class="docutils literal notranslate"><span class="pre">lsusb</span></code> is not
+functional. It is much easier to scan through the test results if the
+baseline for the test is that all tests should be expected to pass on all
+supported platforms.</p>
+</li>
+<li><p class="first">Check for the existence of one of the LAVA test helper scripts, like
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>, in the directories specified by the <code class="docutils literal notranslate"><span class="pre">PATH</span></code> environment
+variable to determine how the script should report results. For example,
+the script may want to use <code class="docutils literal notranslate"><span class="pre">echo</span></code> or <code class="docutils literal notranslate"><span class="pre">print()</span></code> when not running inside
+LAVA and <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> only when that script exists.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a></p>
+</div>
+</li>
+<li><p class="first">Avoid use of redirects and pipes inside the run steps. If the command needs
+to use redirection and/or pipes, use a custom script in your repository and
+execute that script instead. See <a class="reference internal" href="#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a></p>
+</li>
+<li><p class="first">Take care with YAML syntax. These lines will fail with wrong syntax:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">echo &quot;test1</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass&quot;</span>
+<span class="p p-Indicator">-</span> <span class="nt">echo test2</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fail</span>
+</pre></div>
+</div>
+<p>While this syntax will pass:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;test1:&quot; &quot;pass&quot;</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;test2:&quot; &quot;fail&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Commands must not try to access files from other test
+definitions. If a script needs to be in multiple tests, either
+combine the repositories into one or copy the script into multiple
+repositories. The copy of the script executed will be the one below
+the working directory of the current test.</p>
+</div>
+</div>
+<div class="section" id="using-inline-test-definitions">
+<span id="inline-test-definitions"></span><span id="index-1"></span><h2>Using inline test definitions<a class="headerlink" href="#using-inline-test-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Rather than refer to a separate file or VCS repository, it is also possible to
+create a test definition directly inside the test action of a job submission.
+This is called an <code class="docutils literal notranslate"><span class="pre">inline</span> <span class="pre">test</span> <span class="pre">definition</span></code>:</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">4</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span>
+        <span class="name tag">metadata</span><span class="punctuation">:</span>
+          <span class="name tag">format</span><span class="punctuation">:</span> <span class="literal scalar plain">Lava-Test Test Definition 1.0</span>
+          <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">apache-server</span>
+          <span class="name tag">description</span><span class="punctuation">:</span> <span class="literal string">&quot;server</span><span class="name variable"> </span><span class="literal string">installation&quot;</span>
+          <span class="name tag">os</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">debian</span>
+          <span class="name tag">scope</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">functional</span>
+        <span class="name tag">run</span><span class="punctuation">:</span>
+          <span class="name tag">steps</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">apt -q update</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">apt -q -y install apache2</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">lava-test-case dpkg --shell dpkg -s apache2</span>
+      <span class="comment single"># remember to use -y to allow apt to proceed without interaction</span>
+      <span class="comment single"># -q simplifies the apt output for logging.</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">inline</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">apache-server</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">inline/apache-server.yaml</span>
+</pre>
+<p>An inline test definition <strong>must</strong>:</p>
+<ol class="arabic simple">
+<li>Use the <code class="docutils literal notranslate"><span class="pre">from:</span> <span class="pre">inline</span></code> method.</li>
+<li>Provide a path to which the definition will be written</li>
+<li>Specify the metadata, at least:<ol class="arabic">
+<li><code class="docutils literal notranslate"><span class="pre">format:</span> <span class="pre">Lava-Test</span> <span class="pre">Test</span> <span class="pre">Definition</span> <span class="pre">1.0</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code></li>
+</ol>
+</li>
+</ol>
+<p>Inline test definitions will be written out as <strong>single files</strong>, so if the test
+definition needs to call any scripts or programs, those need to be downloaded
+or installed before being called in the inline test definition.</p>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/inline-test-definition-example.html">examples/test-jobs/inline-test-definition-example.yaml</a></p>
+</div>
+<div class="section" id="terminology-reference">
+<span id="portability-terminology"></span><span id="index-2"></span><h2>Terminology reference<a class="headerlink" href="#terminology-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lava-test-job">
+<span id="id1"></span><h3>LAVA Test Job<a class="headerlink" href="#lava-test-job" title="Permalink to this headline">¶</a></h3>
+<p>The test job provides test shell definitions (and inline definitions), as well
+as describing the steps needed to deploy code and boot a device to a command
+prompt. These steps will not be portable between devices or operating system
+deployments.</p>
+<p>This design is quite different from LAVA V1 because V1 used to perform <em>magic</em>
+implicit steps. In V2 test jobs need to be explicit about all steps required.</p>
+<p>Inline definitions are often used for prototyping test definitions. They are
+also the recommended choice for MultiNode synchronization primitives, inserted
+between the other LAVA Test Shell Definitions which do the bulk of the work.</p>
+<p>The test job definition is what is submitted to LAVA to generate a test job.</p>
+</div>
+<div class="section" id="lava-test-shell-definition">
+<span id="id2"></span><h3>LAVA Test Shell Definition<a class="headerlink" href="#lava-test-shell-definition" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA Test Shell Definition is a YAML file, normally stored in a git
+repository alongside test writer scripts. Again, this will normally not be
+portable between operating system deployments.</p>
+<p>It is possible to use different scripts, with the test job selecting which
+scripts to use for a particular deployment as it runs.</p>
+<p>Each line in the definition must be a single line of shell, with no redirects,
+functions or pipes. Ideally, the Lava-Test Test Definition 1.0 will consist of a
+single <code class="docutils literal notranslate"><span class="pre">run</span></code> step which simply calls the appropriate test writer script.</p>
+</div>
+<div class="section" id="lava-test-helpers">
+<span id="id3"></span><h3>LAVA Test Helpers<a class="headerlink" href="#lava-test-helpers" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA Test Helpers are scripts maintained in the LAVA codebase, like
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>. These are designed to work using only the barest
+minimum of operating system support, to make them portable to all deployments.
+Where necessary they will use <code class="docutils literal notranslate"><span class="pre">deployment_data</span></code> to customize content.</p>
+<p>The helpers have two main uses:</p>
+<ul class="simple">
+<li>to embed information from LAVA into the test shell and</li>
+<li>to support communication with LAVA during test jobs.</li>
+</ul>
+<p>Some helpers will always be required, for example to locate and start the test
+shell scripts.</p>
+<p>Helpers which are too closely tied to any one operating system are likely to
+be deprecated and removed after LAVA V1 is dropped, along with helpers which
+duplicate standard operating system support.</p>
+<p>For example, helpers which use distribution-specific utilities to install
+packages or add repositories.</p>
+<div class="section" id="supporting-os-variants">
+<h4>Supporting OS variants<a class="headerlink" href="#supporting-os-variants" title="Permalink to this headline">¶</a></h4>
+<p>Most test shells can support portable test scripts without changes to the
+defaults.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">lava_test_sh_cmd</span></code> specifies the location of the shell interpreter.
+Default: <code class="docutils literal notranslate"><span class="pre">/bin/sh</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">lava_test_results_dir</span></code> specifies the location of the LAVA test directory
+which includes <code class="docutils literal notranslate"><span class="pre">lava-test-runner</span></code>. If this directory does not exist,
+the test shell will not start. Default: <code class="docutils literal notranslate"><span class="pre">'/lava-%s'</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">lava_test_shell_file</span></code> specifies the file to append with any
+<a class="reference internal" href="pipeline-admin.html#dispatcher-environment"><span class="std std-ref">Per dispatcher environment settings</span></a>. Note: this is not the same as the <a class="reference internal" href="lava_test_shell.html#yaml-parameters"><span class="std std-ref">LAVA
+params support</span></a>. Default: <code class="docutils literal notranslate"><span class="pre">'~/.bashrc'</span></code></li>
+</ul>
+<p>These values can be overridden in the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> if the test job
+deploys a non-standard system as long as none of the deployments specify the
+<code class="docutils literal notranslate"><span class="pre">os</span></code>.</p>
+</div>
+</div>
+<div class="section" id="test-writer-scripts">
+<span id="id4"></span><h3>Test Writer Scripts<a class="headerlink" href="#test-writer-scripts" title="Permalink to this headline">¶</a></h3>
+<p>Test writer scripts are scripts written by test writers, designed to be run
+both by LAVA and by developers. They do not need to be portable to different
+operating system deployments, as the choice of script to run is up to the
+developer or test writer. This means that the test writer has a free choice of
+languages, methods and tools in these scripts - whatever is available within
+the particular operating system deployment. This can even include building
+custom tools from source if so desired.</p>
+<p>The key feature of these scripts is that they should <strong>not</strong> depend on any
+LAVA features or helpers for their basic functionality. That way, developers
+can run exactly the same scripts both inside and outside of LAVA, to help
+reproduce problems.</p>
+<p>When running inside LAVA, scripts should check for the presence of
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> in the PATH environment variable and behave accordingly,
+using <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> to report results to LAVA if it is available.
+Otherwise, report results to the user in whatever way makes most sense.</p>
+<p>Test writers are strongly encouraged to make their scripts verbose: add
+progress messages, debug statements, error handling, logging and other
+support to allow developers to see what is actually happening when a test is
+running. This will aid debugging greatly.</p>
+<p>Finally, scripts are commonly shared amongst test writers. It is a good idea
+to keep them self-contained as much as possible, as this will aid reuse.
+Also, try to stick to the common Unix model: one script doing one task.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">The next section on <a class="reference internal" href="#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="writing-custom-scripts-to-support-tests">
+<span id="custom-scripts"></span><h2>Writing custom scripts to support tests<a class="headerlink" href="#writing-custom-scripts-to-support-tests" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Custom scripts are not available in an <a class="reference internal" href="glossary.html#term-inline"><span class="xref std std-term">inline</span></a> definition,
+<em>unless</em> the definition itself downloads the script, adds any
+dependencies and makes the script executable.</p>
+</div>
+<p>When multiple actions are necessary to get usable output, write a custom script
+to go alongside the YAML and execute that script as a run step:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+    <span class="nt">steps</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">$(./my-script.sh arguments)</span>
+</pre></div>
+</div>
+<p>You can choose whatever scripting language you prefer, as long as you
+ensure that it is available in the test image.</p>
+<p>Take care when using <code class="docutils literal notranslate"><span class="pre">cd</span></code> inside custom scripts - always store the initial
+return value or the value of <code class="docutils literal notranslate"><span class="pre">pwd</span></code> before the call and change back to that
+directory at the end of the script.</p>
+<p>Example of a custom script wrapping the output:</p>
+<p><a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/tree/functional/dispatcher-unittests.sh">https://git.linaro.org/lava-team/refactoring.git/tree/functional/dispatcher-unittests.sh</a></p>
+<p>The script is simply called directly from the test shell definition:</p>
+<p><a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/tree/functional/server-unit-tests-stretch.yaml">https://git.linaro.org/lava-team/refactoring.git/tree/functional/server-unit-tests-stretch.yaml</a></p>
+<p>Example V2 job using this support:</p>
+<p><a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/tree/functional/server-jessie-stretch-debian.yaml">https://git.linaro.org/lava-team/refactoring.git/tree/functional/server-jessie-stretch-debian.yaml</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure that your custom scripts output some useful information,
+including some indication of progress, in all test jobs but control the
+total amount of output to make the logs easier to read.</p>
+</div>
+<div class="section" id="advantages-of-custom-scripts">
+<h3>Advantages of custom scripts<a class="headerlink" href="#advantages-of-custom-scripts" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a></p>
+</div>
+<div class="section" id="detailed-knowledge-of-the-output">
+<h4>Detailed knowledge of the output<a class="headerlink" href="#detailed-knowledge-of-the-output" title="Permalink to this headline">¶</a></h4>
+<p>Custom scripts can be written to take advantage of detailed knowledge
+of the expected output and the test environment. They don’t have to be
+generic (i.e. they can be specifically targeted to one test
+suite). They can use a variety of tools or programming language
+support to parse the test output.</p>
+</div>
+<div class="section" id="increased-portability">
+<h4>Increased portability<a class="headerlink" href="#increased-portability" title="Permalink to this headline">¶</a></h4>
+<p>Custom scripts can also allow test writers to make the Test Shell
+Definition more portable, to be run outside LAVA. It is recommended
+to do this wherever possible and not rely on LAVA-specific helper
+scripts. This allows developers who do not have access to the test
+framework to reproduce bugs found by the test framework whilst
+retaining the benefits of scripts which are specific to particular
+test output styles.</p>
+<p>Problem reports can be difficult for developers to debug if they
+cannot reproduce the bug manually, without using the complete CI
+system. Every effort should be made to support running the test action
+instructions on a DUT which has been manually deployed so that
+developers can add specialized debug tools and equipment which are not
+available within the CI.</p>
+</div>
+</div>
+<div class="section" id="script-interpreters">
+<span id="interpreters-scripts"></span><h3>Script interpreters<a class="headerlink" href="#script-interpreters" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><strong>shell</strong> - consider running the script with <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-x</span></code> to see the operation
+of the script in the LAVA log files. Ensure that if your script expects
+<code class="docutils literal notranslate"><span class="pre">bash</span></code>, use the bash shebang line <code class="docutils literal notranslate"><span class="pre">#!/bin/bash</span></code> and ensure that <code class="docutils literal notranslate"><span class="pre">bash</span></code>
+is installed in the test image. The default shell may be <code class="docutils literal notranslate"><span class="pre">busybox</span></code> or
+<code class="docutils literal notranslate"><span class="pre">dash</span></code>, so take care with non-POSIX constructs in your shell scripts if
+you use <code class="docutils literal notranslate"><span class="pre">#!/bin/sh</span></code>.</li>
+<li><strong>python</strong> - ensure that python is installed in the test image. Add all the
+python dependencies necessary for your script. Remember that Python2 is
+end-of-life and <code class="docutils literal notranslate"><span class="pre">python3-</span></code> alternative dependencies may be required.</li>
+<li><strong>perl</strong> - ensure that any modules required by your script are  available,
+bearing in mind that some images may only have a basic perl installation
+with a limited selection of modules.</li>
+</ol>
+<p>If your YAML file does not reside in a repository, the YAML <em>run steps</em> will
+need to ensure that a network interface is raised, install a tool like <code class="docutils literal notranslate"><span class="pre">wget</span></code>
+and then use that to obtain the script, setting permissions if appropriate.</p>
+</div>
+</div>
+<div class="section" id="using-commands-as-test-cases">
+<span id="test-case-commands"></span><h2>Using commands as test cases<a class="headerlink" href="#using-commands-as-test-cases" title="Permalink to this headline">¶</a></h2>
+<p>If all your test does is feed the textual output of commands to the log file,
+you will spend a lot of time reading log files. To make test results easier to
+parse, aggregate and compare, individual commands can be converted into test
+cases with a pass or fail result. The simplest way to do this is to use the
+exit value of the command. A non-zero exit value is a test case failure. This
+produces a simple list of passes and failures in the result bundle which can be
+easily tracked over time.</p>
+<p>To use the exit value, simply precede the command with a call to
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> with a test-case name (no spaces):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+    <span class="nt">steps</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case test-ls-command --shell ls /usr/bin/sort</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case test-ls-fail --shell ls /user/somewhere/else/</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#best-practices"><span class="std std-ref">Best practices for writing a LAVA test job</span></a>, <a class="reference internal" href="#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a> and
+<a class="reference internal" href="#test-writer-scripts"><span class="std std-ref">Test Writer Scripts</span></a> for recommended ways to use this in practice.</p>
+</div>
+<p>Use subshells instead of backticks to execute a command as an argument to
+another command:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case pointless-example --shell ls $(pwd)</span>
+</pre></div>
+</div>
+<p>For more details on the contents of the YAML file and how to construct YAML for
+your own tests, see the <a class="reference internal" href="developing-tests.html#test-developer"><span class="std std-ref">Writing Tests</span></a>.</p>
+</div>
+<div class="section" id="recording-test-case-results">
+<span id="recording-test-results"></span><h2>Recording test case results<a class="headerlink" href="#recording-test-case-results" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> can also be used with a parser with the extra support for
+checking the exit value of the call:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+   <span class="nt">steps</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;lava-test-case</span><span class="nv"> </span><span class="s">fail-test</span><span class="nv"> </span><span class="s">--shell</span><span class="nv"> </span><span class="s">false&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;lava-test-case</span><span class="nv"> </span><span class="s">pass-test</span><span class="nv"> </span><span class="s">--shell</span><span class="nv"> </span><span class="s">true&quot;</span>
+</pre></div>
+</div>
+<p>This syntax will result in extra test results:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">fail-test -&gt; fail</span>
+<span class="l l-Scalar l-Scalar-Plain">pass-test -&gt; pass</span>
+</pre></div>
+</div>
+<p>Alternatively, the <code class="docutils literal notranslate"><span class="pre">--result</span></code> command can be used to output the
+result directly:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+   <span class="nt">steps</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case test5 --result pass</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case test6 --result fail</span>
+</pre></div>
+</div>
+<p>This syntax will result in the test results:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">test5 -&gt; pass</span>
+<span class="l l-Scalar l-Scalar-Plain">test6 -&gt; fail</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="recording-test-case-measurements-and-units">
+<span id="recording-test-measurements"></span><h2>Recording test case measurements and units<a class="headerlink" href="#recording-test-case-measurements-and-units" title="Permalink to this headline">¶</a></h2>
+<p>Various tests require measurements and <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> supports
+measurements and units per test at a precision of 10 digits.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--result</span></code> must always be specified and only numbers can be recorded
+as measurements (to support charts based on measurement trends).</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#recording-test-result-data"><span class="std std-ref">Recording test case data</span></a></p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+   <span class="nt">steps</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case test5 --result pass --measurement 99 --units bottles</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case test6 --result fail --measurement 0 --units mugs</span>
+</pre></div>
+</div>
+<p>This syntax will result in the test results:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">test5 -&gt; pass -&gt; 99.0000000000 bottles</span>
+<span class="l l-Scalar l-Scalar-Plain">test6 -&gt; fail -&gt; 0E-10 mugs</span>
+</pre></div>
+</div>
+<p>The simplest way to use this with real data is to use a custom script
+which runs <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> with the relevant arguments.</p>
+</div>
+<div class="section" id="recording-sets-of-test-cases">
+<h2>Recording sets of test cases<a class="headerlink" href="#recording-sets-of-test-cases" title="Permalink to this headline">¶</a></h2>
+<p>Test Set is a way to allow test writers to subdivide individual results
+within a single Lava Test Shell Definition using an arbitrary label.</p>
+<p>Some test definitions run the same test with different parameters. To
+distinguish between these similar tests, it can be useful to use a test set.</p>
+</div>
+<div class="section" id="recording-test-case-references">
+<span id="test-case-references"></span><h2>Recording test case references<a class="headerlink" href="#recording-test-case-references" title="Permalink to this headline">¶</a></h2>
+<p>Some test cases may relate to specific bug reports or have specific URLs
+associated with the result. <a class="reference internal" href="#recording-simple-strings"><span class="std std-ref">Simple strings</span></a> can be recorded
+separately but if you need to relate a test case result to a URL, consider
+using <code class="docutils literal notranslate"><span class="pre">lava-test-reference</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>lava-test-reference TEST_CASE_ID --result pass<span class="p">|</span>fail<span class="p">|</span>skip<span class="p">|</span>unknown --reference URL
+</pre></div>
+</div>
+<p>The TEST_CASE_ID can be the same as an existing test case or a new test case.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lava-test-reference</span></code> has similar support as <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> except that
+<code class="docutils literal notranslate"><span class="pre">--measurement</span></code> and <code class="docutils literal notranslate"><span class="pre">--unit</span></code> options are <strong>not</strong> supported.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike the metadata in the test shell definition itself, the reference URL,
+result and the test case name are stored as part of the job metadata in
+the test job results. See also <a class="reference internal" href="standard-test-jobs.html#job-metadata"><span class="std std-ref">Metadata</span></a>.</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+   <span class="nt">steps</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-case checked --result pass</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-reference checked --result pass --reference https://staging.validation.linaro.org/static/doc/v2/index.html</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The URL should be a simple file reference, complex query strings could
+fail to be parsed.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="publishing-artifacts.html#publishing-artifacts"><span class="std std-ref">Publishing artifacts</span></a></p>
+</div>
+</div>
+<div class="section" id="test-shell-parameters">
+<span id="test-action-parameters"></span><h2>Test shell parameters<a class="headerlink" href="#test-shell-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The test action in the job definition supports parameters which are passed to
+the test shell. These parameters can be used to allow different job definitions
+to use a single test shell definition in multiple ways. A common example of
+this is a <a class="reference internal" href="glossary.html#term-hacking-session"><span class="xref std std-term">hacking session</span></a>.</p>
+<p>The parameters themselves are inserted into the <code class="docutils literal notranslate"><span class="pre">lava-test-runner</span></code> and will
+be available to <strong>all</strong> Lava Test Shell Definitions used in that test job. The
+parameters are <strong>not</strong> exported. The test shell definition needs to support
+using the parameter and can then use that information to change how external
+programs behave. This may include using <code class="docutils literal notranslate"><span class="pre">export</span></code>, it may include changing the
+command line options.</p>
+</div>
+<div class="section" id="obtaining-information-about-the-device">
+<span id="test-device-info"></span><span id="index-3"></span><h2>Obtaining information about the device<a class="headerlink" href="#obtaining-information-about-the-device" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-exported-parameters"><span class="std std-ref">Exported parameters</span></a> for details of how
+this support is described in the device dictionary.</p>
+</div>
+<p>Some elements of the static device configuration are exposed to the test shell,
+where it is safe to do so and where the admin has explicitly configured the
+information. The information is exposed using test shell helpers which
+currently include:</p>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-target-ip</span></code> - Devices with a fixed IPv4 address will populate this
+field. Test writers are able to use this in an LXC to connect to the device,
+providing that the test shell has correctly raised a network connection and
+suitable services are configured and running on the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ping -c4 $(lava-target-ip)
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-target-mac</span></code> - An alternative to <code class="docutils literal notranslate"><span class="pre">lava-target-ip</span></code>, declaring the
+MAC address of the device. Depending on the use case, this may be useful to
+lookup the IP address of the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>echo `lava-target-mac`
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-target-storage</span></code> - Where devices have alternative storage media
+fitted, the id of the block device can be exported. For example, this can
+help provide temporary storage on the device when the test shell is running
+a ramdisk or NFS. Some devices may provide a USB mass storage device which
+could also be exported in this way.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This provision is designed to support temporary storage on devices
+which typically boot over NFS or ramdisk etc. It is intended to allow test
+writers to run operations which would typically fail without a local
+filesystem or would block network traffic such that NFS would time out.</p>
+</div>
+<p>Only a <strong>single</strong> block device is supported per method. The <code class="docutils literal notranslate"><span class="pre">method</span></code> itself
+is simply a label specified by the admin. Often it will relate to the interface
+used by the block device, e.g. <code class="docutils literal notranslate"><span class="pre">SATA</span></code> or <code class="docutils literal notranslate"><span class="pre">USB</span></code> but it could be any string.
+In the example below, <code class="docutils literal notranslate"><span class="pre">UMS</span></code> is the label used by the device (as an
+abbreviation for USB Mass Storage).</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-admin.html#extra-device-configuration"><span class="std std-ref">Extra device configuration</span></a> and <a class="reference internal" href="connections.html#persistence"><span class="std std-ref">Persistence</span></a> -
+test writers are responsible for handling persistence issues. The
+recommendation is that a new filesystem is created on the block device
+each time it is to be used.</p>
+</div>
+<p>The output format contains one line per device, and each line contains
+the method and the ID for the storage using that method, separated
+by a TAB character:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lava-target-storage
+UMS     /dev/disk/by-id/usb-Linux_UMS_disk_0_WaRP7-0xac2400d300000054-0:0
+SATA    /dev/disk/by-id/ata-ST500DM002-1BD142_W3T79GCW
+</pre></div>
+</div>
+<p>Usage: <code class="docutils literal notranslate"><span class="pre">lava-target-storage</span> <span class="pre">method</span></code></p>
+<p>The output format contains one line per device assigned to the specified
+ID, with no whitespace. The matched method is not output.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lava-target-storage UMS
+/dev/disk/by-id/usb-Linux_UMS_disk_0_WaRP7-0xac2400d300000054-0:0
+</pre></div>
+</div>
+<p>If there is no matching method, exit non-zero and output nothing.</p>
+</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-exported-parameters"><span class="std std-ref">Exporting information into the test shell from the device
+dictionary</span></a></p>
+</div>
+</div>
+<div class="section" id="recording-test-case-data">
+<span id="recording-test-result-data"></span><span id="test-attach"></span><h2>Recording test case data<a class="headerlink" href="#recording-test-case-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="simple-strings">
+<span id="recording-simple-strings"></span><h3>Simple strings<a class="headerlink" href="#simple-strings" title="Permalink to this headline">¶</a></h3>
+<p>A version string or similar can be recorded as a <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>
+name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>lava-test-case ${VERSION} --result pass
+</pre></div>
+</div>
+<p>Version strings need specific handling to compare for newer, older etc. so LAVA
+does not support comparing or ordering of such strings beyond simple
+alphanumeric sorting. A <a class="reference internal" href="#custom-scripts"><span class="std std-ref">custom script</span></a> would be the best
+way to handle such results.</p>
+<p>For example, if your test definition uses a third party code repository, then
+it is always useful to use whatever support exists within that repository to
+output details like the current version or most recent commit hash or log
+message. This information may be useful when debugging a failure in the tests
+later. If or when particular tags, branches, commits or versions fail to work,
+the custom script can check for the supported or unsupported versions or names
+and report a <code class="docutils literal notranslate"><span class="pre">fail</span></code> test case result.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a></p>
+</div>
+</div>
+<div class="section" id="files">
+<h3>Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">In LAVA V1, data files could be published using
+<code class="docutils literal notranslate"><span class="pre">lava-test-case-attach</span></code>. In V2, there is a new way to publish directly
+from the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> - the <a class="reference internal" href="publishing-artifacts.html#publishing-artifacts"><span class="std std-ref">publishing API</span></a>.</p>
+</div>
+</div>
+<div class="section" id="measurements">
+<h3>Measurements<a class="headerlink" href="#measurements" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> supports recording integer or floating point measurements
+for a particular test case. When a measurement is supplied, a text string can
+also be supplied to be used as the units of that measurement, e.g. seconds or
+bytes. Results are used to track changes across test jobs over time, so results
+which cannot be compared as integers or floating point numbers cannot be used
+as measurements.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#recording-test-measurements"><span class="std std-ref">Recording test case measurements and units</span></a></p>
+</div>
+</div>
+<div class="section" id="the-lava-test-results">
+<h3>The lava test results<a class="headerlink" href="#the-lava-test-results" title="Permalink to this headline">¶</a></h3>
+<p>Each test job creates a set of results in a reserved test suite called
+<code class="docutils literal notranslate"><span class="pre">lava</span></code>. LAVA will reject any submission which tries to set <code class="docutils literal notranslate"><span class="pre">lava</span></code> as the
+test definition name. These results are generated directly by the LAVA actions
+and include useful metadata including the actual time taken for specific
+actions and data generated during the test operation such as the VCS commit
+hash of each test definition included into the overlay.</p>
+<p>The results are available in the same ways as any other test suite. In addition
+to strings and measurements, the <code class="docutils literal notranslate"><span class="pre">lava</span></code> suite also include an element called
+<strong>extra</strong>.</p>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">lava</span></code> test suite may contain a result for the <code class="docutils literal notranslate"><span class="pre">git-repo-action</span></code> test
+case, generated during the running of the test. The <strong>extra</strong> data in this
+test case could look like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extra</span><span class="p">:</span>
+  <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+  <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+  <span class="nt">success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">c50a99ebb5835501181f4e34417e38fc819a6280</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The <strong>duration</strong> result for the <code class="docutils literal notranslate"><span class="pre">auto-login-action</span></code> records the time taken
+to boot the kernel and get to a login prompt. The <strong>extra</strong> data for the same
+result includes details of kernel messages identified during the boot
+including stack traces, kernel panics and other alerts, if any.</p>
+</li>
+</ul>
+<p>Results from any test suite can be tracked using <a class="reference internal" href="glossary.html#term-query"><span class="xref std std-term">queries</span></a>,
+<a class="reference internal" href="glossary.html#term-chart"><span class="xref std std-term">charts</span></a> and / or the <a class="reference internal" href="first-job.html#downloading-results"><span class="std std-ref">REST API</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The results in the <code class="docutils literal notranslate"><span class="pre">lava</span></code> test suite are managed by the software
+team. The results in the other test suites are entirely down to the test
+writer to manage. The less often the <strong>names</strong> of the test definitions
+and the test cases change, the easier it will be to track those test cases
+over time.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#best-practices"><span class="std std-ref">Best practices for writing a LAVA test job</span></a>, <a class="reference internal" href="#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a> and
+<a class="reference internal" href="#test-writer-scripts"><span class="std std-ref">Test Writer Scripts</span></a> for recommended ways to use this in practice.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="best-practices-for-writing-a-lava-test-job">
+<span id="best-practices"></span><span id="index-4"></span><h1>Best practices for writing a LAVA test job<a class="headerlink" href="#best-practices-for-writing-a-lava-test-job" title="Permalink to this headline">¶</a></h1>
+<p>A test job may consist of several LAVA test definitions and multiple
+deployments, but this flexibility needs to be balanced against the complexity
+of the job and the ways to analyze the results.</p>
+<p>As with all things in automation, the core principles of best practice
+can be summarized as:</p>
+<ol class="arabic simple">
+<li>Start small</li>
+<li>Build slowly</li>
+<li>Change only one thing at a time</li>
+<li>Test every change</li>
+</ol>
+<div class="section" id="write-portable-test-definitions">
+<span id="test-definition-portability"></span><span id="index-5"></span><h2>Write portable test definitions<a class="headerlink" href="#write-portable-test-definitions" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lava-test-shell</span></code> is a useful helper but that can become a limitation. Avoid
+relying upon the helper for anything more than the automation by putting the
+logic and the parsing of your test into a more competent language. <em>Remember</em>:
+as test writer, <strong>you</strong> control which languages are available inside your test.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lava-test-shell</span></code> has to try and get by with not much more than
+<code class="docutils literal notranslate"><span class="pre">busybox</span> <span class="pre">ash</span></code> as the lowest common denominator.</p>
+<p><strong>Please don’t expect lava-test-shell to do everything</strong>.</p>
+<p>Let <code class="docutils literal notranslate"><span class="pre">lava-test-shell</span></code> provide you with a directory layout containing your
+scripts, some basic information about the job and a way of reporting test case
+results - that’s about all it should be doing outside of the
+<a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a>.</p>
+<p><strong>Avoid using test definitions patterns</strong></p>
+<p>Test definitions which can use <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> should not also use
+test definition patterns like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;(?P&lt;test_case_id&gt;.*-*):</span><span class="se">\\</span><span class="s2">s+(?P&lt;result&gt;(pass|fail))&quot;</span>
+</pre></div>
+</div>
+<p>Test shell definition patterns are difficult to debug and almost
+impossible to make portable. If you have access to <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>,
+there is no need to also use a pattern because you already have a shell
+on the DUT which is capable of much better pattern matching and
+parsing. Start by copying the relevant part of the test output and see
+how parsing can be improved:</p>
+<ul class="simple">
+<li>Is any kind of pattern needed at all? Can the process generating the
+output be called by a script which already understands the output?</li>
+<li>If you do need a pattern, put the pattern handling inside the test
+shell definition scripts and use copies of different sections of
+output to debug the pattern matching before submitting anything to
+LAVA.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the DUT does not support a POSIX shell then
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> will not be available either. In some cases, the
+test operation is executed from an LXC and this will provide the
+necessary shell support.</p>
+</div>
+<p><strong>Do not lock yourself out of your tests</strong></p>
+<ol class="arabic simple">
+<li>Do not make your test code depend on the LAVA infrastructure any more than
+is necessary for automation. Make sure you can always run your tests by
+downloading the test code to a target device using a clean environment,
+installing its dependencies (the test code itself could do this), and
+running a single script. Emulation can be used in most cases where access to
+the device is difficult. Even if the values in the output change, the format
+of the output from the underlying test operation should remain the same,
+allowing a single script to parse the output in LAVA and in local testing.</li>
+<li>Make the LAVA-specific part as small as possible, just enough
+to, for example, gather any inputs that you get via LAVA, call the main
+test program, and translate your regular output into ways to
+tell lava how the test went (if needed).</li>
+<li>Standard test jobs are intended to showcase the design of the test job,
+<strong>not</strong> the test definitions. These test definitions tend to be very
+simplistic and are <strong>not</strong> intended to be examples of how to write test
+definitions, just how to prepare test jobs.</li>
+</ol>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a> and <a class="reference internal" href="#portability-terminology"><span class="std std-ref">Terminology reference</span></a></p>
+</div>
+</div>
+<div class="section" id="rely-less-on-install-steps">
+<span id="less-reliance-on-install"></span><h2>Rely less on install: steps<a class="headerlink" href="#rely-less-on-install-steps" title="Permalink to this headline">¶</a></h2>
+<p>To make your test portable, the goal of the <code class="docutils literal notranslate"><span class="pre">install</span></code> block of any test
+definition should be to get the raw LAVA environment up to the point where a
+developer would be ready to start test-specific operations. For example,
+installing package dependencies. Putting the operations into the <code class="docutils literal notranslate"><span class="pre">run:</span></code> steps
+also means that the test writer can report results from these operations.</p>
+<p>Whilst compatibility with V1 has been retained in most areas of the test shell,
+there can be differences in how the install steps behave between V1 and V2.
+Once V1 is removed, other changes are planned for the test shell to make it
+easier for test writers to create portable tests. It is possible that the
+<code class="docutils literal notranslate"><span class="pre">install:</span></code> behavior of the test shell could be restricted at this time.</p>
+<p>Consider moving <code class="docutils literal notranslate"><span class="pre">install:</span> <span class="pre">git-repos:</span></code> into a run step or directly into a
+<a class="reference internal" href="#custom-scripts"><span class="std std-ref">custom_script</span></a> along with the other setup (for example,
+switching branches or compiling the source tree). Then, when debugging the test
+job, a test writer can setup a similar environment and simply call exactly the
+same script.</p>
+</div>
+<div class="section" id="use-different-test-definitions-for-different-test-areas">
+<span id="best-practice-one-thing"></span><h2>Use different test definitions for different test areas<a class="headerlink" href="#use-different-test-definitions-for-different-test-areas" title="Permalink to this headline">¶</a></h2>
+<p>Follow the standard UNIX model of <em>Make each program do one thing well</em>. Make a
+set of separate test definitions. Each definition should concentrate on one
+area of functionality and test that one area thoroughly.</p>
+</div>
+<div class="section" id="use-different-jobs-for-different-test-environments">
+<h2>Use different jobs for different test environments<a class="headerlink" href="#use-different-jobs-for-different-test-environments" title="Permalink to this headline">¶</a></h2>
+<p>While it is supported to reboot from one distribution and boot into a different
+one, the usefulness of this is limited. If the first environment fails, the
+subsequent tests might not run at all.</p>
+</div>
+<div class="section" id="use-a-limited-number-of-test-definitions-per-job">
+<h2>Use a limited number of test definitions per job<a class="headerlink" href="#use-a-limited-number-of-test-definitions-per-job" title="Permalink to this headline">¶</a></h2>
+<p>While LAVA tries to ensure that all tests are run, adding more and more test
+repositories to a single LAVA job increases the risk that one test will fail in
+a way that prevents the results from all tests being collected.</p>
+<p>Overly long sets of test definitions also increase the complexity of the log
+files, which can make it hard to identify why a particular job failed.</p>
+<p>Splitting a large job into smaller chunks also means that the device can run
+other jobs for other users in between the smaller jobs.</p>
+</div>
+<div class="section" id="retain-at-least-some-debug-output-in-the-final-test-definitions">
+<h2>Retain at least some debug output in the final test definitions<a class="headerlink" href="#retain-at-least-some-debug-output-in-the-final-test-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Information about which commit or version of any third-party code is
+and will remain useful when debugging failures. When cloning such code,
+call a script in the code or use the version control tools to output
+information about the cloned copy. You may want to include the most
+recent commit message or the current commit hash or version control tag
+or branch name.</p>
+<p>If an item of configuration is important to how the test operates,
+write a test case or a custom script which reports this information.
+Even if this only exists in the test job log output, it will still be
+useful when comparing the log files of other similar jobs.</p>
+</div>
+<div class="section" id="mock-up-the-device-output-to-test-the-scripts">
+<h2>Mock up the device output to test the scripts<a class="headerlink" href="#mock-up-the-device-output-to-test-the-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Avoid waiting for a device to deploy and boot for each iteration in the
+development of test support scripts. Copy the output of a working
+device and use that as the input to the scripts which process the logs
+to identify results and cut out the noise.</p>
+<p>Where possible, include such mock ups as tests which can be run in
+another CI process, triggered each time the scripts are modified.</p>
+</div>
+<div class="section" id="use-functional-tests-to-validate-common-functionality">
+<h2>Use functional tests to validate common functionality<a class="headerlink" href="#use-functional-tests-to-validate-common-functionality" title="Permalink to this headline">¶</a></h2>
+<p>Use the principles of <a class="reference internal" href="functional_tests.html#functional-testing"><span class="std std-ref">Functional testing of LAVA source code</span></a> to test common code
+used by the test jobs. For example, if a shell library is used, ensure
+that your smoke tests definitions are changed to use the shell library
+so that all health checks and functional tests provide test coverage
+for the shell library.</p>
+</div>
+<div class="section" id="check-for-specific-support-as-a-test-case">
+<span id="best-practice-check-support"></span><span id="index-6"></span><h2>Check for specific support as a test case<a class="headerlink" href="#check-for-specific-support-as-a-test-case" title="Permalink to this headline">¶</a></h2>
+<p>If a particular package, service, script or utility <strong>must</strong> exist and / or
+function for the rest of your test definition to operate, <strong>test</strong> for this
+functionality.</p>
+<p>Any command executed by <code class="docutils literal notranslate"><span class="pre">lava-test-case</span> <span class="pre">&lt;name&gt;</span> <span class="pre">--shell</span></code> will report a test
+case as <code class="docutils literal notranslate"><span class="pre">pass</span></code> if that command exits zero and <code class="docutils literal notranslate"><span class="pre">fail</span></code> if that command exited
+non-zero. If the command is complex or needs pipes or redirects, create a
+simple script which returns the exit code of the command.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">remember that the test shell runs under <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-e</span></code>, so if you need to
+prevent the rest of a test definition from exiting, you can report a
+non-zero exit code from your scripts and call the script directly instead of
+as a test case.</p>
+</div>
+</div>
+<div class="section" id="check-custom-scripts-for-side-effects">
+<span id="custom-script-side-effects"></span><span id="index-7"></span><h2>Check custom scripts for side-effects<a class="headerlink" href="#check-custom-scripts-for-side-effects" title="Permalink to this headline">¶</a></h2>
+<p>Subtle bugs can be introduced in custom scripts, so it is important to
+make the scripts <a class="reference internal" href="#test-definition-portability"><span class="std std-ref">portable</span></a> so that
+bugs can be reproduced outside LAVA.</p>
+<p>When interacting directly with LAVA, for example calling
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>, it is possible to introduce control flow bugs.
+These can cause the output of <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> to be received
+<strong>after</strong> the end of a test run and this can generate TestError
+exceptions. This section covers one example when using Python, there
+may be others.</p>
+<p>This example checks for <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> in <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> to determine
+whether to use the LAVA helpers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+
+<span class="k">def</span> <span class="nf">_which_check</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple replacement for the `which` command found on</span>
+<span class="sd">    Debian based systems. Allows ordinary users to query</span>
+<span class="sd">    the PATH used at runtime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># avoid sudo - it may ask for a password on developer systems.</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;/usr/local/sbin&#39;</span><span class="p">,</span> <span class="s1">&#39;/usr/sbin&#39;</span><span class="p">,</span> <span class="s1">&#39;/sbin&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">if</span> <span class="n">_which_check</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;lava-test-case&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">):</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span>
+         <span class="s1">&#39;lava-test-case&#39;</span><span class="p">,</span> <span class="s1">&#39;probe-results&#39;</span><span class="p">,</span> <span class="s1">&#39;--result&#39;</span><span class="p">,</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;--measurement&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">average</span><span class="p">),</span> <span class="s1">&#39;--units&#39;</span><span class="p">,</span> <span class="s1">&#39;volts&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The error is in this line:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Popen</span></code> calls <code class="docutils literal notranslate"><span class="pre">fork</span></code> but returns immediately. Unless the script
+also calls <code class="docutils literal notranslate"><span class="pre">wait</span></code>, then the output of the subprocess can occur after
+the above function has returned. It is easy for this to happen at the
+end of a test definition, leading to intermittent bugs where some tests
+fail.</p>
+<p>The solution is to use the existing <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> functions which
+already use <code class="docutils literal notranslate"><span class="pre">wait</span></code> internally. For <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>, this would be
+<code class="docutils literal notranslate"><span class="pre">check_call</span></code> which waits for the process to execute and checks the
+return value.</p>
+<p>The fixed example looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+
+<span class="k">def</span> <span class="nf">_which_check</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple replacement for the `which` command found on</span>
+<span class="sd">    Debian based systems. Allows ordinary users to query</span>
+<span class="sd">    the PATH used at runtime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># avoid sudo - it may ask for a password on developer systems.</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;/usr/local/sbin&#39;</span><span class="p">,</span> <span class="s1">&#39;/usr/sbin&#39;</span><span class="p">,</span> <span class="s1">&#39;/sbin&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">if</span> <span class="n">_which_check</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;lava-test-case&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">):</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span>
+         <span class="s1">&#39;lava-test-case&#39;</span><span class="p">,</span> <span class="s1">&#39;probe-results&#39;</span><span class="p">,</span> <span class="s1">&#39;--result&#39;</span><span class="p">,</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span>
+         <span class="s1">&#39;--measurement&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">average</span><span class="p">),</span> <span class="s1">&#39;--units&#39;</span><span class="p">,</span> <span class="s1">&#39;volts&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="call-lava-test-raise-if-setup-fails">
+<span id="call-test-raise"></span><span id="index-8"></span><h2>Call lava-test-raise if setup fails<a class="headerlink" href="#call-lava-test-raise-if-setup-fails" title="Permalink to this headline">¶</a></h2>
+<p>Most test jobs have setup routines which ensure that dependencies
+are available or that the directory layout is correct etc. In most
+cases, these routines are called early and a failure in the setup
+function would undermine all subsequent test operations.</p>
+<p>The return code of some operations can be used to trigger an early
+failure.</p>
+<div class="section" id="inline">
+<span id="setup-inline"></span><h3>Inline<a class="headerlink" href="#inline" title="Permalink to this headline">¶</a></h3>
+<p>If you are using an inline definition, the syntax can be a bit awkward:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+   <span class="nt">steps</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt-get update -q &amp;&amp; lava-test-case &quot;apt-update&quot; --result pass || lava-test-raise &quot;apt-update&quot;</span>
+</pre></div>
+</div>
+<p>An alternative is to put the definition into a file on a remote
+fileserver, use <code class="docutils literal notranslate"><span class="pre">wget</span></code> to download it and then execute it:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+  <span class="nt">steps</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">apt -y install wget</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wget http://people.linaro.org/~neil.williams/setup-test.sh</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sh -x setup-test.sh</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">The download step is itself a setup command and could
+fail, so whilst this is useful in development, using scripts from a
+git repository is preferable.</p>
+</div>
+</div>
+<div class="section" id="using-a-repository">
+<span id="setup-repository"></span><h3>Using a repository<a class="headerlink" href="#using-a-repository" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="shell-library">
+<h4>Shell library<a class="headerlink" href="#shell-library" title="Permalink to this headline">¶</a></h4>
+<p>A local shell library and a shell script can be easily used from a test
+shell repository:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># saved, committed and pushed as ./testdefs/lava-common</span>
+
+command<span class="o">(){</span>
+    <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="k">$(</span>which lava-test-case <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="nv">$2</span>
+        <span class="nv">$2</span> <span class="o">&amp;&amp;</span> lava-test-case <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> --result pass <span class="o">||</span> lava-test-raise <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="nv">$2</span>
+        <span class="nv">$2</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This snippet is also <a class="reference internal" href="#test-definition-portability"><span class="std std-ref">portable</span></a>
+because if <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> is not in the <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>, the setup
+command is executed without needing <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> or
+<code class="docutils literal notranslate"><span class="pre">lava-test-raise</span></code>. The calling script is responsible for handling the
+return code, typically by using <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-e</span></code>.</p>
+<p>The above snippet is just an example to show the principle. The
+function itself continues to develop as <code class="docutils literal notranslate"><span class="pre">lava-common</span></code> - a small shell
+library which also supports a <code class="docutils literal notranslate"><span class="pre">testcase</span></code> function which reports a
+failed test case instead of <code class="docutils literal notranslate"><span class="pre">lava-test-raise</span></code>. Use <code class="docutils literal notranslate"><span class="pre">testcase</span></code> for
+non-fatal checks and <code class="docutils literal notranslate"><span class="pre">command</span></code> for fatal checks.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>command<span class="o">(){</span>
+    <span class="c1"># setup command - will abort the test job upon failure.</span>
+    <span class="c1"># expects two quoted arguments</span>
+    <span class="c1"># $1 - valid lava test case name (no spaces)</span>
+    <span class="c1"># $2 - the full command line to execute</span>
+    <span class="c1"># Note: avoid trying to set environment variables.</span>
+    <span class="c1"># use an explicit export.</span>
+    <span class="nv">CMD</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="nv">PREFIX</span><span class="o">=</span><span class="nv">$1</span>
+    <span class="nb">shift</span>
+    <span class="k">while</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+      <span class="nv">CMD</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">CMD</span><span class="si">}</span><span class="s2"> </span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> shift<span class="p">;</span>
+    <span class="k">done</span><span class="p">;</span>
+    <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="k">$(</span>which lava-test-case <span class="o">||</span> <span class="nb">true</span><span class="k">)</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CMD</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nv">$CMD</span> <span class="o">&amp;&amp;</span> lava-test-case <span class="s2">&quot;</span><span class="si">${</span><span class="nv">PREFIX</span><span class="si">}</span><span class="s2">&quot;</span> --result pass <span class="o">||</span> lava-test-raise <span class="s2">&quot;</span><span class="si">${</span><span class="nv">PREFIX</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+        <span class="nb">echo</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CMD</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nv">$CMD</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://git.lavasoftware.org/lava/functional-tests/blob/master/testdefs/lava-common">https://git.lavasoftware.org/lava/functional-tests/blob/master/testdefs/lava-common</a></p>
+</div>
+</div>
+<div class="section" id="calling-shell-script">
+<h4>Calling shell script<a class="headerlink" href="#calling-shell-script" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># saved, committed and pushed as ./testdefs/local-run.sh</span>
+
+. ./lava-common
+
+<span class="nb">command</span> <span class="s1">&#39;setup-apt&#39;</span> <span class="s2">&quot;apt-get update -q&quot;</span>
+</pre></div>
+</div>
+<p>If the shell script is saved to a different directory, the path to
+the shell library will have to be updated.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#setup-custom-scripts"><span class="std std-ref">Custom scripts</span></a> - the language used for these
+scripts is entirely up to the test writer to choose. Remember that
+some language interpreters will themselves need to be installed
+before scripts can be executed, requiring an initial setup shell script.
+That does not mean that all setup needs to be done in shell; there
+are key advantages to using other languages, including test writer
+familiarity and ease of triage.</p>
+</div>
+</div>
+<div class="section" id="test-shell-definition">
+<h4>Test shell definition<a class="headerlink" href="#test-shell-definition" title="Permalink to this headline">¶</a></h4>
+<p>Execute using a Lava Test Shell Definition:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">run</span><span class="p">:</span>
+    <span class="nt">steps</span><span class="p">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">./testdefs/local-run.sh</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-deploy.html#deploy-to-recovery"><span class="std std-ref">Deploying to recovery</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="setup-custom-scripts">
+<span id="index-9"></span><span id="id5"></span><h3>Custom scripts<a class="headerlink" href="#setup-custom-scripts" title="Permalink to this headline">¶</a></h3>
+<p>Custom scripts should check the return code of setup operations and use
+<code class="docutils literal notranslate"><span class="pre">lava-test-raise</span></code> to halt the test job immediately if a setup error
+occurs. This makes triage much easier as it puts the failure much
+closer to the actual cause within the log file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+
+<span class="k">def</span> <span class="nf">_which_check</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple replacement for the `which` command found on</span>
+<span class="sd">    Debian based systems. Allows ordinary users to query</span>
+<span class="sd">    the PATH used at runtime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># avoid sudo - it may ask for a password on developer systems.</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;/usr/local/sbin&#39;</span><span class="p">,</span> <span class="s1">&#39;/usr/sbin&#39;</span><span class="p">,</span> <span class="s1">&#39;/sbin&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># other processing populates the values list</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_which_check</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;lava-test-raise&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">):</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;lava-test-raise&#39;</span><span class="p">,</span> <span class="s1">&#39;setup failed&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;setup failed&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-of-lava-test-raise">
+<h3>Example of lava-test-raise<a class="headerlink" href="#example-of-lava-test-raise" title="Permalink to this headline">¶</a></h3>
+<p>This is an example of using lava-test-raise from a python custom script</p>
+<p><a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/246700/definition">https://staging.validation.linaro.org/scheduler/job/246700/definition</a></p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/functional-tests/blob/master/testdefs/arm-probe.yaml">https://git.lavasoftware.org/lava/functional-tests/blob/master/testdefs/arm-probe.yaml</a></p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/functional-tests/blob/master/testdefs/aep-parse-output.py">https://git.lavasoftware.org/lava/functional-tests/blob/master/testdefs/aep-parse-output.py</a></p>
+</div>
+</div>
+<div class="section" id="control-the-amount-of-output-from-scripts-and-tools">
+<span id="controlling-tool-output"></span><span id="index-10"></span><h2>Control the amount of output from scripts and tools<a class="headerlink" href="#control-the-amount-of-output-from-scripts-and-tools" title="Permalink to this headline">¶</a></h2>
+<p>Many tools available in distributions have ways to control the amount of output
+during operation. A balance is needed and test writers are recommended to check
+for available support. Wherever possible, use the available options to opt for
+output intended for log file output rather than your typical terminal.</p>
+<p>When writing your own scripts, consider using <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-x</span></code> or wrapping certain
+blocks with <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-x</span></code>, <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">+x</span></code> when using shell scripts. With other
+languages, use <code class="docutils literal notranslate"><span class="pre">print()</span></code> and similar functions often, especially where the
+script uses a conditional that can be affected by parameters from within the
+test job.</p>
+<div class="section" id="specific-tools">
+<h3>Specific tools<a class="headerlink" href="#specific-tools" title="Permalink to this headline">¶</a></h3>
+<p>Progress bars, in general, are a particular problem. Instead of overwriting a
+single line of output, every iteration of the bar creates a complete new line
+over the serial connection and in the logs. Wherever possible, disable the
+progress bar behavior of all operations.</p>
+<ul class="simple">
+<li><strong>apt</strong> - When calling <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">update</span></code> or <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">update</span></code>, <strong>always</strong> use
+the <code class="docutils literal notranslate"><span class="pre">-q</span></code> option to avoid filling the log file with repeated progress output
+during downloads. This option still gives output but formats it in a way that
+is much more useful when reading log files compared to an interactive
+terminal.</li>
+<li><strong>wget</strong> - <strong>always</strong> use the <code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">--progress=dot:giga</span></code> options for
+downloads as this reduces the total amount of progress information during the
+operation.</li>
+<li><strong>git clone</strong> - consider using <code class="docutils literal notranslate"><span class="pre">-q</span></code> on git clone operations to silence the
+progress bars.</li>
+</ul>
+</div>
+<div class="section" id="problems-with-output">
+<span id="large-output-issues"></span><h3>Problems with output<a class="headerlink" href="#problems-with-output" title="Permalink to this headline">¶</a></h3>
+<p>LAVA uses <code class="docutils literal notranslate"><span class="pre">pexpect</span></code> to monitor the output over the serial connection for
+patterns which are used to pick up test cases and other test shell support.
+Each time a match is found, the buffer is cleared. If there is a lot of output
+with no pattern matches, the processing can slow down.</p>
+<p>By default <code class="docutils literal notranslate"><span class="pre">pexpect</span></code> uses a buffer of 2000 bytes for the input used
+for pattern matches. In order to improve performance, LAVA uses a limit
+of 4092 bytes. This is intended to limit problems with processing
+slowing down but best practice remains to manage the test job output to
+make the logs more useful during later triage.</p>
+<p>Large log files also have a few implications for the user interface and triage.
+More content makes loading links to a test job take longer and finding the
+right line to make that link becomes more and more difficult. Eventually, very
+large log files can be disabled by the admin, so that the log file can only be
+downloaded.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="advanced-installation.html#log-size-limit"><span class="std std-ref">Configuring log file display</span></a></p>
+</div>
+<p>The size of the log output needs to be balanced against the need to have enough
+information in the logs to be able to triage the test successfully.</p>
+<p>Although the total size of the test job log file is important, there can also
+be issues when a smaller log file contains large sections where none of the
+patterns match and this can cause the test to run more slowly.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>It is <strong>only</strong> the content sent over the serial connection which
+needs to be managed. Redirecting to files will be unaffected, subject to
+filesystem performance on the DUT or LXC. However, remember that at least
+some of the content of such files will be useful in triage or contain
+results directly. Therefore, it is important to manage the output of test
+operations to achieve the balance of sufficient information for triage and
+avoiding a flood of too much information causing performance issues.</p>
+<p class="last">Very large amounts of output can also be <a class="reference internal" href="publishing-artifacts.html#publishing-artifacts"><span class="std std-ref">published</span></a> for later analysis, e.g. if the original output is
+redirected to a file. Consider using <code class="docutils literal notranslate"><span class="pre">tee</span></code> here (or similar functionality)
+to retain some output into the logs because if the test operation fails
+early for any reason, the file might not be uploaded at all.</p>
+</div>
+<p>When performance is important, for example benchmarking, use a wrapper script
+to optimize your test shell output.</p>
+<ul>
+<li><p class="first">If a progress bar is used and cannot be turned off without losing other
+useful content, wrap the output of the command in a script which omits the
+lines generated by the progress bar. Check existing test logs for example
+lines and print all the other lines. Avoid the simplistic approach of
+redirecting to <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code>.</p>
+<p>For a progress bar which outputs lines looking like: <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">98%]</span>
+<span class="pre">/data/art-test/arm64/core.oat:</span> <span class="pre">95%</span></code></p>
+<p>Use something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">fileinput</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fileinput</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Adapted from <a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/tree/functional/unittests.py">https://git.linaro.org/lava-team/refactoring.git/tree/functional/unittests.py</a></p>
+<p>The same script can be used to drop other noise from the output.</p>
+</li>
+<li><p class="first">Add LAVA Test Cases - avoid the habit of reporting results at the very end of
+a test operation or (worse) test job. This risks getting no results at all
+when things go wrong, as well as creating large amounts of output without any
+pattern matches. Most tests run many small test operations, it can be helpful
+to have records of which tests completed. Remember that a <a class="reference internal" href="glossary.html#term-test-set"><span class="xref std std-term">test set</span></a>
+can be used to identify groups of test cases, isolating them from later test
+cases.</p>
+<p>Example: <a class="reference internal" href="#less-reliance-on-install"><span class="std std-ref">Rely less on install: steps</span></a> means that after all of the output
+of installing dependencies, a lava-test-case should be reported that the
+dependencies installed correctly which also clears the buffer of the extra
+output.</p>
+<p>Example: If the test operation involves iterations over a test condition,
+report a lava test case every few iterations.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="control-the-number-of-test-cases-reported">
+<span id="too-many-test-cases"></span><h2>Control the number of test cases reported<a class="headerlink" href="#control-the-number-of-test-cases-reported" title="Permalink to this headline">¶</a></h2>
+<p>Creating a lava-test-case involves a database operation on the master. LAVA
+tries to optimize these calls to allow test jobs to report several tens of
+thousands of test cases per test job, including supporting streaming of test
+cases exported through the API. However, there will always be a practical limit
+to the total number of test cases per test job.</p>
+<p>Groups of test cases should be separated into <a class="reference internal" href="glossary.html#term-test-set"><span class="xref std std-term">test sets</span></a> and
+then into test suites (by using separate LAVA Test Shell Definition paths) to
+make it easier to find the relevant test case.</p>
+<p>When writing the test shell definition, always try to report results on-the-fly
+instead of waiting until the test operation has written all the data to a file.
+This insulates you from early failures where the file is not written or cannot
+be parsed after being written. Wrapper scripts can be used to report LAVA test
+cases during the creation of the file.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git/tree/functional/unittests.py">https://git.linaro.org/lava-team/refactoring.git/tree/functional/unittests.py</a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/writing-tests.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:24 GMT -->
+</html>

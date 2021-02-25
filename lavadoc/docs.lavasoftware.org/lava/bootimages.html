@@ -1,0 +1,513 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/bootimages.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Building and manipulating images for your devices &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PDUDaemon" href="pdudaemon.html" />
+    <link rel="prev" title="Hidden device types" href="hiddentypes.html" />
+    <link rel="canonical" href="bootimages.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Building and manipulating images for your devices</a><ul>
+<li><a class="reference internal" href="#basics-of-building-an-image">Basics of building an image</a><ul>
+<li><a class="reference internal" href="#obtaining-a-kernel">Obtaining a kernel</a></li>
+<li><a class="reference internal" href="#obtaining-a-bootloader">Obtaining a bootloader</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inspecting-existing-images">Inspecting existing images</a><ul>
+<li><a class="reference internal" href="#tools-to-install-and-get-to-know">Tools to install and get to know</a></li>
+<li><a class="reference internal" href="#concepts-behind-boot-images">Concepts behind boot images</a><ul>
+<li><a class="reference internal" href="#find-the-offset">Find the offset</a></li>
+<li><a class="reference internal" href="#mounting-partitions-using-loop-and-offset">Mounting partitions using loop and offset</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-new-images">Creating new images</a><ul>
+<li><a class="reference internal" href="#making-a-bootstrap-rootfs-usable">Making a bootstrap rootfs usable</a><ul>
+<li><a class="reference internal" href="#other-steps-which-may-be-required">Other steps which may be required</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#increasing-the-number-of-loop-devices">Increasing the number of loop devices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#further-information">Further information</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="hiddentypes.html" title="Previous Chapter: Hidden device types"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Hidden device types</span>
+    </a>
+  </li>
+  <li>
+    <a href="pdudaemon.html" title="Next Chapter: PDUDaemon"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">PDUDaemon &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="building-and-manipulating-images-for-your-devices">
+<h1>Building and manipulating images for your devices<a class="headerlink" href="#building-and-manipulating-images-for-your-devices" title="Permalink to this headline">¶</a></h1>
+<p>This section looks into how to manipulate, inspect and create boot images. The
+details of preparing a suitable kernel or configuring a particular bootloader
+is beyond the scope of this documentation. Instead, we’ll concentrate on how to
+look inside available images, what needs to be done to use a different
+operating system as the rootfs and how to mount, modify or create boot images.</p>
+<p>This documentation relies on support present in the <strong>Linux</strong> kernel. Other
+kernels can be put inside boot images but using such kernels at runtime to
+create boot images is beyond the scope of this page.</p>
+<div class="section" id="basics-of-building-an-image">
+<h2>Basics of building an image<a class="headerlink" href="#basics-of-building-an-image" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><strong>kernel</strong> - LAVA typically works with Linux but there’s nothing
+to say that other kernels can’t be used - just don’t expect LAVA (or LAVA
+developers) to be able to have direct knowledge of any issues with kernels
+other than Linux</li>
+<li><strong>bootloader</strong> - A variety of different bootloaders are directly
+supported in LAVA. Lots of test jobs have been run with <a class="reference external" href="http://www.denx.de/wiki/U-Boot">U-Boot</a>, but more
+and more jobs are using <a class="reference external" href="http://www.uefi.org/">UEFI</a> or <a class="reference external" href="https://www.gnu.org/software/grub/">Grub</a>.</li>
+<li><strong>rootfs</strong> - generally a simple, minimal tarball of a filesystem
+created by any of the many tools available to bootstrap the
+operating system. Debian based distributions commonly use
+<code class="docutils literal notranslate"><span class="pre">debootstrap</span></code> or similar tools.<ul>
+<li><em>Changes to the rootfs</em> to make it bootable - raw bootstraps are rarely
+bootable directly, various init changes are needed and some of these are
+board specific (e.g. which device to use for the serial console).</li>
+</ul>
+</li>
+</ol>
+<div class="section" id="obtaining-a-kernel">
+<h3>Obtaining a kernel<a class="headerlink" href="#obtaining-a-kernel" title="Permalink to this headline">¶</a></h3>
+<p>This often requires specialist knowledge of the particular board and you may be
+dependent on a landing team or other third party for a kernel configuration and
+patches. Some sources only provide a binary image, sometimes already combined
+with a bootloader.</p>
+</div>
+<div class="section" id="obtaining-a-bootloader">
+<h3>Obtaining a bootloader<a class="headerlink" href="#obtaining-a-bootloader" title="Permalink to this headline">¶</a></h3>
+<p>Similar to a kernel, you may have little choice over which bootloader to use,
+although it is entirely reasonable to use a more limited bootloader provided by
+someone else to chainload a more capable bootloader which has more
+functionality. Note - the Linux kernel can be used as a secondary bootloader
+using kexec. The details of how to do this will vary according to the board,
+available bootloader and boot requirements.</p>
+<p>From here on, this page works on how to get a kernel and bootloader into an
+image to boot on the device.</p>
+</div>
+</div>
+<div class="section" id="inspecting-existing-images">
+<h2>Inspecting existing images<a class="headerlink" href="#inspecting-existing-images" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tools-to-install-and-get-to-know">
+<h3>Tools to install and get to know<a class="headerlink" href="#tools-to-install-and-get-to-know" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><strong>parted</strong> - there are lots of sites with information on <code class="docutils literal notranslate"><span class="pre">parted</span></code>,
+the simplest way to get used to it is to use it on empty block devices - an
+example is at the end of this section.</li>
+<li><strong>dd</strong> - a utility to copy a file which can take input from devices
+like <code class="docutils literal notranslate"><span class="pre">/dev/zero</span></code>, commonly used to create empty files of a known size and
+to copy images directly from one block device to another.</li>
+<li><strong>qemu</strong> - a wide variety of support for booting images, including
+images for architectures other than the host architecture.</li>
+<li><strong>mount</strong> - already installed but there are options which will
+become second-nature after working with boot images.</li>
+<li><strong>gzip</strong> - images are typically compressed for download. There are
+other compression algorithms but most images contain a lot of empty space
+(for later tests to take) so <code class="docutils literal notranslate"><span class="pre">gzip</span></code> is usually enough to get suitable
+compression. Compressed images will need <code class="docutils literal notranslate"><span class="pre">gunzip</span></code> before being mountable.</li>
+<li><strong>losetup</strong> - this is the tool used to configure loop device
+support in the Linux kernel.</li>
+<li><strong>chroot</strong> - change root into a directory containing a new rootfs,
+if using <code class="docutils literal notranslate"><span class="pre">qemu</span></code>, this rootfs could even run binaries for a different
+architecture. <code class="docutils literal notranslate"><span class="pre">chroot</span></code> puts you into a new shell inside the rootfs where
+you can modify files and execute programs without affecting the external
+system. (There are limitations to how much a chroot can protect the external
+system, but these are unlikely to affect building a boot image.)</li>
+</ol>
+</div>
+<div class="section" id="concepts-behind-boot-images">
+<h3>Concepts behind boot images<a class="headerlink" href="#concepts-behind-boot-images" title="Permalink to this headline">¶</a></h3>
+<p>LAVA V2 uses <a class="reference external" href="http://libguestfs.org/">GuestFS</a> to remove the need for loop devices, offsets or
+<code class="docutils literal notranslate"><span class="pre">losetup</span></code> during LAVA operations. The tools remain useful for times when the
+image needs to be modified outside LAVA.</p>
+<ol class="arabic simple">
+<li><strong>offsets</strong> - once decompressed, many boot images contain multiple
+partitions, so a simple <code class="docutils literal notranslate"><span class="pre">mount</span></code> operation, even using the <code class="docutils literal notranslate"><span class="pre">loop</span></code> option,
+will fail. An offset tells <code class="docutils literal notranslate"><span class="pre">mount</span></code> where to look in the image to find the
+start of the partition to be mounted. Offsets are determined by the original
+setup of the image and can be determined using tools like <code class="docutils literal notranslate"><span class="pre">parted</span></code>.</li>
+<li><strong>loop devices</strong> - the Linux <code class="docutils literal notranslate"><span class="pre">loop</span></code> kernel module can allow an
+image to be mounted as a block device. Such mount operations need to be
+performed as <code class="docutils literal notranslate"><span class="pre">root</span></code> or with <code class="docutils literal notranslate"><span class="pre">sudo</span></code>. Loop devices can be limited but see
+<a class="reference internal" href="#max-loop"><span class="std std-ref">Increasing the number of loop devices</span></a>.</li>
+<li><strong>boot partitions</strong> - some bootloaders require that files required
+to boot the device are stored using a particular filesystem, often <code class="docutils literal notranslate"><span class="pre">FAT</span></code>.
+To allow the rootfs to use a different filesystem like ext2, ext3 or ext4,
+the boot files are stored on a separate partition.</li>
+<li><strong>serial console</strong> - a device to which the device can write messages
+during boot and provide a login prompt (which can be automated for a LAVA
+test job).</li>
+<li><strong>root password</strong> - one thing that many people forget when creating
+a rootfs using their favorite Linux distribution is that the root password
+is typically created by an installer and <strong>not</strong> by the bootstrap tool.
+Depending on the security of the OS, you may need to <code class="docutils literal notranslate"><span class="pre">chroot</span></code> into the new
+rootfs before finishing the image and set a usable root password with the
+<code class="docutils literal notranslate"><span class="pre">passwd</span></code> command.</li>
+</ol>
+<div class="section" id="find-the-offset">
+<h4>Find the offset<a class="headerlink" href="#find-the-offset" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic">
+<li><p class="first">First, <strong>decompress your image</strong>. These examples will assume that the
+resulting file is called <code class="docutils literal notranslate"><span class="pre">test.img</span></code></p>
+</li>
+<li><p class="first">Print the partition offsets:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ parted test.img -s unit b print
+Model:  (file)
+Disk /home/linaro/documents/arndale-vmgroup/test.img: 1073741824B
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+
+Number  Start      End          Size         Type     File system  Flags
+1      512B       4194303B     4193792B     primary
+2      4194304B   58720255B    54525952B    primary  fat32        boot, lba
+3      58720256B  1073741823B  1015021568B  primary  ext4
+</pre></div>
+</div>
+<p>In this example, there is an unused partition starting at an offset of 512
+bytes, followed by a <code class="docutils literal notranslate"><span class="pre">VFAT</span></code>-formatted boot partition starting at an offset
+of 4194304 bytes, then the main rootfs is an <code class="docutils literal notranslate"><span class="pre">ext4</span></code> filesystem in
+partition 3 starting at an offset of 58720256 bytes.</p>
+<p>Other tasks using <code class="docutils literal notranslate"><span class="pre">parted</span></code> will need root access or <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="mounting-partitions-using-loop-and-offset">
+<h4>Mounting partitions using loop and offset<a class="headerlink" href="#mounting-partitions-using-loop-and-offset" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic">
+<li><p class="first">To mount the boot partition, pass the <code class="docutils literal notranslate"><span class="pre">loop</span></code> and <code class="docutils literal notranslate"><span class="pre">offset</span></code> options
+to <code class="docutils literal notranslate"><span class="pre">mount</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo mkdir -p /mnt/boot
+$ sudo mount -o loop,offset=4194304 test.img /mnt/boot
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Failures from mount complaining about a bad superblock
+can arise from a wrong offset.</p>
+</div>
+</li>
+<li><p class="first">When you are finished with the filesystem, make sure you unmount
+it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo umount /mnt/boot
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Remember to check the output of <code class="docutils literal notranslate"><span class="pre">mount</span></code> and avoid
+mounting the same partition more than once or moving
+the image without using <code class="docutils literal notranslate"><span class="pre">umount</span></code>.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="creating-new-images">
+<h2>Creating new images<a class="headerlink" href="#creating-new-images" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">QEMU has easy support for creating empty images:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ qemu-image create test.img
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use <code class="docutils literal notranslate"><span class="pre">dd</span></code> to create an empty file which can be used to host
+partitions and form the basis of a new boot image.</p>
+<ul class="simple">
+<li>Using <code class="docutils literal notranslate"><span class="pre">/dev/zero</span></code> is recommended for this; it is the fastest
+data source, and will also help give good compression as the empty space
+in the image file will all be full of zero bytes.</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">dd</span></code> can create a file of any size, subject to the free space on your
+machine. Specify the size of each block to write and the number of blocks.
+To create an image of 1 GB (1024 MB) use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo dd if=/dev/zero of=test.img bs=1M count=1024
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a partition table. While it is possible to use images
+without partition tables if all files are in a single filesystem,
+some devices or bootloaders may refuse to boot from such images:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo losetup /dev/loop0 test.img
+$ sudo parted /dev/sda -s unit mb mktable msdos
+</pre></div>
+</div>
+<p>If you are copying the layout of a known-working image you can use parted to
+replicate the partitions. If you just need a boot partition, then <strong>allow
+space for modification</strong>. It is very likely that you or someone using your
+image will want to change the kernel image or test a second kernel. Always
+try to leave enough space in your boot partition to have a second kernel
+image. Remember that kernel images may increase in size as more
+functionality is supported.</p>
+<p>Refer to the <code class="docutils literal notranslate"><span class="pre">parted</span></code> documentation for how to create the partition layout
+you want and experiment with your empty test image file. <code class="docutils literal notranslate"><span class="pre">parted</span></code> has an
+interactive mode which can be used to get used to the tool and the options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo parted test.img
+</pre></div>
+</div>
+<p>One example setup could be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo parted /dev/loop0 -s unit mb mkpart primary 1 10
+$ sudo parted /dev/loop0 -s unit mb mkpart primary 11 110
+$ sudo parted /dev/loop0 -s unit mb mkpart primary 111 1024
+
+parted /dev/loop0 unit B -s print
+Model:  (file)
+Disk /dev/loop0: 1073741824B
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+
+Number  Start       End          Size        Type     File system  Flags
+ 1      1048576B    10485759B    9437184B    primary
+ 2      10485760B   110100479B   99614720B   primary
+ 3      110100480B  1024458751B  914358272B  primary
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create a filesystem for each partition. After <code class="docutils literal notranslate"><span class="pre">parted</span></code> has created the
+partitions, the loop devices need to be configured to use the offsets
+declared by parted:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo losetup -o 10485760 /dev/loop1 /dev/loop0
+$ sudo mkfs.vfat /dev/loop1
+$ sudo losetup -o 110100480 /dev/loop2 /dev/loop0
+$ sudo mkfs.ext3 /dev/loop2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Copy your files onto the new filesystems:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo mount -o loop,offset=10485760 test.img /mnt/boot/
+$ pushd /mnt/boot/
+$ sudo tar -xzf /tmp/boot.tar.gz
+$ popd
+$ sudo umount /mnt/boot/
+</pre></div>
+</div>
+</li>
+<li><p class="first">Clean up your <code class="docutils literal notranslate"><span class="pre">losetup</span></code> operations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo losetup -d /dev/loop2
+$ sudo losetup -d /dev/loop1
+$ sudo losetup -d /dev/loop0
+</pre></div>
+</div>
+<p>Ensure that there are no loopback mounts remaining:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo losetup -a
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="section" id="making-a-bootstrap-rootfs-usable">
+<h3>Making a bootstrap rootfs usable<a class="headerlink" href="#making-a-bootstrap-rootfs-usable" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first"><strong>set the serial console</strong> - Each device tends to have a different
+device used for the serial console, and you may need to configure a serial
+console login (<code class="docutils literal notranslate"><span class="pre">getty</span></code>) in your image too. Recent Linux images using
+<code class="docutils literal notranslate"><span class="pre">systemd</span></code> should automatically start a getty on the kernel’s default
+console device, but older images using <code class="docutils literal notranslate"><span class="pre">sysvinit</span></code> will need some explicit
+configuration.</p>
+<p>For Debian, this would need to be done in <code class="docutils literal notranslate"><span class="pre">/etc/inittab</span></code>. This
+example is from an iMX.53 image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># echo T0:23:respawn:/sbin/getty -L ttymxc0 115200 vt102 &gt;&gt; ./etc/inittab</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://linux.codehelp.co.uk/?p=49">https://linux.codehelp.co.uk/?p=49</a></p>
+<p>The bootloader settings for the board usually indicate which device
+is to be used as the serial console.</p>
+</li>
+<li><p class="first"><strong>set default networking</strong> - Depending on your bootstrap tool,
+there may well be no network interfaces defined. For Debian, this can be
+implemented using a file in <code class="docutils literal notranslate"><span class="pre">/etc/network/interfaces.d/</span></code>, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># echo auto lo eth0 &gt; ./etc/network/interfaces.d/base</span>
+<span class="c1"># echo iface lo inet loopback &gt;&gt; ./etc/network/interfaces.d/base</span>
+<span class="c1"># echo iface eth0 inet dhcp &gt;&gt; ./etc/network/interfaces.d/base</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>set a root password</strong> - This is surprisingly easy to forget until
+after the image has booted. Depending on the distribution, this step can
+involve using <code class="docutils literal notranslate"><span class="pre">qemu</span></code> to <code class="docutils literal notranslate"><span class="pre">chroot</span></code> into the rootfs to be able to execute
+the <code class="docutils literal notranslate"><span class="pre">passwd</span></code> utility. Manual changes to <code class="docutils literal notranslate"><span class="pre">/etc/passwd</span></code> can be ignored,
+depending on the shadow / authentication precautions implemented by the
+distribution:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo cp /usr/bin/qemu-armhf-static ./usr/bin/
+$ sudo chroot .
+# passwd
+# exit
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="section" id="other-steps-which-may-be-required">
+<h4>Other steps which may be required<a class="headerlink" href="#other-steps-which-may-be-required" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic">
+<li><p class="first"><strong>enable the serial console in securetty</strong> - e.g. the arndale board has a
+serial console in a device which does not generally appear in
+<code class="docutils literal notranslate"><span class="pre">/etc/securetty</span></code>, so this needs to be added:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># echo ttySAC2 &gt;&gt; ./etc/securetty</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>set a useful hostname</strong> - choose your board hostname and your local domain
+(so that a fully qualified hostname can be supported):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># echo board &gt; ./etc/hostname</span>
+<span class="c1"># echo 127.0.0.1 board board.domain &gt;&gt; ./etc/hosts</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="increasing-the-number-of-loop-devices">
+<span id="max-loop"></span><h3>Increasing the number of loop devices<a class="headerlink" href="#increasing-the-number-of-loop-devices" title="Permalink to this headline">¶</a></h3>
+<p>It can be useful to increase the number of available loopback devices from the
+default of 8. This can be done by adding a file in <code class="docutils literal notranslate"><span class="pre">/etc/modprobe.d/</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="n">loop</span> <span class="n">max_loop</span><span class="o">=</span><span class="mi">64</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="further-information">
+<h2>Further information<a class="headerlink" href="#further-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://linux.codehelp.co.uk/?p=49">https://linux.codehelp.co.uk/?p=49</a></li>
+<li><a class="reference external" href="https://linux.codehelp.co.uk/?p=59">https://linux.codehelp.co.uk/?p=59</a></li>
+<li><a class="reference external" href="http://www.andremiller.net/content/mounting-hard-disk-image-including-partitions-using-linux">http://www.andremiller.net/content/mounting-hard-disk-image-including-partitions-using-linux</a></li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/bootimages.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+</html>

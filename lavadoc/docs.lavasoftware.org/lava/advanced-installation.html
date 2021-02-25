@@ -1,0 +1,697 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/advanced-installation.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:08 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Advanced Installation Topics &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Enabling Secondary Media" href="admin-secondary-media.html" />
+    <link rel="prev" title="Creating Backups" href="admin-backups.html" />
+    <link rel="canonical" href="advanced-installation.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Advanced Installation Topics</a><ul>
+<li><a class="reference internal" href="#requirements-to-consider-before-installing-lava">Requirements to Consider Before Installing LAVA</a><ul>
+<li><a class="reference internal" href="#laptops">Laptops</a></li>
+<li><a class="reference internal" href="#virtual-machines">Virtual Machines</a></li>
+<li><a class="reference internal" href="#workload">Workload</a></li>
+<li><a class="reference internal" href="#localhost">Localhost</a></li>
+<li><a class="reference internal" href="#other-infrastructure">Other infrastructure</a><ul>
+<li><a class="reference internal" href="#remote-power-control">Remote power control</a></li>
+<li><a class="reference internal" href="#serial-console-support">Serial console support</a></li>
+<li><a class="reference internal" href="#network-switches">Network switches</a></li>
+<li><a class="reference internal" href="#power-supply">Power supply</a></li>
+<li><a class="reference internal" href="#fileserver">Fileserver</a></li>
+<li><a class="reference internal" href="#shelving-and-racks">Shelving and racks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recommended-installation-types">Recommended Installation Types</a><ul>
+<li><a class="reference internal" href="#single-instance">Single instance</a></li>
+<li><a class="reference internal" href="#master-with-one-or-more-remote-workers">Master with one or more remote workers</a><ul>
+<li><a class="reference internal" href="#authentication-and-encryption">Authentication and encryption</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-installation-notes">Other installation notes</a><ul>
+<li><a class="reference internal" href="#lava-server-branding-support">LAVA server branding support</a></li>
+<li><a class="reference internal" href="#unattended-upgrades">Unattended upgrades</a><ul>
+<li><a class="reference internal" href="#example-changes">Example changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-event-notifications">Configuring event notifications</a><ul>
+<li><a class="reference internal" href="#events-and-network-reliability">Events and network reliability</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#postgresql-port-configuration">PostgreSQL Port configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-the-lava-ui">Configuring the LAVA UI</a><ul>
+<li><a class="reference internal" href="#gunicorn3-bind-addresses">Gunicorn3 bind addresses</a></li>
+<li><a class="reference internal" href="#apache-proxy-configuration">Apache proxy configuration</a></li>
+<li><a class="reference internal" href="#apache-headers">Apache headers</a></li>
+<li><a class="reference internal" href="#banning-badly-behaved-bots">Banning badly behaved bots</a></li>
+<li><a class="reference internal" href="#tracking-errors">Tracking errors</a></li>
+<li><a class="reference internal" href="#configuring-default-table-length">Configuring default table length</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#controlling-the-django-admin-interface">Controlling the Django Admin Interface</a></li>
+<li><a class="reference internal" href="#configuring-log-file-display">Configuring log file display</a></li>
+<li><a class="reference internal" href="#extending-the-schema-white-list">Extending the schema white list</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="admin-backups.html" title="Previous Chapter: Creating Backups"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Creating Backups</span>
+    </a>
+  </li>
+  <li>
+    <a href="admin-secondary-media.html" title="Next Chapter: Enabling Secondary Media"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Enabling Seco... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="advanced-installation-topics">
+<span id="advanced-installation"></span><span id="index-0"></span><h1>Advanced Installation Topics<a class="headerlink" href="#advanced-installation-topics" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="first-installation.html#installation"><span class="std std-ref">basic installation guide</span></a> should be a good
+start for most users installing LAVA. For more advanced users, here is
+much more information and recommendations for administrators.</p>
+<div class="section" id="requirements-to-consider-before-installing-lava">
+<h2>Requirements to Consider Before Installing LAVA<a class="headerlink" href="#requirements-to-consider-before-installing-lava" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="laptops">
+<span id="laptop-requirements"></span><h3>Laptops<a class="headerlink" href="#laptops" title="Permalink to this headline">¶</a></h3>
+<p>Be careful with laptop installations, particularly if you are using
+health checks. It is all too easy for a health check to take the
+device offline just because the laptop was suspended or without an
+internet connection at the relevant moment.</p>
+<p>Laptops also have limitations on device availability but are routinely
+used as development platforms and can support QEMU devices without
+problems.</p>
+</div>
+<div class="section" id="virtual-machines">
+<span id="virtual-machine-requirements"></span><h3>Virtual Machines<a class="headerlink" href="#virtual-machines" title="Permalink to this headline">¶</a></h3>
+<p>LAVA installations inside a virtual machine (or container) have
+particular constraints. A QEMU device or container may suffer from
+being executed within the constraints of the existing virtualization
+and other devices may need USB device nodes to be passed through to
+the VM. Depending on the VM, it is also possible that storage space
+for the logs may become an issue.</p>
+</div>
+<div class="section" id="workload">
+<span id="workload-requirements"></span><h3>Workload<a class="headerlink" href="#workload" title="Permalink to this headline">¶</a></h3>
+<p>Consider the expected load on the master and each of the workers:</p>
+<ul class="simple">
+<li>The workload on the <strong>master</strong> primarily depends on:<ol class="arabic">
+<li>the visibility of the instance,</li>
+<li>the number of users,</li>
+<li>the average number of jobs in the queue and</li>
+<li>the total number of devices attached across all the workers connected to
+this master.</li>
+</ol>
+</li>
+<li>The workload on the <strong>worker</strong> involves a range of tasks, scaling
+with the number of devices attached to the worker:<ol class="arabic">
+<li>doing a lot of synchronous I/O,</li>
+<li>decompression of large files</li>
+<li>serving large files over TFTP or HTTP and</li>
+<li>git clone operations.</li>
+</ol>
+</li>
+</ul>
+<p>An ARMv7 device can serve as a small master or worker, but SATA
+support is <strong>strongly</strong> recommended along with at least 2GB of RAM.</p>
+</div>
+<div class="section" id="localhost">
+<h3>Localhost<a class="headerlink" href="#localhost" title="Permalink to this headline">¶</a></h3>
+<p>LAVA expects to be the primary virtual host configured on the
+master. This has improved with V2 but unless your instance is V2-only,
+you may experience problems or require additional configuration to use
+LAVA as a virtual host.</p>
+</div>
+<div class="section" id="other-infrastructure">
+<span id="infrastructure-requirements"></span><span id="index-1"></span><h3>Other infrastructure<a class="headerlink" href="#other-infrastructure" title="Permalink to this headline">¶</a></h3>
+<p>LAVA will need other services to be available, either using separate tools on
+the same machines or as separate hardware. This list is not exhaustive.</p>
+<div class="section" id="remote-power-control">
+<span id="power-control-infrastructure"></span><span id="index-2"></span><h4>Remote power control<a class="headerlink" href="#remote-power-control" title="Permalink to this headline">¶</a></h4>
+<p>Automated power control using a <abbr title="Power Distribution Unit">PDU</abbr>
+is one of the most common issues to be solved when setting up a new
+LAVA lab. Hardware can be difficult to obtain and configuring the
+remote power control can require custom scripting. There is no single
+perfect device for all use cases, and a wide variety of possible
+solutions may exist to cover your needs. Take the time to research the
+issues and ask on the <a class="reference internal" href="support.html#lava-users"><span class="std std-ref">lava-users</span></a> mailing list if you need
+guidance.</p>
+</div>
+<div class="section" id="serial-console-support">
+<span id="index-3"></span><span id="id1"></span><h4>Serial console support<a class="headerlink" href="#serial-console-support" title="Permalink to this headline">¶</a></h4>
+<p>Once more than a handful of devices are attached to a worker it will
+often become necessary to have a separate unit to handle the serial
+connectivity, turning serial ports into TCP ports. Bespoke serial
+console servers can be expensive; alternatives include ARMv7 boards
+with <code class="docutils literal notranslate"><span class="pre">ser2net</span></code> installed but the USB and ethernet support needs to
+be reliable for this to work well.</p>
+</div>
+<div class="section" id="network-switches">
+<span id="network-switch-infrastructure"></span><h4>Network switches<a class="headerlink" href="#network-switches" title="Permalink to this headline">¶</a></h4>
+<p>Simple unmanaged switches will work for small LAVA labs but managed switches
+are essential to use <a class="reference internal" href="vland.html#vland-in-lava"><span class="std std-ref">VLANd support in LAVA test jobs</span></a> and will also be important for medium
+to large LAVA labs.</p>
+</div>
+<div class="section" id="power-supply">
+<span id="power-supply-ups"></span><h4>Power supply<a class="headerlink" href="#power-supply" title="Permalink to this headline">¶</a></h4>
+<p>Use of a <abbr title="Uninterruptible Power Supply">UPS</abbr> will allow the entire
+lab to cope with power interruptions. Depending on the budget, this
+could be a small UPS capable of supporting the master and the worker
+for 10 minutes, or it could be a combination of larger UPS units and a
+generator.</p>
+</div>
+<div class="section" id="fileserver">
+<span id="fileserver-infrastructure"></span><h4>Fileserver<a class="headerlink" href="#fileserver" title="Permalink to this headline">¶</a></h4>
+<p>The master is <strong>not</strong> the correct place to be building or storing
+build artefacts. In a busy lab, the extra load may cause issues when
+workers download large files at job startup. Development builds and
+creation of files to support the LAVA test should happen on a suitably
+powerful machine to meet the performance expectations of the CI loop
+and the developers.</p>
+</div>
+<div class="section" id="shelving-and-racks">
+<h4>Shelving and racks<a class="headerlink" href="#shelving-and-racks" title="Permalink to this headline">¶</a></h4>
+<p>While it may be tempting to set up a lab on a desk or test bench, this
+can very quickly degenerate into a tangled mess as more devices are
+added. On top of the test devices, switches and other infrastructure,
+there will be a lot of power cables, network cables and serial
+cables. For even a small lab of a handful of devices, a set of shelves
+or a wall-mounted rack is going to make things a lot easier to manage.</p>
+</div>
+</div>
+</div>
+<div class="section" id="recommended-installation-types">
+<span id="more-installation-types"></span><h2>Recommended Installation Types<a class="headerlink" href="#recommended-installation-types" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="single-instance">
+<h3>Single instance<a class="headerlink" href="#single-instance" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="first-installation.html#installation"><span class="std std-ref">basic guide</span></a> shows how to install
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> on a single machine. This kind
+of simple instance can be very useful for local development, testing
+inside virtual machines and small scale testing.</p>
+<p>However, the most obvious limitation of the single-instance
+installation is on the number of devices which can be supported. This
+normally is controlled by the number of test devices that may be
+connected directly to the machine. The solution here is easy: as your
+lab grows, keep the original machine as the master. Add one or more
+new machines as workers, and move test devices over to those new
+workers.</p>
+</div>
+<div class="section" id="master-with-one-or-more-remote-workers">
+<h3>Master with one or more remote workers<a class="headerlink" href="#master-with-one-or-more-remote-workers" title="Permalink to this headline">¶</a></h3>
+<p>Any single instance of LAVA can be extended to work with one or more workers
+which only need the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> package installed.</p>
+<div class="section" id="authentication-and-encryption">
+<h4>Authentication and encryption<a class="headerlink" href="#authentication-and-encryption" title="Permalink to this headline">¶</a></h4>
+<p>When the worker is on the same trusted network as the master,
+administrators may safely choose to connect workers to the server without
+authentication. In all other cases, use https to connect to the server.</p>
+</div>
+</div>
+</div>
+<div class="section" id="other-installation-notes">
+<h2>Other installation notes<a class="headerlink" href="#other-installation-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lava-server-branding-support">
+<span id="branding"></span><span id="index-4"></span><h3>LAVA server branding support<a class="headerlink" href="#lava-server-branding-support" title="Permalink to this headline">¶</a></h3>
+<p>The instance name, icon, link, alt text, bug URL and source code URL of the
+LAVA link on each page can be changed in the settings
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> (JSON syntax):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;INSTANCE_NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_URL&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.example.org&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_ALT&quot;</span><span class="p">:</span> <span class="s2">&quot;Example site&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_ICON&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.example.org/logo/logo.png&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_HEIGHT&quot;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_WIDTH&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_BUG_URL&quot;</span><span class="p">:</span> <span class="s2">&quot;http://bugs.example.org/lava&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_SOURCE_URL&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/example/lava-server&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_CSS&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.example.org/css/style.css&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Admins can include a sentence describing the purpose of the instance to give more
+detail than is available via the instance name. This will be added in a paragraph
+on the home page under “About the {{instance_name}} LAVA instance”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;BRANDING_MESSAGE&quot;</span><span class="p">:</span> <span class="s2">&quot;Example site for local testing&quot;</span><span class="p">,</span>
+<span class="s2">&quot;INSTANCE_NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;dev-box&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>If the stylesheet or icon is available under the django static files location,
+this location can be specified instead of a URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;BRANDING_CSS&quot;</span><span class="p">:</span> <span class="s2">&quot;path/to/style.css&quot;</span><span class="p">,</span>
+<span class="s2">&quot;BRANDING_ICON&quot;</span><span class="p">:</span> <span class="s2">&quot;path/to/image.png&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>There are limits to the size of the image, approximately 32x32 pixels, to avoid
+overlap.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">favicon</span></code> is configurable via the Apache configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alias</span> <span class="o">/</span><span class="n">favicon</span><span class="o">.</span><span class="n">ico</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">static</span><span class="o">/</span><span class="n">lava_server</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">logo</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unattended-upgrades">
+<span id="index-5"></span><span id="id2"></span><h3>Unattended upgrades<a class="headerlink" href="#unattended-upgrades" title="Permalink to this headline">¶</a></h3>
+<p>Debian provides a package called <code class="docutils literal notranslate"><span class="pre">unattended-upgrades</span></code> which can be
+installed to automatically install security (and other) updates on
+Debian systems. This service is recommended for LAVA instances, but is
+not part of LAVA itself.</p>
+<p>If you plan to use <code class="docutils literal notranslate"><span class="pre">unattended-upgrades</span></code>, it is a good idea to set
+up monitoring on your systems, for example by also installing
+<code class="docutils literal notranslate"><span class="pre">apt-listchanges</span></code> and configuring email for administrator
+use. Ensure that the master and all workers are similarly configured,
+to avoid potential problems with skew in package versions.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://wiki.debian.org/UnattendedUpgrades">https://wiki.debian.org/UnattendedUpgrades</a></p>
+</div>
+<div class="section" id="example-changes">
+<h4>Example changes<a class="headerlink" href="#example-changes" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/apt/apt.conf.d/50unattended-upgrades</span></code></p>
+<p>The default installation of <code class="docutils literal notranslate"><span class="pre">unattended-upgrades</span></code> enables automatic
+upgrades for all security updates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Unattended</span><span class="o">-</span><span class="n">Upgrade</span><span class="p">::</span><span class="n">Origins</span><span class="o">-</span><span class="n">Pattern</span> <span class="p">{</span>
+
+     <span class="s2">&quot;origin=Debian,codename=jessie,label=Debian-Security&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Optionally add automatic updates from the <a class="reference internal" href="installing_on_debian.html#lava-repositories"><span class="std std-ref">LAVA repositories</span></a> if those are
+in use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Unattended</span><span class="o">-</span><span class="n">Upgrade</span><span class="p">::</span><span class="n">Origins</span><span class="o">-</span><span class="n">Pattern</span> <span class="p">{</span>
+
+     <span class="s2">&quot;origin=Debian,codename=jessie,label=Debian-Security&quot;</span><span class="p">;</span>
+     <span class="s2">&quot;origin=Linaro,label=Lava&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Other repositories can be added to the upgrade by checking the output of
+<code class="docutils literal notranslate"><span class="pre">apt-cache</span> <span class="pre">policy</span></code>, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">release</span> <span class="n">v</span><span class="o">=</span><span class="mf">8.1</span><span class="p">,</span><span class="n">o</span><span class="o">=</span><span class="n">Linaro</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="n">unstable</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">sid</span><span class="p">,</span><span class="n">l</span><span class="o">=</span><span class="n">Lava</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">main</span>
+</pre></div>
+</div>
+<p>Relates to an origin (<code class="docutils literal notranslate"><span class="pre">o</span></code>) of <code class="docutils literal notranslate"><span class="pre">Linaro</span></code> and a label (<code class="docutils literal notranslate"><span class="pre">l</span></code>) of <code class="docutils literal notranslate"><span class="pre">Lava</span></code>.</p>
+<p>When configuring unattended upgrades for the master or any worker which still
+supports LAVA V1, PostgreSQL will need to be added to the
+<code class="docutils literal notranslate"><span class="pre">Package-Blacklist</span></code>. Although services like PostgreSQL do get security
+updates and these updates <strong>are</strong> important to apply, <code class="docutils literal notranslate"><span class="pre">unattended-upgrades</span></code>
+does not currently restart other services which are dependent on the service
+being upgraded. Admins still need to watch for security updates to PostgreSQL
+and apply the update manually, restarting services like <code class="docutils literal notranslate"><span class="pre">lava-master</span></code>,
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and <code class="docutils literal notranslate"><span class="pre">vland</span></code> afterwards:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Unattended</span><span class="o">-</span><span class="n">Upgrade</span><span class="p">::</span><span class="n">Package</span><span class="o">-</span><span class="n">Blacklist</span> <span class="p">{</span>
+     <span class="s2">&quot;postgresql-9.4&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Email notifications also need to be configured.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Unattended</span><span class="o">-</span><span class="n">Upgrade</span><span class="p">::</span><span class="n">Mail</span> <span class="s2">&quot;lava-admins@example.com&quot;</span><span class="p">;</span>
+
+<span class="n">Unattended</span><span class="o">-</span><span class="n">Upgrade</span><span class="p">::</span><span class="n">MailOnlyOnError</span> <span class="s2">&quot;true&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>With these changes to <code class="docutils literal notranslate"><span class="pre">/etc/apt/apt.conf.d/50unattended-upgrades</span></code>, the rest
+of the setup is as described on the Debian wiki.</p>
+<p><a class="reference external" href="https://wiki.debian.org/UnattendedUpgrades#Automatic_call_via_.2Fetc.2Fapt.2Fapt.conf.d.2F20auto-upgrades">https://wiki.debian.org/UnattendedUpgrades#Automatic_call_via_.2Fetc.2Fapt.2Fapt.conf.d.2F20auto-upgrades</a></p>
+</div>
+</div>
+<div class="section" id="configuring-event-notifications">
+<span id="index-6"></span><span id="id3"></span><h3>Configuring event notifications<a class="headerlink" href="#configuring-event-notifications" title="Permalink to this headline">¶</a></h3>
+<p>Event notifications <strong>must</strong> be configured before being enabled.</p>
+<ul class="simple">
+<li>All changes need to be configured in <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> (JSON
+syntax).</li>
+<li>Ensure that the <code class="docutils literal notranslate"><span class="pre">EVENT_TOPIC</span></code> is <strong>changed</strong> to a string which the
+receivers of the events can use for filtering.<ul>
+<li>Instances in the Cambridge lab use a convention which is similar
+to that used by DBus or Java, simply reversing the domain name
+for the instance (e.g. <code class="docutils literal notranslate"><span class="pre">org.linaro.validation</span></code>)</li>
+</ul>
+</li>
+<li>Ensure that the <code class="docutils literal notranslate"><span class="pre">EVENT_SOCKET</span></code> is visible to the receivers - change the
+default port of <code class="docutils literal notranslate"><span class="pre">5500</span></code> if required.</li>
+<li>Enable event notifications by setting <code class="docutils literal notranslate"><span class="pre">EVENT_NOTIFICATION</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code></li>
+</ul>
+<p>When changing the configuration, you should restart the corresponding services:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ sudo service lava-publisher restart
+$ sudo service lava-master restart
+$ sudo service lava-scheduler restart
+$ sudo service lava-server-gunicorn restart
+</pre></div>
+</div>
+<p>The default values for the event notification settings are:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;EVENT_TOPIC&quot;</span><span class="p">:</span> <span class="s2">&quot;org.linaro.validation&quot;</span><span class="p">,</span>
+<span class="s2">&quot;INTERNAL_EVENT_SOCKET&quot;</span><span class="p">:</span> <span class="s2">&quot;ipc:///tmp/lava.events&quot;</span><span class="p">,</span>
+<span class="s2">&quot;EVENT_SOCKET&quot;</span><span class="p">:</span> <span class="s2">&quot;tcp://*:5500&quot;</span><span class="p">,</span>
+<span class="s2">&quot;EVENT_NOTIFICATION&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+<span class="s2">&quot;EVENT_ADDITIONAL_SOCKETS&quot;</span><span class="p">:</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">INTERNAL_EVENT_SOCKET</span></code> does not usually need to be changed.</p>
+<p>Services which will receive these events <strong>must</strong> be able to connect to the
+<code class="docutils literal notranslate"><span class="pre">EVENT_SOCKET</span></code>. Depending on your local configuration, this may involve
+opening the specified port on a firewall.</p>
+<div class="section" id="events-and-network-reliability">
+<h4>Events and network reliability<a class="headerlink" href="#events-and-network-reliability" title="Permalink to this headline">¶</a></h4>
+<p>With the default configuration, LAVA will publish events to the
+<code class="docutils literal notranslate"><span class="pre">EVENT_SOCKET</span></code> only, using a <a class="reference external" href="http://api.zeromq.org/4-2:zmq-socket#toc7">zmq PUB socket</a>. This type of socket is
+efficient for publishing messages to a large audience. However, in
+case of a network breakage, the connection may be lost and events may
+be missed.</p>
+<p>For more reliable event publication on an unreliable network (like the
+Internet) with a small set of known listeners, you can also use
+<code class="docutils literal notranslate"><span class="pre">EVENT_ADDITIONAL_SOCKETS</span></code>. The publisher will connect to each of
+the endpoints in this list using a <a class="reference external" href="http://api.zeromq.org/4-2:zmq-socket#toc12">zmq PUSH socket</a>. These sockets are
+configured to keep a large queue of messages for each of the
+endpoints, and will retry to deliver those messages as necessary. No
+messages will be lost until the queue overflows.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="data-export.html#publishing-events"><span class="std std-ref">Event notifications</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="postgresql-port-configuration">
+<span id="postgres-db-port"></span><span id="index-7"></span><h3>PostgreSQL Port configuration<a class="headerlink" href="#postgresql-port-configuration" title="Permalink to this headline">¶</a></h3>
+<p>In the majority of cases, there is no need to change the PostgreSQL port number
+from the default of <code class="docutils literal notranslate"><span class="pre">5432</span></code>. If a change is required, edit
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/instance.conf</span></code> and then restart the LAVA master and UI
+daemons:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo service lava-server-gunicorn restart
+$ sudo service lava-master restart
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuring-the-lava-ui">
+<span id="configuring-ui"></span><h2>Configuring the LAVA UI<a class="headerlink" href="#configuring-the-lava-ui" title="Permalink to this headline">¶</a></h2>
+<p>Initial settings for a LAVA instance change over time as the
+requirements change and dependencies improve internal security
+implementations. Most instances will need some adjustment to the apache
+configuration for the main LAVA UI in
+<code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available/lava-server.conf</span></code> and LAVA does not
+attempt to patch this file once admins have made changes. Admins
+therefore need to subscribe to the <a class="reference internal" href="support.html#lava-announce"><span class="std std-ref">lava-announce</span></a> mailing list
+and make changes using separate configuration management.</p>
+<div class="section" id="gunicorn3-bind-addresses">
+<h3>Gunicorn3 bind addresses<a class="headerlink" href="#gunicorn3-bind-addresses" title="Permalink to this headline">¶</a></h3>
+<p>Work is beginning to extend the <a class="reference internal" href="docker-admin.html#docker-admin"><span class="std std-ref">Docker support</span></a> to
+have different parts of LAVA in different containers. Some parts of
+this are easier to implement than others, so the support will arrive in
+stages.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gunicorn3</span></code> supports changing the bind address which will allow to run
+the <code class="docutils literal notranslate"><span class="pre">lava-server-gunicorn</span></code> service to run alone in a container while
+having the reverse proxy in another container. The bind address and
+other <code class="docutils literal notranslate"><span class="pre">gunicorn3</span></code> options can be changed by editing:
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/lava-server-gunicorn</span></code></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://docs.gunicorn.org/en/stable/settings.html">http://docs.gunicorn.org/en/stable/settings.html</a></p>
+</div>
+</div>
+<div class="section" id="apache-proxy-configuration">
+<h3>Apache proxy configuration<a class="headerlink" href="#apache-proxy-configuration" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="installing_on_debian.html#django-localhost"><span class="std std-ref">Using localhost or non HTTPS instance URL</span></a></p>
+</div>
+<p>Django requires the allowed hosts to be explicitly set in the LAVA
+settings, as a list of hostnames or IP addresses which LAVA is allowed
+to use. If this is wrongly configured, the UI will raise a HTTP500 and
+you will get information in the output of <code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">check</span>
+<span class="pre">--deploy</span></code> or in <code class="docutils literal notranslate"><span class="pre">/var/log/lava-server/django.log</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> for <a class="reference external" href="https://lava.codehelp.co.uk/">https://lava.codehelp.co.uk/</a>
+contains:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;ALLOWED_HOSTS&quot;: [&quot;lava.codehelp.co.uk&quot;],
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://docs.djangoproject.com/en/1.11/ref/settings/#allowed-hosts">https://docs.djangoproject.com/en/1.11/ref/settings/#allowed-hosts</a></p>
+</div>
+<p>It is also important to enable <code class="docutils literal notranslate"><span class="pre">ProxyPreserveHost</span></code> in
+<code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available/lava-server.conf</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ProxyPreserveHost On
+</pre></div>
+</div>
+<p>In some situations, you may also need to set <code class="docutils literal notranslate"><span class="pre">USE_X_FORWARDED_HOST</span></code>
+to <code class="docutils literal notranslate"><span class="pre">True</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-USE_X_FORWARDED_HOST">https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-USE_X_FORWARDED_HOST</a></p>
+</div>
+</div>
+<div class="section" id="apache-headers">
+<h3>Apache headers<a class="headerlink" href="#apache-headers" title="Permalink to this headline">¶</a></h3>
+<p>Browser caching can be improved by enabling <code class="docutils literal notranslate"><span class="pre">mod_header</span></code> in Apache
+to allow LAVA to send appropriate cache control headers as well as
+<code class="docutils literal notranslate"><span class="pre">mod</span> <span class="pre">proxy</span></code> and <code class="docutils literal notranslate"><span class="pre">mod</span> <span class="pre">proxy_http</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo a2enmod header
+$ sudo a2enmod expires
+$ sudo service apache2 restart
+</pre></div>
+</div>
+</div>
+<div class="section" id="banning-badly-behaved-bots">
+<h3>Banning badly behaved bots<a class="headerlink" href="#banning-badly-behaved-bots" title="Permalink to this headline">¶</a></h3>
+<p>Despite setting <code class="docutils literal notranslate"><span class="pre">robots.txt</span></code>, LAVA instances can sometimes come under
+high load due to badly behaved web crawling bots. Typically, this will
+show up as an unusually slow LAVA UI and large apache log files showing
+a lot of unusual activity. For example, recursively retrieving every
+query string variation for every table or trying to access every
+possible URL without being signed in.</p>
+<p>To control these bots, the <code class="docutils literal notranslate"><span class="pre">DISALLOWED_USER_AGENTS</span></code> setting can be
+extended. By default, LAVA blocks <code class="docutils literal notranslate"><span class="pre">yandex</span></code>, <code class="docutils literal notranslate"><span class="pre">SemrushBot</span></code>, <code class="docutils literal notranslate"><span class="pre">bing</span></code>
+and <code class="docutils literal notranslate"><span class="pre">WOW64</span></code>. The list can be extended in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>. If you do extend the list, please
+let us know by subscribing to the <a class="reference internal" href="support.html#lava-devel"><span class="std std-ref">lava-devel</span></a> mailing list and
+posting your updated list.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-DISALLOWED_USER_AGENTS">https://docs.djangoproject.com/en/1.11/ref/settings/#std:setting-DISALLOWED_USER_AGENTS</a></p>
+</div>
+</div>
+<div class="section" id="tracking-errors">
+<span id="id4"></span><h3>Tracking errors<a class="headerlink" href="#tracking-errors" title="Permalink to this headline">¶</a></h3>
+<p>In order to track server errors, admins can enable <a class="reference external" href="https://sentry.io/">sentry</a> error tacking.
+In <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;SENTRY_DSN&quot;</span><span class="p">:</span> <span class="s2">&quot;https://&lt;public_key&gt;@&lt;server&gt;/&lt;project_id&gt;&quot;</span>
+</pre></div>
+</div>
+<p>When any of the services is crashing, an error will be recorded along with some metadata.</p>
+</div>
+<div class="section" id="configuring-default-table-length">
+<h3>Configuring default table length<a class="headerlink" href="#configuring-default-table-length" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA UI mainly consists of tables. The length of each table can be
+configured by the user right above it (“Show 10..100 entries”). A default
+value for the table length can be set in <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;DEFAULT_TABLE_LENGTH&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="controlling-the-django-admin-interface">
+<span id="admin-control"></span><h2>Controlling the Django Admin Interface<a class="headerlink" href="#controlling-the-django-admin-interface" title="Permalink to this headline">¶</a></h2>
+<p>Some instances may need to allow selected users to be Django superusers
+to provide access to the <a class="reference external" href="https://docs.djangoproject.com/en/2.0/ref/contrib/admin/">Django Admin Interface</a>. Some of
+the features of the interface need <strong>very</strong> careful handling,
+especially the <strong>deletion</strong> of database objects.</p>
+<p>Deleting database objects is <strong>always</strong> a problem and needs careful
+consideration after looking at all the relevant logs. There are complex
+inter-relationships not just in the UI but also in the scheduler,
+logging support and publishing support. UI errors and scheduling errors
+can be caused by inappropriate deletion of database objects and
+recovery from these situations can be complex and may involve a
+complete restoration of the instance from <a class="reference internal" href="admin-backups.html#admin-backups"><span class="std std-ref">backups</span></a>.</p>
+<p>Admins can choose to disable access to the <code class="docutils literal notranslate"><span class="pre">Delete</span></code> button in
+critical areas of the admin interface by adding a setting to
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="nt">&quot;ALLOW_ADMIN_DELETE&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This disables the <code class="docutils literal notranslate"><span class="pre">Delete</span></code> button and the <code class="docutils literal notranslate"><span class="pre">delete</span></code> action for
+selected database objects, particularly Device, TestJob, TestCase,
+TestSuite and TestSet. None of these objects should be deleted in
+the admin interface (helpers exist to delete using the command line
+interface, with suitable safeguards).</p>
+<p>Restart the <code class="docutils literal notranslate"><span class="pre">lava-server-gunicorn</span></code> service each time
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> is modified.</p>
+</div>
+<div class="section" id="configuring-log-file-display">
+<span id="log-size-limit"></span><h2>Configuring log file display<a class="headerlink" href="#configuring-log-file-display" title="Permalink to this headline">¶</a></h2>
+<p>By default, test logs will be formatted and displayed for easy viewing
+in the browser and this should work fine for the majority of
+users. However, if your test jobs are creating very large test logs it
+can cause problems when trying to display them. Depending on network
+and client configuration, this might show up as timeouts when viewing
+or maybe error codes like “502 Proxy Error”. If this is a problem,
+there is an option to control the maximum size of test log that will
+be displayed; any log larger than this will instead just be offered
+for direct download.</p>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> (JSON syntax) to set the
+limit, in MiB. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;LOG_SIZE_LIMIT&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>will limit the maximum display size to 10 MiB. To find the right size
+for your needs, check on the sizes of the <code class="docutils literal notranslate"><span class="pre">output.yaml</span></code> log files on
+your lava-master server.</p>
+<p>Some test jobs are generating a lot of test cases. For such test jobs,
+rendering the log page could be really slow while the server query the database
+for every test case ids.
+In order to improve the page rendering speed, if more than
+<code class="docutils literal notranslate"><span class="pre">TESTCASE_COUNT_LIMIT</span></code> (10000 by default) test cases exists for a job, the
+server will not query the test case table. The logs will still be visible, but
+without the links to the result pages.</p>
+<p>You can change the default value by editing
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;TESTCASE_COUNT_LIMIT&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extending-the-schema-white-list">
+<h2>Extending the schema white list<a class="headerlink" href="#extending-the-schema-white-list" title="Permalink to this headline">¶</a></h2>
+<p>Since LAVA 2019.04, the keys that can be used in the job definition <strong>context</strong>
+dictionary is restricted. Admins can extend this white list by updating
+<code class="docutils literal notranslate"><span class="pre">EXTRA_CONTEXT_VARIABLES</span></code> in the settings:</p>
+<p>Add to <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;EXTRA_CONTEXT_VARIABLES&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;custom_variable1&quot;</span><span class="p">,</span> <span class="s2">&quot;variable_2&quot;</span><span class="p">],</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/advanced-installation.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:08 GMT -->
+</html>

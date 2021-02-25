@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/developer-example.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Developing new classes for LAVA V2 &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="State machine" href="scheduler.html" />
+    <link rel="prev" title="Packaging lava-server for distributions" href="packaging.html" />
+    <link rel="canonical" href="developer-example.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Developing new classes for LAVA V2</a><ul>
+<li><a class="reference internal" href="#test-with-simple-scripts">Test with simple scripts</a></li>
+<li><a class="reference internal" href="#start-with-new-classes">Start with new classes</a></li>
+<li><a class="reference internal" href="#add-support-files-for-unit-tests">Add support files for unit tests</a></li>
+<li><a class="reference internal" href="#add-unit-tests">Add unit tests</a></li>
+<li><a class="reference internal" href="#run-all-the-unit-tests">Run all the unit tests</a></li>
+<li><a class="reference internal" href="#incorporate-the-test-script-into-the-classes">Incorporate the test script into the classes</a></li>
+<li><a class="reference internal" href="#check-the-new-classes">Check the new classes</a></li>
+<li><a class="reference internal" href="#startup-achieved">Startup achieved</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="packaging.html" title="Previous Chapter: Packaging lava-server for distributions"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Packaging lav...</span>
+    </a>
+  </li>
+  <li>
+    <a href="scheduler.html" title="Next Chapter: State machine"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">State machine &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="developing-new-classes-for-lava-v2">
+<span id="developing-new-classes"></span><span id="index-0"></span><h1>Developing new classes for LAVA V2<a class="headerlink" href="#developing-new-classes-for-lava-v2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="test-with-simple-scripts">
+<h2>Test with simple scripts<a class="headerlink" href="#test-with-simple-scripts" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Prove that your idea of a test job actually works on the hardware</li>
+<li>Build the requirements of automation into your tests<ol class="arabic">
+<li>Consider the needs of a serial console.</li>
+<li>Think about all the steps, including temporary paths</li>
+<li>Write a simple script that covers all the steps.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="start-with-new-classes">
+<h2>Start with new classes<a class="headerlink" href="#start-with-new-classes" title="Permalink to this headline">¶</a></h2>
+<p>For a completely new strategy, new classes are often best going into new files.
+Follow the example of existing files but concentrate on just the <code class="docutils literal notranslate"><span class="pre">__init__</span></code>
+functions and imports at this stage. Adding the summary and description
+elements should help you identify how to divide the work between the classes.</p>
+</div>
+<div class="section" id="add-support-files-for-unit-tests">
+<h2>Add support files for unit tests<a class="headerlink" href="#add-support-files-for-unit-tests" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Create a device configuration YAML file with the help of the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=&amp;type=json">Online YAML
+parser</a> using
+examples of existing files.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer.html#writing-new-job-yaml"><span class="std std-ref">YAML syntax errors</span></a></p>
+</div>
+</li>
+<li><p class="first">Create a job submission YAML file, again with the parser and existing
+examples.</p>
+</li>
+</ol>
+<p>At each stage, consider which elements of the job and device configuration may
+need to be overridden by test writers and instance admins.</p>
+</div>
+<div class="section" id="add-unit-tests">
+<h2>Add unit tests<a class="headerlink" href="#add-unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>It may seem strange to add one or more unit test files at this stage but it
+helps write the validate functions which come up next. Adapt an existing
+Factory class to load the device configuration file and sample job file and
+then create a Job. In the test cases, inspect the pipeline created from these
+YAML files. Whenever the validate or populate functions are modified, add
+checks to the unit test that the new data exists in the correct type and
+content. Re-run the unit test each time to spot regressions.</p>
+</div>
+<div class="section" id="run-all-the-unit-tests">
+<h2>Run all the unit tests<a class="headerlink" href="#run-all-the-unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of unit tests which parse all jobs and devices in the test
+directories, so ensure that the new additions do not interfere with the
+existing tests. This is the basis of what needs to go into the <code class="docutils literal notranslate"><span class="pre">accepts</span></code>
+function of the Strategy class and into the job and device YAML. Make sure that
+there is sufficient differentiation between the new files and the existing
+files without causing duplication.</p>
+</div>
+<div class="section" id="incorporate-the-test-script-into-the-classes">
+<h2>Incorporate the test script into the classes<a class="headerlink" href="#incorporate-the-test-script-into-the-classes" title="Permalink to this headline">¶</a></h2>
+<p>If the new classes are properly aligned with the workload of the test job, the
+sections of the test script will fall naturally into the classes in the same
+sequence.</p>
+<ul class="simple">
+<li>Handle all of the static data from <code class="docutils literal notranslate"><span class="pre">parameters</span></code> in the <code class="docutils literal notranslate"><span class="pre">validate</span></code>
+function. It is often useful to assemble some these parameters into member
+variables, checking that the final form is correct in the test case.</li>
+<li>Only use <code class="docutils literal notranslate"><span class="pre">self.errors</span></code> in <code class="docutils literal notranslate"><span class="pre">validate</span></code> instead of raising an exception
+of allowing calls within <code class="docutils literal notranslate"><span class="pre">validate</span></code> from raising unhandled exceptions. If
+<code class="docutils literal notranslate"><span class="pre">validate</span></code> should not continue executing after a particular error, always
+ensure that an error is set before returning from <code class="docutils literal notranslate"><span class="pre">validate</span></code> early.</li>
+<li>Test that all of the parameters appear in the class in the correct
+type and with the correct content after running <code class="docutils literal notranslate"><span class="pre">job.validate()</span></code>. The
+simplest way to do this is to inspect the <code class="docutils literal notranslate"><span class="pre">job.pipeline.actions</span></code> using a
+list comprehension based on the action <code class="docutils literal notranslate"><span class="pre">name</span></code>.</li>
+<li>Handle only dynamic data in the <code class="docutils literal notranslate"><span class="pre">run</span></code> function (which does not need
+to be completed at this stage).</li>
+<li>Separate constants from parameters. <code class="docutils literal notranslate"><span class="pre">utils.constants</span></code> will provide
+a way for instance admins to make changes. If there is a chance that either a
+different device-type or a different test job plan, then add the default to
+the job or device file and fetch the value in the parameters. Ensure that
+<code class="docutils literal notranslate"><span class="pre">validate</span></code> shows that the correct value is available.</li>
+<li>Use existing classes where the support <code class="docutils literal notranslate"><span class="pre">just</span> <span class="pre">works</span></code>, e.g. by adding
+<code class="docutils literal notranslate"><span class="pre">DownloadAction</span></code> to a <code class="docutils literal notranslate"><span class="pre">populate</span></code> function.</li>
+</ul>
+</div>
+<div class="section" id="check-the-new-classes">
+<h2>Check the new classes<a class="headerlink" href="#check-the-new-classes" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pylint</span></code> can be annoying but it is also useful - providing that some of the
+warnings and errors are disabled. Check similar files but do be cautious about
+disabling lots of warnings in the early stages. Pay particular attention to
+missing imports, unused variables, unused imports, and invalid names. Logging
+not lazy is less relevant, overall, in the LAVA codebase - there are situations
+where lazy logging results in the wrong values being entered into the logs.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">pep8</span></code> is essential - no reviews will be accepted if there
+are <code class="docutils literal notranslate"><span class="pre">pep8</span></code> errors beyond <code class="docutils literal notranslate"><span class="pre">line-too-long</span></code> (E501). This is the first check
+performed by <code class="docutils literal notranslate"><span class="pre">./ci-run</span></code> (which must also pass).</p>
+</div>
+</div>
+<div class="section" id="startup-achieved">
+<h2>Startup achieved<a class="headerlink" href="#startup-achieved" title="Permalink to this headline">¶</a></h2>
+<p>From this point, standard code development takes over. To get the code
+accepted, some guidelines must be followed:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">./ci-run</span></code> must complete without errors</li>
+<li>Every set of new classes should have some unit tests.</li>
+<li>Every new Strategy <strong>must</strong> have new unit tests.</li>
+<li>Part of the review will be whether the unit tests have sufficient
+coverage of the new code and possible side-effects with existing code.</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/developer-example.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+</html>

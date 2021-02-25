@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-server.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Setting up a LAVA instance &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Understanding the Pipeline - an administrator guide" href="pipeline-admin.html" />
+    <link rel="prev" title="Growing your lab" href="growing_your_lab.html" />
+    <link rel="canonical" href="pipeline-server.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Setting up a LAVA instance</a><ul>
+<li><a class="reference internal" href="#installing-just-lava-server">Installing just lava-server</a></li>
+<li><a class="reference internal" href="#installing-the-full-lava-set">Installing the full lava set</a></li>
+<li><a class="reference internal" href="#installing-master-without-recommends">Installing master without Recommends</a></li>
+<li><a class="reference internal" href="#installing-lava-dispatcher">Installing lava-dispatcher</a></li>
+<li><a class="reference internal" href="#configuring-apache2-on-a-worker">Configuring apache2 on a worker</a></li>
+<li><a class="reference internal" href="#adding-workers-to-the-master">Adding workers to the master</a></li>
+<li><a class="reference internal" href="#adding-devices-to-a-worker">Adding devices to a worker</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="growing_your_lab.html" title="Previous Chapter: Growing your lab"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Growing your lab</span>
+    </a>
+  </li>
+  <li>
+    <a href="pipeline-admin.html" title="Next Chapter: Understanding the Pipeline - an administrator guide"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Understanding... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="setting-up-a-lava-instance">
+<span id="setting-up-pipeline-instance"></span><h1>Setting up a LAVA instance<a class="headerlink" href="#setting-up-a-lava-instance" title="Permalink to this headline">¶</a></h1>
+<p>The LAVA design designates the machine running Django and PostgreSQL as
+the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and all other machines connected to that server
+which will actually be running the jobs are termed <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code>
+machines.</p>
+<div class="section" id="installing-just-lava-server">
+<h2>Installing just lava-server<a class="headerlink" href="#installing-just-lava-server" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package is the main LAVA scheduler and frontend.</p>
+<p>To install just the lava-server from the current packages, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install lava-server
+$ sudo a2dissite 000-default
+$ sudo a2enmod proxy
+$ sudo a2enmod proxy_http
+$ sudo a2ensite lava-server.conf
+$ sudo service apache2 restart
+</pre></div>
+</div>
+<p>This will install lava-dispatcher and lava-server.</p>
+<p>Other packages to consider:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ntp</span></code> - some actions within LAVA can be time-sensitive, so ensuring
+that devices within your lab keep time correctly can be important.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is no support in V2 for <code class="docutils literal notranslate"><span class="pre">linaro-media-create</span></code> to
+manipulate hardware packs from Linaro, so this package can be
+removed once there are no V1 devices on the worker.</p>
+</div>
+</div>
+<div class="section" id="installing-the-full-lava-set">
+<h2>Installing the full lava set<a class="headerlink" href="#installing-the-full-lava-set" title="Permalink to this headline">¶</a></h2>
+<p>Production installs of LAVA will rarely use the full <code class="docutils literal notranslate"><span class="pre">lava</span></code> set as it
+includes tools more commonly used by developers and test labs. These
+tools mean that the <code class="docutils literal notranslate"><span class="pre">lava</span></code> package brings more dependencies than when
+installing <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> to run a production LAVA instance.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Debian has the concept of Dependencies which must be
+installed and Recommends which are optional but expected to be
+useful by most users of the package in question.  Opting out of
+installing Recommends is supported when installing packages, so if
+admins have concerns about extra packages being installed on the
+slaves (e.g. if using ARMv7 slaves or simply to reduce the
+complexity of the install) then Recommends can be omitted for the
+installation of these dependencies.</p>
+<div class="last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://www.debian.org/doc/manuals/debian-faq/ch-pkg_basics.en.html#s-depends">Debian Policy: What is meant by saying that a package
+Depends, Recommends, Suggests, Conflicts, Replaces, Breaks or
+Provides another package?</a>
+and <a class="reference external" href="https://packages.debian.org/sid/lava">details of the lava package in Debian</a></p>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava</span></code> package installs support for:</p>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> - scripts to build developer packages based on your
+current git tree of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> or <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>, including
+any local changes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">lava-dev</span></code> includes <strong>a lot</strong> of packages which are not
+typically used on a production master or worker.</p>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">vmdebootstrap</span></code> for building your own Debian based KVM images.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">ntp</span></code> - some actions within LAVA can be time-sensitive, so ensuring
+that devices within your lab keep time correctly can be important.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is no support in V2 for <code class="docutils literal notranslate"><span class="pre">linaro-media-create</span></code> to
+manipulate hardware packs from Linaro, so this package can be
+removed once there are no V1 devices on the worker.</p>
+</div>
+<p>All of these packages can be installed separately alongside the main
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package, the <code class="docutils literal notranslate"><span class="pre">lava</span></code> package merely collects them into
+one set.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install postgresql
+$ sudo apt install lava
+$ sudo a2dissite 000-default
+$ sudo a2enmod proxy
+$ sudo a2enmod proxy_http
+$ sudo a2ensite lava-server.conf
+$ sudo service apache2 restart
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="installing_on_debian.html#create-superuser"><span class="std std-ref">Creating a superuser</span></a>, <a class="reference internal" href="first_steps.html#logging-in"><span class="std std-ref">Logging In</span></a>,
+<a class="reference internal" href="first_steps.html#authentication-tokens"><span class="std std-ref">Authentication Tokens</span></a> and the <a class="reference internal" href="first-job.html#first-job-definition"><span class="std std-ref">first job definition</span></a>.</p>
+</div>
+</div>
+<div class="section" id="installing-master-without-recommends">
+<span id="server-without-recommends"></span><h2>Installing master without Recommends<a class="headerlink" href="#installing-master-without-recommends" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">lava-common</span></code> binary package is new in 2018.5 and allows admins
+to choose not to install <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> on the master if there are
+to be no devices assigned to the machine running <code class="docutils literal notranslate"><span class="pre">lava-master</span></code>. This
+is common for installations where there are multiple workers and the
+master is regularly busy. <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> now _Recommends_
+<code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> which means that admins can choose not to install
+it alongside <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt --no-install-recommends install lava-server lava-server-doc
+</pre></div>
+</div>
+<p>Depending on the local configuration, some of the other recommended
+packages may also be desirable:</p>
+<ul class="simple">
+<li><strong>lava-coordinator</strong></li>
+<li><strong>ntp</strong></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">lava-server-doc</span></code> can be omitted but this would be unusual -
+instances would need to be configured to have some other Help option in
+the menu using the <code class="docutils literal notranslate"><span class="pre">CUSTOM_DOCS</span></code> dictionary setting in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> and the <code class="docutils literal notranslate"><span class="pre">Help</span></code> links from pages
+within the LAVA UI would cause a 404 error for users, unless the
+Apache configuration was adjusted.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://www.debian.org/doc/manuals/debian-faq/ch-pkg_basics.en.html#s-depends">Debian Policy: What is meant by saying that a package
+Depends, Recommends, Suggests, Conflicts, Replaces, Breaks or
+Provides another package?</a></p>
+</div>
+</div>
+<div class="section" id="installing-lava-dispatcher">
+<span id="configuring-lava-slave"></span><h2>Installing lava-dispatcher<a class="headerlink" href="#installing-lava-dispatcher" title="Permalink to this headline">¶</a></h2>
+<p>If this machine is only meant to be a dispatcher for connected devices,
+then just install <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>. The <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package is
+only needed on the master in each LAVA instance.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install lava-dispatcher
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p class="first">Change the dispatcher configuration in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-dispatcher/lava-worker</span></code> to allow <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> to connect to
+the relevant <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> instead of <code class="docutils literal notranslate"><span class="pre">localhost</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">dispatcher</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">worker</span>
+
+<span class="c1"># Configuration for lava-worker daemon</span>
+
+<span class="c1"># worker name</span>
+<span class="c1"># Should be set for host that have random hostname (containers, ...)</span>
+<span class="c1"># The name can be any unique string.</span>
+<span class="c1"># WORKER_NAME=&quot;--name &lt;hostname.fqdn&gt;&quot;</span>
+
+<span class="c1"># Logging level should be uppercase (DEBUG, INFO, WARN, ERROR)</span>
+<span class="c1"># LOGLEVEL=&quot;DEBUG&quot;</span>
+
+<span class="c1"># Server connection</span>
+<span class="c1"># URL=&quot;http://localhost/&quot;</span>
+<span class="c1"># TOKEN=&quot;--token &lt;token&gt;&quot;</span>
+<span class="c1"># WS_URL=&quot;--ws-url http://localhost/ws/&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restart <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> once the changes are complete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo service lava-worker restart
+</pre></div>
+</div>
+</li>
+<li><p class="first">The administrator of the master will then be able to allocate
+pipeline devices to this slave.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For security reasons, the slave does not declare the devices
+connected to it to the master. The LAVA configuration on the worker
+actually needs no knowledge of what is connected or where as long as
+services like <code class="docutils literal notranslate"><span class="pre">ser2net</span></code> are configured. All the LAVA configuration
+data is stored solely in the database of the master. Once this data
+is entered by the admin of the master, the worker then needs to
+connect and the admin can then select that slave for the relevant
+devices. Once selected, the worker can immediately start running
+pipeline jobs on those devices.</p>
+</div>
+<p>The administrator of the master will require the following information
+about the devices attached to each slave:</p>
+<ol class="arabic simple">
+<li>Confirmation that a suitable template already exists, for each
+device i.e. <a class="reference internal" href="pipeline-admin.html#adding-known-device"><span class="std std-ref">Adding support for a device of a known type</span></a></li>
+<li>A completed and tested <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> for each device.</li>
+</ol>
+<p>This information contains specific information about the local network
+setup of the slave and will be transmitted between the master and the
+worker in <strong>clear text</strong> over HTTP. Any encryption would need to
+be arranged separately between the slave and the master. Information
+typically involves the hostname of the PDU, the port number of the
+device on that PDU and the port number of the serial connection for
+that device. The slave is responsible for ensuring that these ports are
+only visible to that slave. There is no need for any connections to be
+visible to the master.</p>
+</div>
+<div class="section" id="configuring-apache2-on-a-worker">
+<span id="apache2-on-v2-only-worker"></span><span id="index-0"></span><h2>Configuring apache2 on a worker<a class="headerlink" href="#configuring-apache2-on-a-worker" title="Permalink to this headline">¶</a></h2>
+<p>Some test job deployments will require a working Apache2 server to
+offer deployment files over the network to the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo cp /usr/share/lava-dispatcher/apache2/lava-dispatcher.conf /etc/apache2/sites-available/
+$ sudo a2ensite lava-dispatcher
+$ sudo service apache2 restart
+$ wget http://localhost/tmp/
+$ rm index.html
+</pre></div>
+</div>
+<p>You may also need to disable any existing apache2 configuration if this
+is a default apache2 installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo a2dissite 000-default
+$ sudo service apache2 restart
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-workers-to-the-master">
+<span id="adding-pipeline-workers"></span><h2>Adding workers to the master<a class="headerlink" href="#adding-workers-to-the-master" title="Permalink to this headline">¶</a></h2>
+<p>A new worker needs to be manually added to the master so that the
+admins of the master have the ability to assign devices in the database
+and enable or disable the worker.</p>
+<p>To add a new worker:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage workers add &lt;HOSTNAME&gt;
+</pre></div>
+</div>
+<p>To add a worker with a description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage workers add --description &lt;DESC&gt; &lt;HOSTNAME&gt;
+</pre></div>
+</div>
+<p>To add a worker in a disabled state:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage workers add --description &lt;DESC&gt; --disabled &lt;HOSTNAME&gt;
+</pre></div>
+</div>
+<p>Workers are enabled or disabled in the Django admin interface by
+changing the <code class="docutils literal notranslate"><span class="pre">display</span></code> field of the worker. Jobs submitted to devices
+on that worker will fail, so it is also recommended that the devices
+would be made offline at the same time. (The django admin interface has
+support for selecting devices by worker and taking all selected devices
+offline in a single action.)</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="first-devices.html#create-device-database"><span class="std std-ref">Create a device in the database</span></a></p>
+</div>
+</div>
+<div class="section" id="adding-devices-to-a-worker">
+<span id="adding-pipeline-devices-to-worker"></span><h2>Adding devices to a worker<a class="headerlink" href="#adding-devices-to-a-worker" title="Permalink to this headline">¶</a></h2>
+<p>Admins use the Django admin interface to add devices to workers using
+the worker drop-down in the device detail page.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A worker may have a description but does not have a record of
+the IP address, uptime or architecture in the Worker object.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-server.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+</html>

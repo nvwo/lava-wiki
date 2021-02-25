@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/integrate-uboot.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>U-Boot &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fastboot" href="integrate-fastboot.html" />
+    <link rel="prev" title="Adding new device types" href="device-integration.html" />
+    <link rel="canonical" href="integrate-uboot.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">U-Boot</a><ul>
+<li><a class="reference internal" href="#common-u-boot-support">Common U-Boot support</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#prompts">Prompts</a></li>
+<li><a class="reference internal" href="#interrupting-u-boot">Interrupting U-Boot</a><ul>
+<li><a class="reference internal" href="#troubleshooting-interrupting-u-boot">Troubleshooting Interrupting U-Boot</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#load-addresses">Load addresses</a></li>
+<li><a class="reference internal" href="#required-configuration">Required configuration</a></li>
+<li><a class="reference internal" href="#booting-the-kernel">Booting the kernel</a></li>
+<li><a class="reference internal" href="#u-boot-bootargs">U-Boot bootargs</a></li>
+<li><a class="reference internal" href="#using-mkimage">Using mkimage</a></li>
+<li><a class="reference internal" href="#vendor-builds">Vendor builds</a></li>
+<li><a class="reference internal" href="#network-support">Network support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#additional-u-boot-support">Additional U-Boot support</a><ul>
+<li><a class="reference internal" href="#filesystem-support">Filesystem support</a></li>
+<li><a class="reference internal" href="#interface-names">Interface names</a></li>
+<li><a class="reference internal" href="#initializing-subsystems">Initializing subsystems</a></li>
+<li><a class="reference internal" href="#appending-the-dtb">Appending the DTB</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="device-integration.html" title="Previous Chapter: Adding new device types"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Adding new de...</span>
+    </a>
+  </li>
+  <li>
+    <a href="integrate-fastboot.html" title="Next Chapter: Fastboot"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Fastboot &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="u-boot">
+<span id="integrating-uboot"></span><span id="index-0"></span><h1>U-Boot<a class="headerlink" href="#u-boot" title="Permalink to this headline">¶</a></h1>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Make sure you have read <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">Adding new device types</span></a>
+first.</p>
+</div>
+<p>U-Boot is a very common sight on embedded devices. It is a very capable piece
+of Open Source software that supports a diverse range of devices out of the
+box, and it is easily configurable and modifiable to add support for new
+devices too. Comprehensive documentation is available on the <a class="reference external" href="https://www.denx.de/wiki/U-Boot">U-Boot website</a>.</p>
+<p>If your new device includes U-Boot then this can be a useful beginning.
+However, the build of U-Boot on the device may potentially hinder integration
+due to the wide range of configuration options and behavioral changes
+available inside a patched U-Boot build.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#uboot-vendor-builds"><span class="std std-ref">Vendor builds</span></a></p>
+</div>
+<p>Generally, the more components of U-Boot that are disabled or removed from a
+vendor build, the harder it will be to integrate. If you are able to fully
+script a U-Boot process from interrupting the bootloader to booting a kernel of
+your own choice, this will greatly assist in integrating the device into LAVA.</p>
+<p>To start the device integration of a device using U-Boot, you must at
+least have a complete list of all the commands which are necessary to
+interrupt U-Boot and manually boot the device.</p>
+<div class="section" id="common-u-boot-support">
+<span id="uboot-essentials"></span><h2>Common U-Boot support<a class="headerlink" href="#common-u-boot-support" title="Permalink to this headline">¶</a></h2>
+<p>The following elements are common to all U-Boot integration projects. Some
+information may need to be obtained from the default vendor configuration as
+shipped on the device. interrupt U-Boot and take a copy of all the settings
+before you start integration work. Some elements need to be considered during
+the development or updating of the build of U-Boot on the device itself.
+Sometimes there might be limitations in the hardware itself. Most devices which
+can use mainline U-Boot can be integrated into LAVA. Where mainline support is
+available, it is recommended to replace the vendor-supplied version of U-Boot
+with a mainline build.</p>
+<ul class="simple">
+<li>Make sure that the U-Boot environment can be modified and that changes are
+persistent across reboots.</li>
+<li>Read and understand how <code class="docutils literal notranslate"><span class="pre">base-uboot.jinja2</span></code> operates to follow how the
+various values will be used to create the U-Boot boot commands. Not all of
+the logic in the <code class="docutils literal notranslate"><span class="pre">base-uboot.jinja2</span></code> template is covered in this section.</li>
+<li>Create a unit test and ensure that the final rendered device configuration
+matches the needs of the device.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">Developing using device-type templates</span></a>,
+<a class="reference internal" href="development-intro.html#developer-jinja2-support"><span class="std std-ref">Jinja2 support</span></a> and <a class="reference internal" href="development-intro.html#testing-new-devicetype-templates"><span class="std std-ref">Testing new device-type templates</span></a></p>
+</div>
+<div class="section" id="configuration">
+<span id="uboot-configuration"></span><h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>Ensure that the U-Boot build supports a string which can be used to interrupt
+U-Boot and that once interrupted, the prompt is set to a usable string like
+<code class="docutils literal notranslate"><span class="pre">=&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">uboot#</span></code> etc. Make sure that the configuration supports TFTP using
+commands sent over the serial port. The timeout for interrupting the boot
+process <strong>must</strong> be configurable. Typically, the timeout should be at least 5
+seconds in the default configuration. There is no need to configure a working
+automatic boot once the timeout expires. Whilst having a default boot is useful
+during development, it can be simpler in automation to simply drop to the
+bootloader prompt if the bootloader could not be interrupted successfully
+within the timeout. This avoids wasting time watching the device boot into a
+system which is not the system intended by the test writer. (The default boot
+would likely fail to support the correct <code class="docutils literal notranslate"><span class="pre">auto-login</span></code> or, worse, could allow
+login and then fail to run any tests as the overlay will not have been deployed
+to that system. Either option is confusing when trying to debug why the test
+job failed as the actual error is close to the top of the LAVA test logs, not
+at the end after all of the boot messages have been sent.)</p>
+</div>
+<div class="section" id="prompts">
+<span id="uboot-prompts"></span><h3>Prompts<a class="headerlink" href="#prompts" title="Permalink to this headline">¶</a></h3>
+<p>Two prompts are <strong>required</strong> in the device configuration:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">interrupt_prompt: </span><span class="cp">{{</span> <span class="nv">interrupt_prompt</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;Hit any key to stop autoboot&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">bootloader_prompt: </span><span class="cp">{{</span> <span class="nv">bootloader_prompt</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;=&gt;&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">interrupt_prompt</span></code> is seen first as the device boots and then waits for
+the timeout before attempting to boot automatically.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">bootloader_prompt</span></code> is seen after the bootloader has been interrupted and
+after each command is sent to the bootloader.</p>
+<p>Many U-Boot configurations use the same prompt strings as the defaults
+in <code class="docutils literal notranslate"><span class="pre">base-uboot.jinja2</span></code>, as shown above.</p>
+</div>
+<div class="section" id="interrupting-u-boot">
+<span id="uboot-interrupting"></span><h3>Interrupting U-Boot<a class="headerlink" href="#interrupting-u-boot" title="Permalink to this headline">¶</a></h3>
+<p>The default behavior when interrupting U-Boot is to send a single newline
+character. This behavior is controlled with the following variables:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">interrupt_char: &quot;</span><span class="cp">{{</span> <span class="nv">interrupt_char</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="s1">&#39;&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;</span>
+<span class="x">interrupt-newline: </span><span class="cp">{{</span> <span class="nv">uboot_interrupt_newline</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="kp">True</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>If U-Boot requires a special character, set <code class="docutils literal notranslate"><span class="pre">interrupt_char</span></code> accordingly. For
+example, set to SPACE by setting the following in the device template.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">uboot_interrupt_character</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">interrupt_char</span></code> is used, LAVA will still send it followed by a newline.
+To prevent the newline from being sent, disable <code class="docutils literal notranslate"><span class="pre">uboot_interrupt_newline</span></code>.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">uboot_interrupt_newline</span> <span class="o">=</span> <span class="kp">False</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="section" id="troubleshooting-interrupting-u-boot">
+<span id="uboot-interrupting-troubleshooting"></span><h4>Troubleshooting Interrupting U-Boot<a class="headerlink" href="#troubleshooting-interrupting-u-boot" title="Permalink to this headline">¶</a></h4>
+<p>An extra newline during U-Boot interruption can cause LAVA to send U-Boot
+commands before the previous command completes. The error message <code class="docutils literal notranslate"><span class="pre">***</span> <span class="pre">ERROR:</span>
+<span class="pre">`serverip'</span> <span class="pre">not</span> <span class="pre">set</span></code> may be seen, due to the delay of the <code class="docutils literal notranslate"><span class="pre">dhcp</span></code> command,
+which preceded the <code class="docutils literal notranslate"><span class="pre">setenv</span> <span class="pre">serverip</span></code> command, causing the latter to be sent
+too soon. If U-Boot interrupt does not need a newline to be sent, set
+uboot_interrupt_newline to False in the device template.</p>
+</div>
+</div>
+<div class="section" id="load-addresses">
+<span id="uboot-load-addresses"></span><h3>Load addresses<a class="headerlink" href="#load-addresses" title="Permalink to this headline">¶</a></h3>
+<p>U-Boot typically requires the load addresses to be specified in the commands
+used to load and execute the downloaded kernel, ramdisk and <a class="reference internal" href="glossary.html#term-dtb"><span class="xref std std-term">DTB</span></a>. The
+initial load addresses can be obtained from the device in <code class="docutils literal notranslate"><span class="pre">uEnv.txt</span></code> or in
+the saved environment of the default U-Boot configuration (via <code class="docutils literal notranslate"><span class="pre">printenv</span></code>).
+The load addresses may need changes later to support larger ramdisks or
+kernels. Some U-Boot devices use different load addresses according to the
+kernel to be booted, so each address can be specified separately or mapped to
+an existing value.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">bootm_kernel_addr</span> <span class="o">=</span> <span class="s1">&#39;0x40007000&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">bootm_ramdisk_addr</span> <span class="o">=</span> <span class="s1">&#39;0x45000000&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">bootm_dtb_addr</span> <span class="o">=</span> <span class="s1">&#39;0x41f00000&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">bootz_kernel_addr</span> <span class="o">=</span> <span class="nv">bootm_kernel_addr</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">bootz_ramdisk_addr</span> <span class="o">=</span> <span class="nv">bootm_ramdisk_addr</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">bootz_dtb_addr</span> <span class="o">=</span> <span class="nv">bootm_dtb_addr</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="required-configuration">
+<span id="uboot-requirements"></span><h3>Required configuration<a class="headerlink" href="#required-configuration" title="Permalink to this headline">¶</a></h3>
+<p>At a minimum, any new U-Boot device requires the following pieces of
+configuration:</p>
+<ul class="simple">
+<li><strong>console device</strong> - There seems to be no standard or default here, so
+<strong>every</strong> request needs to specify the argument to pass to <code class="docutils literal notranslate"><span class="pre">console=</span></code>
+on the kernel command line, including baud rate.</li>
+<li><strong>load addresses</strong> - Kernel, ramdisk and DTB load addresses.</li>
+<li><strong>mkimage arch</strong> - the architecture value to pass to mkimage when preparing
+modified uImage or uboot headers.</li>
+<li><strong>MAC address</strong> - if the MAC address is not pre-configured as a guaranteed
+unique address, a way of setting a fixed and unique MAC address must be
+provided.</li>
+<li><strong>boot methods</strong> - <code class="docutils literal notranslate"><span class="pre">booti</span></code>, <code class="docutils literal notranslate"><span class="pre">bootz</span></code> and <code class="docutils literal notranslate"><span class="pre">bootm</span></code> - which ones are
+supported on this device?</li>
+<li><strong>prompts</strong> - What is the configured U-Boot prompt on the required build of
+U-Boot for the device. Has the autoboot prompt been modified and if so, what
+is the autoboot prompt?</li>
+</ul>
+</div>
+<div class="section" id="booting-the-kernel">
+<span id="uboot-magic"></span><h3>Booting the kernel<a class="headerlink" href="#booting-the-kernel" title="Permalink to this headline">¶</a></h3>
+<p>When this goes wrong, the infamous <code class="docutils literal notranslate"><span class="pre">Bad</span> <span class="pre">Linux</span> <span class="pre">magic</span></code> error can be seen.
+Retrieve the available boot methods from the existing U-Boot configuration,
+typically one or more of <code class="docutils literal notranslate"><span class="pre">bootz</span></code>, <code class="docutils literal notranslate"><span class="pre">booti</span></code> or <code class="docutils literal notranslate"><span class="pre">bootm</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">booti_kernel_addr</span></code> is set, <code class="docutils literal notranslate"><span class="pre">image</span></code> parameters will be set for the
+ramdisk and the DTB.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">bootm_kernel_addr</span></code> is set, <code class="docutils literal notranslate"><span class="pre">uimage</span></code> parameters will be set for the
+ramdisk and the DTB.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">bootz_kernel_addr</span></code> is set, <code class="docutils literal notranslate"><span class="pre">zimage</span></code> parameters will be set for the
+ramdisk and the DTB.</p>
+</div>
+<div class="section" id="u-boot-bootargs">
+<span id="uboot-bootargs"></span><h3>U-Boot bootargs<a class="headerlink" href="#u-boot-bootargs" title="Permalink to this headline">¶</a></h3>
+<p>U-Boot uses the <code class="docutils literal notranslate"><span class="pre">bootargs</span></code> (“boot arguments”) variable to specify the command
+line when booting a Linux kernel. This can be critical in determining whether a
+device boots at all or whether particular hardware is available in the booted
+system. Equally, some bootargs settings can be entirely cosmetic and simply add
+(or silence) messages during the boot process. Experiment with your board to
+work out which bootargs are mandatory for all boots, which are useful as
+defaults but which can be omitted for some test jobs and which are entirely
+optional.</p>
+<p>Mandatory bootargs need to be put into the template as hard-coded
+strings. Useful bootargs can be set as the default value of
+<code class="docutils literal notranslate"><span class="pre">{{base_kernel_args}}</span></code>. Optional bootargs can be left as comments
+for test writers to supply via the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> and then added
+to the bootargs using <code class="docutils literal notranslate"><span class="pre">{{extra_kernel_args}}</span></code>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-boot.html#appending-kernel-command-line"><span class="std std-ref">Appending to the kernel command line</span></a></p>
+</div>
+</div>
+<div class="section" id="using-mkimage">
+<span id="uboot-mkimage"></span><h3>Using mkimage<a class="headerlink" href="#using-mkimage" title="Permalink to this headline">¶</a></h3>
+<p>U-Boot typically requires use of the <code class="docutils literal notranslate"><span class="pre">mkimage</span></code> binary in various ways. Most
+commonly, a test job which only boots a ramdisk needs to have the LAVA overlay
+added to the ramdisk.
+Many devices require a U-Boot header on the ramdisk. The device configuration
+controls how to add a new U-Boot header when LAVA needs to modify the
+downloaded ramdisk (to add modules or a test shell overlay). The device
+configuration deploy parameters use the default <code class="docutils literal notranslate"><span class="pre">add-header:</span> <span class="pre">u-boot</span></code> setting
+from <cite>base-uboot.jinja2</cite>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mkimage</span></code> creates a different header for <code class="docutils literal notranslate"><span class="pre">arm</span></code> than for <code class="docutils literal notranslate"><span class="pre">arm64</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">uboot_mkimage_arch</span></code> value will need to be set according to the requirements
+of the device.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Most ARMv7 devices will use <code class="docutils literal notranslate"><span class="pre">arm</span></code> as the architecture and most
+ARMv8 devices will use <code class="docutils literal notranslate"><span class="pre">arm64</span></code>, but this is not always the case. For
+example, the APM Mustang is an arm64 device but the U-Boot build on the
+Mustang pre-dates arm64 support in mainline U-Boot. It uses <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">set</span>
+<span class="pre">uboot_mkimage_arch</span> <span class="pre">=</span> <span class="pre">'arm'</span> <span class="pre">%}</span></code></p>
+</div>
+</div>
+<div class="section" id="vendor-builds">
+<span id="uboot-vendor-builds"></span><h3>Vendor builds<a class="headerlink" href="#vendor-builds" title="Permalink to this headline">¶</a></h3>
+<p>Not all devices have mainline U-Boot support and the configurability of the
+U-Boot source code means that some vendor-supplied builds of U-Boot may behave
+very differently to those found on other U-Boot devices. Do not assume that
+options and commands in existing U-Boot devices will always have any equivalent
+in a vendor build of U-Boot.</p>
+</div>
+<div class="section" id="network-support">
+<span id="uboot-network"></span><h3>Network support<a class="headerlink" href="#network-support" title="Permalink to this headline">¶</a></h3>
+<p>Network support in U-Boot is <strong>essential</strong> for any useful automation.
+Specifically, <code class="docutils literal notranslate"><span class="pre">TFTP</span></code> support in U-Boot needs to work to use any of the
+existing U-Boot support in LAVA V2.</p>
+</div>
+</div>
+<div class="section" id="additional-u-boot-support">
+<h2>Additional U-Boot support<a class="headerlink" href="#additional-u-boot-support" title="Permalink to this headline">¶</a></h2>
+<p>Some developers integrating new U-Boot devices may need to consider more
+elements of U-Boot behavior and configuration.</p>
+<div class="section" id="filesystem-support">
+<span id="uboot-filesystems"></span><h3>Filesystem support<a class="headerlink" href="#filesystem-support" title="Permalink to this headline">¶</a></h3>
+<p>Filesystem support in U-Boot is optional, but will be required for
+<a class="reference internal" href="secondary-media.html#secondary-media"><span class="std std-ref">secondary media</span></a>. Check if U-Boot on the device
+supports the filesystems you want to use, fat or ext2|3|4. Check if your U-Boot
+has limits on the sizes of the filesystems it supports. In some cases, it may
+be necessary to use a separate small <code class="docutils literal notranslate"><span class="pre">/boot</span></code> partition to make things work.</p>
+</div>
+<div class="section" id="interface-names">
+<span id="uboot-interfaces"></span><h3>Interface names<a class="headerlink" href="#interface-names" title="Permalink to this headline">¶</a></h3>
+<p>Some configurations of U-Boot may change how interfaces like SATA are accessed
+by U-Boot. For secondary media support or to read files from an attached
+storage device, you will need to find out how the U-Boot describes that storage
+interface (e.g. <code class="docutils literal notranslate"><span class="pre">sata</span></code>, <code class="docutils literal notranslate"><span class="pre">scsi</span></code>, <code class="docutils literal notranslate"><span class="pre">usb</span></code>, <code class="docutils literal notranslate"><span class="pre">mmc</span></code>).</p>
+</div>
+<div class="section" id="initializing-subsystems">
+<span id="uboot-subsystems"></span><h3>Initializing subsystems<a class="headerlink" href="#initializing-subsystems" title="Permalink to this headline">¶</a></h3>
+<p>Some U-Boot devices will not enable some of the onboard storage or peripheral
+devices without explicitly initializing them first. Some may need other
+subsystems to be initialized first - for example the Panda needs <code class="docutils literal notranslate"><span class="pre">usb</span> <span class="pre">start</span></code>
+before networking will work, as the onboard network interface is attached via
+USB.</p>
+</div>
+<div class="section" id="appending-the-dtb">
+<span id="uboot-append-dtb"></span><h3>Appending the DTB<a class="headerlink" href="#appending-the-dtb" title="Permalink to this headline">¶</a></h3>
+<p>Some U-Boot configurations support loading a DTB for the device separately, but
+not all. If your U-Boot does not support this, you will need to append the DTB
+to the kernel instead. This will obviously affect the commands used to boot
+your device (e.g. <code class="docutils literal notranslate"><span class="pre">tftp</span></code>, <code class="docutils literal notranslate"><span class="pre">loadm</span></code> or <code class="docutils literal notranslate"><span class="pre">bootm</span></code>), but also remember that you
+will need to generate this combined image file ready for use on the device.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/integrate-uboot.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+</html>

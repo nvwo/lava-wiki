@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/writing-multinode.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Writing MultiNode tests &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MultiNode API" href="multinodeapi.html" />
+    <link rel="prev" title="MultiNode LAVA" href="multinode.html" />
+    <link rel="canonical" href="writing-multinode.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Writing MultiNode tests</a><ul>
+<li><a class="reference internal" href="#writing-a-multinode-job-file">Writing a MultiNode job file</a><ul>
+<li><a class="reference internal" href="#defining-multinode-roles">Defining MultiNode roles</a><ul>
+<li><a class="reference internal" href="#using-the-job-context-in-multinode">Using the job context in MultiNode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-multinode-roles">Using MultiNode roles</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-tests-in-multinode">Running tests in MultiNode</a></li>
+<li><a class="reference internal" href="#running-different-tests-on-different-devices">Running different tests on different devices</a><ul>
+<li><a class="reference internal" href="#allocating-different-device-types-to-a-group">Allocating different device types to a group</a></li>
+<li><a class="reference internal" href="#splitting-deployment-actions-between-roles">Splitting deployment actions between roles</a></li>
+<li><a class="reference internal" href="#potentially-splitting-boot-actions">(Potentially) Splitting boot actions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-multinode-commands-to-synchronize-devices">Using MultiNode commands to synchronize devices</a><ul>
+<li><a class="reference internal" href="#controlling-synchronization-from-the-test-shell">Controlling synchronization from the test shell</a></li>
+<li><a class="reference internal" href="#controlling-synchronization-from-the-dispatcher">Controlling synchronization from the dispatcher</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-the-multinode-api-further-features">Using the MultiNode API - further features</a><ul>
+<li><a class="reference internal" href="#using-multinode-commands-to-pass-data-between-devices">Using MultiNode commands to pass data between devices</a></li>
+<li><a class="reference internal" href="#helper-tools-in-lava">Helper tools in LAVA</a></li>
+<li><a class="reference internal" href="#other-multinode-calls">Other MultiNode calls</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-jobs-using-the-multinode-protocol">Writing jobs using the MultiNode protocol</a></li>
+<li><a class="reference internal" href="#writing-jobs-using-multinode-and-lxc">Writing jobs using MultiNode and LXC</a><ul>
+<li><a class="reference internal" href="#adding-test-actions">Adding test actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="multinode.html" title="Previous Chapter: MultiNode LAVA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; MultiNode LAVA</span>
+    </a>
+  </li>
+  <li>
+    <a href="multinodeapi.html" title="Next Chapter: MultiNode API"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">MultiNode API &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="writing-multinode-tests">
+<span id="writing-multinode"></span><span id="index-0"></span><h1>Writing MultiNode tests<a class="headerlink" href="#writing-multinode-tests" title="Permalink to this headline">¶</a></h1>
+<p>LAVA supports running a single test across multiple devices (of any type),
+combining those devices into a group. Devices within this MultiNode group can
+communicate with each other using the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a>.</p>
+<p>The test definitions used in MultiNode tests typically do not have to differ
+much from single-node tests, unless the tests need to support communication
+between devices in the same group. In fact, the recommended way to develop
+MultiNode tests is to start simple and build up complexity one step at a time.
+That’s what the examples here will show.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When viewing MultiNode log files, the original YAML submitted to
+start the job is available via the <code class="docutils literal notranslate"><span class="pre">MultiNode</span> <span class="pre">Definition</span></code> link.
+Internally, LAVA parses and splits up that MultiNode definition into
+multiple sub-definitions, one per node in the test. Each node will then see
+a separate logical test job (and therefore a separate log file) based on
+these sub-definitions. They can be viewed via the <code class="docutils literal notranslate"><span class="pre">Definition</span></code> link. It is
+unlikely to be useful to submit the definition of one node of a MultiNode
+job as a separate job, due to links between the jobs.</p>
+</div>
+<div class="section" id="writing-a-multinode-job-file">
+<span id="writing-multinode-job-file"></span><span id="index-1"></span><h2>Writing a MultiNode job file<a class="headerlink" href="#writing-a-multinode-job-file" title="Permalink to this headline">¶</a></h2>
+<p>Our first example is the simplest possible MultiNode test job - the same job
+runs on two devices of the same type, without using any of the synchronization
+calls.</p>
+<div class="section" id="defining-multinode-roles">
+<span id="multinode-roles"></span><span id="index-2"></span><h3>Defining MultiNode roles<a class="headerlink" href="#defining-multinode-roles" title="Permalink to this headline">¶</a></h3>
+<p>Starting with an already-working simple single-device test job, the first
+changes to make are in device selection:</p>
+<ul class="simple">
+<li>Remove the <code class="docutils literal notranslate"><span class="pre">device_type</span></code> declaration in the job; that only works for single
+devices.</li>
+<li>Add configuration for the MultiNode protocol to tell LAVA how to select
+multiple devices for your test.</li>
+</ul>
+<p>The MultiNode protocol defines the new concept of <strong>roles</strong>. This example
+snippet creates a group of two <code class="docutils literal notranslate"><span class="pre">qemu</span></code> devices, one in the <code class="docutils literal notranslate"><span class="pre">foo</span></code> role and
+one in the <code class="docutils literal notranslate"><span class="pre">bar</span></code> role.</p>
+<pre class="code yaml literal-block">
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-multinode</span><span class="punctuation">:</span>
+    <span class="name tag">roles</span><span class="punctuation">:</span>
+      <span class="name tag">foo</span><span class="punctuation">:</span>
+        <span class="name tag">device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">qemu</span>
+        <span class="name tag">context</span><span class="punctuation">:</span>
+          <span class="name tag">arch</span><span class="punctuation">:</span> <span class="literal scalar plain">amd64</span>
+        <span class="name tag">count</span><span class="punctuation">:</span> <span class="literal scalar plain">1</span>
+      <span class="name tag">bar</span><span class="punctuation">:</span>
+        <span class="name tag">device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">qemu</span>
+        <span class="name tag">context</span><span class="punctuation">:</span>
+          <span class="name tag">arch</span><span class="punctuation">:</span> <span class="literal scalar plain">amd64</span>
+        <span class="name tag">count</span><span class="punctuation">:</span> <span class="literal scalar plain">1</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">6</span>
+</pre>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> is an arbitrary label - you may use whatever
+descriptive names you like for the different roles in your test, so long as
+they are unique.</p>
+</div>
+<div class="section" id="using-the-job-context-in-multinode">
+<h4>Using the job context in MultiNode<a class="headerlink" href="#using-the-job-context-in-multinode" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> can be included in the MultiNode <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> and the
+same variables will be used for all devices within the specified role. See the
+example above for an example syntax.</p>
+<p>The role names defined here will be used later in the test job to determine
+which tests are run on which devices, and also inside the test shell definition
+to determine how the devices communicate with each other. After just these
+changes, your test job will be enough to run a simple MultiNode test in LAVA.
+It will pick several devices for the test, then run exactly the same set of
+actions on each device independently.</p>
+</div>
+</div>
+<div class="section" id="using-multinode-roles">
+<span id="index-3"></span><span id="id1"></span><h3>Using MultiNode roles<a class="headerlink" href="#using-multinode-roles" title="Permalink to this headline">¶</a></h3>
+<p>The next thing to do is to modify the test job to use the roles that you have
+defined. This first example runs the same actions on both of the roles. Each
+action in the test definition should now include the <code class="docutils literal notranslate"><span class="pre">role</span></code> field and one or
+more label(s) to match those defined <code class="docutils literal notranslate"><span class="pre">roles</span></code>.</p>
+<p>Here we deploy the same software to the <code class="docutils literal notranslate"><span class="pre">foo</span></code> and
+<code class="docutils literal notranslate"><span class="pre">bar</span></code> machines by specifying each role in a list:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">foo</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">bar</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tmpfs</span>
+    <span class="name tag">images</span><span class="punctuation">:</span>
+        <span class="name tag">rootfs</span><span class="punctuation">:</span>
+          <span class="name tag">image_arg</span><span class="punctuation">:</span> <span class="literal scalar plain">-drive format=raw,file={rootfs}</span>
+          <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://files.lavasoftware.org/components/lava/standard/debian/stretch/amd64/2/stretch.img.gz</span>
+          <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">b5cdb3b9e65fec2d3654a05dcdf507281f408b624535b33375170d1e852b982c</span>
+          <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+</pre>
+<p>We also use the same boot actions for all the devices:</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">1</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">foo</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">bar</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">qemu</span>
+    <span class="name tag">media</span><span class="punctuation">:</span> <span class="literal scalar plain">tmpfs</span>
+    <span class="name tag">auto_login</span><span class="punctuation">:</span>
+      <span class="name tag">login_prompt</span><span class="punctuation">:</span> <span class="literal string">&quot;debian</span><span class="name variable"> </span><span class="literal string">login:&quot;</span>
+      <span class="name tag">username</span><span class="punctuation">:</span> <span class="literal scalar plain">root</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">&quot;root&#64;debian:&quot;</span>
+</pre>
+</div>
+</div>
+<div class="section" id="running-tests-in-multinode">
+<span id="running-multinode-tests"></span><h2>Running tests in MultiNode<a class="headerlink" href="#running-tests-in-multinode" title="Permalink to this headline">¶</a></h2>
+<p>By default, tests in MultiNode jobs will be run independently. If that is
+sufficient, the test action is very similar to that for a single-node job:</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">foo</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">bar</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">10</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-test-shell/multi-node/multinode01.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">multinode-basic</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">smoke-tests</span>
+</pre>
+<p>That’s your first MultiNode test job complete. It’s quite simple to follow, but
+it hasn’t really done much yet. To see this in action, you could try the
+complete example test job yourself: <a class="reference external" href="examples/test-jobs/first-multinode-job.html">first-multinode-job.yaml</a></p>
+</div>
+<div class="section" id="running-different-tests-on-different-devices">
+<span id="multinode-different-tests"></span><h2>Running different tests on different devices<a class="headerlink" href="#running-different-tests-on-different-devices" title="Permalink to this headline">¶</a></h2>
+<p>As well as simply running the same tasks on similar devices, MultiNode can also
+run different tests on the different devices in the test. To configure this,
+use the <code class="docutils literal notranslate"><span class="pre">role</span></code> support to allocate different <code class="docutils literal notranslate"><span class="pre">deploy</span></code>, <code class="docutils literal notranslate"><span class="pre">boot</span></code> and
+<code class="docutils literal notranslate"><span class="pre">test</span></code> actions to different roles.</p>
+<p>This second example will use two <code class="docutils literal notranslate"><span class="pre">beaglebone-black</span></code> devices and one <code class="docutils literal notranslate"><span class="pre">cubietruck</span></code>
+device. These devices need different files to deploy and different commands to
+boot, and will most likely take different lengths of time to boot all the way
+to a login prompt. If you want to run this example test job yourself, you will
+need at least one <code class="docutils literal notranslate"><span class="pre">cubietruck</span></code> device and at least two <code class="docutils literal notranslate"><span class="pre">beaglebone-black</span></code>
+devices.</p>
+<p>The example includes details of how to deploy to devices using
+<a class="reference external" href="http://www.denx.de/wiki/U-Boot">U-Boot</a>, but don’t worry about those details. The important elements
+from a MultiNode perspective are the uses of <code class="docutils literal notranslate"><span class="pre">role</span></code> here.</p>
+<div class="section" id="allocating-different-device-types-to-a-group">
+<h3>Allocating different device types to a group<a class="headerlink" href="#allocating-different-device-types-to-a-group" title="Permalink to this headline">¶</a></h3>
+<p>This is a simple change from our first example, defining the two roles of
+<code class="docutils literal notranslate"><span class="pre">server</span></code> and <code class="docutils literal notranslate"><span class="pre">client</span></code>:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-multinode</span><span class="punctuation">:</span>
+    <span class="name tag">roles</span><span class="punctuation">:</span>
+      <span class="name tag">server</span><span class="punctuation">:</span>
+        <span class="name tag">device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">cubietruck</span>
+        <span class="name tag">count</span><span class="punctuation">:</span> <span class="literal scalar plain">1</span>
+      <span class="name tag">client</span><span class="punctuation">:</span>
+        <span class="name tag">device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">beaglebone-black</span>
+        <span class="name tag">count</span><span class="punctuation">:</span> <span class="literal scalar plain">2</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">6</span>
+</pre>
+</div>
+<div class="section" id="splitting-deployment-actions-between-roles">
+<h3>Splitting deployment actions between roles<a class="headerlink" href="#splitting-deployment-actions-between-roles" title="Permalink to this headline">¶</a></h3>
+<p>Now we’re using different files in the deployment for each role. To support
+that, we define two separate <code class="docutils literal notranslate"><span class="pre">deploy</span></code> action blocks, one for the <code class="docutils literal notranslate"><span class="pre">server</span></code>
+machines and one for the <code class="docutils literal notranslate"><span class="pre">client</span></code> machines.</p>
+<pre class="code yaml literal-block">
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">server</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">10</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tftp</span>
+    <span class="name tag">kernel</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/vmlinuz-4.9.0-4-armmp</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">b6043cc5a07e2cead3f7f098018e7706ea7840eece2a456ba5fcfaddaf98a21e</span>
+      <span class="name tag">type</span><span class="punctuation">:</span> <span class="literal scalar plain">zimage</span>
+    <span class="name tag">ramdisk</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/initrd.img-4.9.0-4-armmp</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">4cc25f499ae74e72b5d74c9c5e65e143de8c2e3b019f5d1781abbf519479b843</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">modules</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/modules.tar.gz</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">10e6930e9282dd44905cfd3f3a2d5a5058a1d400374afb2619412554e1067d58</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">nfsrootfs</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/stretch-armhf-nfs.tar.gz</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">46d18f339ac973359e8ac507e5258b620709add94cf5e09a858d936ace38f698</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">dtb</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/dtbs/sun7i-a20-cubietruck.dtb</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">b727c17dce4a67a865cbcd53447f7297e35ffbd18f0a99c7e9f8a10026237cea</span>
+
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">client</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">10</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tftp</span>
+    <span class="name tag">kernel</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/vmlinuz-4.9.0-4-armmp</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">b6043cc5a07e2cead3f7f098018e7706ea7840eece2a456ba5fcfaddaf98a21e</span>
+      <span class="name tag">type</span><span class="punctuation">:</span> <span class="literal scalar plain">zimage</span>
+    <span class="name tag">ramdisk</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/initrd.img-4.9.0-4-armmp</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">4cc25f499ae74e72b5d74c9c5e65e143de8c2e3b019f5d1781abbf519479b843</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">modules</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/modules.tar.gz</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">10e6930e9282dd44905cfd3f3a2d5a5058a1d400374afb2619412554e1067d58</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">nfsrootfs</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/stretch-armhf-nfs.tar.gz</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">46d18f339ac973359e8ac507e5258b620709add94cf5e09a858d936ace38f698</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">dtb</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/dtbs/am335x-boneblack.dtb</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">c4c461712bf52af7d020e78678e20fc946f1d9b9552ef26fd07ae85c5373ece9</span>
+</pre>
+</div>
+<div class="section" id="potentially-splitting-boot-actions">
+<h3>(Potentially) Splitting boot actions<a class="headerlink" href="#potentially-splitting-boot-actions" title="Permalink to this headline">¶</a></h3>
+<p>To cover different boot commands we could now have two different <code class="docutils literal notranslate"><span class="pre">boot</span></code>
+action blocks. But in this case our devices behave in the same way in terms of
+bootup, so we can just use a single <code class="docutils literal notranslate"><span class="pre">boot</span></code> block and list both <code class="docutils literal notranslate"><span class="pre">client</span></code> and
+<code class="docutils literal notranslate"><span class="pre">server</span></code>.</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">client</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">server</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">u-boot</span>
+    <span class="name tag">commands</span><span class="punctuation">:</span> <span class="literal scalar plain">nfs</span>
+    <span class="name tag">auto_login</span><span class="punctuation">:</span>
+      <span class="name tag">login_prompt</span><span class="punctuation">:</span> <span class="literal string">'login:'</span>
+      <span class="name tag">username</span><span class="punctuation">:</span> <span class="literal scalar plain">root</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'root&#64;stretch:'</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+</pre>
+</div>
+</div>
+<div class="section" id="using-multinode-commands-to-synchronize-devices">
+<span id="using-multinode-synchronization"></span><h2>Using MultiNode commands to synchronize devices<a class="headerlink" href="#using-multinode-commands-to-synchronize-devices" title="Permalink to this headline">¶</a></h2>
+<p>A very common requirement in a MultiNode test is that a device (or devices)
+within the MultiNode group must wait until another device in the group reaches
+a particular stage. This can be used to ensure that a device running a server
+has had time to complete the boot and start the server before the device
+running the client tries to make a connection to the server, for example. The
+only way to be sure that the server is ready for client connections is to make
+every client in the group wait until the server confirms that it is ready.</p>
+<p>Continuing with the same <code class="docutils literal notranslate"><span class="pre">cubietruck</span></code> and <code class="docutils literal notranslate"><span class="pre">beaglebone-black</span></code> example, let’s look
+at synchronizing devices within a MultiNode group.</p>
+<div class="section" id="controlling-synchronization-from-the-test-shell">
+<h3>Controlling synchronization from the test shell<a class="headerlink" href="#controlling-synchronization-from-the-test-shell" title="Permalink to this headline">¶</a></h3>
+<p>Synchronization is done using the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a>, specifically the
+<a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> and <a class="reference internal" href="multinodeapi.html#lava-wait"><span class="std std-ref">lava-wait</span></a> calls.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#multinode-further-features"><span class="std std-ref">Using the MultiNode API - further features</span></a></p>
+</div>
+<p>Continuing our example, we have two different versions of the <code class="docutils literal notranslate"><span class="pre">test</span></code> action
+block. In the version for the <code class="docutils literal notranslate"><span class="pre">server</span></code> role, the machine will do some work
+(in this case, install and start the Apache web server) and then tell the
+clients that the server is ready using <a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a>:</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">server</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span>
+        <span class="name tag">metadata</span><span class="punctuation">:</span>
+          <span class="name tag">format</span><span class="punctuation">:</span> <span class="literal scalar plain">Lava-Test Test Definition 1.0</span>
+          <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">apache-server</span>
+          <span class="name tag">description</span><span class="punctuation">:</span> <span class="literal string">&quot;server</span><span class="name variable"> </span><span class="literal string">installation&quot;</span>
+          <span class="name tag">os</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">debian</span>
+        <span class="name tag">run</span><span class="punctuation">:</span>
+          <span class="name tag">steps</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">apt -q update</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">apt -q -y install apache2</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">lava-test-case dpkg --shell dpkg -s apache2</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">lava-send server_installed</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">inline</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">apache-server</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">inline/apache-server.yaml</span>
+</pre>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is recommended to use <a class="reference internal" href="glossary.html#term-inline"><span class="xref std std-term">inline</span></a> definitions for the
+calls to the synchronization helpers. This makes it much easier to debug
+when a synchronization call times out and will allow the <em>flow</em> of the
+MultiNode job to be summarized in the UI.</p>
+</div>
+<p>The test definition specified for the <code class="docutils literal notranslate"><span class="pre">client</span></code> role causes the client devices
+to wait until the test definition specified for the <code class="docutils literal notranslate"><span class="pre">server</span></code> role uses
+<a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> to signal that the server is ready.</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">client</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span>
+        <span class="name tag">metadata</span><span class="punctuation">:</span>
+          <span class="name tag">format</span><span class="punctuation">:</span> <span class="literal scalar plain">Lava-Test Test Definition 1.0</span>
+          <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">client-wait</span>
+          <span class="name tag">description</span><span class="punctuation">:</span> <span class="literal string">&quot;client</span><span class="name variable"> </span><span class="literal string">waiting</span><span class="name variable"> </span><span class="literal string">for</span><span class="name variable"> </span><span class="literal string">server&quot;</span>
+          <span class="name tag">os</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">debian</span>
+        <span class="name tag">run</span><span class="punctuation">:</span>
+          <span class="name tag">steps</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">lava-test-case client --shell uname -a</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">lava-wait server_installed</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">inline</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">client-wait</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">inline/client-wait.yaml</span>
+</pre>
+<p>This means that each device using the role <code class="docutils literal notranslate"><span class="pre">client</span></code> will wait until <strong>any</strong>
+one device in the group sends a signal with the messageID of
+<code class="docutils literal notranslate"><span class="pre">server_installed</span></code>. The assumption here is that the group only has one device
+with the label <code class="docutils literal notranslate"><span class="pre">server</span></code>.</p>
+<p>The second MultiNode example is now complete. To run this yourself, you can see
+the complete example test job: <a class="reference external" href="examples/test-jobs/second-multinode-job.html">second-multinode-job.yaml</a> . Remember, you’ll need specific
+hardware devices for it to work out of the box, but you can easily replace them
+with devices you have available.</p>
+</div>
+<div class="section" id="controlling-synchronization-from-the-dispatcher">
+<h3>Controlling synchronization from the dispatcher<a class="headerlink" href="#controlling-synchronization-from-the-dispatcher" title="Permalink to this headline">¶</a></h3>
+<p>The MultiNode protocol <em>also</em> provides support for using the MultiNode API
+outside of the test shell definition; any action block can access the protocol
+from within specific actions. This makes it possible to even block deployment
+or boot on one group of machines until others are fully up and running, for
+example. There is a lot of flexibility here to allow for a massive range of
+possible test scenarios.</p>
+<p>See <a class="reference internal" href="#writing-multinode-protocol"><span class="std std-ref">Writing jobs using the MultiNode protocol</span></a> for more information on
+how to call the MultiNode API outside the test shell.</p>
+</div>
+</div>
+<div class="section" id="using-the-multinode-api-further-features">
+<span id="multinode-further-features"></span><h2>Using the MultiNode API - further features<a class="headerlink" href="#using-the-multinode-api-further-features" title="Permalink to this headline">¶</a></h2>
+<p>As demonstrated earlier, tests can use <a class="reference internal" href="multinodeapi.html#lava-wait"><span class="std std-ref">lava-wait</span></a> to cause a device to
+wait on a single message from any other device in the MultiNode group. It is
+also possible to wait for <em>all</em> other devices in the MultiNode group send a
+signal - use <a class="reference internal" href="multinodeapi.html#lava-wait-all"><span class="std std-ref">lava-wait-all</span></a> instead.</p>
+<p>Each message sent using the MultiNode API uses a <a class="reference internal" href="glossary.html#term-messageid"><span class="xref std std-term">messageID</span></a>, which is a
+string that must be unique within the group. It is recommended to make these
+strings descriptive to help track job progress and debug problems. Be careful
+to use underscores instead of spaces in the name. The messageID will be
+included in the log files of the test.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When using <a class="reference internal" href="multinodeapi.html#lava-wait"><span class="std std-ref">lava-wait</span></a> and <a class="reference internal" href="multinodeapi.html#lava-wait-all"><span class="std std-ref">lava-wait-all</span></a>, the
+device will wait until the expected messageID is received. If that messageID
+does not arrive, the job will simply timeout when the
+default timeout expires. See <a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a>.</p>
+</div>
+<div class="section" id="using-multinode-commands-to-pass-data-between-devices">
+<span id="multinode-data-between-devices"></span><h3>Using MultiNode commands to pass data between devices<a class="headerlink" href="#using-multinode-commands-to-pass-data-between-devices" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> can be used to send additional data to other devices,
+beyond just <a class="reference internal" href="glossary.html#term-messageid"><span class="xref std std-term">messageID</span></a>. Data is sent as key-value pairs following
+the messageID. A device can send data at any time, and that data will be
+broadcast to all devices in the MultiNode group. The data can be received
+by any device in the group waiting on the target messageID using
+<a class="reference internal" href="multinodeapi.html#lava-wait"><span class="std std-ref">lava-wait</span></a> or <a class="reference internal" href="multinodeapi.html#lava-wait-all"><span class="std std-ref">lava-wait-all</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The message data is stored in a cache file which will be
+overwritten when the next synchronization call is made. Ensure that your
+scripts make use of (or copy aside) any MultiNode cache data before calling
+any other MultiNode API helpers that may clear the cache.</p>
+</div>
+<p>For example, if a device activates a network interface and wants to make data
+about that network connection available to other devices in the group, the
+device can send the IP address using <code class="docutils literal notranslate"><span class="pre">lava-send</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>run:
+   steps:
+      - lava-send ipv4 ip=$(./get_ip.sh)
+</pre></div>
+</div>
+<p>The contents of <code class="docutils literal notranslate"><span class="pre">get_ip.sh</span></code> is operating system specific.</p>
+<p>On the receiving device, the test definition would include a call to
+<code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> or <code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> with the same messageID:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>run:
+   steps:
+      - lava-wait ipv4
+      - ipdata=$(cat /tmp/lava_multi_node_cache.txt | cut -d = -f 2)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although multiple key value pairs can be sent as a single
+message, the API is <strong>not</strong> intended for large amounts of data. There is a
+message size limit of 4KiB, including protocol overhead. Use other transfer
+methods like ssh or wget if you need to send larger amounts of data between
+devices.</p>
+</div>
+</div>
+<div class="section" id="helper-tools-in-lava">
+<span id="multinode-helper-tools"></span><h3>Helper tools in LAVA<a class="headerlink" href="#helper-tools-in-lava" title="Permalink to this headline">¶</a></h3>
+<p>LAVA provides some helper routines for common data transfer tasks and more can
+be added where appropriate. The main MultiNode API calls are intended to work
+on all POSIX systems.</p>
+</div>
+<div class="section" id="other-multinode-calls">
+<h3>Other MultiNode calls<a class="headerlink" href="#other-multinode-calls" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible for devices to retrieve data about the group itself,
+including the role or name of the current device as well as the names and roles
+of other devices in the group. See <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> for more information.</p>
+</div>
+</div>
+<div class="section" id="writing-jobs-using-the-multinode-protocol">
+<span id="writing-multinode-protocol"></span><h2>Writing jobs using the MultiNode protocol<a class="headerlink" href="#writing-jobs-using-the-multinode-protocol" title="Permalink to this headline">¶</a></h2>
+<p>The MultiNode protocol defines the MultiNode group and also allows actions
+within the job pipeline to make calls using the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> outside of
+a test definition.</p>
+<p>The MultiNode protocol allows data to be shared between actions, including data
+generated in a test shell definition for one role being made available for use
+by a different role in its deploy or boot action.</p>
+<p>The MultiNode protocol can underpin the use of other tools without necessarily
+needing a dedicated protocol class to be written for those tools. Using the
+MultiNode protocol is an extension of using the existing <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a>
+calls within a test definition. The use of the protocol is an advanced use of
+LAVA and relies on the test writer carefully planning how the job will work.
+See <a class="reference internal" href="pipeline-writer-secondary.html#delayed-start-multinode"><span class="std std-ref">Delaying the start of a job using Multinode</span></a> for an example of how to use this.</p>
+</div>
+<div class="section" id="writing-jobs-using-multinode-and-lxc">
+<span id="writing-multinode-with-lxc"></span><h2>Writing jobs using MultiNode and LXC<a class="headerlink" href="#writing-jobs-using-multinode-and-lxc" title="Permalink to this headline">¶</a></h2>
+<p>Some devices need an LXC to do the deployment operations, boot operations or
+test shell actions. These devices can still be part of a MultiNode group, as
+long as some thought is given to constructing the test job submission.</p>
+<p>In this section, the example will concentrate on adding MultiNode to a device
+which needs LXC support in order to allow the device to run tests inside a
+<a class="reference internal" href="connections.html#secondary-connection"><span class="std std-ref">Secondary Connection</span></a>.</p>
+<p>This test job will combine the ideas of <a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">namespace</span></a> and <a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a>.
+Make sure you are clear on which parts of the test job will happen in which
+namespace and in which role.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer-secondary.html#writing-secondary-connection-jobs"><span class="std std-ref">Writing jobs using Secondary Connections</span></a> and
+<a class="reference internal" href="deploy-lxc.html#deploy-using-lxc"><span class="std std-ref">Deploying test images using LXC</span></a></p>
+</div>
+<p>For a secondary connection MultiNode test job using a device which uses an LXC,
+there will be a need to deploy and boot the LXC, deploy and boot the host
+device and deploy and boot the SSH guest(s). There will also be test actions
+but those can be considered later.</p>
+<p>The host device and LXC will have existing test jobs which use namespaces.
+The secondary connection(s) will need to operate in an additional namespace.</p>
+<p>The host device and LXC will need to exist in the same role, the secondary
+connection(s) will need to be in a separate role so that the MultiNode protocol
+can be used to communicate from the host to the guest:</p>
+<p>In the example, the secondary connections use the <code class="docutils literal notranslate"><span class="pre">guest</span></code> role and the
+<code class="docutils literal notranslate"><span class="pre">guest</span></code> namespace. The device uses the <code class="docutils literal notranslate"><span class="pre">host</span></code> role and the <code class="docutils literal notranslate"><span class="pre">device</span></code>
+namespace. The LXC uses the <code class="docutils literal notranslate"><span class="pre">host</span></code> role and the <code class="docutils literal notranslate"><span class="pre">probe</span></code> namespace.</p>
+<p>Roles and namespaces <strong>can</strong> have the same label but are not the same thing.
+If you do use the same string for a namespace and a role, make sure that the
+namespace and the role apply to the same actions. All actions <strong>must</strong> have
+both a namespace and a role.</p>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/bbb-lxc-ssh-guest.html">examples/test-jobs/bbb-lxc-ssh-guest.yaml</a>:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">protocols</span></code> block needs to combine the MultiNode requirements and the LXC
+requirements. However, the MultiNode requirements take priority because the LXC
+block is only accessed <strong>after</strong> the test job submission has been split into
+the list of sub-jobs contained within the MultiNode group. Therefore, the LXC
+protocol information has to declare the <code class="docutils literal notranslate"><span class="pre">role</span></code> and put the rest of the data
+within that role:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-lxc</span><span class="punctuation">:</span>
+    <span class="name tag">host</span><span class="punctuation">:</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc-ssh-test</span>
+      <span class="name tag">template</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+      <span class="name tag">distribution</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+      <span class="name tag">release</span><span class="punctuation">:</span> <span class="literal scalar plain">stretch</span>
+</pre>
+<p>The rest of the <code class="docutils literal notranslate"><span class="pre">protocols</span></code> block now defines the MultiNode roles and data
+required for the secondary connections - in this case 3 connections will be
+attempted. The full protocols block looks like:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">protocols</span><span class="punctuation">:</span>
+  <span class="name tag">lava-lxc</span><span class="punctuation">:</span>
+    <span class="name tag">host</span><span class="punctuation">:</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc-ssh-test</span>
+      <span class="name tag">template</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+      <span class="name tag">distribution</span><span class="punctuation">:</span> <span class="literal scalar plain">debian</span>
+      <span class="name tag">release</span><span class="punctuation">:</span> <span class="literal scalar plain">stretch</span>
+  <span class="name tag">lava-multinode</span><span class="punctuation">:</span>
+    <span class="comment single"># expect_role is used by the dispatcher and is part of delay_start</span>
+    <span class="comment single"># host_role is used by the scheduler, unrelated to delay_start.</span>
+    <span class="name tag">roles</span><span class="punctuation">:</span>
+      <span class="name tag">host</span><span class="punctuation">:</span>
+        <span class="name tag">device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">beaglebone-black</span>
+        <span class="name tag">count</span><span class="punctuation">:</span> <span class="literal scalar plain">1</span>
+        <span class="name tag">timeout</span><span class="punctuation">:</span>
+          <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">10</span>
+      <span class="name tag">guest</span><span class="punctuation">:</span>
+        <span class="comment single"># protocol API call to make during protocol setup</span>
+        <span class="name tag">request</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-start</span>
+        <span class="comment single"># set the role for which this role will wait</span>
+        <span class="name tag">expect_role</span><span class="punctuation">:</span> <span class="literal scalar plain">host</span>
+        <span class="name tag">timeout</span><span class="punctuation">:</span>
+          <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">15</span>
+        <span class="comment single"># no device_type, just a connection</span>
+        <span class="name tag">connection</span><span class="punctuation">:</span> <span class="literal scalar plain">ssh</span>
+        <span class="name tag">count</span><span class="punctuation">:</span> <span class="literal scalar plain">3</span>
+        <span class="comment single"># each ssh connection will attempt to connect to the device of role 'host'</span>
+        <span class="name tag">host_role</span><span class="punctuation">:</span> <span class="literal scalar plain">host</span>
+</pre>
+<p>The actions need a little bit of consideration. Typically, the LXC will need to
+be deployed and booted first. This is so that tools inside the LXC can be
+installed and configured, ready to be used in the deploy stage of the device.</p>
+<p>Just as with the protocols block, the MultiNode requirements take priority over
+the LXC, so the LXC deploy and boot actions <strong>must</strong> declare a role. To be
+useful with the device, the role must match the role assigned to the device. In
+this example, that role is labeled <code class="docutils literal notranslate"><span class="pre">host</span></code> and uses the <code class="docutils literal notranslate"><span class="pre">probe</span></code> namespace.</p>
+<pre class="code yaml literal-block">
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">host</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">probe</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc</span>
+    <span class="name tag">packages</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">usbutils</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">procps</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">lsb-release</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">util-linux</span>
+
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">host</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">probe</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'root&#64;(.*):/#'</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">lxc</span>
+</pre>
+<p>The deploy and boot actions for the device and for the secondary connection
+guests remain the same as for a secondary connection test job without an LXC.
+Note how the device uses the <code class="docutils literal notranslate"><span class="pre">host</span></code> role and the <code class="docutils literal notranslate"><span class="pre">device</span></code> namespace and the
+guests use the <code class="docutils literal notranslate"><span class="pre">guest</span></code> role and <code class="docutils literal notranslate"><span class="pre">guest</span></code> namespace.</p>
+<p>The change compared to a test job for a device which needs an LXC is the use of
+<code class="docutils literal notranslate"><span class="pre">authorize</span></code>. Whichever role is operating as the <code class="docutils literal notranslate"><span class="pre">host</span></code> must specify how to
+authorize connections from other roles using the <code class="docutils literal notranslate"><span class="pre">authorize:</span></code> key in the
+deployment. This allows the relevant Action to deploy the necessary support.
+e.g. <code class="docutils literal notranslate"><span class="pre">/root/.ssh/authorized_keys</span></code></p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">host</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">device</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">4</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tftp</span>
+    <span class="comment single"># authorize for ssh adds the ssh public key to authorized_keys</span>
+    <span class="name tag">authorize</span><span class="punctuation">:</span> <span class="literal scalar plain">ssh</span>
+
+    <span class="name tag">kernel</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/vmlinuz-4.9.0-4-armmp</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">b6043cc5a07e2cead3f7f098018e7706ea7840eece2a456ba5fcfaddaf98a21e</span>
+      <span class="name tag">type</span><span class="punctuation">:</span> <span class="literal scalar plain">zimage</span>
+    <span class="name tag">ramdisk</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/initrd.img-4.9.0-4-armmp</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">4cc25f499ae74e72b5d74c9c5e65e143de8c2e3b019f5d1781abbf519479b843</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">modules</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/modules.tar.gz</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">10e6930e9282dd44905cfd3f3a2d5a5058a1d400374afb2619412554e1067d58</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">nfsrootfs</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/stretch-armhf-nfs.tar.gz</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">46d18f339ac973359e8ac507e5258b620709add94cf5e09a858d936ace38f698</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="name tag">dtb</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/armhf/3/dtbs/am335x-boneblack.dtb</span>
+      <span class="name tag">sha256sum</span><span class="punctuation">:</span> <span class="literal scalar plain">c4c461712bf52af7d020e78678e20fc946f1d9b9552ef26fd07ae85c5373ece9</span>
+
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">guest</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">guest</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>  <span class="comment single"># timeout for the ssh connection attempt</span>
+      <span class="name tag">seconds</span><span class="punctuation">:</span> <span class="literal scalar plain">30</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">ssh</span>
+    <span class="name tag">connection</span><span class="punctuation">:</span> <span class="literal scalar plain">ssh</span>
+    <span class="name tag">protocols</span><span class="punctuation">:</span>
+      <span class="name tag">lava-multinode</span><span class="punctuation">:</span>
+      <span class="punctuation indicator">-</span> <span class="name tag">action</span><span class="punctuation">:</span> <span class="literal scalar plain">prepare-scp-overlay</span>
+        <span class="name tag">request</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-wait</span>
+        <span class="comment single"># messageID matches hostID</span>
+        <span class="name tag">messageID</span><span class="punctuation">:</span> <span class="literal scalar plain">ipv4</span>
+        <span class="name tag">message</span><span class="punctuation">:</span>
+          <span class="comment single"># the key of the message matches value of the host_key</span>
+          <span class="comment single"># the value of the message gets substituted</span>
+          <span class="name tag">ipaddr</span><span class="punctuation">:</span> <span class="literal scalar plain">$ipaddr</span>
+      <span class="name tag">timeout</span><span class="punctuation">:</span>  <span class="comment single"># delay_start timeout</span>
+        <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">host</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">device</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">15</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">u-boot</span>
+    <span class="name tag">commands</span><span class="punctuation">:</span> <span class="literal scalar plain">nfs</span>
+    <span class="name tag">auto_login</span><span class="punctuation">:</span>
+      <span class="name tag">login_prompt</span><span class="punctuation">:</span> <span class="literal string">'login:'</span>
+      <span class="name tag">username</span><span class="punctuation">:</span> <span class="literal scalar plain">root</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'root&#64;stretch:'</span>
+    <span class="name tag">parameters</span><span class="punctuation">:</span>
+      <span class="name tag">shutdown-message</span><span class="punctuation">:</span> <span class="name tag">&quot;reboot</span><span class="punctuation">:</span> <span class="literal scalar plain">Restarting system&quot;</span>
+
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">role</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal scalar plain">guest</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">guest</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">3</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'root&#64;stretch:'</span>
+    <span class="name tag">parameters</span><span class="punctuation">:</span>
+      <span class="name tag">hostID</span><span class="punctuation">:</span> <span class="literal scalar plain">ipv4</span>  <span class="comment single"># messageID</span>
+      <span class="name tag">host_key</span><span class="punctuation">:</span> <span class="literal scalar plain">ipaddr</span>  <span class="comment single"># message key</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">ssh</span>
+    <span class="name tag">connection</span><span class="punctuation">:</span> <span class="literal scalar plain">ssh</span>
+</pre>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="connections.html#secondary-connection"><span class="std std-ref">Secondary Connection</span></a> for more information on secondary
+connections and authorization.</p>
+</div>
+<div class="section" id="adding-test-actions">
+<h3>Adding test actions<a class="headerlink" href="#adding-test-actions" title="Permalink to this headline">¶</a></h3>
+<p>Test actions can be placed anywhere after the corresponding deploy and boot
+actions. As the LXC is deployed and booted first, the LXC can run a test shell
+before deploying the device, before booting the device, before the test shell
+action on the device which starts the secondary connection guests or at any
+later point.</p>
+<p>The test actions for the secondary connections retain the original order - the
+host test action needs to run first to set up the service and send the message
+declaring the IP address.</p>
+<p>Remember that the LXC is associated with the device (in this example, the
+<code class="docutils literal notranslate"><span class="pre">host</span></code> role).</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/writing-multinode.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:11 GMT -->
+</html>

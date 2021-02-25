@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/results-intro.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction to Results in LAVA &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using Test Results" href="lava-queries-charts.html" />
+    <link rel="prev" title="Using Jinja2 to generate LAVA test job submissions" href="templating.html" />
+    <link rel="canonical" href="results-intro.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Introduction to Results in LAVA</a><ul>
+<li><a class="reference internal" href="#results-in-lava">Results in LAVA</a></li>
+<li><a class="reference internal" href="#accessing-results">Accessing results</a><ul>
+<li><a class="reference internal" href="#accessing-specific-test-results">Accessing specific test results</a><ul>
+<li><a class="reference internal" href="#test-suite">Test Suite</a></li>
+<li><a class="reference internal" href="#test-set">Test Set</a></li>
+<li><a class="reference internal" href="#test-case">Test Case</a></li>
+<li><a class="reference internal" href="#test-raise">Test Raise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#accessing-the-test-job-logs-from-results">Accessing the test job logs from results</a><ul>
+<li><a class="reference internal" href="#multiple-occurrences">Multiple occurrences</a></li>
+<li><a class="reference internal" href="#accessing-associated-sections-of-test-job-logs">Accessing associated sections of test job logs</a><ul>
+<li><a class="reference internal" href="#sample-output-for-lava-test-case-name-shell">Sample output for lava-test-case &lt;NAME&gt; shell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="templating.html" title="Previous Chapter: Using Jinja2 to generate LAVA test job submissions"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Using Jinja2 ...</span>
+    </a>
+  </li>
+  <li>
+    <a href="lava-queries-charts.html" title="Next Chapter: Using Test Results"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Using Test Results &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="introduction-to-results-in-lava">
+<span id="results-intro"></span><span id="index-0"></span><h1>Introduction to Results in LAVA<a class="headerlink" href="#introduction-to-results-in-lava" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="writing-tests.html#test-definition-yaml"><span class="std std-ref">Writing a test definition YAML file</span></a>, <a class="reference internal" href="lava-queries-charts.html#queries"><span class="std std-ref">LAVA Queries</span></a> and <a class="reference internal" href="lava-queries-charts.html#lava-charts"><span class="std std-ref">LAVA Charts</span></a></p>
+</div>
+<div class="section" id="results-in-lava">
+<h2>Results in LAVA<a class="headerlink" href="#results-in-lava" title="Permalink to this headline">¶</a></h2>
+<p>At the lowest level, a result in LAVA is called a Test Case and is a simple
+flag:</p>
+<ul class="simple">
+<li>pass</li>
+<li>fail</li>
+<li>skip</li>
+<li>unknown</li>
+</ul>
+<p>In addition, each test case can include a measurement (integer or floating
+point), with units.</p>
+<p>Test cases are aggregated into a Test Suite. Multiple test suites can be
+generated for each submitted test job.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="writing-tests.html#recording-test-result-data"><span class="std std-ref">Recording test case data</span></a></p>
+</div>
+</div>
+<div class="section" id="accessing-results">
+<span id="results-rest-api"></span><h2>Accessing results<a class="headerlink" href="#accessing-results" title="Permalink to this headline">¶</a></h2>
+<p>LAVA exposes a REST API to provide access to the results from test jobs. The
+URL is built from the following components:</p>
+<ol class="arabic simple">
+<li>The instance name</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">results</span></code> directory.</li>
+<li>The test job ID</li>
+</ol>
+<p>From this point, all the results for the test job can be downloaded as
+<abbr title="Comma Separated Values">CSV</abbr> or YAML.</p>
+<p>There are also CSV and YAML download links for the complete set of results for
+the job. The export includes details of the test definition names. For example,
+if a test job on <code class="docutils literal notranslate"><span class="pre">validation.linaro.org</span></code> has the job ID <code class="docutils literal notranslate"><span class="pre">1109234</span></code>, the CSV
+download link for all results would be
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/1109234/csv</span></code>. The YAML download link
+for all results would be
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/1109234/yaml</span></code>.</p>
+<div class="section" id="accessing-specific-test-results">
+<h3>Accessing specific test results<a class="headerlink" href="#accessing-specific-test-results" title="Permalink to this headline">¶</a></h3>
+<p>Within the results for the entire test job, results are split into test suites,
+optionally into test sets and finally into test cases.</p>
+<div class="section" id="test-suite">
+<span id="results-test-suite"></span><span id="index-1"></span><h4>Test Suite<a class="headerlink" href="#test-suite" title="Permalink to this headline">¶</a></h4>
+<p>The name of the Test Suite is determined by the test job definition. The Test
+Suite is created when results are generated in the running test job.</p>
+<pre class="code yaml literal-block">
+    <span class="name tag">auto_login</span><span class="punctuation">:</span>
+      <span class="name tag">login_prompt</span><span class="punctuation">:</span> <span class="literal string">&quot;login:&quot;</span>
+      <span class="name tag">username</span><span class="punctuation">:</span> <span class="literal scalar plain">root</span>
+
+<span class="comment single"># TEST_BLOCK</span>
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">smoke-tests</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">https://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-test-shell/single-node/singlenode03.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">singlenode-advanced</span>
+</pre>
+<p>In this test job definition, there are two entries in the <code class="docutils literal notranslate"><span class="pre">definitions</span></code> list,
+so two test suites. The first test suite in the list has the prefix <code class="docutils literal notranslate"><span class="pre">0_</span></code> and
+the prefix increments for subsequent test suites in the list. The <code class="docutils literal notranslate"><span class="pre">name</span></code>
+element is then appended to create the test suite name.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">0_smoke-tests</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">1_singlenode-advanced</span></code></li>
+</ul>
+<p>Results are only generated when the Lava Test Shell Definition makes at least
+one call to <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> (including automatic calls made by the
+<a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a>).</p>
+<p>The test suite can then be appended to the REST API URL for the results to
+limit the results to just that test suite:
+<code class="docutils literal notranslate"><span class="pre">/results/1109234/0_smoke-tests/csv</span></code> or:
+<code class="docutils literal notranslate"><span class="pre">/results/1109234/0_smoke-tests/yaml</span></code>.</p>
+<p>In addition, every test job has a <code class="docutils literal notranslate"><span class="pre">lava</span></code> test suite which holds results for
+the processing of the pipeline itself. This set of results can hold useful
+information like the commit hash of the test definition when it was cloned to
+create the overlay, the duration of all actions (including the kernel boot) and
+other information.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Test definitions will be rejected if the test suite name is set to
+<code class="docutils literal notranslate"><span class="pre">lava</span></code> to prevent conflicts with the internal results.</p>
+</div>
+</div>
+<div class="section" id="test-set">
+<span id="test-set-results"></span><h4>Test Set<a class="headerlink" href="#test-set" title="Permalink to this headline">¶</a></h4>
+<p>Test Set is optional but allows test writers to subdivide individual results
+within a single Lava Test Shell Definition using an arbitrary label.</p>
+<p>Some test definitions run the same test with different parameters. To
+distinguish between these similar tests, it can be useful to use a test set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="nb">set</span> <span class="n">start</span> <span class="n">syscalls</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">case</span> <span class="n">syscalls</span>
+<span class="c1"># ....</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="nb">set</span> <span class="n">stop</span> <span class="n">syscalls</span>
+<span class="c1"># change parameters</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">case</span> <span class="n">start</span> <span class="n">math</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">case</span> <span class="n">math</span>
+<span class="c1"># ....</span>
+<span class="n">lava</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="nb">set</span> <span class="n">stop</span> <span class="n">math</span>
+</pre></div>
+</div>
+<p>This adds a set around those test cases by adding the test set to the URL.
+<code class="docutils literal notranslate"><span class="pre">/results/JOB_ID/2_smoke-tests/syscall_one_test</span></code> becomes
+<code class="docutils literal notranslate"><span class="pre">/results/JOB_ID/2_smoke-tests/syscalls/syscall_one_test</span></code></p>
+</div>
+<div class="section" id="test-case">
+<h4>Test Case<a class="headerlink" href="#test-case" title="Permalink to this headline">¶</a></h4>
+<p>A Test Case can be generated in a number of ways:</p>
+<ul class="simple">
+<li>by calling <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> from a Lava Test Shell.</li>
+<li>during operation of an Action within the pipeline</li>
+<li>by parsing patterns in the test</li>
+</ul>
+<p>Each test case has a name and a result. Optionally, test cases can have
+measurements and units. The name of the test case <strong>must</strong> be valid as part of
+the REST API so whitespace is not allowed.</p>
+<p>If a test case has a measurement, the measurement is represented as a python
+<code class="docutils literal notranslate"><span class="pre">Decimal</span></code> value as this provides the best way to preserve precision through
+the various export handlers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">case</span><span class="o">.</span><span class="n">measurement</span>
+<span class="go">Decimal(&#39;112.2510000000&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">decimal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
+<span class="go">Decimal(&#39;112.2510000000&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="go">Decimal(&#39;112.251&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">float</span><span class="p">(</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">())</span>
+<span class="go">112.251</span>
+</pre></div>
+</div>
+<p>Representation of some numbers in Decimal can look a little odd but these
+can be easily converted or compared:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="mf">0E-10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">The python documentation on Decimal at
+<a class="reference external" href="https://docs.python.org/2.7/library/decimal.html#module-decimal">https://docs.python.org/2.7/library/decimal.html#module-decimal</a></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Since test case name can be generated in such ways that no character
+validation is viable, the test case URL has been changed and is now
+generated using the test case ID. Old URL behavior is still supported when
+looking up the test case in the results but test case URLs with non
+supported characters will return a Not Found (404) page. Links within test
+job log files all use the test case ID.</p>
+<p class="last">e.g. <a class="reference external" href="http://localhost/results/12020/lava/validate">http://localhost/results/12020/lava/validate</a> and
+<a class="reference external" href="http://localhost/results/testcase/60534">http://localhost/results/testcase/60534</a> will both work.</p>
+</div>
+</div>
+<div class="section" id="test-raise">
+<span id="id1"></span><h4>Test Raise<a class="headerlink" href="#test-raise" title="Permalink to this headline">¶</a></h4>
+<p>Some test definitions are designed to configure or initialize a service or
+operation or peripheral device. If this setup task fails, the later
+test definitions will fail but that will take time and the failure messages
+may not be obvious.</p>
+<p>A test shell definition can abort further test operations by calling
+<code class="docutils literal notranslate"><span class="pre">lava-test-raise</span> <span class="pre">MESSAGE</span></code> which will raise an immediate TestError
+exception. The current test shell result will be marked as <code class="docutils literal notranslate"><span class="pre">fail</span></code> and
+the <code class="docutils literal notranslate"><span class="pre">${MESSAGE}</span></code> will be recorded. The test job itself will go <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code>
+and the <code class="docutils literal notranslate"><span class="pre">${MESSAGE}</span></code> will be recorded as the job failure comment.</p>
+</div>
+</div>
+</div>
+<div class="section" id="accessing-the-test-job-logs-from-results">
+<span id="accessing-test-logs"></span><h2>Accessing the test job logs from results<a class="headerlink" href="#accessing-the-test-job-logs-from-results" title="Permalink to this headline">¶</a></h2>
+<p>There is a link in the test case detail page, directly after the test case
+name, which links to the point in the log where that test was reported.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To prevent problems with test case names which do not map as a URL,
+the test case ID is used to link the report of the test case in the test job
+log file to the actual test case and back again. This database ID is
+reported in the log file and exported as part of the results data.</p>
+</div>
+<p>In the log file this section looks like:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Received signal: &lt;TESTCASE&gt; TEST_CASE_ID=mysql-show-databases RESULT=pass
+case: mysql-show-databases
+case_id: 60551
+definition: 1_lamp-test
+result: pass
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The test shell does not wait until the test case entry has been
+created before moving on, so there can be an offset between the point linked
+from the result (where the test case entry was created) to the point
+slightly earlier in the log where the test itself was executed. This wait
+behavior caused various bugs as it needs to block at the shell read command
+which gets confused by other messages on the serial console.</p>
+</div>
+<p>There is a REST API using the name of the test definition and the name of the
+test case.</p>
+<p>The name of the test definition comes from the test job definition:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+     <span class="l l-Scalar l-Scalar-Plain">from</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+     <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/single-node/singlenode03.yaml</span>
+     <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+</pre></div>
+</div>
+<p>The digit comes from the sequence of definitions in the list in the test action
+of the test job definition. For example, a test job with three definitions may
+result in the test actions: 0_env-dut-inline, 1_smoke_tests and
+2_singlenode_advanced.</p>
+<p>The test case name comes directly from the call to lava-test-case.</p>
+<p>When an inline test definition does not report any test cases (by not calling
+lava-test-case anywhere, just doing setup or diagnostic calls to put data into
+the logs) then the metadata shows that test definition as “omitted” and it has
+no entry in the results table.</p>
+<p>omitted.0.inline.name: env-dut-inline</p>
+<p>In addition, each test job gets a set of LAVA results containing
+useful information like the commit hash of the test definition when it
+was cloned for this test job.</p>
+<div class="section" id="multiple-occurrences">
+<h3>Multiple occurrences<a class="headerlink" href="#multiple-occurrences" title="Permalink to this headline">¶</a></h3>
+<p>If a test suite or test case occurs more than one in a set of results, those
+occurrences will show up in the results table. If each occurrence is within the
+same test definition, there will be one page showing both results (as the test
+case name is the same, there can only be one URL). Each occurrence links to a
+different point in the job log.</p>
+</div>
+<div class="section" id="accessing-associated-sections-of-test-job-logs">
+<span id="log-sections"></span><span id="index-2"></span><h3>Accessing associated sections of test job logs<a class="headerlink" href="#accessing-associated-sections-of-test-job-logs" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#accessing-test-logs"><span class="std std-ref">Accessing the test job logs from results</span></a> allows users to navigate from a result back
+to the log file at the point where the result was created. It is also
+useful to allow sections of the test job log file to be downloaded,
+using the <code class="docutils literal notranslate"><span class="pre">scheduler.jobs.logs(job_id,</span> <span class="pre">start=0,</span> <span class="pre">end=None)</span></code>
+<a class="reference internal" href="data-export.html#xml-rpc"><span class="std std-ref">XMLRPC</span></a> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xmlrpc.client</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">xmlrpc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ServerProxy</span><span class="p">(</span><span class="s2">&quot;http://localhost/RPC2&quot;</span><span class="p">)</span>
+    <span class="c1"># get lines 809 to 832 for test job 2140 on localhost</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">logs</span><span class="p">(</span><span class="mi">2140</span><span class="p">,</span> <span class="mi">809</span><span class="p">,</span> <span class="mi">832</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>The output is a list of dictionaries, one dictionary for each line of
+the test job log output, as YAML.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="data-export.html#data-export"><span class="std std-ref">Exporting data out of LAVA</span></a> - the start and end lines are displayed
+in the UI when viewing a test case and are also exported through the
+REST API and XMLRPC functions</p>
+</div>
+<p>When a test case is created from a <a class="reference internal" href="writing-tests.html#lava-test-shell-definition"><span class="std std-ref">Lava Test Shell</span></a>, the line number in the log file will
+be recorded in the TestCase in the following ways:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">lava-test-case</span> <span class="pre">&lt;NAME&gt;</span> <span class="pre">--shell</span></code> includes a <code class="docutils literal notranslate"><span class="pre">start_log_line</span></code> field
+and a <code class="docutils literal notranslate"><span class="pre">end_log_line</span></code> field which match the <code class="docutils literal notranslate"><span class="pre">START_TC</span></code> and
+<code class="docutils literal notranslate"><span class="pre">END_TC</span></code> signals respectively. The lines between the start and end
+will typically contain the content of the shell executed by the
+<code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code> command.</li>
+<li><code class="docutils literal notranslate"><span class="pre">lava-test-case</span> <span class="pre">&lt;NAME&gt;</span> <span class="pre">--result</span></code> includes only the
+<code class="docutils literal notranslate"><span class="pre">start_log_line</span></code> as the line number where the result was reported.
+Typically, the content relating to how the result was declared will
+precede this line number, depending on how the Test Shell Definition
+is written.</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>If the test shell definition scripts parse a log file
+and then call <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>, the scripts are responsible for
+also outputting anything from the log file which relates to the
+reported test case. LAVA can only react to the signals sent by the
+DUT and the output can be earlier or later in the file. The test
+itself would need to be rewritten to not run a pre-existing command
+but to run each test operation as a separate <code class="docutils literal notranslate"><span class="pre">lava-test-case</span> <span class="pre">&lt;NAME&gt;</span>
+<span class="pre">--shell</span></code> call. This is not necessarily possible for all test suites.</p>
+<p>One idea is to deliberately add a <code class="docutils literal notranslate"><span class="pre">lava-test-case</span> <span class="pre">&lt;NAME&gt;</span> <span class="pre">--result</span>
+<span class="pre">pass</span></code> before each block of commands to the upstream test suite, then
+fetch the entire section, from the known starting test case log line
+to the log line of the upstream test case.</p>
+<p class="last">Note that results created in the <code class="docutils literal notranslate"><span class="pre">lava</span></code> test suite do not create
+start, end or test case log lines.</p>
+</div>
+<div class="section" id="sample-output-for-lava-test-case-name-shell">
+<h4>Sample output for lava-test-case &lt;NAME&gt; shell<a class="headerlink" href="#sample-output-for-lava-test-case-name-shell" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.238676&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;debug&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span><span class="nt"> &#39;Received signal</span><span class="p">:</span> <span class="nv">&lt;STARTTC&gt; linux-linaro-ubuntu-ifconfig&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.239618&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;eth0</span><span class="nv">      </span><span class="s">Link</span><span class="nv"> </span><span class="s">encap:Ethernet</span><span class="nv">  </span><span class="s">HWaddr</span><span class="nv"> </span><span class="s">52:54:00:12:34:59</span><span class="nv">  </span><span class="s">&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.240048&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">inet</span><span class="nv"> </span><span class="s">addr:10.0.2.15</span><span class="nv">  </span><span class="s">Bcast:10.0.2.255</span><span class="nv">  </span><span class="s">Mask:255.255.255.0&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.240583&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span><span class="nt"> &#39;          inet6 addr</span><span class="p">:</span> <span class="nv">fe80</span><span class="p p-Indicator">::</span><span class="nv">5054</span><span class="p p-Indicator">:</span><span class="nv">ff</span><span class="p p-Indicator">:</span><span class="nv">fe12</span><span class="p p-Indicator">:</span><span class="nv">3459/64 Scope</span><span class="p p-Indicator">:</span><span class="nv">Link&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.241201&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span><span class="nt"> &#39;          inet6 addr</span><span class="p">:</span> <span class="nv">fec0</span><span class="p p-Indicator">::</span><span class="nv">5054</span><span class="p p-Indicator">:</span><span class="nv">ff</span><span class="p p-Indicator">:</span><span class="nv">fe12</span><span class="p p-Indicator">:</span><span class="nv">3459/64 Scope</span><span class="p p-Indicator">:</span><span class="nv">Site&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.241931&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">UP</span><span class="nv"> </span><span class="s">BROADCAST</span><span class="nv"> </span><span class="s">RUNNING</span><span class="nv"> </span><span class="s">MULTICAST</span><span class="nv">  </span><span class="s">MTU:1500</span><span class="nv">  </span><span class="s">Metric:1&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.242807&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">RX</span><span class="nv"> </span><span class="s">packets:3</span><span class="nv"> </span><span class="s">errors:0</span><span class="nv"> </span><span class="s">dropped:0</span><span class="nv"> </span><span class="s">overruns:0</span><span class="nv"> </span><span class="s">frame:0&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.242946&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">TX</span><span class="nv"> </span><span class="s">packets:7</span><span class="nv"> </span><span class="s">errors:0</span><span class="nv"> </span><span class="s">dropped:0</span><span class="nv"> </span><span class="s">overruns:0</span><span class="nv"> </span><span class="s">carrier:0&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.244086&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">collisions:0</span><span class="nv"> </span><span class="s">txqueuelen:1000</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.244300&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">RX</span><span class="nv"> </span><span class="s">bytes:1290</span><span class="nv"> </span><span class="s">(1.2</span><span class="nv"> </span><span class="s">KiB)</span><span class="nv">  </span><span class="s">TX</span><span class="nv"> </span><span class="s">bytes:1102</span><span class="nv"> </span><span class="s">(1.0</span><span class="nv"> </span><span class="s">KiB)&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.244445&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.244571&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;lo</span><span class="nv">        </span><span class="s">Link</span><span class="nv"> </span><span class="s">encap:Local</span><span class="nv"> </span><span class="s">Loopback</span><span class="nv">  </span><span class="s">&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.245784&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">inet</span><span class="nv"> </span><span class="s">addr:127.0.0.1</span><span class="nv">  </span><span class="s">Mask:255.0.0.0&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.245930&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span><span class="nt"> &#39;          inet6 addr</span><span class="p">:</span> <span class="p p-Indicator">::</span><span class="nv">1/128 Scope</span><span class="p p-Indicator">:</span><span class="nv">Host&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.246054&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">UP</span><span class="nv"> </span><span class="s">LOOPBACK</span><span class="nv"> </span><span class="s">RUNNING</span><span class="nv">  </span><span class="s">MTU:65536</span><span class="nv">  </span><span class="s">Metric:1&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.246175&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">RX</span><span class="nv"> </span><span class="s">packets:0</span><span class="nv"> </span><span class="s">errors:0</span><span class="nv"> </span><span class="s">dropped:0</span><span class="nv"> </span><span class="s">overruns:0</span><span class="nv"> </span><span class="s">frame:0&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.247830&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">TX</span><span class="nv"> </span><span class="s">packets:0</span><span class="nv"> </span><span class="s">errors:0</span><span class="nv"> </span><span class="s">dropped:0</span><span class="nv"> </span><span class="s">overruns:0</span><span class="nv"> </span><span class="s">carrier:0&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.247999&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">collisions:0</span><span class="nv"> </span><span class="s">txqueuelen:0</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.248125&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv">          </span><span class="s">RX</span><span class="nv"> </span><span class="s">bytes:0</span><span class="nv"> </span><span class="s">(0.0</span><span class="nv"> </span><span class="s">B)</span><span class="nv">  </span><span class="s">TX</span><span class="nv"> </span><span class="s">bytes:0</span><span class="nv"> </span><span class="s">(0.0</span><span class="nv"> </span><span class="s">B)&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.248246&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.248364&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;&lt;LAVA_SIGNAL_ENDTC</span><span class="nv"> </span><span class="s">linux-linaro-ubuntu-ifconfig&gt;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.250065&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;debug&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span><span class="nt"> &#39;Received signal</span><span class="p">:</span> <span class="nv">&lt;ENDTC&gt; linux-linaro-ubuntu-ifconfig&#39;</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The command which generates this output is typically not
+seen and may be several lines earlier in the log output:</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.236887&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;+</span><span class="nv"> </span><span class="s">lava-test-case</span><span class="nv"> </span><span class="s">linux-linaro-ubuntu-ifconfig</span><span class="nv"> </span><span class="s">--shell</span><span class="nv"> </span><span class="s">ifconfig</span><span class="nv"> </span><span class="s">-a&#39;</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>In particular, the issuing of the command may be interleaved with the
+signal handling of other test cases:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.236887&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;+</span><span class="nv"> </span><span class="s">lava-test-case</span><span class="nv"> </span><span class="s">linux-linaro-ubuntu-ifconfig</span><span class="nv"> </span><span class="s">--shell</span><span class="nv"> </span><span class="s">ifconfig</span><span class="nv"> </span><span class="s">-a&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.237428&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;debug&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span><span class="nt"> &#39;Received signal</span><span class="p">:</span> <span class="nv">&lt;TESTCASE&gt; TEST_CASE_ID=linux-linaro-ubuntu-vmstat RESULT=pass&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.237860&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;results&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">&#39;case&#39;</span><span class="p">:</span> <span class="s">&#39;linux-linaro-ubuntu-vmstat&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;definition&#39;</span><span class="p">:</span> <span class="s">&#39;1_smoke-tests&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;result&#39;</span><span class="p">:</span> <span class="s">&#39;pass&#39;</span><span class="p p-Indicator">}}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">&#39;dt&#39;</span><span class="p">:</span> <span class="s">&#39;2018-07-02T10:20:23.238196&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;lvl&#39;</span><span class="p">:</span> <span class="s">&#39;target&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;&lt;LAVA_SIGNAL_STARTTC</span><span class="nv"> </span><span class="s">linux-linaro-ubuntu-ifconfig&gt;&#39;</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>This is due to the inherent latency between issuing a command in a
+shell on the DUT and the reception of the signal by the worker
+across the serial connection.</p>
+<p>The problem can be mitigated by loading the YAML output and filtering
+the lines according to the logging level (<code class="docutils literal notranslate"><span class="pre">lvl</span></code>) for the DUT,
+<code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
+<p>Latency also causes issues if a test outputs a lot of test cases in
+quick succession. The output of the test will then be many lines above
+the signal handling and therefore above the associated log line.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/results-intro.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+</html>

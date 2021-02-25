@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/admin-backups.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:37 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Creating Backups &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced Installation Topics" href="advanced-installation.html" />
+    <link rel="prev" title="User permissions and authorization" href="authorization.html" />
+    <link rel="canonical" href="admin-backups.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Creating Backups</a><ul>
+<li><a class="reference internal" href="#dependencies-within-backups">Dependencies within backups</a><ul>
+<li><a class="reference internal" href="#issues-with-the-base-suite">Issues with the base suite</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-to-include-in-your-configuration-management">What to include in your configuration management</a></li>
+<li><a class="reference internal" href="#what-to-include-in-your-master-backups">What to include in your master backups</a></li>
+<li><a class="reference internal" href="#what-to-include-in-your-worker-backups">What to include in your worker backups</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#restoring-a-master-from-a-backup">Restoring a master from a backup</a></li>
+<li><a class="reference internal" href="#restoring-a-worker-from-backups">Restoring a worker from backups</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="authorization.html" title="Previous Chapter: User permissions and authorization"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; User permissi...</span>
+    </a>
+  </li>
+  <li>
+    <a href="advanced-installation.html" title="Next Chapter: Advanced Installation Topics"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Advanced Inst... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="creating-backups">
+<span id="admin-backups"></span><span id="index-0"></span><h1>Creating Backups<a class="headerlink" href="#creating-backups" title="Permalink to this headline">¶</a></h1>
+<p>Disaster recovery is an important role for all lab admins. If anyone cares
+about the data within the instance and/or the availability of the instance,
+then steps need to be taken, in advance, to prepare for the worst.
+Additionally, these steps will also help with growing your lab by making it
+easier to deploy an initial working setup onto a new master or worker without
+going through all the steps manually.</p>
+<p>Backups may take up a lot of space, and take a long time to perform. This is a
+particular problem with the master where the added load could impact on overall
+performance. Investigate methods of writing backups to external storage without
+causing undue latency.</p>
+<p>Backups may also contain sensitive information like database passwords,
+authentication and encryption certificates and keys. Protect your backups from
+access by anyone except the admins.</p>
+<p>Any backup which has not been tested to successfully restore the previous
+service is not worth having as a backup. It may be infeasible to test every
+backup but intermittently, one backup needs to be fully tested and all backups
+then checked that the equivalent files exist in each.</p>
+<p>Avoid backup solutions which try to image the entire drive. For such systems to
+work reliably with a database, the database server would have to be stopped.
+That first requires that all <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> services are stopped and all
+running TestJobs are canceled. i.e. A backup like this would require a
+maintenance window (scheduled downtime) every time the backup was to be
+performed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As such, restoration of backups is not a simple (or particularly
+quick) process. See <a class="reference internal" href="#admin-restore-backup"><span class="std std-ref">Restoring a master from a backup</span></a>.</p>
+</div>
+<p>If you use configuration management, as recommended in
+<a class="reference internal" href="simple-admin.html#best-admin-practices"><span class="std std-ref">Best practice</span></a>, then this forms part of your backup and recovery
+plan.</p>
+<div class="section" id="dependencies-within-backups">
+<span id="admin-backup-dependencies"></span><h2>Dependencies within backups<a class="headerlink" href="#dependencies-within-backups" title="Permalink to this headline">¶</a></h2>
+<p>Backups <strong>must</strong> be considered as self-contained. It is <strong>dangerous</strong> to try to
+mix files from a backup on one date with files from a different date. This is a
+particular problem with the database and the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package but also
+applies to device configuration and can include the <code class="docutils literal notranslate"><span class="pre">python-django</span></code> package
+as well as other dependencies. Do <strong>not</strong> use an incremental backup procedure
+that separates the database from the code or from the device configuration.</p>
+<p>Admins may wish to download the currently installed <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package
+(and possibly other packages) and add the file(s) to the backup. This can be
+done using the <code class="docutils literal notranslate"><span class="pre">download</span></code> support in <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">apt-get</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># apt-get download lava-server=2016.12-1
+</pre></div>
+</div>
+<p>It is best to specify the exact version to ensure the correct file is
+downloaded. The version string can be obtained from the running system during
+the backup by using <code class="docutils literal notranslate"><span class="pre">dpkg-query</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dpkg-query -W -f &#39;${version}\n&#39; &#39;lava-server&#39;
+</pre></div>
+</div>
+<p>Remember that if the package comes from
+<code class="docutils literal notranslate"><span class="pre">backports</span></code>, it will have a <code class="docutils literal notranslate"><span class="pre">~bpo</span></code> suffix in the version name and <code class="docutils literal notranslate"><span class="pre">apt</span></code>
+will need to be told to use <code class="docutils literal notranslate"><span class="pre">backports</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># apt-get download -t jessie-backports lava-server=2016.12-1~bpo8+1
+</pre></div>
+</div>
+<p>More information is available using the Debian Package Tracker, e.g. for
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code>: <a class="reference external" href="https://tracker.debian.org/pkg/lava-server">https://tracker.debian.org/pkg/lava-server</a></p>
+<p>Packages installed directly from a Debian mirror will be available via
+<a class="reference external" href="http://snapshot.debian.org/">http://snapshot.debian.org/</a>.</p>
+<p>Some data loss is inevitable for the period between the time of failure and the
+time of the most recent backup. (Admins may choose to start every maintenance
+window with a backup for this reason.) However, restoring an older backup has
+significant issues, beyond simply the larger amount of data which will be lost.</p>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p class="last">If the database and the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package do not
+<strong>precisely</strong> match in your backups, <strong>complete data loss is possible</strong>
+during restoration, depending on exactly what migrations are applied or not
+yet applied. At best, this will mean restarting the restoration process,
+possibly with an even older backup. If problems appear with database
+migrations during a restore, <strong>stop immediately</strong> to avoid making things
+worse. At all costs, avoid running commands which activate or execute any
+further migration operation, especially <code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">migrate</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">makemigrations</span></code>. Remember that reinstalling the
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package without fixing the database will <strong>not</strong> fix
+anything as it will attempt to run more migrations. Even if you find third
+party advice to run such commands, <strong>do not do so</strong> without <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talking to
+the LAVA software team</span></a>.</p>
+</div>
+<p>Migrations are applied using the <code class="docutils literal notranslate"><span class="pre">python-django</span></code> package and the version of
+<code class="docutils literal notranslate"><span class="pre">python-django</span></code> installed can also affect whether a database restoration will
+be successful. Other dependencies (like <code class="docutils literal notranslate"><span class="pre">python-django-common</span></code> and
+<code class="docutils literal notranslate"><span class="pre">python-django-tables2</span></code>) may affect whether the service is operational even
+with a working database restoration.</p>
+<p>Some of the critical packages to monitor include:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">postgresql</span></code> - and associated packages, e.g. <code class="docutils literal notranslate"><span class="pre">postgresql-9.5</span></code>, according
+to the base suite of the system and the <code class="docutils literal notranslate"><span class="pre">postgresql-client-9.5</span></code> and
+<code class="docutils literal notranslate"><span class="pre">postgresql-common</span></code> packages associated with the postgresql server package.</li>
+<li><code class="docutils literal notranslate"><span class="pre">lava-server</span></code> (and <code class="docutils literal notranslate"><span class="pre">lava-server-doc</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">python-django</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">python-django-common</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">python-django-tables2</span></code></li>
+</ul>
+<p>Check the <a class="reference external" href="https://lists.lavasoftware.org/pipermail/lava-announce/">LAVA Announce mailing list archives</a> for additional notices
+about new packages to install alongside particular versions of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>
+and <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>. (Admins might choose to download the compressed
+archive for the month in which the backup is made and add that to the backup.)</p>
+<div class="section" id="issues-with-the-base-suite">
+<span id="admin-base-suite-issues"></span><h3>Issues with the base suite<a class="headerlink" href="#issues-with-the-base-suite" title="Permalink to this headline">¶</a></h3>
+<p>Ensure that the base system also matches the suite from which the
+backup was made. It is <strong>not safe</strong> to restore a backup of a system
+which was running with packages from <code class="docutils literal notranslate"><span class="pre">buster-backports</span></code> onto a
+buster system without those same packages being updated from
+<code class="docutils literal notranslate"><span class="pre">buster-backports</span></code> prior to restoration.</p>
+</div>
+</div>
+<div class="section" id="what-to-include-in-your-configuration-management">
+<span id="admin-configuration-management"></span><h2>What to include in your configuration management<a class="headerlink" href="#what-to-include-in-your-configuration-management" title="Permalink to this headline">¶</a></h2>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">This list is <strong>not exhaustive</strong>. Some of the files to be included
+in your backups are not specifically LAVA files and each instance will have
+changes to files not listed in this section. This section exists to remind
+admins about files that might not be included in a default backup of a
+running service.</p>
+</div>
+<ul>
+<li><p class="first"><strong>Debian configuration</strong></p>
+<p>It is <strong>essential</strong> that configuration management prepares the target system
+correctly before attempting to restore the data for the service. All updates
+need to be correctly applied, including packages selected from <code class="docutils literal notranslate"><span class="pre">backports</span></code>
+and other repositories.</p>
+<p>Keep the list of <code class="docutils literal notranslate"><span class="pre">apt</span></code> sources in configuration management and restore the
+appropriate sources for the backup being restored or base system being
+created.</p>
+<p>Ensure that all packages are up to date with the appropriate sources.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#admin-backup-dependencies"><span class="std std-ref">Dependencies within backups</span></a> and
+<a class="reference internal" href="#admin-base-suite-issues"><span class="std std-ref">Issues with the base suite</span></a></p>
+</div>
+</li>
+<li><p class="first"><strong>Device configuration</strong></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code></li>
+</ul>
+</li>
+<li><p class="first"><strong>Service configuration</strong></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/ser2net.conf</span></code> or equivalent</li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/*</span></code> - the rest of the files not already included as
+device configuration. Especially <code class="docutils literal notranslate"><span class="pre">settings.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">instance.conf</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/default/</span></code> - specifically, <code class="docutils literal notranslate"><span class="pre">lxc</span></code>, <code class="docutils literal notranslate"><span class="pre">tftpd-hpa</span></code>, <code class="docutils literal notranslate"><span class="pre">ser2net</span></code>,
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code>,</li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-dispatcher/lava-worker</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available/lava-server.conf</span></code> (on the master)</li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available/lava-dispatcher.conf</span></code> (on a worker)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-to-include-in-your-master-backups">
+<h2>What to include in your master backups<a class="headerlink" href="#what-to-include-in-your-master-backups" title="Permalink to this headline">¶</a></h2>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">This list is <strong>not exhaustive</strong>. Some of the files to be included
+in your backups are not specifically LAVA files and each instance will have
+changes to files not listed in this section. This section exists to remind
+admins about files that might not be included in a default backup of a
+running service.</p>
+</div>
+<p>If you are not using configuration management, all the files mentioned in
+<a class="reference internal" href="#admin-configuration-management"><span class="std std-ref">What to include in your configuration management</span></a> need to be included in all your backups.</p>
+<ul>
+<li><p class="first"><strong>Database</strong> - Use the standard postgres backup support. Remember that
+backing up a running database does add load to the master and can take an
+appreciable amount of time and space on the backup storage media.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://postgresguide.com/utilities/backup-restore.html">Backup and Restore - Postgres Guide</a></p>
+</div>
+</li>
+<li><p class="first"><strong>Version information and packages</strong></p>
+</li>
+<li><p class="first"><strong>Test job log files and data</strong></p>
+</li>
+<li><p class="first"><strong>Service log files and configuration</strong></p>
+</li>
+</ul>
+</div>
+<div class="section" id="what-to-include-in-your-worker-backups">
+<h2>What to include in your worker backups<a class="headerlink" href="#what-to-include-in-your-worker-backups" title="Permalink to this headline">¶</a></h2>
+<p>A V2 worker is designed not to need configuration, except that required to
+contact the relevant master:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-dispatcher/lava-worker</span></code>.</li>
+</ul>
+<p>Other files may be required by specific labs and may already be handled by
+configuration management, e.g.:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/ser2net.conf</span></code></li>
+<li>Local PDU scripts.</li>
+<li><code class="docutils literal notranslate"><span class="pre">udev</span></code> rules for particular devices or services.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="restoring-a-master-from-a-backup">
+<span id="admin-restore-backup"></span><span id="index-1"></span><h1>Restoring a master from a backup<a class="headerlink" href="#restoring-a-master-from-a-backup" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>These steps <strong>must</strong> be done in order or data loss is likely,
+at which point the whole restoration process may have to start again.
+However, each lab will differ and some steps can be achieved using more
+than one method. The important objectives are:</p>
+<ul class="last simple">
+<li>A maintenance window needs to be declared for this instance as
+soon as possible and needs to remain in place until admins are
+fully satisfied that the restore has completed successfully.</li>
+<li>No users (other than the admins directly involved in the restore)
+should have any access to the LAVA UI of the affected instance. This
+explicitly includes automated submission services in the rest of your
+CI system like Jenkins. It is imperative that no new test jobs are
+submitted during the maintenance window.</li>
+<li>Admins need to consider the state of the instance as it will be once
+restored. It is likely that a queue of test jobs will exist within
+the restored database and the state of various devices in the
+database will typically need adjustment to set maintenance mode.</li>
+</ul>
+</div>
+<ol class="arabic">
+<li><p class="first">Disable access to the system while restoring. For example, set up routing to
+prevent a newly installed apache service from responding on the expected IP
+address and virtual host details to avoid confusing users. Place a holding
+page elsewhere until the restoration is fully complete and tested.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Users must <strong>not</strong> be allowed to access the instance during the
+restore. There must be <strong>no</strong> database accesses outside the explicit
+control of the admin performing the restore.</p>
+</div>
+<p>Some admins may already have alternative apache configuration which
+can replace the LAVA interface with a maintenance page whilst still
+allowing admins to access the LAVA interface, e.g. on a different
+hostname or IP address, to do some of the steps below. Such
+arrangements can be very useful but are outside the scope of the
+LAVA documentation, so command line operations are shown instead.
+The goal is the same in each case - cancel test jobs already running
+and in the queue and set all devices to Maintenance. Make sure that
+the instance is in full maintenance before re-enabling the LAVA UI.</p>
+</li>
+<li><p class="first">If you are restoring multiple machines, start with the master and only start
+to restore workers when the master is fully restored but whilst the master
+<strong>remains invisible to users</strong>.</p>
+</li>
+<li><p class="first">Prepare the base system and ensure all packages installed at this stage are
+up to date with the Debian mirrors.</p>
+</li>
+<li><p class="first">If using backports, add the backports apt source and run <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">update</span></code> to
+populate the apt lists.</p>
+</li>
+<li><p class="first">Install <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> as per the documentation. Select a version which is
+slightly earlier or the same as the one installed when the backup was made.
+Avoid installing any version of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> <strong>newer</strong> than the one which
+was running when the backup was created. This installation will use an
+<strong>empty</strong> database and this is expected.</p>
+</li>
+<li><p class="first">Make sure that this instance actually works. On the command line,
+you can use:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage check --deploy
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Stop all LAVA services</strong> - the new installation will have
+automatically started all services using the empty database but
+until the database state can be updated, there must be no attempt to
+reserve devices for jobs in the queue or add test jobs to the queue.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-server-gunicorn</span> <span class="pre">stop</span></code><ul>
+<li>If your local configuration permits only admins to see the LAVA UI,
+then this one LAVA service can be left running.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-scheduler</span> <span class="pre">stop</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-worker</span> <span class="pre">stop</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-publisher</span> <span class="pre">stop</span></code></li>
+</ul>
+</li>
+<li><p class="first">Dump the (empty) initial database and restore the database from the backup.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#migrating-postgresql-versions"><span class="std std-ref">Migrating postgresql versions</span></a> for how to drop the
+initial cluster and replace with the cluster from the backup.</p>
+</div>
+</li>
+<li><p class="first">Using the command line, change the <code class="docutils literal notranslate"><span class="pre">health</span></code> of <strong>all</strong> devices
+which are not <code class="docutils literal notranslate"><span class="pre">Retired</span></code> to <code class="docutils literal notranslate"><span class="pre">Maintenance</span></code>.</p>
+<p>Device health can be changed by looping over each device:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage devices update --health MAINTENANCE --hostname ${HOSTNAME}
+</pre></div>
+</div>
+<p>or, with 2018.12 and newer, you can use the updated maintenance
+helper:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage maintenance --force
+</pre></div>
+</div>
+<p>Check the status of all devices. There should be no devices in the
+following listings:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage devices list --health GOOD
+$ sudo lava-server manage devices list --health LOOPING
+$ sudo lava-server manage devices list --health UNKNOWN
+</pre></div>
+</div>
+</li>
+<li><p class="first">Restore the other configuration on the master:</p>
+<ul class="simple">
+<li>Any template changes from the packaged defaults</li>
+<li>Device dictionaries</li>
+<li>Per-dispatcher configuration</li>
+<li>Test job log files from your backup</li>
+<li>Other elements, as required.</li>
+</ul>
+</li>
+<li><p class="first">Start all LAVA services</p>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-scheduler</span> <span class="pre">start</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-worker</span> <span class="pre">start</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-publisher</span> <span class="pre">start</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">lava-server-gunicorn</span> <span class="pre">restart</span></code></p>
+<ul>
+<li><p class="first">If your local configuration cannot restrict the LAVA UI to only
+admins, then take note that this will restore visibility to
+users. <strong>Before</strong> restarting <code class="docutils literal notranslate"><span class="pre">lava-server-gunicorn</span></code>:</p>
+<ul>
+<li><p class="first">Check that the other services are all running correctly</p>
+</li>
+<li><p class="first">Check that the <code class="docutils literal notranslate"><span class="pre">health</span></code> for all devices is set to
+<code class="docutils literal notranslate"><span class="pre">MAINTENANCE</span></code> or <code class="docutils literal notranslate"><span class="pre">RETIRED</span></code>.</p>
+</li>
+<li><p class="first">Fail any running test jobs:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ lava-server manage jobs fail &lt;job_id&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Check the logs to ensure that all services are running without errors.</p>
+</li>
+<li><p class="first">If there are any devices on the master, put some of those devices online and
+run some health checks. If not, do as much of a check as possible on the
+master and then move to restoring the workers, if that is necessary.</p>
+</li>
+<li><p class="first">Once all workers are restored and all devices are both online and have
+passed a health check, the restoration is complete. If a holding
+page was used, it can be taken down and the normal access to the
+instance restored to users.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="restoring-a-worker-from-backups">
+<h1>Restoring a worker from backups<a class="headerlink" href="#restoring-a-worker-from-backups" title="Permalink to this headline">¶</a></h1>
+<p>This is a much simpler process than a master (or a V1 worker which is
+arguably more complex to restore than a master). Workers should only be
+restored <strong>after</strong> the master has been restored and whilst all devices
+are still in maintenance.</p>
+<p>The only critical LAVA element for a worker to be restored from backup is the worker token:
+<code class="docutils literal notranslate"><span class="pre">/var/lib/lava/dispatcher/worker/token</span></code>.</p>
+<p>Other files may be required by specific labs and may already be handled by
+configuration management, e.g.:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/ser2net.conf</span></code>.</li>
+<li>Local PDU scripts.</li>
+<li><code class="docutils literal notranslate"><span class="pre">udev</span></code> rules for particular devices or services.</li>
+</ul>
+<p>Once the base system has been restored and <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> has been
+installed at the same version as previously, the worker token can simply
+be put back into place and <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> restarted.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sudo service lava-worker restart
+</pre></div>
+</div>
+<p>The worker will now be able to respond to test job messages sent by the master.</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/admin-backups.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:37 GMT -->
+</html>

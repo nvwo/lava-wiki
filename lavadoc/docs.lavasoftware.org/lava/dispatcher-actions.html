@@ -1,0 +1,674 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/dispatcher-actions.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Dispatcher Action Reference &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploy Action Reference" href="actions-deploy.html" />
+    <link rel="prev" title="Connections" href="connections.html" />
+    <link rel="canonical" href="dispatcher-actions.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Dispatcher Action Reference</a><ul>
+<li><a class="reference internal" href="#deploy-actions">Deploy Actions</a></li>
+<li><a class="reference internal" href="#boot-actions">Boot Actions</a></li>
+<li><a class="reference internal" href="#test-actions">Test Actions</a></li>
+<li><a class="reference internal" href="#other-test-job-elements">Other test job elements</a><ul>
+<li><a class="reference internal" href="#reboot-to-fastboot">reboot_to_fastboot</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#further-examples">Further Examples</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="connections.html" title="Previous Chapter: Connections"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Connections</span>
+    </a>
+  </li>
+  <li>
+    <a href="actions-deploy.html" title="Next Chapter: Deploy Action Reference"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Deploy Action... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="dispatcher-action-reference">
+<span id="dispatcher-actions"></span><h1>Dispatcher Action Reference<a class="headerlink" href="#dispatcher-action-reference" title="Permalink to this headline">¶</a></h1>
+<p>Job submissions for the pipeline dispatcher use YAML and test writers can
+create a pipeline of actions based on three basic types. Parameters in the YAML
+and in the device configuration are used to select the relevant Strategy for
+the job and this determines which actions are added to the pipeline.</p>
+<p>In addition, the job has some general parameters, including a job name
+and <a class="reference internal" href="actions-timeout.html#dispatcher-timeouts"><span class="std std-ref">Timeout Reference</span></a>.</p>
+<div class="section" id="deploy-actions">
+<h2>Deploy Actions<a class="headerlink" href="#deploy-actions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actions-deploy.html">Deploy Action Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#deploy-action-roles">Deploy action roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#required-parameters">Required parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#overlays">Overlays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#parameter-list">Parameter List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-docker">to: docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#os">os</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#image">image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#name">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#local">local</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-download">to: download</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#images">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#label">label</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#url">url *</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#compression">compression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#archive">archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#md5sum">md5sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#sha256sum">sha256sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#sha512sum">sha512sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-fastboot">to: fastboot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-fastboot-images">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#partition">partition</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-fastboot-images-compression">compression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#reboot">reboot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-fastboot-images-archive">archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#apply-overlay">apply-overlay</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#sparse">sparse</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-fastboot-images-md5sum">md5sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-fastboot-images-sha256sum">sha256sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#id6">sha512sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-fvp">to: fvp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-fvp-images">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#id8">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#id9">overlays</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#id10">partition *</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#ramdisk">ramdisk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-iso-installer">to: iso-installer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-iso-installer-images">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#iso">iso</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-iso-installer-images-iso-archive">archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-iso-installer-images-iso-compression">compression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#image-arg">image_arg</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#preseed">preseed</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-iso-installer-iso">iso</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#kernel">kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#initrd">initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#console">console</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#installation-size">installation_size</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-lxc">to: lxc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#packages">packages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-musca">to: musca</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#id15">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#test-binary">test_binary</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-musca-binary-url">url *</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-nbd">to: nbd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-kernel">kernel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-kernel-url">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#type">type</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#dtb">dtb</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-dtb-url">url *</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#modules">modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-initrd">initrd</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-initrd-url">url *</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#nbdroot">nbdroot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-nbdroot-url">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-nfsroot-archive">archive</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-nfsroot-compression">compression</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-images-md5sum">md5sum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-nbd-images-sha256sum">sha256sum</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#id27">sha512sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-recovery">to: recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-sata">to: sata</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-sata-kernel">kernel *</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-sata-ramdisk">ramdisk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-sata-dtb">dtb *</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#uuid">UUID *</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#boot-part">boot_part *</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-ssh">to: ssh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#connection">connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#protocols">protocols</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-tftp">to: tftp</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-kernel">kernel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-kernel-type">type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-kernel-url">url *</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-dtb">dtb</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-dtb-url">url *</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-modules">modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-modules-url">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-modules-archive">archive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-modules-compression">compression</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-ramdisk">ramdisk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-ramdisk-url">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-ramdisk-archive">archive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-ramdisk-compression">compression</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#nfsrootfs">nfsrootfs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-nfsrootfs-url">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-nfsrootfs-archive">archive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tftp-nfsrootfs-compression">compression</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#persistent-nfs">persistent_nfs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#address">address *</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-tmpfs">to: tmpfs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images-label">label</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images-image-arg">image_arg</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images-url">url *</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-archive">archive</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images-compression">compression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images-md5sum">md5sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-tmpfs-images-sha256sum">sha256sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#id56">sha512sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-usb">to: usb</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-usb-kernel">kernel *</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-usb-ramdisk">ramdisk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-usb-dtb">dtb *</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-usb-uuid">UUID *</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-usb-boot-part">boot_part *</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-vemsd">to: vemsd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#recovery-image">recovery_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-vemsd-recovery-url">url *</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-vemsd-recovery-compression">compression</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-mps">to: mps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#deploy-to-mps-recovery">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#id65">recovery_image</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-mps-recovery-url">url *</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-mps-recovery-compression">compression</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#deploy-to-mps-test-binary">test_binary</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-mps-binary-url">url *</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#rename">rename</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#to-uuu">to: uuu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-deploy.html#id70">images</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-deploy.html#id71">partition</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-uuu-images-compression">compression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-uuu-images-apply-overlay">apply-overlay</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-uuu-images-sparse">sparse</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-uuu-images-md5sum">md5sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#deploy-to-uuu-images-sha256sum">sha256sum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-deploy.html#id78">sha512sum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-deploy.html#deploy-os">os *</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="boot-actions">
+<h2>Boot Actions<a class="headerlink" href="#boot-actions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actions-boot.html">Boot Action Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#auto-login">auto_login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#login-prompt">login_prompt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#username">username</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#password-prompt">password_prompt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#password">password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#login-commands">login_commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#prompts">prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#connection">connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#connection-namespace">connection-namespace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#commands">commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#specifying-commands-in-full">Specifying commands in full</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#appending-to-the-kernel-command-line">Appending to the kernel command line</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#failure-message">failure_message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-boot.html#method">method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#bootloader">bootloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#cmsis-dap">cmsis-dap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#depthcharge">depthcharge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#docker">docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#command">command</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#fastboot">fastboot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#fastboot-boot-commands">fastboot boot commands</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#fastboot-nfs">fastboot-nfs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#fvp">fvp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#grub">grub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#grub-efi">grub-efi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#ipxe">ipxe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#lxc">lxc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#openocd">openocd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#minimal">minimal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#musca">musca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#pyocd">pyocd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#jlink">jlink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#new-connection">new_connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#qemu">qemu</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#media">media</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#qemu-nfs">qemu-nfs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#boot-method-qemu-media-nfs">media</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#qemu-iso">qemu-iso</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#boot-method-qemu-iso-media">media</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#transfer-overlay">transfer_overlay</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#deployment-differences">Deployment differences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#u-boot">u-boot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#boot-method-u-boot-commands">commands</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#uefi-menu">uefi-menu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-boot.html#uuu">uuu</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#device-configuration">Device configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-boot.html#usage">Usage</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="actions-boot.html#using-built-in-scripts">Using built-in scripts</a></li>
+<li class="toctree-l5"><a class="reference internal" href="actions-boot.html#using-commands">Using commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="test-actions">
+<h2>Test Actions<a class="headerlink" href="#test-actions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actions-test.html">Test Action Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-test.html#definitions">Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#repository">repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#from">from</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#git">git</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#inline">inline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#path">path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#name">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#params">params</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#skipping-elements-of-test-definitions">Skipping elements of test definitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#deps">deps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#keys">keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#sources">sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#steps">steps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#all">all</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#inline-test-definition-example">Inline test definition example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#additional-support">Additional support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#result-checks">Result checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="actions-test.html#testsets">TestSets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-test.html#interactive">Interactive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#id2">name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#prompts">prompts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#echo">echo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#script">script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-test.html#monitors">Monitors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-test.html#id3">name</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="other-test-job-elements">
+<h2>Other test job elements<a class="headerlink" href="#other-test-job-elements" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="actions-command.html">Command Action Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-command.html#admin-setup">Admin Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions-repeats.html">Repeat</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-repeats.html#handling-repeats">Handling repeats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-repeats.html#repeating-single-actions">Repeating single actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="actions-repeats.html#retry-on-failure">Retry on failure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="actions-repeats.html#repeating-blocks-of-actions">Repeating blocks of actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions-protocols.html">Protocol Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-protocols.html#using-protocols-from-actions">Using protocols from actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-protocols.html#multinode-protocol">MultiNode Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#lava-start-api-call">lava-start API call</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#passing-data-at-startup">Passing data at startup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#managing-flow-using-inline-definitions">Managing flow using inline definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#marking-some-roles-as-essential">Marking some roles as essential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#protocol-requests-from-actions">Protocol requests from actions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-protocols.html#vland-protocol">VLANd protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#vland-protocol-requests">Protocol requests from actions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-protocols.html#lxc-protocol">LXC protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#protocol-elements">Protocol elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions-protocols.html#lxc-protocol-requests">Protocol requests from actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="actions-timeout.html">Timeout Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions-timeout.html#job-timeout">Job timeout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions-timeout.html#action-timeout">Action timeout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-timeout.html#individual-action-timeouts">Individual action timeouts</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="actions-timeout.html#connection-timeout">Connection timeout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="actions-timeout.html#individual-connection-timeouts">Individual connection timeouts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-notifications.html">User notifications in LAVA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-notifications.html#notification-recipients">Notification recipients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-notifications.html#notification-callbacks">Notification callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user-notifications.html#debugging-notification-callbacks">Debugging notification callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-notifications.html#using-profile-settings">Using profile settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-notifications.html#direct-listing-of-recipients">Direct listing of recipients</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user-notifications.html#result-comparison-in-notifications">Result comparison in notifications</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="reboot-to-fastboot">
+<h3>reboot_to_fastboot<a class="headerlink" href="#reboot-to-fastboot" title="Permalink to this headline">¶</a></h3>
+<p>This is specific to test jobs that operate on:</p>
+<ul class="simple">
+<li><cite>android</cite> operating system</li>
+<li><a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> requested by the job is fastboot based</li>
+<li><a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> requested by the job does not use a <a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a> for power control</li>
+</ul>
+<p>It is used to specify whether the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> should reboot to fastboot mode at
+the end of the test job. The default value is <cite>true</cite> i.e., the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> will
+be rebooted to fastboot mode. This support is useful in the following use
+cases:</p>
+<ul class="simple">
+<li>The <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> does not charge in fastboot mode, in which case the user
+wants the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> to stay booted.</li>
+<li>A dedicated <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> to a specific team, which does not want to deploy
+new images frequently to the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>, instead want to run some tests
+directly assuming the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> is booted.</li>
+</ul>
+<p>Some disadvantages using this support are as follows:</p>
+<ul class="simple">
+<li>Some test images that gets deployed to the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> may have issues in
+retaining battery charge due to poor configuration. In such cases the
+<a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> runs out of charge and becomes unusable for the next job, which
+should be handled by manual intervention, thus hindering automation.</li>
+<li><cite>Android</cite> test images which are not built with USB debugging enabled,
+cannot be communicated with <code class="docutils literal notranslate"><span class="pre">adb</span></code>, thus hindering automation. Since,
+<code class="docutils literal notranslate"><span class="pre">adb</span></code> is used to reboot the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> to bootloader mode, when the
+<a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> is booted, in the absence of a <a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a> for power control.</li>
+<li>When a <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> is shared between teams there is a possibility that a
+test image is flashed on the previous test job, which may not be the
+suitable test image for the next job by a different team’s member, which
+assumes the device is booted and tries to run tests.</li>
+<li>It is the responsibility of the test writer who assumes the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> is
+booted already, to check if the previous test job left the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> in a
+state that is suitable for running the current test - LAVA does not take
+care of cleaning up the test environment in this case.</li>
+</ul>
+<p>In order to keep the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> booted with <cite>android</cite> operating system at the
+end of the test job run use the following in test job definition:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">reboot_to_fastboot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> which is controlled by a <a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a> will be powered off
+at the end of the test job run.</p>
+</div>
+</div>
+</div>
+<div class="section" id="further-examples">
+<h2>Further Examples<a class="headerlink" href="#further-examples" title="Permalink to this headline">¶</a></h2>
+<p>The number and range of test jobs is constantly increasing. The LAVA software
+team develop functional tests in a dedicated git repository:
+<a class="reference external" href="https://git.linaro.org/lava-team/refactoring.git">https://git.linaro.org/lava-team/refactoring.git</a> Tests can then migrate into
+standard tests and examples in the documentation. Even so, not all dispatcher
+actions have a matching example.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">Gold standard test jobs</span></a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/dispatcher-actions.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+</html>

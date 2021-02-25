@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/developing-tests.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:10 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Writing Tests &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Timeouts" href="timeouts.html" />
+    <link rel="prev" title="Continuous Integration" href="lava_ci.html" />
+    <link rel="canonical" href="developing-tests.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Writing Tests</a><ul>
+<li><a class="reference internal" href="#introduction-to-the-lava-test-developer-guide">Introduction to the LAVA Test Developer Guide</a><ul>
+<li><a class="reference internal" href="#guide-contents">Guide Contents</a></li>
+<li><a class="reference internal" href="#assumptions-at-the-start-of-this-guide">Assumptions at the start of this guide</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#checking-device-availability">Checking device availability</a></li>
+<li><a class="reference internal" href="#finding-an-image-to-run-on-the-device">Finding an image to run on the device</a></li>
+<li><a class="reference internal" href="#actions-to-be-run-for-a-lava-test">Actions to be run for a LAVA test</a></li>
+<li><a class="reference internal" href="#example-of-lava-test">Example of Lava Test</a><ul>
+<li><a class="reference internal" href="#deploying-a-pre-built-qemu-image">Deploying a pre-built QEMU image</a></li>
+<li><a class="reference internal" href="#using-device-tags">Using device tags</a></li>
+<li><a class="reference internal" href="#using-checksums">Using checksums</a></li>
+<li><a class="reference internal" href="#using-lava-test-test-definition-1-0">Using Lava-Test Test Definition 1.0</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="lava_ci.html" title="Previous Chapter: Continuous Integration"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Continuous In...</span>
+    </a>
+  </li>
+  <li>
+    <a href="timeouts.html" title="Next Chapter: Timeouts"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Timeouts &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="writing-tests">
+<span id="test-developer"></span><span id="index-0"></span><h1>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h1>
+<p>The LAVA dispatcher currently supports tests being run in a number of
+ways:</p>
+<ul class="simple">
+<li><a class="reference internal" href="writing-tests.html#writing-tests-1-0"><span class="std std-ref">Lava-Test Test Definition 1.0</span></a> (POSIX
+shell based testing) using an overlay.<ul>
+<li>lava-test-case handling</li>
+<li>MultiNode support</li>
+<li>inline test definitions</li>
+<li>regular expression pattern matching</li>
+</ul>
+</li>
+<li><a class="reference internal" href="monitors.html#writing-tests-monitor"><span class="std std-ref">LAVA Test Monitor</span></a> (simple pass/fail
+pattern matching)</li>
+<li><a class="reference internal" href="interactive.html#writing-tests-interactive"><span class="std std-ref">Interactive</span></a> (direct control over
+the test device)</li>
+</ul>
+<p>The most common style of test currently in use is the <code class="docutils literal notranslate"><span class="pre">Lava-Test</span> <span class="pre">Test</span>
+<span class="pre">Definition</span> <span class="pre">1.0</span></code> using <code class="docutils literal notranslate"><span class="pre">lava-test-case</span></code>. During the deploy action, an
+overlay is added to the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> filesystem including the test
+writer commands and LAVA helper scripts. The test action uses a helper
+script to execute the test writer commands and other helper scripts are
+used to report test results back to the dispatcher, wrapping results in
+special marker text to allow for easy identification. The dispatcher
+parses out those test results and reports them alongside the test job
+log output. Test Shell Definitions contain individual inline commands
+or references to repositories to deploy custom scripts using a variety
+of programming languages, according to the support available on the
+DUT.</p>
+<div class="section" id="introduction-to-the-lava-test-developer-guide">
+<h2>Introduction to the LAVA Test Developer Guide<a class="headerlink" href="#introduction-to-the-lava-test-developer-guide" title="Permalink to this headline">¶</a></h2>
+<p>This guide aims to enable users to be able to</p>
+<ol class="arabic simple">
+<li>Submit desired jobs/tests on targets deployed where the LAVA server is
+located and report results.</li>
+<li>Understand how test job files need to be written so that jobs get submitted
+properly.</li>
+<li>Understand the options for running the test operation. No one test
+method can suit all test operations or all devices.</li>
+<li>Understand how test shell definitions need to be written, depending
+on how the test should be executed.</li>
+</ol>
+<p>Pay particular attention to sections on:</p>
+<ul class="simple">
+<li><a class="reference internal" href="pipeline-writer.html#writing-pipeline-submission"><span class="std std-ref">Writing a LAVA job submission</span></a></li>
+<li><a class="reference internal" href="writing-tests.html#writing-test-commands"><span class="std std-ref">Writing commands to run on the device</span></a></li>
+<li><a class="reference internal" href="writing-tests.html#custom-scripts"><span class="std std-ref">Writing custom scripts to support tests</span></a></li>
+<li><a class="reference internal" href="writing-tests.html#best-practices"><span class="std std-ref">Best practices for writing a LAVA test job</span></a></li>
+</ul>
+<div class="section" id="guide-contents">
+<h3>Guide Contents<a class="headerlink" href="#guide-contents" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="dispatcher-actions.html#dispatcher-actions"><span class="std std-ref">Dispatcher Action Reference</span></a></li>
+<li><a class="reference internal" href="lava_test_shell.html#lava-test-shell"><span class="std std-ref">Lava-Test Test Definition 1.0</span></a></li>
+<li><a class="reference internal" href="writing-tests.html#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a></li>
+<li><a class="reference internal" href="monitors.html#writing-tests-monitor"><span class="std std-ref">Writing a monitors test action</span></a></li>
+<li><a class="reference internal" href="interactive.html#writing-tests-interactive"><span class="std std-ref">Writing an interactive test action</span></a></li>
+</ul>
+</div>
+<div class="section" id="assumptions-at-the-start-of-this-guide">
+<h3>Assumptions at the start of this guide<a class="headerlink" href="#assumptions-at-the-start-of-this-guide" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>The desired board is already configured for use with a LAVA Server instance.</li>
+<li>A user account (username, password, email address) is already created by a
+LAVA administrator on your behalf, with permissions to submit jobs.</li>
+<li><code class="docutils literal notranslate"><span class="pre">lavacli</span></code> is already installed on your test system and a suitable
+authentication token has been added.</li>
+<li>You are familiar with submitting jobs written by someone else, including
+viewing the logs file for a job, viewing the definition used for that job
+and accessing the complete log.</li>
+</ol>
+<p>To install <code class="docutils literal notranslate"><span class="pre">lavacli</span></code>, see <a class="reference internal" href="lavacli.html#lavacli"><span class="std std-ref">lavacli</span></a>.</p>
+<p>To authenticate <code class="docutils literal notranslate"><span class="pre">lavacli</span></code>, see <a class="reference internal" href="first_steps.html#authentication-tokens"><span class="std std-ref">Authentication Tokens</span></a>.</p>
+<p>To find out more about submitting tests written by someone else, see
+<a class="reference internal" href="first-job.html#submit-first-job"><span class="std std-ref">Submitting your first job</span></a>.</p>
+<p>To find out more about viewing job details, see <a class="reference internal" href="first-job.html#job-submission"><span class="std std-ref">Job Submission</span></a>.</p>
+</div>
+</div>
+<div class="section" id="checking-device-availability">
+<span id="index-1"></span><h2>Checking device availability<a class="headerlink" href="#checking-device-availability" title="Permalink to this headline">¶</a></h2>
+<p>Use the LAVA scheduler to view the device types and devices available
+in your LAVA instance. The main scheduler status page shows data for
+each <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> as well as the currently active jobs. Also
+check the Devices pages:</p>
+<ul class="simple">
+<li>All Devices - includes retired devices to which jobs cannot be submitted.</li>
+<li>All Active Devices - lists only devices to which jobs can be submitted</li>
+<li>All Devices Health - limited to just the latest health status of each device.</li>
+<li>My Devices - available from your profile menu by clicking on your
+name once signed into the instance.</li>
+</ul>
+<p>For a <a class="reference internal" href="writing-multinode.html#writing-multinode"><span class="std std-ref">MultiNode</span></a> job, you may need to check
+more than one <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>.</p>
+<p>LAVA looks at the <a class="reference internal" href="lava-scheduler-device-help.html#device-status"><span class="std std-ref">device health</span></a> when working
+out if a particular device is available for a new job:</p>
+<ul class="simple">
+<li>Good, Unknown - jobs can be submitted OK.</li>
+<li>Restricted - only specific users may submit jobs.</li>
+<li>Retired - this device is not available; jobs will be rejected if all
+devices of this type are retired.</li>
+</ul>
+</div>
+<div class="section" id="finding-an-image-to-run-on-the-device">
+<h2>Finding an image to run on the device<a class="headerlink" href="#finding-an-image-to-run-on-the-device" title="Permalink to this headline">¶</a></h2>
+<p>Typically, the easiest thing to do here is to start with an image
+which is already in use in LAVA. You can find one of these images by
+checking the <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> in LAVA and viewing some of the jobs
+for devices of this type from the table on that page. e.g. for QEMU
+devices on validation.linaro.org:</p>
+<p><a class="reference external" href="https://validation.linaro.org/scheduler/device_type/qemu">https://validation.linaro.org/scheduler/device_type/qemu</a></p>
+</div>
+<div class="section" id="actions-to-be-run-for-a-lava-test">
+<h2>Actions to be run for a LAVA test<a class="headerlink" href="#actions-to-be-run-for-a-lava-test" title="Permalink to this headline">¶</a></h2>
+<p>There are three important sets of actions that will normally be run
+for a LAVA test:</p>
+<ol class="arabic simple">
+<li><strong>Deploy</strong>: The actions needed to set up a device to boot a test
+image. Each device type may support a range of different deployment
+methods.</li>
+<li><strong>Boot</strong>: The steps to follow to start the test image on the
+device. Each device type may support a range of different boot
+methods.</li>
+<li><strong>Test</strong>: Run the lava test definition, running the specified tests.
+All methods use the <code class="docutils literal notranslate"><span class="pre">test</span></code> action. Syntax varies according to
+the method chosen.</li>
+</ol>
+</div>
+<div class="section" id="example-of-lava-test">
+<h2>Example of Lava Test<a class="headerlink" href="#example-of-lava-test" title="Permalink to this headline">¶</a></h2>
+<p>This example will use syntax for the Lava-Test Test Definition 1.0 as
+well as covering device tags and checksums which may be useful for all
+test jobs.</p>
+<div class="section" id="deploying-a-pre-built-qemu-image">
+<h3>Deploying a pre-built QEMU image<a class="headerlink" href="#deploying-a-pre-built-qemu-image" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+      <span class="nt">timeout</span><span class="p">:</span>
+        <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+      <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tmpfs</span>
+      <span class="nt">images</span><span class="p">:</span>
+          <span class="nt">rootfs</span><span class="p">:</span>
+            <span class="nt">image_arg</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-drive format=raw,file={rootfs}</span>
+            <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://files.lavasoftware.org/components/lava/standard/debian/stretch/amd64/2/stretch.img.gz</span>
+            <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-device-tags">
+<span id="device-tags-example"></span><span id="index-2"></span><h3>Using device tags<a class="headerlink" href="#using-device-tags" title="Permalink to this headline">¶</a></h3>
+<p>A <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> marks a specified device as having specific
+hardware capabilities which other devices of the same <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device
+type</span></a> may not. To test these capabilities, a test job can specify a
+list of tags which the device <strong>must</strong> support. If no devices exist
+which match all of the required tags, the job submission will fail. If
+devices support a wider range of tags than required in the test job
+(or the test job requires no tags), any of those devices can be used
+for the test job.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Test jobs which use <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> support can <strong>only</strong>
+be submitted to instances which have those tags defined <strong>and</strong>
+assigned to the requested boards. In your LAVA instance, check the
+device information to see what tags are used.</p>
+</div>
+<p>When writing a normal single-node test job, the desired tags should be
+listed as a top level list of strings in the job definition, i.e. at
+the same level as <code class="docutils literal notranslate"><span class="pre">job_name</span></code>, <code class="docutils literal notranslate"><span class="pre">timeouts</span></code>, <code class="docutils literal notranslate"><span class="pre">metadata</span></code> and
+<code class="docutils literal notranslate"><span class="pre">device_type</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Your first LAVA JOB definition for an x86_64 QEMU</span>
+<span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">QEMU pipeline, first job</span>
+
+<span class="nt">tags</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tap_device</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">virtual_io</span>
+
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+  <span class="nt">action</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="nt">visibility</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+
+<span class="c1"># context allows specific values to be overridden or included</span>
+<span class="nt">context</span><span class="p">:</span>
+  <span class="c1"># tell the qemu template which architecture is being tested</span>
+  <span class="c1"># the template uses that to ensure that qemu-system-x86_64 is executed.</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="c1"># please change these fields when modifying this job for your own tests.</span>
+  <span class="nt">docs-source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">first-job</span>
+  <span class="nt">docs-filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-pipeline-first-job.yaml</span>
+</pre></div>
+</div>
+<p>For <a class="reference internal" href="glossary.html#term-multinode"><span class="xref std std-term">MultiNode</span></a> test jobs, the tags are defined as
+part of the MultiNode protocol block:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="nt">client</span><span class="p">:</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+        <span class="nt">context</span><span class="p">:</span>
+          <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="c1"># In this example, only one role in the group uses tags</span>
+        <span class="nt">tags</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tap_device</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">virtual_io</span>
+      <span class="nt">server</span><span class="p">:</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+        <span class="nt">context</span><span class="p">:</span>
+          <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+</pre></div>
+</div>
+<p>Device tags are only relevant during scheduling of the test job and
+have no meaning to the dispatcher once the job is running.</p>
+</div>
+<div class="section" id="using-checksums">
+<span id="testjob-checksums"></span><span id="index-3"></span><h3>Using checksums<a class="headerlink" href="#using-checksums" title="Permalink to this headline">¶</a></h3>
+<p>If an MD5 or SHA256 checksum is provided alongside the URL of the file to be
+used in a test job, the downloaded content will be checked against the provided
+checksum. The test job will fail as <code class="docutils literal notranslate"><span class="pre">Incomplete</span></code> if the checksum fails to
+match.</p>
+<p>Avoid using URLs which include shortcuts like <code class="docutils literal notranslate"><span class="pre">latest</span></code> when providing
+the checksum. Specify the full URL to ensure consistency between tests.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debugging.html#make-tests-verbose"><span class="std std-ref">Make your tests and setup verbose</span></a></p>
+</div>
+</div>
+<div class="section" id="using-lava-test-test-definition-1-0">
+<h3>Using Lava-Test Test Definition 1.0<a class="headerlink" href="#using-lava-test-test-definition-1-0" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Lava-Test</span> <span class="pre">Test</span> <span class="pre">Definition</span> <span class="pre">1.0</span></code> action provides a way to employ a
+black-box approach to testing on the target device. Its format is:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm-basic-singlenode</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span>
+            <span class="nt">metadata</span><span class="p">:</span>
+                <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+                <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests-basic</span>
+                <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;Basic</span><span class="nv"> </span><span class="s">system</span><span class="nv"> </span><span class="s">test</span><span class="nv"> </span><span class="s">command</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">Linaro</span><span class="nv"> </span><span class="s">Ubuntu</span><span class="nv"> </span><span class="s">images&quot;</span>
+            <span class="nt">run</span><span class="p">:</span>
+                <span class="nt">steps</span><span class="p">:</span>
+                    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">printenv</span>
+          <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">env-dut-inline</span>
+          <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/env-dut.yaml</span>
+        <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+          <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+          <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+        <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://git.linaro.org/lava-team/lava-functional-tests.git</span>
+          <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+          <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/single-node/singlenode03.yaml</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">definitions</span></code> list here may contain multiple test definition
+URLs. These will all be run sequentially in one run on the test
+device, and it will not be rebooted between the definitions.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-test.html#test-action-definitions"><span class="std std-ref">Dispatcher Actions</span></a></p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">lava_test_shell</span></code> <a class="reference external" href="lava_test_shell.html">developer documentation</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/developing-tests.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:10 GMT -->
+</html>

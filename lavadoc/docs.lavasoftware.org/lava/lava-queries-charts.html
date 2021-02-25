@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/lava-queries-charts.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:13 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using Test Results &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Exporting data out of LAVA" href="data-export.html" />
+    <link rel="prev" title="Introduction to Results in LAVA" href="results-intro.html" />
+    <link rel="canonical" href="lava-queries-charts.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Using Test Results</a><ul>
+<li><a class="reference internal" href="#lava-result-visualization">LAVA result visualization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-queries">LAVA Queries</a><ul>
+<li><a class="reference internal" href="#conditions">Conditions</a></li>
+<li><a class="reference internal" href="#caching-queries">Caching queries</a></li>
+<li><a class="reference internal" href="#authorization-and-admin">Authorization and admin</a></li>
+<li><a class="reference internal" href="#query-by-url">Query by URL</a></li>
+<li><a class="reference internal" href="#export-query">Export Query</a><ul>
+<li><a class="reference internal" href="#omitting-query-results">Omitting Query Results</a></li>
+<li><a class="reference internal" href="#deleting-a-query">Deleting a Query</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-queries-in-xml-rpc-scripts">Using Queries in XML-RPC scripts</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#example-output">Example output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-query-use-cases">LAVA Query use cases</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-charts">LAVA Charts</a><ul>
+<li><a class="reference internal" href="#how-to-create-a-chart">How to create a Chart?</a><ul>
+<li><a class="reference internal" href="#chart-grouping">Chart grouping</a></li>
+<li><a class="reference internal" href="#chart-permissions">Chart permissions</a></li>
+<li><a class="reference internal" href="#adding-queries">Adding Queries</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#charts-display-page">Charts display page</a></li>
+<li><a class="reference internal" href="#interactive-charts">Interactive charts</a><ul>
+<li><a class="reference internal" href="#legend">Legend</a></li>
+<li><a class="reference internal" href="#date-limits">Date limits</a></li>
+<li><a class="reference internal" href="#print-menu">Print menu</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#chart-using-metadata">Chart using metadata</a><ul>
+<li><a class="reference internal" href="#omitting-chart-results">Omitting Chart Results</a></li>
+<li><a class="reference internal" href="#chart-by-url">Chart by URL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="results-intro.html" title="Previous Chapter: Introduction to Results in LAVA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Introduction ...</span>
+    </a>
+  </li>
+  <li>
+    <a href="data-export.html" title="Next Chapter: Exporting data out of LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Exporting dat... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="using-test-results">
+<span id="result-queries"></span><span id="index-0"></span><h1>Using Test Results<a class="headerlink" href="#using-test-results" title="Permalink to this headline">¶</a></h1>
+<p>The most important use of test results is to <a class="reference internal" href="custom-result-handling.html#ci-loop"><span class="std std-ref">close the CI loop</span></a>
+and a good way to do that is to distribute the results directly to the
+developers in a format which those developers find to be the most useful.</p>
+<p>LAVA, as a generic automation framework, cannot offer customized solutions for
+all development teams. A dedicated <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a> should always be considered
+as this can collate LAVA results with build system data and commit history to
+provide a complete picture of the meaning of the results. Bare results are
+often useless and only the development team can provide the information needed
+to reformat the raw results in a way that includes the relevant context and
+background information.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Take time to plan how the <a class="reference internal" href="glossary.html#term-metadata"><span class="xref std std-term">metadata</span></a> is created, updated
+and parsed. Build numbers, commit hashes and developer branch names may all
+need to be passed into the metadata of your test jobs in LAVA to make sense
+of the results.</p>
+</div>
+<p>Test results can be used in a variety of ways, inside and outside of LAVA.</p>
+<ul class="simple">
+<li><a class="reference internal" href="results-intro.html#results-rest-api"><span class="std std-ref">Accessing results</span></a></li>
+<li><a class="reference internal" href="data-export.html#data-export"><span class="std std-ref">Exporting data out of LAVA</span></a></li>
+<li><a class="reference internal" href="data-export.html#notification-summary"><span class="std std-ref">User specified notifications</span></a></li>
+<li><a class="reference internal" href="custom-result-handling.html#custom-result-handling"><span class="std std-ref">Custom result handling</span></a></li>
+<li><a class="reference internal" href="#queries"><span class="std std-ref">LAVA Queries</span></a></li>
+<li><a class="reference internal" href="#lava-charts"><span class="std std-ref">LAVA Charts</span></a></li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="results-intro.html#results-intro"><span class="std std-ref">Introduction to Results in LAVA</span></a></p>
+</div>
+<div class="section" id="lava-result-visualization">
+<h2>LAVA result visualization<a class="headerlink" href="#lava-result-visualization" title="Permalink to this headline">¶</a></h2>
+<p>For simple tasks, LAVA supports Queries and Charts. A Query is used to pick out
+interesting test jobs based on metadata, test case names, test suite names or
+test job submitter amongst other fields. Most Queries can then be used to
+create a single Chart to follow trends over time.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only V2 test jobs can be used with Queries and Charts.</p>
+</div>
+</div>
+</div>
+<div class="section" id="lava-queries">
+<span id="queries"></span><span id="index-1"></span><h1>LAVA Queries<a class="headerlink" href="#lava-queries" title="Permalink to this headline">¶</a></h1>
+<p>A single query can be based on one of the following object sets:</p>
+<ul class="simple">
+<li>Test jobs</li>
+<li>Test suites</li>
+<li>Test cases</li>
+</ul>
+<div class="section" id="conditions">
+<span id="query-conditions"></span><span id="index-2"></span><h2>Conditions<a class="headerlink" href="#conditions" title="Permalink to this headline">¶</a></h2>
+<p>You can add multiple conditions to each query where the query results must
+satisfy <strong>all</strong> conditions in order to be displayed. Conditions can span
+through multiple object sets so for example user can query the Jobs that have
+test cases in which particular field satisfies a condition. List of supported
+fields which can be used as condition field is available as autocomplete list
+in the condition ‘Field name’ field. You can also add conditions with fields in
+the object set which is queried (i.e. if test jobs are query object set user
+can add conditions such as submitter, health, device, priority, state…).</p>
+<p>It is also possible to add conditions using custom metadata. Since metadata can
+contain custom field names, keep in mind that the query might not return
+desired results since those field names are not validated when adding
+conditions. This also means you can add the condition even if the field in the
+metadata is is not yet present in the system.</p>
+</div>
+<div class="section" id="caching-queries">
+<h2>Caching queries<a class="headerlink" href="#caching-queries" title="Permalink to this headline">¶</a></h2>
+<p>Queries can be live or cached. Cached queries data can be refreshed either
+through UI or via the XML-RPC API call by the creator or someone in group
+assigned to the query. Please keep in mind, live queries are executed whenever
+someone visits the query page or refreshes it. Viewing a live query will
+usually take longer than a cached query, sometimes markedly longer. Live
+queries can stress the LAVA server which can cause the query to timeout.</p>
+<p>When adding/updating and removing conditions, query is <strong>not</strong> automatically
+updated. This needs to be done either through UI after updating the conditions
+or via XML-RPC.</p>
+</div>
+<div class="section" id="authorization-and-admin">
+<h2>Authorization and admin<a class="headerlink" href="#authorization-and-admin" title="Permalink to this headline">¶</a></h2>
+<p>Queries which are not published are visible exclusively to the query
+owner. When query is published, it’s results are generally visible to
+all users, providing that the user has access to the jobs which provide
+the results. All the authorization is managed through test jobs
+<a class="reference internal" href="glossary.html#term-visibility"><span class="xref std std-term">visibility</span></a> rules, meaning that individual results will be
+omitted in the query display list depending on user authorization to
+see the specific jobs.</p>
+<p>Besides owner of the specific query, administration of the query can be allowed
+to a group in the system as well, through the ‘Group edit permission’ option.
+Note that this can be done only after the query is published.</p>
+<p>Queries can be organized in ‘query groups’ which is visible only in the query
+listing page, via ‘query group label’ option.</p>
+</div>
+<div class="section" id="query-by-url">
+<span id="id1"></span><h2>Query by URL<a class="headerlink" href="#query-by-url" title="Permalink to this headline">¶</a></h2>
+<p>The ability to add conditions through URL is also available. User can add as
+many conditions as possible through URL but must also specify the object set
+which is to be queried.</p>
+<p>The query string format looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>entity=$(object_name)&amp;conditions=$(object_name)__$(field_name)__$(operator)__$value,$(object_name)__$(field_name)__$(operator)__$value,...
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">object_name can be omitted if it’s the same as the query object set.
+Operator is one of the following - exact, iexact, contains, gt, lt.</p>
+</div>
+<p><a class="reference external" href="https://staging.validation.linaro.org/results/query/ custom?entity=testjob&amp;conditions=testjob__priority__exact__Medium,testjob__submitter__contains__code">Example Query by URL</a></p>
+<p>Once the query by URL results are displayed, user can create new query from
+these conditions, which will be automatically added to the query.</p>
+<p>User should keep in mind that querying by URL is considered to be a live query
+so if the query is used often it should be created in the system so that the
+caching is enabled.</p>
+</div>
+<div class="section" id="export-query">
+<h2>Export Query<a class="headerlink" href="#export-query" title="Permalink to this headline">¶</a></h2>
+<p>Currently, the only supported format for exporting is CSV.</p>
+<p>User can download the query CSV export file from the query display page.</p>
+<div class="section" id="omitting-query-results">
+<h3>Omitting Query Results<a class="headerlink" href="#omitting-query-results" title="Permalink to this headline">¶</a></h3>
+<p>Ability to omit specific results from queries is available.</p>
+<p>Users which have owner rights over specific query have the option to omit
+particular results in the query results display page. Keep in mind that this
+action will effect all the charts using this query as well, since charts pull
+the results from queries.</p>
+<p>It is not possible to omit results from custom queries.</p>
+</div>
+<div class="section" id="deleting-a-query">
+<h3>Deleting a Query<a class="headerlink" href="#deleting-a-query" title="Permalink to this headline">¶</a></h3>
+<p>In LAVA, deleting a query does not really delete it, but rather ‘archives’ it
+so that if user created rather complex query, that query can be restored at a
+later point in time. Archived queries are only visible to superusers in the
+admin section of LAVA. If user tries to create a query with the same name and
+owner (himself) which was already archived, system will inform the user that
+it’s already in the system.</p>
+</div>
+</div>
+<div class="section" id="using-queries-in-xml-rpc-scripts">
+<span id="lava-query-xmlrpc"></span><span id="index-3"></span><h2>Using Queries in XML-RPC scripts<a class="headerlink" href="#using-queries-in-xml-rpc-scripts" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="data-export.html#xml-rpc"><span class="std std-ref">XML-RPC API</span></a> can be used to execute a named query and the
+calling script can then process the data to output a summary of the results.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This example script relies on the Query using the <code class="docutils literal notranslate"><span class="pre">test-job</span></code>
+Content Type as this allows the script to obtain the job ID which can then
+be used in the second call to <code class="docutils literal notranslate"><span class="pre">get_testcase_results_yaml</span></code>.</p>
+</div>
+<pre class="code python literal-block">
+<span class="keyword">def</span> <span class="name function">main</span><span class="punctuation">(</span><span class="name">args</span><span class="punctuation">):</span>
+    <span class="comment single"># change https to http when testing with localhost</span>
+    <span class="name">connection</span> <span class="operator">=</span> <span class="name">xmlrpc</span><span class="operator">.</span><span class="name">client</span><span class="operator">.</span><span class="name">ServerProxy</span><span class="punctuation">(</span>
+        <span class="literal string double">&quot;https://</span><span class="literal string interpol">%s</span><span class="literal string double">:</span><span class="literal string interpol">%s</span><span class="literal string double">&#64;</span><span class="literal string interpol">%s</span><span class="literal string double">/RPC2&quot;</span> <span class="operator">%</span> <span class="punctuation">(</span><span class="name">USER</span><span class="punctuation">,</span> <span class="name">TOKEN</span><span class="punctuation">,</span> <span class="name">HOSTNAME</span><span class="punctuation">)</span>
+    <span class="punctuation">)</span>
+    <span class="name">data</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">results</span><span class="operator">.</span><span class="name">run_query</span><span class="punctuation">(</span><span class="name">QUERY</span><span class="punctuation">,</span> <span class="literal number integer">20</span><span class="punctuation">,</span> <span class="name">QUERY_USER</span><span class="punctuation">)</span>
+    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">data</span><span class="punctuation">:</span>
+        <span class="keyword">return</span> <span class="literal number integer">0</span>
+    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string double">&quot;Job, Type, Message, Time&quot;</span><span class="punctuation">)</span>
+    <span class="keyword">for</span> <span class="name">result</span> <span class="operator word">in</span> <span class="name">data</span><span class="punctuation">:</span>
+        <span class="name">job_lava</span> <span class="operator">=</span> <span class="name">yaml</span><span class="operator">.</span><span class="name">safe_load</span><span class="punctuation">(</span>
+            <span class="name">connection</span><span class="operator">.</span><span class="name">results</span><span class="operator">.</span><span class="name">get_testcase_results_yaml</span><span class="punctuation">(</span><span class="name">result</span><span class="punctuation">[</span><span class="literal string double">&quot;id&quot;</span><span class="punctuation">],</span> <span class="literal string double">&quot;lava&quot;</span><span class="punctuation">,</span> <span class="literal string double">&quot;job&quot;</span><span class="punctuation">)</span>
+        <span class="punctuation">)[</span><span class="literal number integer">0</span><span class="punctuation">]</span>
+        <span class="name">job_id</span> <span class="operator">=</span> <span class="name">job_lava</span><span class="punctuation">[</span><span class="literal string double">&quot;job&quot;</span><span class="punctuation">]</span>
+        <span class="name">logged</span> <span class="operator">=</span> <span class="name">job_lava</span><span class="punctuation">[</span><span class="literal string double">&quot;logged&quot;</span><span class="punctuation">]</span>
+        <span class="keyword">if</span> <span class="name">result</span><span class="punctuation">[</span><span class="literal string double">&quot;status&quot;</span><span class="punctuation">]</span> <span class="operator">==</span> <span class="name">INCOMPLETE</span><span class="punctuation">:</span>
+            <span class="name">error_type</span> <span class="operator">=</span> <span class="name">job_lava</span><span class="punctuation">[</span><span class="literal string double">&quot;metadata&quot;</span><span class="punctuation">][</span><span class="literal string double">&quot;error_type&quot;</span><span class="punctuation">]</span>
+            <span class="name">msg</span> <span class="operator">=</span> <span class="name">job_lava</span><span class="punctuation">[</span><span class="literal string double">&quot;metadata&quot;</span><span class="punctuation">][</span><span class="literal string double">&quot;error_msg&quot;</span><span class="punctuation">]</span>
+            <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string double">&quot;</span><span class="literal string interpol">%s</span><span class="literal string double">, '</span><span class="literal string interpol">%s</span><span class="literal string double">', '</span><span class="literal string interpol">%s</span><span class="literal string double">', '</span><span class="literal string interpol">%s</span><span class="literal string double">'&quot;</span> <span class="operator">%</span> <span class="punctuation">(</span><span class="name">job_id</span><span class="punctuation">,</span> <span class="name">error_type</span><span class="punctuation">,</span> <span class="name">msg</span><span class="punctuation">,</span> <span class="name">logged</span><span class="punctuation">))</span>
+            <span class="keyword">continue</span>
+        <span class="keyword">elif</span> <span class="name">result</span><span class="punctuation">[</span><span class="literal string double">&quot;status&quot;</span><span class="punctuation">]</span> <span class="operator">==</span> <span class="name">COMPLETE</span><span class="punctuation">:</span>
+            <span class="keyword">continue</span>
+        <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string double">&quot;[</span><span class="literal string interpol">%s</span><span class="literal string double">] </span><span class="literal string interpol">%s</span><span class="literal string double">&quot;</span> <span class="operator">%</span> <span class="punctuation">(</span><span class="name">job_lava</span><span class="punctuation">[</span><span class="literal string double">&quot;job&quot;</span><span class="punctuation">],</span> <span class="name">STATUS_CHOICES</span><span class="punctuation">[</span><span class="name builtin">int</span><span class="punctuation">(</span><span class="name">result</span><span class="punctuation">[</span><span class="literal string double">&quot;status&quot;</span><span class="punctuation">])][</span><span class="literal number integer">1</span><span class="punctuation">]))</span>
+    <span class="keyword">return</span> <span class="literal number integer">0</span>
+</pre>
+<p><a class="reference external" href="examples/source/query-results.py">Download / view</a> the example python
+script.</p>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>The example script needs to be configured to include the <a class="reference internal" href="glossary.html#term-token"><span class="xref std std-term">token</span></a> as well
+as the <code class="docutils literal notranslate"><span class="pre">hostname</span></code> of the instance, the name of the <code class="docutils literal notranslate"><span class="pre">query</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">query_user</span></code> who owns the query as well as the <code class="docutils literal notranslate"><span class="pre">user</span></code> running the query.</p>
+<pre class="code python literal-block">
+<span class="name">USER</span> <span class="operator">=</span> <span class="literal string double">&quot;neil.williams&quot;</span>
+<span class="name">TOKEN</span> <span class="operator">=</span> <span class="literal string double">&quot;&quot;</span>
+<span class="name">QUERY</span> <span class="operator">=</span> <span class="literal string double">&quot;testing-myjobs&quot;</span>
+<span class="name">QUERY_USER</span> <span class="operator">=</span> <span class="literal string double">&quot;neil.williams&quot;</span>
+<span class="name">HOSTNAME</span> <span class="operator">=</span> <span class="literal string double">&quot;localhost&quot;</span>
+</pre>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The script uses the recommended <code class="docutils literal notranslate"><span class="pre">https</span></code> scheme to protect your
+token. Most <code class="docutils literal notranslate"><span class="pre">localhost</span></code> instances do not support <code class="docutils literal notranslate"><span class="pre">https</span></code>, so this would
+need alteration during testing with localhost.</p>
+</div>
+</div>
+<div class="section" id="example-output">
+<h3>Example output<a class="headerlink" href="#example-output" title="Permalink to this headline">¶</a></h3>
+<p><abbr title="Comma Separated Values">CSV</abbr> format.</p>
+<ul class="simple">
+<li>Job - Id of the test job which failed.</li>
+<li>Type - type of the exception logged by the job. <code class="docutils literal notranslate"><span class="pre">Infrastructure</span></code> or <code class="docutils literal notranslate"><span class="pre">Job</span></code></li>
+<li>Message - the message logged by the exception.</li>
+<li>Time - the time that the exception was logged on the master. (UTC)</li>
+</ul>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Job, Type, Message, Time
+177863, &#39;Job&#39;, &#39;fastboot-flash-action timed out after 1702 seconds&#39;, &#39;2017-07-05 17:38:35.540829+00:00&#39;
+177862, &#39;Job&#39;, &#39;fastboot-flash-action timed out after 1706 seconds&#39;, &#39;2017-07-05 17:38:33.267313+00:00&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="lava-query-use-cases">
+<span id="id2"></span><h2>LAVA Query use cases<a class="headerlink" href="#lava-query-use-cases" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Incomplete jobs submitted from kernel-ci:<ul>
+<li>Condition 1:<ul>
+<li>Condition model: test job</li>
+<li>Field name: health</li>
+<li>Operator: Exact match</li>
+<li>Field value: Incomplete</li>
+</ul>
+</li>
+<li>Condition 2:<ul>
+<li>Condition model: test job</li>
+<li>Field name: submitter</li>
+<li>Operator: Exact match</li>
+<li>Field value: kernel-ci</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Completed jobs that have at least one failed test case on panda NFS using LSK:<ul>
+<li>Condition 1:<ul>
+<li>Condition model: test job</li>
+<li>Field name: health</li>
+<li>Operator: Exact match</li>
+<li>Field value: Complete</li>
+</ul>
+</li>
+<li>Condition 2:<ul>
+<li>Condition model: test job</li>
+<li>Field name: requested_device_type</li>
+<li>Operator: Exact match</li>
+<li>Field value: panda</li>
+</ul>
+</li>
+<li>Condition 3:<ul>
+<li>Condition model: test case</li>
+<li>Field name: result</li>
+<li>Operator: Exact match</li>
+<li>Field value: Test failed</li>
+</ul>
+</li>
+<li>Condition 4:<ul>
+<li>Condition model: metadata</li>
+<li>Field name: kernel.version</li>
+<li>Operator: Contains</li>
+<li>Field value: lsk</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>List of jobs on vexpress TC2 using LSK 3.14 where boot time exceeds 40 seconds:<ul>
+<li>Condition 1:<ul>
+<li>Condition model: metadata</li>
+<li>Field name: android.name</li>
+<li>Operator: Contains</li>
+<li>Field value: vexpress-lsk-3.14</li>
+</ul>
+</li>
+<li>Condition 2:<ul>
+<li>Condition model: test case</li>
+<li>Field name: measurement</li>
+<li>Operator: Greater than</li>
+<li>Field value: 40</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>List of jobs stuck in ‘Canceling’ state:<ul>
+<li>Condition 1:<ul>
+<li>Condition model: testjob</li>
+<li>Field name: state</li>
+<li>Operator: Exact match</li>
+<li>Field value: Canceling</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="lava-charts">
+<span id="id3"></span><h1>LAVA Charts<a class="headerlink" href="#lava-charts" title="Permalink to this headline">¶</a></h1>
+<p>LAVA charts represent the visual representation of the Queries app.</p>
+<div class="section" id="how-to-create-a-chart">
+<h2>How to create a Chart?<a class="headerlink" href="#how-to-create-a-chart" title="Permalink to this headline">¶</a></h2>
+<p>On the Charts main page, after clicking on Create link and entering the name
+and the description for the Chart, you will be presented with the following
+page:</p>
+<a class="reference internal image-reference" href="_images/chart-details-page.png"><img alt="_images/chart-details-page.png" src="_images/chart-details-page.png" style="width: 1063px; height: 432px;" /></a>
+<p>From there you can edit, remove or publish the chart. Furthermore, you can
+review, add and remove queries associated with this chart from this page.</p>
+<p>User can also create new charts from queries. On the query display page, a
+simple click on the button will create the chart with this particular query
+already added to the chart (with default settings). There’s also a possibility
+of only viewing the chart for particular query without making it permanent in
+the system (also from query display).</p>
+<p>Once chart is published, you can assign it to a chart group:</p>
+<div class="section" id="chart-grouping">
+<h3>Chart grouping<a class="headerlink" href="#chart-grouping" title="Permalink to this headline">¶</a></h3>
+<p>Once Chart is published, you can see the “Chart group label” field on the chart
+detail page. Clicking the field allows you to edit the grouping for that chart.
+If you want to assign the existing chart groups to this chart, just start
+typing the group name and the autocomplete field will display all the existing
+chart group starting with that term. If the chart group you enter does not
+exist, it will be automatically created and assigned to this chart.</p>
+<p>Removing the chart group label from the chart group field will unassign this
+chart from any chart group. At that point, if the chart group you just
+unassigned does not have any more charts assigned to it, the chart group will
+be deleted.</p>
+</div>
+<div class="section" id="chart-permissions">
+<span id="id4"></span><h3>Chart permissions<a class="headerlink" href="#chart-permissions" title="Permalink to this headline">¶</a></h3>
+<p>Once Chart is published, you can see the ownership options on the chart detail
+page.</p>
+<p>First field displays the “maintainer” username of the user who created this
+chart (this field cannot be changed).</p>
+<p>The second field is where the system group editing rights can be added.</p>
+<p>All users belonging to this system group (you can check your group membership
+on the Profile page) will be able to edit/update this particular chart as if
+they were maintainers.</p>
+<p>This field cannot be used to enable users to see the data in the chart if they
+are not able to for other authorization reasons (no device permissions or test
+job visibility permissions).</p>
+</div>
+<div class="section" id="adding-queries">
+<h3>Adding Queries<a class="headerlink" href="#adding-queries" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/chart-add-query.png"><img alt="_images/chart-add-query.png" src="_images/chart-add-query.png" style="width: 556px; height: 414px;" /></a>
+<p>In the Query field user can select the query they would like to chart with the
+help of the autocomplete feature.</p>
+<p>Chart display depends mostly on the object set selected in the query so for
+example if the query object set is test job, charts will display results per
+test job, etc.</p>
+<p>The “X axis” will by default represent the date (i.e. job completion date in
+case of the Test job query) but this behavior can be changed by utilizing the
+“X-axis attribute” field. This field must be correctly set to the existing
+<a class="reference internal" href="glossary.html#term-metadata"><span class="xref std std-term">metadata</span></a> field. If done so, the X axis of the chart will be split into
+this fields’ values.</p>
+<p>Chart type represents the type of information chart will be collecting from the
+query and currently options ‘Pass/fail’, ‘Measurement’ and ‘Attributes’ are
+supported.</p>
+<p><strong>Pass/fail</strong> charts will collect number of passed test results compared to
+total number of test results from each query object set. Each plot line in
+chart will represent query object set (test job or test suite). Keep in mind
+that pass/fail charts are unavailable for test case based queries.</p>
+<p><strong>Measurement</strong> charts will collect the measurement value from each of the
+corresponding test results. Unless the query object set is test job, each plot
+line in chart will represent one test case. Otherwise, the chart will calculate
+average value of each test case across related test suites and display that
+value.</p>
+<p><strong>Attributes</strong> chart will let you enter one or more of the custom attributes
+(separated by coma) and the chart will display that particular custom attribute
+value for each query object set. Each plot line in chart will represent
+one attribute value over object set. Keep in mind that there is no validation
+for this field.</p>
+<p>Note that order of the query in the chart can be changed in the chart review
+page. Simple drag and drop of the queries in the list can be used for
+re-ordering.</p>
+</div>
+</div>
+<div class="section" id="charts-display-page">
+<h2>Charts display page<a class="headerlink" href="#charts-display-page" title="Permalink to this headline">¶</a></h2>
+<p>See below for description of each specific feature of the display page.</p>
+</div>
+<div class="section" id="interactive-charts">
+<h2>Interactive charts<a class="headerlink" href="#interactive-charts" title="Permalink to this headline">¶</a></h2>
+<p>You can click on each of the indices on the chart and a new tab will open with
+that particular test job/suite/case.</p>
+<p>If mouse is hovered over the any of the indices on the chart, a tooltip will
+appear with either pass/fail number of tests or measurement value depending on
+the chart type. This tooltip will also contain information if there are any
+comments added to the test results and also metadata changes as well, where
+applicable.</p>
+<p>Charts also have the ability of zooming in/out and panning. You can
+zoom in the chart by double-clicking anywhere on the chart and panning is
+available with mouse dragging. In the top right corner there is a small button
+for zooming out to previous setting. By doing any of the operation like test
+selection through legend(see <a class="reference internal" href="#legend"><span class="std std-ref">Legend</span></a>) or date selection or percentage
+toggle, the chart zooming/panning will be reset.</p>
+<div class="section" id="legend">
+<span id="id5"></span><h3>Legend<a class="headerlink" href="#legend" title="Permalink to this headline">¶</a></h3>
+<p>Legend displays the colors of the trends on chart and the aliases set up
+during image report creating (default is “filtername: testname: testcasename”).</p>
+<p>Legend is also interactive. You can shuffle the items in the legend with drag
+and drop. The advantage to this is that the indices in the chart can overlap so
+in order to use the interactivity you might need to change the order of the
+legend items.</p>
+</div>
+<div class="section" id="date-limits">
+<h3>Date limits<a class="headerlink" href="#date-limits" title="Permalink to this headline">¶</a></h3>
+<p>You can limit the dates in the dropdowns. Start date setting
+will be saved and automatically loaded once you visit this page next time.</p>
+</div>
+<div class="section" id="print-menu">
+<h3>Print menu<a class="headerlink" href="#print-menu" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>There are three options in the print menu:</dt>
+<dd><ul class="first last simple">
+<li>Download as csv - downloads CSV file with all the test data from this chart</li>
+<li>View as image - displays only chart as an image in a new tab</li>
+<li>This chart by URL - opens a new tab with manually set conditions and object
+set</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="chart-using-metadata">
+<h2>Chart using metadata<a class="headerlink" href="#chart-using-metadata" title="Permalink to this headline">¶</a></h2>
+<p>By default, charts will use date and time to display results. User can change
+this behavior and use a custom attribute (i.e. build number) to plot the result
+data. This setting can be changed in the chart settings - ‘xaxis attribute’
+field.</p>
+<p>If the field is empty, the date/time will be used to plot the data. Users
+should keep in mind that this setting is a free text field so if the custom
+attribute set is not found in the system, no results will be shown. Similarly,
+if particular test result does not contain the custom attribute that is set,
+that result will be omitted from chart.</p>
+<div class="section" id="omitting-chart-results">
+<h3>Omitting Chart Results<a class="headerlink" href="#omitting-chart-results" title="Permalink to this headline">¶</a></h3>
+<p>Ability to omit specific results from charts is available through plot click
+event.</p>
+<p>Omitting results from chart will actually omit it from the underlying query,
+thus actively omitting it from all charts which include that query. It is not
+possible to omit results from custom charts or charts by URL from queries.</p>
+<p>Keep in mind that the charts can have tightly packed plot points so you might
+end up omitting the wrong results. Keep caution by reducing the date range or
+zooming in on the chart.</p>
+</div>
+<div class="section" id="chart-by-url">
+<h3>Chart by URL<a class="headerlink" href="#chart-by-url" title="Permalink to this headline">¶</a></h3>
+<p>Similar as for queries (see <a class="reference internal" href="#query-by-url"><span class="std std-ref">Query by URL</span></a>), user can view charts by
+typing in the entity and conditions in URL. There is one additional option
+compared to queries, the chart type. New URL parameter is named “type” and can
+take values of pass/fail, measurement and attributes.</p>
+<p><a class="reference external" href="https://staging.validation.linaro.org/results/chart/ custom?type=pass/fail&amp;entity=testjob&amp;conditions=testjob__priority__exact__Medium,testjob__submitter__contains__code">Example Chart by URL</a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/lava-queries-charts.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:43 GMT -->
+</html>

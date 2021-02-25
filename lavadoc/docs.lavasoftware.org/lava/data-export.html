@@ -1,0 +1,1367 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/data-export.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Exporting data out of LAVA &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Custom result handling" href="custom-result-handling.html" />
+    <link rel="prev" title="Using Test Results" href="lava-queries-charts.html" />
+    <link rel="canonical" href="data-export.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Exporting data out of LAVA</a><ul>
+<li><a class="reference internal" href="#rest-api">REST API</a><ul>
+<li><a class="reference internal" href="#v0-2">v0.2</a><ul>
+<li><a class="reference internal" href="#extra-actions">Extra actions</a></li>
+<li><a class="reference internal" href="#filtering">Filtering</a><ul>
+<li><a class="reference internal" href="#testjob-object">TestJob object</a></li>
+<li><a class="reference internal" href="#devicetype-object">DeviceType object</a></li>
+<li><a class="reference internal" href="#architecture-object">Architecture object</a></li>
+<li><a class="reference internal" href="#processorfamily-object">ProcessorFamily object</a></li>
+<li><a class="reference internal" href="#alias-object">Alias object</a></li>
+<li><a class="reference internal" href="#core-object">Core object</a></li>
+<li><a class="reference internal" href="#bitwidth-object">BitWidth object</a></li>
+<li><a class="reference internal" href="#device-object">Device object</a></li>
+<li><a class="reference internal" href="#worker-object">Worker object</a></li>
+<li><a class="reference internal" href="#tag-object">Tag object</a></li>
+<li><a class="reference internal" href="#jobfailuretag-object">JobFailureTag object</a></li>
+<li><a class="reference internal" href="#user-object">User object</a></li>
+<li><a class="reference internal" href="#group-object">Group object</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nested-filtering">Nested filtering</a></li>
+<li><a class="reference internal" href="#sorting">Sorting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-and-modifying-objects">Creating and modifying objects</a><ul>
+<li><a class="reference internal" href="#submitting-a-test-job">Submitting a test job</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deprecated-semi-rest-api-for-retrieving-results">Deprecated semi-REST API for retrieving results</a></li>
+<li><a class="reference internal" href="#chunking-test-suite-results">Chunking test suite results</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#xml-rpc">XML-RPC</a></li>
+<li><a class="reference internal" href="#user-specified-notifications">User specified notifications</a><ul>
+<li><a class="reference internal" href="#example-test-job-notification">Example test job notification</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#event-notifications">Event notifications</a><ul>
+<li><a class="reference internal" href="#example-metadata">Example metadata</a></li>
+<li><a class="reference internal" href="#event-notification-types">Event notification types</a></li>
+<li><a class="reference internal" href="#example-device-notification">Example device notification</a></li>
+<li><a class="reference internal" href="#example-testjob-notification">Example testjob notification</a></li>
+<li><a class="reference internal" href="#example-log-event-notification">Example log event notification</a></li>
+<li><a class="reference internal" href="#example-test-event-notification">Example test event notification</a></li>
+<li><a class="reference internal" href="#write-your-own-event-notification-client">Write your own event notification client</a></li>
+<li><a class="reference internal" href="#submit-a-job-and-wait-on-notifications">Submit a job and wait on notifications</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="lava-queries-charts.html" title="Previous Chapter: Using Test Results"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Using Test Results</span>
+    </a>
+  </li>
+  <li>
+    <a href="custom-result-handling.html" title="Next Chapter: Custom result handling"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Custom result... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="exporting-data-out-of-lava">
+<span id="data-export"></span><span id="index-0"></span><h1>Exporting data out of LAVA<a class="headerlink" href="#exporting-data-out-of-lava" title="Permalink to this headline">¶</a></h1>
+<p>LAVA supports two methods of extracting data: the <a class="reference internal" href="#rest-api"><span class="std std-ref">REST API</span></a> and
+<a class="reference internal" href="#xml-rpc"><span class="std std-ref">XML-RPC</span></a>. Results are made available while the job is running via
+the results API. Direct links from the test log UI are not populated
+until after the job completes, due to performance issues.</p>
+<p>In addition to these methods of pulling data out of LAVA, there are
+also two methods for pushing information about its activity:
+<a class="reference internal" href="#notification-summary"><span class="std std-ref">notifications</span></a> and <a class="reference internal" href="#publishing-events"><span class="std std-ref">publishing events</span></a>.</p>
+<div class="section" id="rest-api">
+<span id="index-1"></span><span id="id1"></span><h2>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h2>
+<p>REST API is available with /api URL. The API is based on
+<a class="reference external" href="https://www.django-rest-framework.org/">django-rest-framework</a>. All of the docs from django-rest-framework apply.
+LAVA uses token based authentication. To obtain a token POST request has to
+be made to /api/&lt;version&gt;/token/ endpoint. The request has to contain
+username and password fields. These are the same as used for web UI
+authentication. Call returns either existing AuthToken or creates new one.
+The tokens used for REST API and XML-RPC API are the same objects. Example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ curl -d &#39;{&quot;username&quot;:&quot;john.doe&quot;, &quot;password&quot;:&quot;FooBar&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST &quot;https://master.lavasoftware.org/api/v0.1/token/&quot;
+</pre></div>
+</div>
+<p>Reply will contain a token that identifies the user when using the REST API:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="s2">&quot;ezwpm1wytdwwnbbu90e6eo02bligzw21b0ibyc1ikbc19zkin6639f3wodce5u9oc3lndoqn0asfewrw0bclfii4mgtweokrxa0mztohj46n2rdi0qinezsbobfauqf0&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="v0-2">
+<h3>v0.2<a class="headerlink" href="#v0-2" title="Permalink to this headline">¶</a></h3>
+<p>Currently there are 9 endpoints available:</p>
+<ul class="simple">
+<li>/api/v0.2/aliases/</li>
+<li>/api/v0.2/jobs/</li>
+<li>/api/v0.2/devicetypes/</li>
+<li>/api/v0.2/devices/</li>
+<li>/api/v0.2/permissions/devicetypes</li>
+<li>/api/v0.2/permissions/devices</li>
+<li>/api/v0.2/system/</li>
+<li>/api/v0.2/tags/</li>
+<li>/api/v0.2/workers/</li>
+</ul>
+<p>In addition TestJob object (/api/v0.2/jobs/id/) contains following routes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>logs (/api/v0.2/jobs/&lt;job_id&gt;/logs)</li>
+<li>metadata (/api/v0.2/jobs/&lt;job_id&gt;/metadata)</li>
+</ul>
+</div></blockquote>
+<p>Following nested routes are available. The allow for filtering in suites and tests:</p>
+<ul class="simple">
+<li>suites (/api/v0.2/jobs/&lt;job_id&gt;/suites)</li>
+<li>tests (/api/v0.2/jobs/&lt;job_id&gt;/tests)</li>
+</ul>
+<p>The results are also available in JUnit, TAP13, CSV or YAML formats at:</p>
+<ul class="simple">
+<li>junit (/api/v0.2/jobs/&lt;job_id&gt;/junit/)</li>
+<li>tap13 (/api/v0.2/jobs/&lt;job_id&gt;/tap13/)</li>
+<li>CSV (/api/v0.2/jobs/&lt;job_id&gt;/csv)</li>
+<li>yaml (/api/v0.2/jobs/&lt;job_id&gt;/yaml)</li>
+</ul>
+<div class="section" id="extra-actions">
+<h4>Extra actions<a class="headerlink" href="#extra-actions" title="Permalink to this headline">¶</a></h4>
+<p>Additional actions are available on the following endpoints with GET request:</p>
+<ul class="simple">
+<li>device dictionary (/api/v0.2/devices/&lt;device_hostname&gt;/dictionary/)</li>
+<li>device type health check (/api/v0.2/devicetypes/&lt;device_type_name&gt;/health_check/)</li>
+<li>device type template (/api/v0.2/devicetypes/&lt;device_type_name&gt;/template/)</li>
+<li>master certificate (/api/v0.2/system/certificate/)</li>
+<li>worker certificate (/api/v0.2/workers/&lt;worker&gt;/certificate/)</li>
+<li>worker configuration (/api/v0.2/workers/&lt;worker&gt;/config/)</li>
+<li>worker environment (/api/v0.2/workers/&lt;worker&gt;/env/)</li>
+</ul>
+<p>Additional actions are available on the following endpoints with POST request:</p>
+<ul class="simple">
+<li>device dictionary (/api/v0.2/devices/&lt;device_hostname&gt;/dictionary/)</li>
+<li>device type health check (/api/v0.2/devicetypes/&lt;device_type_name&gt;/health_check/)</li>
+<li>device type template (/api/v0.2/devicetypes/&lt;device_type_name&gt;/template/)</li>
+<li>worker certificate (/api/v0.2/workers/&lt;worker&gt;/certificate/)</li>
+<li>worker configuration (/api/v0.2/workers/&lt;worker&gt;/config/)</li>
+<li>worker environment (/api/v0.2/workers/&lt;worker&gt;/env/)</li>
+<li>job resubmit (/api/v0.2/jobs/&lt;job_id&gt;/resubmit)</li>
+<li><dl class="first docutils">
+<dt>job validate (/api/v0.2/jobs/validate)</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>required parameters:</dt>
+<dd><ul class="first last">
+<li>definition (string)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>optional parameters:</dt>
+<dd><ul class="first last">
+<li>strict (bool)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Objects in all endpoints can be filtered and sorted as described
+in django-rest-framework docs: <a class="reference external" href="http://www.django-rest-framework.org/api-guide/filtering/">http://www.django-rest-framework.org/api-guide/filtering/</a>
+Searching is currently disabled.</p>
+<p>Examples specific to LAVA objects:</p>
+</div>
+<div class="section" id="filtering">
+<h4>Filtering<a class="headerlink" href="#filtering" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://validation.linaro.org/restapi/v0.2/jobs/?health_check=true
+</pre></div>
+</div>
+<p>Filtering fields</p>
+<div class="section" id="testjob-object">
+<span id="testjob-rest-object"></span><h5>TestJob object<a class="headerlink" href="#testjob-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li>submitter (can be traversed to <a class="reference internal" href="#user-rest-object"><span class="std std-ref">User object</span></a>)</li>
+<li>viewing_groups (can be traversed to <a class="reference internal" href="#group-rest-object"><span class="std std-ref">Group object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>description (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>health_check (bool field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>requested_device_type (can be traversed to <a class="reference internal" href="#devicetype-rest-object"><span class="std std-ref">DeviceType object</span></a>)</li>
+<li>tags (can be traversed to <a class="reference internal" href="#tag-rest-object"><span class="std std-ref">Tag object</span></a>)</li>
+<li>actual_device (can be traversed to <a class="reference internal" href="#device-rest-object"><span class="std std-ref">Device object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>submit_time (datetime field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>lt</li>
+<li>gt</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>start_time (datetime field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>lt</li>
+<li>gt</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>end_time (datetime field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>lt</li>
+<li>gt</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>state (Submitted, Scheduling, Scheduled, Running, Canceling, Finished)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>health (Unknown, Complete, Incomplete, Canceled)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>priority (integer field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>lt</li>
+<li>gt</li>
+<li>lte</li>
+<li>gte</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>definition (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>original_definition (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>multinode_definition (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>failure_tags (can be traversed to <a class="reference internal" href="#jobfailuretag-rest-object"><span class="std std-ref">JobFailureTag object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>failure_comment (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+<li>isnull</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="devicetype-object">
+<span id="devicetype-rest-object"></span><h5>DeviceType object<a class="headerlink" href="#devicetype-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>architecture (can traverse to <a class="reference internal" href="#architecture-rest-object"><span class="std std-ref">Architecture object</span></a>)</li>
+<li>processor (can traverse to <a class="reference internal" href="#processorfamily-rest-object"><span class="std std-ref">ProcessorFamily object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>cpu_model (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>aliases (can traverse to <a class="reference internal" href="#alias-rest-object"><span class="std std-ref">Alias object</span></a>)</li>
+<li>bits (can traverse to <a class="reference internal" href="#bitwidth-rest-object"><span class="std std-ref">BitWidth object</span></a>)</li>
+<li>cores (can traverse to <a class="reference internal" href="#core-rest-object"><span class="std std-ref">Core object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>core_count (integer field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>description (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>health_frequency (integer field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>disable_health_check (bool field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>health_denominator (hours, jobs)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>display (bool field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="architecture-object">
+<span id="architecture-rest-object"></span><h5>Architecture object<a class="headerlink" href="#architecture-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="processorfamily-object">
+<span id="processorfamily-rest-object"></span><h5>ProcessorFamily object<a class="headerlink" href="#processorfamily-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="alias-object">
+<span id="alias-rest-object"></span><h5>Alias object<a class="headerlink" href="#alias-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="core-object">
+<span id="core-rest-object"></span><h5>Core object<a class="headerlink" href="#core-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="bitwidth-object">
+<span id="bitwidth-rest-object"></span><h5>BitWidth object<a class="headerlink" href="#bitwidth-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>width (integer field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="device-object">
+<span id="device-rest-object"></span><h5>Device object<a class="headerlink" href="#device-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>hostname (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>device_type (can traverse to <a class="reference internal" href="#devicetype-rest-object"><span class="std std-ref">DeviceType object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>device_version (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>physical_owner (can traverse to <a class="reference internal" href="#user-rest-object"><span class="std std-ref">User object</span></a>)</li>
+<li>physical_group (can traverse to <a class="reference internal" href="#group-rest-object"><span class="std std-ref">Group object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>description (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>tags (can traverse to <a class="reference internal" href="#tag-rest-object"><span class="std std-ref">Tag object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>state (Idle, Reserved, Running)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>health (GOOD, UNKNOWN, LOOPING, BAD, MAINTENANCE, RETIRED)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>worker_host (can traverse to <a class="reference internal" href="#worker-rest-object"><span class="std std-ref">Worker object</span></a>)</li>
+</ul>
+</div>
+<div class="section" id="worker-object">
+<span id="worker-rest-object"></span><h5>Worker object<a class="headerlink" href="#worker-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>hostname (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>description (text field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>last_ping (datetime field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>lt</li>
+<li>gt</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>state (Online, Offline)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>health (Active, Maintenance, Retired)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="tag-object">
+<span id="tag-rest-object"></span><h5>Tag object<a class="headerlink" href="#tag-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>description (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="jobfailuretag-object">
+<span id="jobfailuretag-rest-object"></span><h5>JobFailureTag object<a class="headerlink" href="#jobfailuretag-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>description (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="user-object">
+<span id="user-rest-object"></span><h5>User object<a class="headerlink" href="#user-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li>group (can traverse to <a class="reference internal" href="#group-rest-object"><span class="std std-ref">Group object</span></a>)</li>
+<li><dl class="first docutils">
+<dt>username (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>email (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="group-object">
+<span id="group-rest-object"></span><h5>Group object<a class="headerlink" href="#group-object" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>name (char field)</dt>
+<dd><ul class="first last">
+<li>exact</li>
+<li>in</li>
+<li>contains</li>
+<li>icontains</li>
+<li>startswith</li>
+<li>endswith</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="nested-filtering">
+<h4>Nested filtering<a class="headerlink" href="#nested-filtering" title="Permalink to this headline">¶</a></h4>
+<p>It is possible to filter objects using their relations. This is achieved
+by using double underscore notation from django. Example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>https://validation.linaro.org/restapi/v0.1/jobs/?requested_device_type__cores__name<span class="o">=</span>kirin
+</pre></div>
+</div>
+<p>In the example above <em>requested_device_type</em> comes from TestJob object.
+It’s a related field of DeviceType. DeviceType contains <em>cores</em> field which
+is of type Core. Core object contains <em>name</em> field. So the example above
+queries database for all TestJob objects which requested device type that
+use cores with name <em>kirin</em>.</p>
+</div>
+<div class="section" id="sorting">
+<h4>Sorting<a class="headerlink" href="#sorting" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>https://validation.linaro.org/restapi/v0.1/jobs/?ordering<span class="o">=</span>start_time
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Sorting fields for TestJob object:</dt>
+<dd><ul class="first last simple">
+<li>id</li>
+<li>start_time</li>
+<li>end_time</li>
+<li>submit_time</li>
+</ul>
+</dd>
+<dt>Sorting fields for Device object:</dt>
+<dd><ul class="first last simple">
+<li>hostname</li>
+<li>device_type</li>
+<li>device_version</li>
+<li>physical_owner</li>
+<li>physical_group</li>
+<li>description</li>
+<li>tags</li>
+<li>state</li>
+<li>health</li>
+<li>worker_host</li>
+</ul>
+</dd>
+<dt>Sorting fields for Worker object:</dt>
+<dd><ul class="first last simple">
+<li>hostname</li>
+<li>description</li>
+<li>last_ping</li>
+<li>state</li>
+<li>health</li>
+</ul>
+</dd>
+<dt>Sorting fields for Alias object:</dt>
+<dd><ul class="first last simple">
+<li>name</li>
+</ul>
+</dd>
+<dt>Sorting fields for Tag object:</dt>
+<dd><ul class="first last simple">
+<li>name</li>
+<li>description</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="creating-and-modifying-objects">
+<h3>Creating and modifying objects<a class="headerlink" href="#creating-and-modifying-objects" title="Permalink to this headline">¶</a></h3>
+<p>DjangoRestFramework allows to create and modify objects using POST and PUT http
+requests respectively. These operations require successful authentication and
+sufficient permissions. LAVA utilizes Token authentication using http request
+header. Example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ curl -H <span class="s2">&quot;Authorization: Token xxxxxx&quot;</span>
+</pre></div>
+</div>
+<p>Same token is used for REST API and XML-RPC API authentication.</p>
+<div class="section" id="submitting-a-test-job">
+<h4>Submitting a test job<a class="headerlink" href="#submitting-a-test-job" title="Permalink to this headline">¶</a></h4>
+<p>Sending a POST request on a /jobs/ endpoint will result in attempted job
+submission in LAVA. There is only one argument which needs to be passed in the
+request and that is <code class="docutils literal notranslate"><span class="pre">definition</span></code>. Example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ curl -H <span class="s2">&quot;Authorization: Token xxxxxx&quot;</span> -d <span class="s1">&#39;{&quot;definition&quot;: &quot;your-testjob-definition-here&quot;}&#39;</span> -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -X POST <span class="s2">&quot;https://your.lava.hostname/api/v0.2/jobs/&quot;</span>
+</pre></div>
+</div>
+<p>Other database object can be created in a similar way. Different objects require
+different fields.</p>
+</div>
+</div>
+<div class="section" id="deprecated-semi-rest-api-for-retrieving-results">
+<h3>Deprecated semi-REST API for retrieving results<a class="headerlink" href="#deprecated-semi-rest-api-for-retrieving-results" title="Permalink to this headline">¶</a></h3>
+<p>LAVA makes the test results available directly from the instance,
+without needing to go through <code class="docutils literal notranslate"><span class="pre">lavacli</span></code>. The results for any test
+job which the user can view can be downloaded in <abbr title="comma-separated value">CSV</abbr> or YAML format.</p>
+<p>For example, the results for test job number 123 are available in CSV
+format using: <code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/csv</span></code>. The
+same results for job number 123 are available in YAML format using:
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/yaml</span></code></p>
+<p>If you know the test definition name, you can also download the
+results for that specific test definition only in a similar way:
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/0_singlenode-advanced/csv</span></code>
+for the data in CSV format and
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/0_singlenode-advanced/yaml</span></code>
+for the YAML format.</p>
+<p>Test definition names use a prefix to show the sequence within the
+test job, for each namespace. The list of test definitions within a
+test job can be retrieved using the Summary:
+<code class="docutils literal notranslate"><span class="pre">https://validation.linaro.org/results/123/yaml_summary</span></code></p>
+<p>Some test jobs can be restricted to particular users or groups of
+users. The results of these test jobs will be restricted in the same
+way. To download these results, you will need to specify your username
+and one of your <a class="reference internal" href="first_steps.html#authentication-tokens"><span class="std std-ref">Authentication Tokens</span></a> when using the REST
+API. Remember to quote the URL if using it on the command line, to
+avoid the &amp; character being mis-interpreted by your shell, for
+example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ curl <span class="s1">&#39;https://validation.linaro.org/results/123/0_singlenode-advanced/yaml?user=user.name&amp;token=yourtokentextgoeshereononeverylongline&#39;</span>
+</pre></div>
+</div>
+<p>Use the <strong>Username</strong> as specified in <a class="reference external" href="https://docs.lavasoftware.org/me">your Profile</a> - this may
+differ from the username you use if logging in via LDAP.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Take care of your tokens - avoid using personal tokens in
+scripts and test definitions, or any other files that end up in
+public git repositories. Wherever supported, use <code class="docutils literal notranslate"><span class="pre">https://</span></code> when
+using a token to avoid it being sent in plain-text.</p>
+</div>
+</div>
+<div class="section" id="chunking-test-suite-results">
+<span id="test-suite-result-pagination"></span><span id="index-2"></span><h3>Chunking test suite results<a class="headerlink" href="#chunking-test-suite-results" title="Permalink to this headline">¶</a></h3>
+<p>When jobs have a large number of test results in a particular test suite,
+it is advisable to use test case <strong>chunking</strong>, to provide pagination for
+downloading test cases via the REST API.</p>
+<p>Two special query string arguments are supported for allowing users to
+<strong>chunk</strong> the test cases when downloading test suite results.</p>
+<ul class="simple">
+<li><strong>Limit</strong> - determines how many results to read in this chunk</li>
+<li><strong>offset</strong> - the number of results already received</li>
+</ul>
+<p>Limit and offset are supported only for test suite exports (both csv
+and yaml). Example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ curl <span class="s1">&#39;https://validation.linaro.org/results/123/0_singlenode-advanced/yaml?limit=100&amp;offset=200&#39;</span>
+
+$ curl <span class="s1">&#39;https://validation.linaro.org/results/123/0_singlenode-advanced/yaml?user=user.name&amp;token=yourtokentextgoeshereononeverylongline&amp;limit=100&amp;offset=200&#39;</span>
+</pre></div>
+</div>
+<p>To retrieve the full count of testcases in a single test suite (useful for
+pagination), you can use the testcase-count REST API method, like so:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ curl <span class="s1">&#39;https://validation.linaro.org/results/123/0_singlenode-advanced/+testcase-count?user=user.name&amp;token=yourtokentextgoeshereononeverylongline&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Test cases will be ordered by ID regardless of whether pagination is
+used or not. This applies to downloading test cases for a particular test
+suite only.</p>
+</div>
+</div>
+</div>
+<div class="section" id="xml-rpc">
+<span id="index-3"></span><span id="id2"></span><h2>XML-RPC<a class="headerlink" href="#xml-rpc" title="Permalink to this headline">¶</a></h2>
+<p>Lots of <a class="reference external" href="https://docs.lavasoftware.org/api/help">methods</a> are available to query various
+information in LAVA.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When using XML-RPC to communicate with a remote server,
+check whether <code class="docutils literal notranslate"><span class="pre">https://</span></code> can be used to protect the
+token. <code class="docutils literal notranslate"><span class="pre">http://</span></code> connections to a remote XML-RPC server will
+transmit the token in plain-text. Not all servers have <code class="docutils literal notranslate"><span class="pre">https://</span></code>
+configured. If a token becomes compromised, log in to that LAVA
+instance and delete the token before creating a new one.</p>
+</div>
+<p>The general structure of an XML-RPC call can be shown in this python
+snippet:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python3</span>
+<span class="kn">import</span> <span class="nn">xmlrpc.client</span>
+<span class="kn">import</span> <span class="nn">simplejson</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span> <span class="o">...</span> <span class="p">})</span>
+<span class="n">server</span><span class="o">=</span><span class="n">xmlrpc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ServerProxy</span><span class="p">(</span><span class="s2">&quot;http://username:API-Key@localhost:8001/RPC2/&quot;</span><span class="p">)</span>
+<span class="n">jobid</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">submit_job</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>XML-RPC can also be used to query data anonymously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python3</span>
+<span class="kn">import</span> <span class="nn">xmlrpc.client</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">xmlrpc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ServerProxy</span><span class="p">(</span><span class="s2">&quot;http://sylvester.codehelp/RPC2&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">server</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">listMethods</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Individual XML-RPC commands are documented on the <a class="reference external" href="https://docs.lavasoftware.org/api/help">API Help</a> page.</p>
+</div>
+<div class="section" id="user-specified-notifications">
+<span id="notification-summary"></span><span id="index-4"></span><h2>User specified notifications<a class="headerlink" href="#user-specified-notifications" title="Permalink to this headline">¶</a></h2>
+<p>Users can request notifications about submitted test jobs by adding a
+notify block to their test job submission.</p>
+<p>The basic setup of the notifications in job definitions will have
+<strong>criteria</strong>, <strong>verbosity</strong>, <strong>recipients</strong> and <strong>compare</strong> blocks.</p>
+<ul class="simple">
+<li><strong>Criteria</strong> tell the system when the notifications should be sent</li>
+<li><strong>Verbosity</strong> tells the system how much detail should be included in
+the notification</li>
+<li><strong>Recipients</strong> tells the system where to send the notification, and
+how</li>
+<li><strong>Compare</strong> is an optional block that allows the user to request
+comparisons between results in this test and results from previous
+test</li>
+</ul>
+<p>Here is an example notification setup. For more detailed information
+see <a class="reference internal" href="user-notifications.html#notifications"><span class="std std-ref">User notifications in LAVA</span></a>.</p>
+<div class="section" id="example-test-job-notification">
+<h3>Example test job notification<a class="headerlink" href="#example-test-job-notification" title="Permalink to this headline">¶</a></h3>
+<pre class="code yaml literal-block">
+<span class="name tag">notify</span><span class="punctuation">:</span>
+  <span class="name tag">criteria</span><span class="punctuation">:</span>
+    <span class="name tag">status</span><span class="punctuation">:</span> <span class="literal scalar plain">incomplete</span>
+  <span class="name tag">verbosity</span><span class="punctuation">:</span> <span class="literal scalar plain">quiet</span>
+  <span class="name tag">recipients</span><span class="punctuation">:</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">user</span><span class="punctuation">:</span> <span class="literal scalar plain">neil.williams</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">irc</span>
+</pre>
+</div>
+</div>
+<div class="section" id="event-notifications">
+<span id="publishing-events"></span><span id="index-5"></span><h2>Event notifications<a class="headerlink" href="#event-notifications" title="Permalink to this headline">¶</a></h2>
+<p>Event notifications are handled by the <code class="docutils literal notranslate"><span class="pre">lava-publisher</span></code> service on
+the master. By default, event notifications are disabled.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">lava-publisher</span></code> is distinct from the <a class="reference internal" href="publishing-artifacts.html#publishing-artifacts"><span class="std std-ref">publishing API</span></a>. Publishing <strong>events</strong> covers status
+changes for devices and test jobs. The publishing API covers
+copying <strong>files</strong> from test jobs to external sites.</p>
+</div>
+<p><a class="reference external" href="http://ivoire.dinauz.org/linaro/bus/">http://ivoire.dinauz.org/linaro/bus/</a> is the home of <code class="docutils literal notranslate"><span class="pre">ReactOWeb</span></code>. It
+shows an example of the status change information which can be made
+available using <code class="docutils literal notranslate"><span class="pre">lava-publisher</span></code>. Events include:</p>
+<ul class="simple">
+<li>metadata on the instance which was the source of the event; and</li>
+<li>description of a status change on that instance.</li>
+</ul>
+<p>Event notifications are disabled by default and <strong>must</strong> be configured
+before being enabled.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="advanced-installation.html#configuring-event-notifications"><span class="std std-ref">Configuring event notifications</span></a></p>
+</div>
+<div class="section" id="example-metadata">
+<span id="example-event-metadata"></span><h3>Example metadata<a class="headerlink" href="#example-metadata" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Date and time</li>
+<li>Topic (for example <code class="docutils literal notranslate"><span class="pre">org.linaro.validation.staging.device</span></code>)</li>
+<li>Message UUID</li>
+<li>Username</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">topic</span></code> field is configurable by lab administrators. Its
+intended use is to allow receivers of events to filter incoming
+events.</p>
+</div>
+<div class="section" id="event-notification-types">
+<span id="event-types"></span><h3>Event notification types<a class="headerlink" href="#event-notification-types" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#example-device-event"><span class="std std-ref">Device event</span></a> notifications are emitted
+automatically when a device changes state (e.g. Idle to Running) or
+health (e.g. Bad to Unknown). Some events are related to testjobs,
+some are due to admin action.</li>
+<li><a class="reference internal" href="#example-testjob-event"><span class="std std-ref">Testjob event</span></a> notifications are
+emitted automatically when a testjob changes state (e.g. Submitted to
+Running).</li>
+<li><a class="reference internal" href="#example-log-event"><span class="std std-ref">System event</span></a> notifications are emitted
+automatically when workers change state.</li>
+<li><a class="reference internal" href="#example-testshell-event"><span class="std std-ref">Test Shell event</span></a> notifications are
+emitted only when requested within a Lava Test Shell by a test writer
+and contain a customized message.</li>
+</ul>
+</div>
+<div class="section" id="example-device-notification">
+<span id="example-device-event"></span><h3>Example device notification<a class="headerlink" href="#example-device-notification" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;staging-qemu05&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;device_type&quot;</span><span class="p">:</span> <span class="s2">&quot;qemu&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;health_status&quot;</span><span class="p">:</span> <span class="s2">&quot;Pass&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="mi">156223</span><span class="p">,</span>
+   <span class="s2">&quot;pipeline&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+   <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;Idle&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-testjob-notification">
+<span id="example-testjob-event"></span><h3>Example testjob notification<a class="headerlink" href="#example-testjob-notification" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;health_check&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;QEMU pipeline, first job&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;Scheduled&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;visibility&#39;</span><span class="p">:</span> <span class="s1">&#39;Publicly visible&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;priority&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s1">&#39;submitter&#39;</span><span class="p">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;job&#39;</span><span class="p">:</span> <span class="s1">&#39;http://calvin.codehelp/scheduler/1995&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;health&#39;</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;device_type&#39;</span><span class="p">:</span> <span class="s1">&#39;qemu&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;submit_time&#39;</span><span class="p">:</span> <span class="s1">&#39;2018-05-17T11:49:56.336847+00:00&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;qemu01&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-log-event-notification">
+<span id="example-log-event"></span><h3>Example log event notification<a class="headerlink" href="#example-log-event-notification" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2018</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">17</span><span class="n">T12</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">15.238331</span> <span class="o">.</span><span class="n">codehelp</span><span class="o">.</span><span class="n">calvin</span><span class="o">.</span><span class="n">worker</span> <span class="n">lavaserver</span> <span class="o">-</span> <span class="p">[</span><span class="n">worker01</span><span class="p">]</span> <span class="n">state</span><span class="o">=</span><span class="n">Online</span> <span class="n">health</span><span class="o">=</span><span class="n">Active</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-test-event-notification">
+<span id="example-testshell-event"></span><h3>Example test event notification<a class="headerlink" href="#example-test-event-notification" title="Permalink to this headline">¶</a></h3>
+<p>Test writers can cause event notifications to be emitted under the
+control of a Lava Test Shell. This example uses an inline test
+definition.</p>
+<pre class="code yaml literal-block">
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span>
+        <span class="name tag">metadata</span><span class="punctuation">:</span>
+          <span class="name tag">format</span><span class="punctuation">:</span> <span class="literal scalar plain">Lava-Test Test Definition 1.0</span>
+          <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">apache-server</span>
+          <span class="name tag">description</span><span class="punctuation">:</span> <span class="literal string">&quot;test</span><span class="name variable"> </span><span class="literal string">events&quot;</span>
+          <span class="name tag">os</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">debian</span>
+          <span class="name tag">scope</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">functional</span>
+        <span class="name tag">run</span><span class="punctuation">:</span>
+          <span class="name tag">steps</span><span class="punctuation">:</span>
+          <span class="punctuation indicator">-</span> <span class="literal scalar plain">lava-test-event demonstration</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">inline</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">test-event</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">inline/test-event.yaml</span>
+</pre>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2018</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">17</span><span class="n">T11</span><span class="p">:</span><span class="mi">51</span><span class="p">:</span><span class="mf">22.542416</span> <span class="n">org</span><span class="o">.</span><span class="n">linaro</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">event</span> <span class="n">lavaserver</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;demonstration&quot;</span><span class="p">,</span> <span class="s2">&quot;job&quot;</span><span class="p">:</span> <span class="s2">&quot;1995&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-your-own-event-notification-client">
+<span id="example-event-notification-client"></span><h3>Write your own event notification client<a class="headerlink" href="#write-your-own-event-notification-client" title="Permalink to this headline">¶</a></h3>
+<p>It is quite straightforward to communicate with <code class="docutils literal notranslate"><span class="pre">lava-publisher</span></code> to
+listen for events. This example code shows how to connect and
+subscribe to <code class="docutils literal notranslate"><span class="pre">lava-publisher</span></code> job events. It includes a simple
+main function to run on the command line if you wish:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python zmq_client.py -j <span class="m">357</span> --hostname tcp://127.0.0.1:5500 -t <span class="m">1200</span>
+</pre></div>
+</div>
+<p>zmq_client.py script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">xmlrpc.client</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
+
+
+<span class="n">FINISHED_JOB_STATUS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Complete&quot;</span><span class="p">,</span> <span class="s2">&quot;Incomplete&quot;</span><span class="p">,</span> <span class="s2">&quot;Canceled&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">JobEndTimeoutError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Raise when the specified job does not finish in certain timeframe. &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Timeout</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Timeout error class with ALARM signal. Accepts time in seconds. &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">TimeoutError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sec</span> <span class="o">=</span> <span class="n">sec</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_raise</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sec</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sec</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sec</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">timeout_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">Timeout</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">JobListener</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUB</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUBSCRIBE</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">wait_for_job_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Timeout</span><span class="p">(</span><span class="n">timeout</span><span class="p">):</span>
+                <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv_multipart</span><span class="p">()</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">=</span> <span class="n">msg</span><span class="p">[:]</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="c1"># Dropping invalid message</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;job&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;job&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">job_id</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;health&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">FINISHED_JOB_STATUS</span><span class="p">:</span>
+                                <span class="k">return</span> <span class="n">data</span>
+
+        <span class="k">except</span> <span class="n">Timeout</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JobEndTimeoutError</span><span class="p">(</span>
+                <span class="s2">&quot;JobListener timed out after </span><span class="si">%s</span><span class="s2"> seconds.&quot;</span> <span class="o">%</span> <span class="n">timeout</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">lookup_publisher</span><span class="p">(</span><span class="n">hostname</span><span class="p">,</span> <span class="n">https</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lookup the publisher details using XML-RPC</span>
+<span class="sd">    on the specified hostname.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xmlrpc_url</span> <span class="o">=</span> <span class="s2">&quot;http://</span><span class="si">%s</span><span class="s2">/RPC2&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hostname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">https</span><span class="p">:</span>
+        <span class="n">xmlrpc_url</span> <span class="o">=</span> <span class="s2">&quot;https://</span><span class="si">%s</span><span class="s2">/RPC2&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hostname</span><span class="p">)</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">xmlrpc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ServerProxy</span><span class="p">(</span><span class="n">xmlrpc_url</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">socket</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">get_publisher_event_socket</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;ERROR </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">exc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">socket</span><span class="p">)</span><span class="o">.</span><span class="n">port</span>
+    <span class="n">listener_url</span> <span class="o">=</span> <span class="s2">&quot;tcp://</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hostname</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Using </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">listener_url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">listener_url</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the command line</span>
+<span class="sd">    For simplicity, this script does not handle usernames</span>
+<span class="sd">    and tokens so needs a job ID. For support submitting</span>
+<span class="sd">    a test job as well as watching the events, use lavacli.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-j&quot;</span><span class="p">,</span> <span class="s2">&quot;--job-id&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Job ID to wait for&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--https&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use https:// for this hostname&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--timeout&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Timeout in seconds&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hostname&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;hostname of the instance&quot;</span><span class="p">)</span>
+
+    <span class="n">options</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">publisher</span> <span class="o">=</span> <span class="n">lookup_publisher</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">https</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">xmlrpc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ProtocolError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;ERROR </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">exc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">publisher</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">job_id</span><span class="p">:</span>
+        <span class="n">listener</span> <span class="o">=</span> <span class="n">JobListener</span><span class="p">(</span><span class="n">publisher</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">listener</span><span class="o">.</span><span class="n">wait_for_job_end</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">timeout</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+</div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/source/zmq_client.py">examples/source/zmq_client.py</a></p>
+<p>If you are interested in using event notifications for a custom
+<a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a>, you may want also to look at the code for the
+ReactOWeb example website: <a class="reference external" href="https://github.com/ivoire/ReactOWeb">https://github.com/ivoire/ReactOWeb</a></p>
+</div>
+<div class="section" id="submit-a-job-and-wait-on-notifications">
+<h3>Submit a job and wait on notifications<a class="headerlink" href="#submit-a-job-and-wait-on-notifications" title="Permalink to this headline">¶</a></h3>
+<p>A common request from LAVA users is the ability to submit a test job,
+wait for the job to start and then monitor it directly as it
+runs. Recent versions of <a class="reference internal" href="lavacli.html#lavacli"><span class="std std-ref">lavacli</span></a> support this directly.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/data-export.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:13 GMT -->
+</html>

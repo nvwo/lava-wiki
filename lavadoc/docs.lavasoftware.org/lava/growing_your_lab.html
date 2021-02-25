@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/growing_your_lab.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:18 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Growing your lab &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up a LAVA instance" href="pipeline-server.html" />
+    <link rel="prev" title="Enabling Secondary Media" href="admin-secondary-media.html" />
+    <link rel="canonical" href="growing_your_lab.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Growing your lab</a><ul>
+<li><a class="reference internal" href="#assumptions">Assumptions</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#logical-layouts">Logical layouts</a><ul>
+<li><a class="reference internal" href="#single-master-single-worker">Single master, single worker</a></li>
+<li><a class="reference internal" href="#single-master-multiple-workers">Single master, multiple workers</a></li>
+<li><a class="reference internal" href="#multiple-masters-multiple-workers">Multiple masters, multiple workers</a></li>
+<li><a class="reference internal" href="#micro-instances">Micro-instances</a></li>
+<li><a class="reference internal" href="#which-layout-is-best">Which layout is best?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#layout-recommendations">Layout Recommendations</a></li>
+<li><a class="reference internal" href="#physical-layouts">Physical layouts</a></li>
+<li><a class="reference internal" href="#resources">Resources</a><ul>
+<li><a class="reference internal" href="#how-many-devices-is-too-many-for-one-worker">How many devices is too many for one worker?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#workers-in-different-locations">Workers in different locations</a><ul>
+<li><a class="reference internal" href="#remote-infrastructure">Remote Infrastructure</a></li>
+<li><a class="reference internal" href="#differences-between-bootloader-types">Differences between bootloader types</a></li>
+<li><a class="reference internal" href="#maintenance-windows-across-remote-locations">Maintenance windows across remote locations</a></li>
+<li><a class="reference internal" href="#networking-to-remote-locations">Networking to remote locations</a><ul>
+<li><a class="reference internal" href="#encryption-and-authentication">Encryption and authentication</a></li>
+<li><a class="reference internal" href="#firewalls">Firewalls</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-a-frontend-with-remote-labs">Using a frontend with remote labs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="admin-secondary-media.html" title="Previous Chapter: Enabling Secondary Media"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Enabling Seco...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pipeline-server.html" title="Next Chapter: Setting up a LAVA instance"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Setting up a ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="growing-your-lab">
+<span id="index-0"></span><span id="id1"></span><h1><a class="toc-backref" href="#contents">Growing your lab</a><a class="headerlink" href="#growing-your-lab" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="assumptions">
+<h2><a class="toc-backref" href="#contents">Assumptions</a><a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
+<p>At this point, it is expected that you will have a simple lab setup with some
+virtual devices and some simple test boards, each regularly passing
+<a class="reference internal" href="healthchecks.html#health-checks"><span class="std std-ref">health checks</span></a>. It is generally a good idea to allow time
+for your lab to settle. Run a number of test jobs and understand the
+administrative burden before trying to expand your setup.</p>
+<p>Once you are happy that things are working and you know how to run that simple
+lab, here are suggested steps to follow to grow it.</p>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#contents">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>When planning your lab, keep in mind the basic requirements of automation and
+LAVA:</p>
+<ul class="simple">
+<li>Instances need high reliability.</li>
+<li>Devices under test may often be prototypes or developer editions of hardware.
+This can lead to reliability and stability issues.</li>
+<li>Extra hardware may be needed for automation which is not commonly found in
+generic hosting locations like data centers.</li>
+<li>Depending on the type of hardware in use, it may have significant problems
+with automation. Some devices may need security measures disabling, for
+example.</li>
+<li>Test jobs need to run quickly to provide useful results to developers.</li>
+<li>Lab infrastructure needs to remain secure (some resources may not be open to
+the public).</li>
+</ul>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#growing-your-lab" id="id9">Growing your lab</a><ul>
+<li><a class="reference internal" href="#assumptions" id="id10">Assumptions</a></li>
+<li><a class="reference internal" href="#requirements" id="id11">Requirements</a></li>
+<li><a class="reference internal" href="#logical-layouts" id="id12">Logical layouts</a><ul>
+<li><a class="reference internal" href="#single-master-single-worker" id="id13">Single master, single worker</a></li>
+<li><a class="reference internal" href="#single-master-multiple-workers" id="id14">Single master, multiple workers</a></li>
+<li><a class="reference internal" href="#multiple-masters-multiple-workers" id="id15">Multiple masters, multiple workers</a></li>
+<li><a class="reference internal" href="#micro-instances" id="id16">Micro-instances</a></li>
+<li><a class="reference internal" href="#which-layout-is-best" id="id17">Which layout is best?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#layout-recommendations" id="id18">Layout Recommendations</a></li>
+<li><a class="reference internal" href="#physical-layouts" id="id19">Physical layouts</a></li>
+<li><a class="reference internal" href="#resources" id="id20">Resources</a><ul>
+<li><a class="reference internal" href="#how-many-devices-is-too-many-for-one-worker" id="id21">How many devices is too many for one worker?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#workers-in-different-locations" id="id22">Workers in different locations</a><ul>
+<li><a class="reference internal" href="#remote-infrastructure" id="id23">Remote Infrastructure</a></li>
+<li><a class="reference internal" href="#differences-between-bootloader-types" id="id24">Differences between bootloader types</a></li>
+<li><a class="reference internal" href="#maintenance-windows-across-remote-locations" id="id25">Maintenance windows across remote locations</a></li>
+<li><a class="reference internal" href="#networking-to-remote-locations" id="id26">Networking to remote locations</a><ul>
+<li><a class="reference internal" href="#encryption-and-authentication" id="id27">Encryption and authentication</a></li>
+<li><a class="reference internal" href="#firewalls" id="id28">Firewalls</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-a-frontend-with-remote-labs" id="id29">Using a frontend with remote labs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="logical-layouts">
+<span id="id2"></span><h2><a class="toc-backref" href="#contents">Logical layouts</a><a class="headerlink" href="#logical-layouts" title="Permalink to this headline">¶</a></h2>
+<p>The simplest LAVA instance is a single server with a single worker on the same
+machine. Adding more devices to such an instance may quickly cause problems
+with load. Test jobs may time out on downloads or decompression and devices
+will go offline.</p>
+<p>The first step in growing a LAVA lab is to add a remote worker. Remote workers
+can be added to any V2 master. To do so, use the <a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">Django administration interface</span></a>
+to add new devices and device types, allocate some or all devices to the newly
+created remote worker.</p>
+<p>As load increases, the master will typically benefit from having fewer and
+fewer devices directly attached to the worker running on the master machine.
+Complex labs will typically only have devices attached to remote workers.</p>
+<p>Depending on the workload and admin preferences, there are several lab layouts
+that can make sense:</p>
+<div class="section" id="single-master-single-worker">
+<span id="id3"></span><h3><a class="toc-backref" href="#contents">Single master, single worker</a><a class="headerlink" href="#single-master-single-worker" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/simple-lab.svg"><img alt="single master, single worker" src="_images/simple-lab.svg" width="60%" /></a>
+</div>
+<p>This is the starting layout for a fresh installation. Depending on the
+capability of the master, this layout can support a small variety of devices
+and a small number of users. This layout does not scale well. Adding too many
+devices or users to this setup can lead to the highest overall maintenance
+burden, per test job, of all the layouts here.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#lab-scaling"><span class="std std-ref">How many devices is too many for one worker?</span></a></p>
+</div>
+<p>In all of these example diagrams, <strong>Infrastructure</strong> represents the extra
+equipment that might be used alongside the LAVA master and workers, such as
+mirrors, caching proxies etc.</p>
+</div>
+<div class="section" id="single-master-multiple-workers">
+<span id="id4"></span><h3><a class="toc-backref" href="#contents">Single master, multiple workers</a><a class="headerlink" href="#single-master-multiple-workers" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/worker-lab.svg"><img alt="single master, multiple workers" src="_images/worker-lab.svg" width="60%" /></a>
+</div>
+<p>A medium to large lab can operate well with a single master controlling
+multiple workers, especially if the master is a dedicated server running only
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code>.</p>
+</div>
+<div class="section" id="multiple-masters-multiple-workers">
+<span id="id5"></span><h3><a class="toc-backref" href="#contents">Multiple masters, multiple workers</a><a class="headerlink" href="#multiple-masters-multiple-workers" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/frontend-lab.svg"><img alt="multiple masters, multiple workers" src="_images/frontend-lab.svg" width="60%" /></a>
+</div>
+<p>A custom <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a> can use <a class="reference internal" href="custom-result-handling.html#custom-result-handling"><span class="std std-ref">custom result handling</span></a> to aggregate data from multiple separate masters into
+a single data set. The different masters can be geographically separated and
+run by different admins. This is the system used to great effect by
+<a class="reference internal" href="custom-result-handling.html#kernelci-org"><span class="std std-ref">KernelCI.org</span></a>.</p>
+</div>
+<div class="section" id="micro-instances">
+<span id="id6"></span><h3><a class="toc-backref" href="#contents">Micro-instances</a><a class="headerlink" href="#micro-instances" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/micro-instance-lab.svg"><img alt="micro-instance layout" src="_images/micro-instance-lab.svg" width="60%" /></a>
+</div>
+<p>When different teams need different sets of device types and
+configurations and where there is little overlap between the result sets for
+each team, a micro-instance layout may make sense.</p>
+<p>The original single lab is split into separate networks, each with a separate
+complete instance of a LAVA master and one or more workers. This will give each
+team their own dedicated micro-instance, but the administrators of the lab can
+use common infrastructure just like a single lab in a single location. Each
+micro-instance can be grown in a similar way to any other instance, by adding
+more devices and more workers.</p>
+</div>
+<div class="section" id="which-layout-is-best">
+<h3><a class="toc-backref" href="#contents">Which layout is best?</a><a class="headerlink" href="#which-layout-is-best" title="Permalink to this headline">¶</a></h3>
+<p>The optimum configuration will depend massively on the devices and test jobs
+that you expect to run. Use the <a class="reference internal" href="#multiple-masters-multiple-workers"><span class="std std-ref">multiple masters, multiple
+workers</span></a> option where all test jobs feed
+into a single data set. Use micro-instances where teams have discrete sets of
+results. Any combination of micro-instances can still be aggregated behind one
+or more custom frontends to get different overviews of the results.</p>
+<p>As an example, the Linaro LAVA lab in Cambridge is a hybrid setup. It operates
+using a set of micro-instances, some of which provide results to frontends like
+<a class="reference internal" href="custom-result-handling.html#kernelci-org"><span class="std std-ref">KernelCI.org</span></a>.</p>
+</div>
+</div>
+<div class="section" id="layout-recommendations">
+<span id="id7"></span><h2><a class="toc-backref" href="#contents">Layout Recommendations</a><a class="headerlink" href="#layout-recommendations" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Some labs have found it beneficial to have identical machines serving as the
+workers, in identical racks. This makes administration of a large lab much
+easier. It can also be beneficial to take this one stage further and have a
+similar, if not identical, set of devices on each worker. If your lab has a
+wide range of test job submissions which cover most device types, you may
+find that a similar layout helps balance the load.</p>
+</li>
+<li><p class="first">Consider local mirroring or caching of resources such as NFS rootfs tarballs,
+kernel images, compressed images and git repositories. It is valuable to make
+downloads to the worker as quick as possible - slow downloads will inflate
+the run time of every test.</p>
+<ul>
+<li><p class="first">One of the administrative problems of <abbr title="continuous integration">CI</abbr> is that these images change frequently, so a caching proxy
+may be more effective than a direct mirror of the build system storage.</p>
+</li>
+<li><p class="first">Conversely, the use of <code class="docutils literal notranslate"><span class="pre">https://</span></code> URLs inside test jobs typically will
+make caches and proxies much less effective. Not supporting <code class="docutils literal notranslate"><span class="pre">https://</span></code>
+access to git repositories or build system storage can have implications
+for the physical layout of the lab, depending on local policy.</p>
+</li>
+<li><p class="first">Depending on the lab, local mirroring of one or more distribution package
+archives can also be useful.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This may rely on the build system for NFS rootfs and other
+deployments being configured to always use the local mirror in those
+images. This can then have implications for test writers trying to debug
+failed test jobs without access to the mirror.</p>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Consider the implications of persistence. LAVA does not (currently) archive
+old test jobs, log files or results. The longer a single master is collating
+the results from multiple workers, the larger the dataset on that master
+becomes. This can have implications for the time required to perform backups,
+extract results or run database migrations during upgrades.</p>
+</li>
+<li><p class="first">Consider reliability concerns - each site should have <abbr title="Uninterruptible Power Supply">UPS</abbr> support. Some sites may need generators as
+well. This is not just needed for the master and workers: it will also be
+required for all the devices, the network switches and and all your other lab
+infrastructure.</p>
+</li>
+<li><p class="first">Devices in LAVA always need to remain in a state which can be automated. This
+may add lots of extra requirements: custom hardware, extra cabling and other
+support devices not commonly found in general hosting locations. This also
+means that LAVA is <strong>not</strong> suitable for customer-facing testing, debugging or
+triage.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="physical-layouts">
+<span id="id8"></span><h2><a class="toc-backref" href="#contents">Physical layouts</a><a class="headerlink" href="#physical-layouts" title="Permalink to this headline">¶</a></h2>
+<p>LAVA V2 supports geographically separate masters and workers. Workers can be
+protected behind a firewall or even using a NAT internet connection, without
+the need to use dynamic DNS or other services. Connections are made from the
+worker to the server, so the only requirement is that the HTTP/HTTPS ports
+of the server are open to the internet.</p>
+<p>Physically separating different workers is also possible but has implications:</p>
+<ul class="simple">
+<li>Resources need to be mirrored, cached or proxied to multiple locations.</li>
+<li>The administrative burden of a LAVA lab is frequently based around the
+devices themselves. LAVA devices frequently require a range of support tasks
+which are unsuitable for generic hosting locations. It is common that a
+trained admin will need physical access to test device hardware to fix
+problems. The latency involved in getting someone to the location of the
+device to change a microSD card, press buttons on a problematic device,
+investigate <a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a> failures and other admin tasks will have a large
+impact on the performance of the LAVA lab itself.</li>
+<li>Physical separation across different sites can mean that test writers may see
+varying performance according to which worker has idle devices at the time.
+If one worker has a slower connection to the build system storage, test
+writers will need to allow for this in the job submission timeouts, possibly
+causing jobs on faster workers to spend longer waiting for the timeout to
+expire.</li>
+<li>Each location still needs <abbr title="Uninterruptible Power Supply">UPS</abbr>
+support, backup support and other common lab infrastructure as laid out
+previously.</li>
+</ul>
+</div>
+<div class="section" id="resources">
+<h2><a class="toc-backref" href="#contents">Resources</a><a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<p>The Linaro lab in Cambridge has provided most of the real-world experience used
+to construct this guide. If you are looking for guidance about how to grow your
+lab, please talk to us on the <a class="reference internal" href="support.html#lava-devel"><span class="std std-ref">lava-devel</span></a> mailing list.</p>
+<div class="section" id="how-many-devices-is-too-many-for-one-worker">
+<span id="lab-scaling"></span><span id="index-1"></span><h3><a class="toc-backref" href="#contents">How many devices is too many for one worker?</a><a class="headerlink" href="#how-many-devices-is-too-many-for-one-worker" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Consider the possible rate at which the devices may fail as well as the
+simple number of units. Most devices used in LAVA are prototypes or developer
+kits. The failure rate will vary enormously between labs according to the
+number and types of devices as well as the kind of test jobs being run but is
+likely to be much higher than any other machines in the same location not
+used in LAVA.</p>
+</li>
+<li><p class="first">The number of remote workers is typically determined by physical connectivity
+and I/O. Adding extra USB connectivity can be a particular problem. Most
+powered commodity USB hubs will fail in subtle ways under load. If the worker
+has limited USB connectivity, this could impact on how many devices can be
+supported on that worker.</p>
+</li>
+<li><p class="first">The number of remote workers per master (and therefore the number of masters
+per frontend) is typically determined by latency on the master when serving
+HTTP and API requests alongside the work of scheduling the testjobs and
+processing the logs. A frontend can dramatically improve performance by
+offloading the result analysis workload from the master.</p>
+</li>
+<li><p class="first">Be conservative and allow your lab to continue growing, slowly. Compare your
+plans with existing instances and <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk to us</span></a> about
+your plans before making commitments.</p>
+</li>
+<li><p class="first">If a worker starts struggling when test jobs start close together, it is time
+to provide at least one more worker. Watch for workers which need to use swap
+or other indications of high load. In the short term, admins may choose to take
+devices offline to manage spikes in load on workers but every such incident
+should raise the priority of adding more workers to the instance. LAVA test
+jobs can involve a lot of I/O, particularly in the deploy stage. A worker
+with devices which typically run lots of small, fast test jobs will be
+beneficial for CI but will run at a higher load than a worker with devices
+which run fewer, longer test jobs. Consider which devices are attached to which
+worker when balancing the load across the instance.</p>
+</li>
+<li><p class="first">Consider the types of devices on the worker. Some deployment methods have
+much larger I/O requirements than others. This can have a direct impact on
+how many devices of a particular type should be assigned to workers.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#bootloader-differences"><span class="std std-ref">Differences between bootloader types</span></a></p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="workers-in-different-locations">
+<span id="geography-and-workers"></span><span id="index-2"></span><h2><a class="toc-backref" href="#contents">Workers in different locations</a><a class="headerlink" href="#workers-in-different-locations" title="Permalink to this headline">¶</a></h2>
+<p>Many labs have a separate master and multiple workers with the physical
+machines co-located in the same or adjacent racks. This makes it easier to
+administer the lab. Sometimes, admins may choose to have the master and one or
+more workers in different geographical locations. There are some additional
+considerations with such a layout.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">One or more LAVA V2 <a class="reference internal" href="glossary.html#term-worker"><span class="xref std std-term">workers</span></a> will be required in the
+remote location. Each worker will need to be permanently connected to all
+devices to be supported by that worker. Devices cannot be used in LAVA
+without a worker managing the test jobs.</p>
+</div>
+<p>Before considering installing LAVA workers in remote locations, it is
+<strong>strongly</strong> recommended that read and apply the following sections:</p>
+<ul class="simple">
+<li><a class="reference internal" href="advanced-installation.html#advanced-installation"><span class="std std-ref">Advanced Installation Topics</span></a>, with particular emphasis on
+<a class="reference internal" href="advanced-installation.html#infrastructure-requirements"><span class="std std-ref">Other infrastructure</span></a> and <a class="reference internal" href="advanced-installation.html#more-installation-types"><span class="std std-ref">Recommended Installation Types</span></a></li>
+<li><a class="reference internal" href="#growing-your-lab"><span class="std std-ref">Growing your lab</span></a></li>
+<li><a class="reference internal" href="#lab-scaling"><span class="std std-ref">How many devices is too many for one worker?</span></a></li>
+<li><a class="reference internal" href="debugging.html#infrastructure-changes"><span class="std std-ref">debugging infrastructure effects</span></a></li>
+</ul>
+<div class="section" id="remote-infrastructure">
+<span id="remote-lab-infrastructure"></span><h3><a class="toc-backref" href="#contents">Remote Infrastructure</a><a class="headerlink" href="#remote-infrastructure" title="Permalink to this headline">¶</a></h3>
+<p>Remember that devices need additional, often highly specialized, infrastructure
+support alongside the devices. Some of this hardware is used outside the
+expected design limits. For example, a typical <a class="reference internal" href="glossary.html#term-pdu"><span class="xref std std-term">PDU</span></a> may be designed to
+switch mains AC once or twice a month on each port. In LAVA, that unit will be
+expected to switch the same load dozens, maybe hundreds of times per day for
+each port. Monitoring and replacing this infrastructure before it fails can
+have a significant impact on the ongoing cost of your proposed layout as well
+as your expected scheduled downtime.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">A typical datacenter will not have the infrastructure to handle
+LAVA devices and is unlikely to provide the kind of prompt physical access
+which will be needed by the admins.</p>
+</div>
+</div>
+<div class="section" id="differences-between-bootloader-types">
+<span id="bootloader-differences"></span><h3><a class="toc-backref" href="#contents">Differences between bootloader types</a><a class="headerlink" href="#differences-between-bootloader-types" title="Permalink to this headline">¶</a></h3>
+<p>The bootloader types used by the devices attached to a worker can have a major
+impact on how many devices that worker can support. Some bootloaders are
+comparatively lightweight, as they depend on the device <strong>pulling</strong> files from
+the dispatcher during boot via a protocol like TFTP. This type of protocol
+tends to be quite forgiving on timing while transferring files. Other
+bootloaders (e.g. fastboot) work by <strong>pushing</strong> files to the device, which is
+often much more demanding. Sometimes the data needs to be modified as it is
+pushed <em>and</em> it is common that the device receiving the data cares about the
+timing of the incoming data. A small delay at an inconvenient point may cause
+an unexpected failure. When running multiple tests in parallel, the software
+pushing the files may cause problems - it is designed to maximize the speed of
+the first transfer at the expense of anything else. This “greedy” model means
+that later requests running concurrently may block, thereby causing test jobs
+to fail.</p>
+<p>For this reason, we recommend that <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> type devices are restricted to
+<strong>one device, one CPU core</strong> (not a hyperthread, a real silicon core). This may
+well apply to other bootloaders which require files to be pushed to devices but
+has been most clearly shown with <code class="docutils literal notranslate"><span class="pre">fastboot</span></code>.</p>
+<p>Take particular care if the worker is a virtual machine and ensure that the
+VM has as many cores as it has fastboot devices.</p>
+<p>Also be careful if running the <strong>master</strong> and worker(s) on the same physical
+hardware (e.g. running as VMs on the same server). The master also has CPU
+requirements: users pulling results over the API or viewing test jobs in a
+browser will cause load on the master, and the database can also add more load
+as the number of test jobs increases. Try to avoid putting all the workers and
+the master onto the same physical hardware. Even if this setup works initially,
+unexpected failures can occur later as load increases.</p>
+<p>Pay attention to the types of failures observed. If a previously working device
+starts to fail in intermittent and unexpected ways, this could be a sign that
+the infrastructure supporting that worker is suffering from excess load.</p>
+</div>
+<div class="section" id="maintenance-windows-across-remote-locations">
+<span id="maintenance-windows-remote"></span><h3><a class="toc-backref" href="#contents">Maintenance windows across remote locations</a><a class="headerlink" href="#maintenance-windows-across-remote-locations" title="Permalink to this headline">¶</a></h3>
+<p>All labs will need scheduled downtime. The layout of your lab will have a
+direct impact on how those windows are managed across remote locations.
+Maintenance will need to be announced in advance with enough time to allow test
+jobs to finish running on the affected worker(s). Individual workers can have
+all devices on that worker taken offline without affecting jobs on other
+workers or the master. Adding a <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a> adds further granularity,
+allowing maintenance to occur with less visible interruption.</p>
+</div>
+<div class="section" id="networking-to-remote-locations">
+<h3><a class="toc-backref" href="#contents">Networking to remote locations</a><a class="headerlink" href="#networking-to-remote-locations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="encryption-and-authentication">
+<h4><a class="toc-backref" href="#contents">Encryption and authentication</a><a class="headerlink" href="#encryption-and-authentication" title="Permalink to this headline">¶</a></h4>
+<p>Use HTTPS for the connections between the server and the workers.</p>
+</div>
+<div class="section" id="firewalls">
+<h4><a class="toc-backref" href="#contents">Firewalls</a><a class="headerlink" href="#firewalls" title="Permalink to this headline">¶</a></h4>
+<p>The worker initiates the HTTP connection to the server, so a worker will work
+when behind a NAT connection. Only the address of the master needs to be
+resolvable using public DNS. There is no need for the master or any other
+service to be able to initiate a connection to the worker from outside the
+firewall. This means that a public master can work with <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUTs</span></a> in a
+remote location by connecting the boards to one or more worker(s) in the same
+location.</p>
+<p>If the master is behind a firewall, the HTTP/HTTPS ports will need to be open.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="data-export.html#publishing-events"><span class="std std-ref">Event notifications</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="using-a-frontend-with-remote-labs">
+<h3><a class="toc-backref" href="#contents">Using a frontend with remote labs</a><a class="headerlink" href="#using-a-frontend-with-remote-labs" title="Permalink to this headline">¶</a></h3>
+<p>It is also worth considering if it will be easier to administer the various
+devices by having a master alongside the worker(s) and then collating the
+results from a number of different masters using a <a class="reference internal" href="glossary.html#term-frontend"><span class="xref std std-term">frontend</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#multiple-masters-multiple-workers"><span class="std std-ref">Multiple masters, multiple workers</span></a>, <a class="reference internal" href="index.html#what-is-lava-not"><span class="std std-ref">What is LAVA not?</span></a>
+and <a class="reference internal" href="custom-result-handling.html#custom-result-handling"><span class="std std-ref">Custom result handling</span></a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/growing_your_lab.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:45 GMT -->
+</html>

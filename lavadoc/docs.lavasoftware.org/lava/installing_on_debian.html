@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/installing_on_debian.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:37 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Installing on a Debian system &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuring user authentication" href="authentication.html" />
+    <link rel="prev" title="First steps installing LAVA" href="first-installation.html" />
+    <link rel="canonical" href="installing_on_debian.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Installing on a Debian system</a><ul>
+<li><a class="reference internal" href="#recommended-debian-architectures">Recommended Debian architectures</a></li>
+<li><a class="reference internal" href="#lava-repositories">LAVA repositories</a><ul>
+<li><a class="reference internal" href="#releases">Releases</a></li>
+<li><a class="reference internal" href="#daily-builds">Daily builds</a></li>
+<li><a class="reference internal" href="#snapshots">Snapshots</a></li>
+<li><a class="reference internal" href="#buster-users">Buster users</a></li>
+<li><a class="reference internal" href="#lava-archive-signing-keys">LAVA Archive signing keys</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#production-releases">Production releases</a></li>
+<li><a class="reference internal" href="#configuring-the-installation">Configuring the installation</a></li>
+<li><a class="reference internal" href="#lava-and-python3">LAVA and Python3</a></li>
+<li><a class="reference internal" href="#setting-up-a-reverse-proxy">Setting up a reverse proxy</a></li>
+<li><a class="reference internal" href="#superuser">Superuser</a><ul>
+<li><a class="reference internal" href="#ldap">LDAP</a></li>
+<li><a class="reference internal" href="#local-django-accounts">Local Django Accounts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-the-installation">Debugging the Installation</a><ul>
+<li><a class="reference internal" href="#using-localhost-or-non-https-instance-url">Using localhost or non HTTPS instance URL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="first-installation.html" title="Previous Chapter: First steps installing LAVA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; First steps i...</span>
+    </a>
+  </li>
+  <li>
+    <a href="authentication.html" title="Next Chapter: Configuring user authentication"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Configuring u... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="installing-on-a-debian-system">
+<span id="debian-installation"></span><span id="index-0"></span><h1>Installing on a Debian system<a class="headerlink" href="#installing-on-a-debian-system" title="Permalink to this headline">¶</a></h1>
+<p>These instructions cover installation on Debian. The supported versions
+are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="35%" />
+<col width="12%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Distribution</th>
+<th class="head">Codename</th>
+<th class="head">Number</th>
+<th class="head">Support</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Debian</td>
+<td>experimental</td>
+<td>n/a</td>
+<td>No <a class="footnote-reference" href="#f1" id="id1">[1]</a></td>
+</tr>
+<tr class="row-odd"><td>Debian</td>
+<td>Sid (unstable)</td>
+<td>n/a</td>
+<td>Yes <a class="footnote-reference" href="#f2" id="id2">[2]</a></td>
+</tr>
+<tr class="row-even"><td>Debian</td>
+<td>Bullseye (testing)</td>
+<td>11.*</td>
+<td>Yes <a class="footnote-reference" href="#f3" id="id3">[3]</a></td>
+</tr>
+<tr class="row-odd"><td>Debian</td>
+<td>Buster (stable)</td>
+<td>10.*</td>
+<td>Yes <a class="footnote-reference" href="#f4" id="id4">[4]</a></td>
+</tr>
+</tbody>
+</table>
+<p>Debian uses codenames for releases (bullseye, buster, stretch) and names for
+<a class="reference external" href="https://en.wikipedia.org/wiki/Debian#Branches">suites</a> (unstable, testing, stable &amp; oldstable). When a new Debian major
+release is made, the packages in “testing” are frozen and become the new
+“stable”. A new codename is chosen for the new “testing” suite, and that will
+be the name for the next major release in the cycle.</p>
+<p>To allow the table to refer to the same package versions consistently
+over time, codenames are used here. When a Debian release is made, a
+new codename is applied to the testing suite and LAVA releases after
+that point will include that codename in the table.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">LAVA used to be supported on Ubuntu directly, but is not any
+more due to lack of resources to maintain and test that support.
+Support may be re-instated if more effort becomes available in the
+future. The last version of LAVA supported in Ubuntu was
+<strong>2015.9.post1</strong>.</p>
+</div>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="https://wiki.debian.org/DebianExperimental">experimental</a> allows updates to be selected on top of
+unstable (or the current testing) during times when testing is
+frozen ahead of a release of Debian stable. Experimental will
+typically have no LAVA packages outside of a Debian release
+freeze.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><cite>sid</cite> is the name of the unstable suite which never gets
+released but acts as a feed for <code class="docutils literal notranslate"><span class="pre">testing</span></code>. As the name
+suggests, <code class="docutils literal notranslate"><span class="pre">unstable</span></code> can be broken without warning and
+installation of complex packages like LAVA can often fail.
+Unstable is <strong>never</strong> recommended for production instances
+of any software, including LAVA.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td><p class="first"><cite>bullseye</cite> is the name of the next Debian release after Buster,
+which is supported automatically via uploads to Sid
+(unstable). Bullseye is not recommended for production
+instances of LAVA.</p>
+<p class="last">When bullseye is released as Debian 11, it will use the suite
+name <code class="docutils literal notranslate"><span class="pre">stable</span></code>, testing will get the codename of the next
+Debian stable release, and Buster will become
+<code class="docutils literal notranslate"><span class="pre">oldstable</span></code>.</p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="f4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td><cite>buster</cite> is the name of the stable version of Debian. LAVA is fully
+supported on this Debian version. It’s recommended to use Buster for
+production instances.</td></tr>
+</tbody>
+</table>
+<p>You can track the versions of LAVA packages in the various Debian
+suites by following links from the Debian package tracker for
+<a class="reference external" href="https://tracker.debian.org/pkg/lava">lava</a>.</p>
+<div class="section" id="recommended-debian-architectures">
+<span id="index-1"></span><span id="id5"></span><h2>Recommended Debian architectures<a class="headerlink" href="#recommended-debian-architectures" title="Permalink to this headline">¶</a></h2>
+<p>LAVA is intended to provide a CI system which is capable of handling
+dozens or hundreds of simultaneous test jobs across dozens of devices.</p>
+<p>Whilst it is possible to install and operate LAVA on 32 bit
+architectures like <code class="docutils literal notranslate"><span class="pre">i386</span></code> and <code class="docutils literal notranslate"><span class="pre">armhf</span></code>, this is not recommended for
+any production instance. The memory requirements for the master will
+increase with the number of users and if your instance is publicly
+visible on the internet, limited access to RAM is known to cause
+problems. The memory, CPU and I/O requirements of lava-dispatcher
+depend on the number and type of devices as well as the number of test
+jobs which can run simultaneously. For example, experience has shown
+that any test job using <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> requires a single CPU core (not
+hyperthread) per attached device, as well as at least one core for the
+base OS. <code class="docutils literal notranslate"><span class="pre">armhf</span></code> in particular can struggle to provide enough
+processing power (CPU or I/O or RAM) for such devices. Each QEMU device
+can require more RAM than would be available on most 32bit systems.</p>
+<p>LAVA is routinely used on <code class="docutils literal notranslate"><span class="pre">amd64</span></code> and <code class="docutils literal notranslate"><span class="pre">arm64</span></code> architectures.
+Packages for other 64bit architectures like ppc64, ppc64el and s390x
+are available from Debian.</p>
+<p>Each lab will be different and there are no definitive guidelines on
+what hardware specifications to choose. Start slowly and <a class="reference internal" href="growing_your_lab.html#growing-your-lab"><span class="std std-ref">grow
+your lab one step at a time</span></a>. If in doubt,
+<a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk to us</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="growing_your_lab.html#lab-scaling"><span class="std std-ref">How many devices is too many for one worker?</span></a></p>
+</div>
+</div>
+<div class="section" id="lava-repositories">
+<span id="index-2"></span><span id="id6"></span><h2>LAVA repositories<a class="headerlink" href="#lava-repositories" title="Permalink to this headline">¶</a></h2>
+<p>As well as being uploaded to Debian, <a class="reference internal" href="#production-releases"><span class="std std-ref">Production releases</span></a> of
+LAVA are also uploaded to the LAVA Software Community Project
+repository at <a class="reference external" href="https://apt.lavasoftware.org/">https://apt.lavasoftware.org/</a> . This uses the
+<a class="reference internal" href="#lava-archive-signing-key"><span class="std std-ref">LAVA Archive signing keys</span></a> - a copy of the key is available in
+the repository and on key servers.</p>
+<p>Update apt to find the new packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt update
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#dependency-requirements"><span class="std std-ref">Dependency Requirements</span></a>.</p>
+</div>
+<div class="section" id="releases">
+<h3>Releases<a class="headerlink" href="#releases" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>deb https://apt.lavasoftware.org/release buster main
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The LAVA repositories only provide packages for <code class="docutils literal notranslate"><span class="pre">amd64</span></code> and
+<code class="docutils literal notranslate"><span class="pre">arm64</span></code>. See <a class="reference internal" href="#recommended-debian-architectures"><span class="std std-ref">Recommended Debian architectures</span></a>.</p>
+</div>
+<p>In times when the current production release has not made it into
+either <code class="docutils literal notranslate"><span class="pre">bullseye</span></code> or <code class="docutils literal notranslate"><span class="pre">testing</span></code> (e.g. due to a migration
+issue or a pre-release package freeze in Debian), this repository
+should be used instead.</p>
+</div>
+<div class="section" id="daily-builds">
+<h3>Daily builds<a class="headerlink" href="#daily-builds" title="Permalink to this headline">¶</a></h3>
+<p>Interim builds (including release candidates) are available from the
+daily builds repository, using the same suites:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>deb https://apt.lavasoftware.org/daily buster main
+</pre></div>
+</div>
+</div>
+<div class="section" id="snapshots">
+<h3>Snapshots<a class="headerlink" href="#snapshots" title="Permalink to this headline">¶</a></h3>
+<p>When a build is updated in the repositories, a copy of the same build
+is created in the snapshot folder:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://apt.lavasoftware.org/snapshot/
+</pre></div>
+</div>
+<p>Entries are created according to the suite for which it was built and
+the year, month and day of the build.</p>
+</div>
+<div class="section" id="buster-users">
+<h3>Buster users<a class="headerlink" href="#buster-users" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The recommended base for LAVA is Debian Stretch, as of 2018.1.</p>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>deb https://apt.lavasoftware.org/release buster main
+</pre></div>
+</div>
+</div>
+<div class="section" id="lava-archive-signing-keys">
+<span id="lava-archive-signing-key"></span><span id="index-3"></span><h3>LAVA Archive signing keys<a class="headerlink" href="#lava-archive-signing-keys" title="Permalink to this headline">¶</a></h3>
+<p>The LAVA Software Community Project uses two keys for the repositories.</p>
+<p>The daily builds are signed using:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pub  2048R/C77102A9 2014-06-06 LAVA build daemon (Staging) &lt;lava-lab@linaro.org&gt;
+     Key fingerprint = 45AD 50DC 41AE D421 FF5B  33D4 ECF3 C05C C771 02A9
+uid                  LAVA build daemon (Staging) &lt;lava-lab@linaro.org&gt;
+</pre></div>
+</div>
+<p>Production releases are signed using:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pub   rsa4096/A791358F2E49B100 2018-10-02 [SC]
+     Key fingerprint = C87D 63FD 9355 35CF B0CA  F5C2 A791 358F 2E49 B100
+uid                 [ultimate] LAVA Software release key &lt;release@lavasoftware.org&gt;
+sub   rsa4096/42124FB9C30943EC 2018-10-02 [E]
+</pre></div>
+</div>
+<p>Both keys can be downloaded and added to apt easily:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget https://apt.lavasoftware.org/lavasoftware.key.asc
+$ sudo apt-key add lavasoftware.key.asc
+OK
+</pre></div>
+</div>
+<p>After that step, run apt update again to locate the required dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt update
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="production-releases">
+<span id="index-4"></span><span id="id7"></span><h2>Production releases<a class="headerlink" href="#production-releases" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-server.html#setting-up-pipeline-instance"><span class="std std-ref">Setting up a LAVA instance</span></a>.</p>
+</div>
+<p>LAVA is currently packaged for Debian unstable using Django1.10 and
+Postgresql. LAVA packages are now available from official Debian
+mirrors for Debian unstable. e.g. to install the master, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install postgresql
+$ sudo apt install lava-server
+</pre></div>
+</div>
+<p>If the default Apache configuration from LAVA is suitable, you can
+enable it immediately:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo a2dissite 000-default
+$ sudo a2enmod proxy
+$ sudo a2enmod proxy_http
+$ sudo a2ensite lava-server.conf
+$ sudo service apache2 restart
+</pre></div>
+</div>
+<p>Edits to the <code class="docutils literal notranslate"><span class="pre">/etc/apache2/sites-available/lava-server.conf</span></code> file
+will not be overwritten by package upgrades unless the admin explicitly
+asks <code class="docutils literal notranslate"><span class="pre">dpkg</span></code> to do so.</p>
+<p>If you later choose to remove <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>, the apache modules
+enabled above can be disabled using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo a2dismod proxy
+$ sudo a2dismod proxy_http
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-the-installation">
+<span id="installation-configuration"></span><h2>Configuring the installation<a class="headerlink" href="#configuring-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>If the installation uses <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code>, the remaining
+configuration is to disable some of the Django security checks which
+expect <code class="docutils literal notranslate"><span class="pre">https</span></code>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-debug.html#check-instance"><span class="std std-ref">Check LAVA instance</span></a> and <a class="reference internal" href="#django-localhost"><span class="std std-ref">Using localhost or non HTTPS instance URL</span></a></p>
+</div>
+<p>If the installation uses a remote slave, then HTTPS should
+be used.</p>
+</div>
+<div class="section" id="lava-and-python3">
+<span id="lava-python3"></span><span id="index-5"></span><h2>LAVA and Python3<a class="headerlink" href="#lava-and-python3" title="Permalink to this headline">¶</a></h2>
+<p>Python2 has been <a class="reference external" href="https://legacy.python.org/dev/peps/pep-0373/">marked as end of life</a> and distributions are
+in the process of removing packages which depend on Python2. Django has
+had Python3 support for some time and will be dropping Python2 support
+in the next LTS. (The current non-LTS release of django, version 2.0,
+has already dropped support for Python2.)</p>
+<p>LAVA has moved to exclusive Python3 support.</p>
+</div>
+<div class="section" id="setting-up-a-reverse-proxy">
+<h2>Setting up a reverse proxy<a class="headerlink" href="#setting-up-a-reverse-proxy" title="Permalink to this headline">¶</a></h2>
+<p>In order to use lava-server behind a reverse proxy, configure
+lava-server as usual and then setup a reverse proxy. The following
+simple Apache configuration snippet will work for most setups:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">lava_server_dns</span><span class="p">:</span><span class="n">port</span><span class="o">/</span>
+<span class="n">ProxyPassReverse</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">lava_server_dns</span><span class="p">:</span><span class="n">port</span><span class="o">/</span>
+<span class="n">ProxyPreserveHost</span> <span class="n">On</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Proto</span> <span class="s2">&quot;https&quot;</span> <span class="n">env</span><span class="o">=</span><span class="n">HTTPS</span>
+</pre></div>
+</div>
+<p>This configuration will work when proxifying:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="o">=&gt;</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">lava</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>If you want the application to answer on a specific base URL, configure
+lava-server to answer on this base URL and then configure the reverse
+proxy to proxify the same base URL. For instance you can have:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lava</span> <span class="o">=&gt;</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">lava</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lava</span>
+</pre></div>
+</div>
+<p>In order to serve LAVA under <code class="docutils literal notranslate"><span class="pre">/lava</span></code> you should update the settings and add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;STATIC_URL&quot;</span><span class="p">:</span> <span class="s2">&quot;/lava/static/&quot;</span><span class="p">,</span>
+<span class="s2">&quot;MOUNT_POINT&quot;</span><span class="p">:</span> <span class="s2">&quot;/lava&quot;</span><span class="p">,</span>
+<span class="s2">&quot;LOGIN_URL&quot;</span><span class="p">:</span> <span class="s2">&quot;/lava/accounts/login/&quot;</span><span class="p">,</span>
+<span class="s2">&quot;LOGIN_REDIRECT_URL&quot;</span><span class="p">:</span> <span class="s2">&quot;/lava/&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Having two different base URLs is more awkward to setup. In this case
+you will have to also setup Apache modules like <cite>Substitute</cite> to alter
+the HTML content on the fly. This is not a recommended setup.</p>
+<p>Depending on your setup, you should also have a look at
+<a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypassreversecookiedomain">ProxyPassReverseCookieDomain</a>
+and <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypassreversecookiepath">ProxyPassReverseCookiePath</a>
+to set the cookie domain and path correctly.</p>
+</div>
+<div class="section" id="superuser">
+<span id="create-superuser"></span><span id="index-6"></span><h2>Superuser<a class="headerlink" href="#superuser" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#admin-adding-users"><span class="std std-ref">Adding users and groups</span></a></p>
+</div>
+<div class="section" id="ldap">
+<h3>LDAP<a class="headerlink" href="#ldap" title="Permalink to this headline">¶</a></h3>
+<p>In LAVA instances that use LDAP for external authentication, log in
+once with the user account that will be granted superuser privileges in
+the LAVA web UI. Then use the following command to make this user a
+superuser:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage authorize_superuser --username {username}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>{username}</cite> is the username of LDAP user.</p>
+</div>
+<p>Alternatively, the <cite>addldapuser</cite> command can be used to populate a user
+from LDAP and also grant superuser privilege as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage addldapuser --username {username} --superuser
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>{username}</cite> is the username of LDAP user.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#admin-adding-users"><span class="std std-ref">Adding users and groups</span></a></p>
+</div>
+</div>
+<div class="section" id="local-django-accounts">
+<h3>Local Django Accounts<a class="headerlink" href="#local-django-accounts" title="Permalink to this headline">¶</a></h3>
+<p>After initial package installation, you might wish to create a local
+superuser account:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage createsuperuser --username $USERNAME --email=$EMAIL
+</pre></div>
+</div>
+<p>If you do not specify the username and email address here, this
+command will prompt for them.</p>
+<p>An existing local Django superuser account can also be converted to an
+LDAP user account without losing data, using the <cite>mergeldapuser</cite>
+command, provided the LDAP username does not already exist in the LAVA
+instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage mergeldapuser --lava-user &lt;lava_user&gt; --ldap-user &lt;ldap_user&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="debugging-the-installation">
+<h2>Debugging the Installation<a class="headerlink" href="#debugging-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>After your LAVA instance is successfully installed, if you face any
+problem consult <a class="reference internal" href="pipeline-debug.html#debugging-v2"><span class="std std-ref">Administrator debugging</span></a></p>
+<div class="section" id="using-localhost-or-non-https-instance-url">
+<span id="django-localhost"></span><h3>Using localhost or non HTTPS instance URL<a class="headerlink" href="#using-localhost-or-non-https-instance-url" title="Permalink to this headline">¶</a></h3>
+<p>Newer versions of django include improved security features which can
+affect how LAVA is used as <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code>. By default, django
+enforces behavior to ensure safe use of <code class="docutils literal notranslate"><span class="pre">https://</span></code> which can prevent
+attempts to sign in to a LAVA instance using <code class="docutils literal notranslate"><span class="pre">http://localhost/</span></code>.</p>
+<p>To enable localhost, you may need to disable at least these security
+defaults by adding the following options to LAVA settings file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;CSRF_COOKIE_SECURE&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+<span class="s2">&quot;SESSION_COOKIE_SECURE&quot;</span><span class="p">:</span> <span class="n">false</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is the reason, if you see issues regarding CSRF token
+while trying to login with an username. The common error
+message reported is <code class="docutils literal notranslate"><span class="pre">CSRF</span> <span class="pre">verification</span> <span class="pre">failed.</span> <span class="pre">Request</span>
+<span class="pre">aborted.</span></code></p>
+</div>
+<p>The LAVA settings are stored in yaml in:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.yaml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.d/*.yaml</span></code></li>
+</ul>
+<p>LAVA will load the files in this exact order.Files in the settings.d
+directory will be alphabetically ordered.</p>
+<p>If a variable is defined in two files, the value from the last file will
+override the value from first one.
+Any changes made in LAVA settings yaml file  will require a
+restart of <cite>lava-server-gunicorn</cite> service for the changes to get
+applied:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo service lava-server-gunicorn restart
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">From 2020.05 release the settings files will not be created by
+default on fresh installations.The settings file can be added in
+settings.d directory or settings.conf should be created.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-debug.html#check-instance"><span class="std std-ref">Check LAVA instance</span></a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/installing_on_debian.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:37 GMT -->
+</html>

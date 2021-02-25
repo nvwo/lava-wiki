@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/integrate-fastboot.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Fastboot &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Internet of Things (IoT) Boards" href="integrate-iot.html" />
+    <link rel="prev" title="U-Boot" href="integrate-uboot.html" />
+    <link rel="canonical" href="integrate-fastboot.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Fastboot</a><ul>
+<li><a class="reference internal" href="#external-constraints">External constraints</a><ul>
+<li><a class="reference internal" href="#device-changes">Device changes</a></li>
+<li><a class="reference internal" href="#images">Images</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#android">Android</a></li>
+<li><a class="reference internal" href="#specific-support-for-fastboot-devices-in-lava">Specific support for fastboot devices in LAVA</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="integrate-uboot.html" title="Previous Chapter: U-Boot"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; U-Boot</span>
+    </a>
+  </li>
+  <li>
+    <a href="integrate-iot.html" title="Next Chapter: Internet of Things (IoT) Boards"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Internet of T... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="fastboot">
+<span id="integrating-fastboot"></span><span id="index-0"></span><h1>Fastboot<a class="headerlink" href="#fastboot" title="Permalink to this headline">¶</a></h1>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Make sure you have read <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">Adding new device types</span></a> first.</p>
+</div>
+<p>Fastboot devices can be simple to integrate but fastboot deployment has several
+issues which can cause issues in automation.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="admin-lxc-deploy.html#lxc-deploy"><span class="std std-ref">Deploying LXC devices</span></a> and <a class="reference internal" href="deploy-lxc.html#deploy-using-lxc"><span class="std std-ref">Deploying test images using LXC</span></a></p>
+</div>
+<ol class="arabic simple">
+<li>The fastboot protocol runs from the worker and <em>pushes</em> files to the device.
+This causes issues with <a class="reference internal" href="device-integration.html#integration-scalability"><span class="std std-ref">Scalability</span></a> compared to
+deployment methods which allow the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> to <em>pull</em> files over a
+network connection.<ul>
+<li>As a guideline, ensure that each worker has one CPU core for each fastboot
+device plus at least one more core for the rest of the system to avoid
+excessive load on the worker.</li>
+</ul>
+</li>
+<li>Different fastboot devices can need different versions of fastboot to be
+installed <strong>on the worker</strong>, so LAVA uses <a class="reference internal" href="glossary.html#term-lxc"><span class="xref std std-term">LXC</span></a> to isolate all
+fastboot operations on the worker.</li>
+<li>Each fastboot process tries to collect all of the fastboot devices which are
+visible in <code class="docutils literal notranslate"><span class="pre">dev/bus/usb</span></code>. When fastboot is pushing files to one device, a
+second fastboot process would not be able to connect to a different device
+on the same worker. This is the second reason why LAVA uses :term`LXC` with
+fastboot as LAVA can then ensure that the only device node(s) which show up
+in <code class="docutils literal notranslate"><span class="pre">/dev</span></code> inside the LXC are the nodes specifically related to a single
+fastboot device.</li>
+<li>Fastboot relies on every <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> having a unique fastboot serial number
+which <strong>must</strong> persist across reboots and test jobs. The fastboot serial
+number can be the same as the <abbr title="Android Debug Bridge">ADB</abbr> serial
+number. The fastboot serial number <strong>must</strong> modifiable by the admin in case
+an existing device is already using that number.</li>
+<li>For automation to work, all fastboot devices <strong>must</strong> boot into fastboot
+mode <strong>automatically</strong> after every hard reset or soft reboot.</li>
+<li>The device needs to implement the <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">boot</span> <span class="pre">&lt;boot</span> <span class="pre">img&gt;</span></code> command, so
+that the test image can be loaded directly into memory and executed.</li>
+</ol>
+<div class="section" id="external-constraints">
+<h2>External constraints<a class="headerlink" href="#external-constraints" title="Permalink to this headline">¶</a></h2>
+<p>In addition, integrating fastboot devices has some limitations on how the test
+images are prepared.</p>
+<div class="section" id="device-changes">
+<h3>Device changes<a class="headerlink" href="#device-changes" title="Permalink to this headline">¶</a></h3>
+<p>The DUT should be roooted or unlocked wherever applicable (mostly phones,
+tabs, etc.) <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">oem</span> <span class="pre">unlock</span></code> or <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">flash</span> <span class="pre">unlock</span></code></p>
+</div>
+<div class="section" id="images">
+<h3>Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h3>
+<p>No special mangling of supplied images are required, ie., LAVA will not do any
+magic on the images, except for decompressing images (based on already
+supported decompression methods) if they are in compressed state.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#integrate-android"><span class="std std-ref">Android</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="android">
+<span id="integrate-android"></span><h2>Android<a class="headerlink" href="#android" title="Permalink to this headline">¶</a></h2>
+<p>LAVA relies on <abbr title="Android Debug Bridge">ADB</abbr> and <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> to control
+an Android device. Support for ADB <strong>must</strong> be enabled in <strong>every</strong> image
+running on the device or LAVA will lose the ability to access, reboot or deploy
+to the device:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ro</span><span class="o">.</span><span class="n">secure</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">ro</span><span class="o">.</span><span class="n">debuggable</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">ro</span><span class="o">.</span><span class="n">adb</span><span class="o">.</span><span class="n">secure</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">persist</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">adb</span><span class="o">.</span><span class="n">enable</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>These settings enable USB debugging on the DUT and allow the DUT to trust the
+worker by default.</p>
+</div>
+<div class="section" id="specific-support-for-fastboot-devices-in-lava">
+<span id="integrating-fastboot-devices"></span><span id="index-1"></span><h2>Specific support for fastboot devices in LAVA<a class="headerlink" href="#specific-support-for-fastboot-devices-in-lava" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-commands"><span class="std std-ref">Commands</span></a> and
+<a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-other-parameters"><span class="std std-ref">Other parameters</span></a></p>
+</div>
+<p>fastboot sequence or fastboot boot sequence - This is provided as a list within
+the device dictionary and can take the following values, which are actions that
+will get added as sub actions to the boot action pipeline:</p>
+<dl class="docutils">
+<dt>boot</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">boot</span> <span class="pre">boot.img</span></code> where boot.img is supplied via the deploy action</dd>
+<dt>reboot</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">reboot</span></code> which will reboot the DUT to the operating
+system</dd>
+<dt>auto-login</dt>
+<dd>auto login action</dd>
+<dt>shell-session</dt>
+<dd>wait for a shell session</dd>
+<dt>export-env</dt>
+<dd>export environment as defined for the DUT</dd>
+</dl>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/integrate-fastboot.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+</html>

@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/qemu_options.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:13 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>QEMU options &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Media limitations of test devices" href="secondary-media.html" />
+    <link rel="prev" title="LAVA Hacking Sessions" href="hacking-session.html" />
+    <link rel="canonical" href="qemu_options.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">QEMU options</a><ul>
+<li><a class="reference internal" href="#virtualization-testing">Virtualization testing</a></li>
+<li><a class="reference internal" href="#emulation-testing">Emulation testing</a></li>
+<li><a class="reference internal" href="#substitution-support">Substitution support</a></li>
+<li><a class="reference internal" href="#mandatory-support">Mandatory support</a></li>
+<li><a class="reference internal" href="#specific-support">Specific support</a></li>
+<li><a class="reference internal" href="#example-command-lines">Example command lines</a></li>
+<li><a class="reference internal" href="#how-to-override-variables">How to override variables</a></li>
+<li><a class="reference internal" href="#how-to-specify-qemu-environment-options">How to specify QEMU environment options</a></li>
+<li><a class="reference internal" href="#host-architecture-support">Host architecture support</a></li>
+<li><a class="reference internal" href="#lava-test-storage">LAVA test storage</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="hacking-session.html" title="Previous Chapter: LAVA Hacking Sessions"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; LAVA Hacking Sessions</span>
+    </a>
+  </li>
+  <li>
+    <a href="secondary-media.html" title="Next Chapter: Media limitations of test devices"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Media limitat... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="qemu-options">
+<span id="extending-qemu-options"></span><span id="index-0"></span><h1>QEMU options<a class="headerlink" href="#qemu-options" title="Permalink to this headline">¶</a></h1>
+<p>There are two ways to use QEMU in LAVA.</p>
+<div class="section" id="virtualization-testing">
+<h2>Virtualization testing<a class="headerlink" href="#virtualization-testing" title="Permalink to this headline">¶</a></h2>
+<p>If you want to test virtualization on a <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>, then you have
+complete freedom to launch QEMU in any way you desire, including from a
+locally compiled source tree with custom patches. It is often useful to
+separate the output of the virtual machine from the host device or to
+run a test shell inside the virtual machine as well as on the host
+device, so a <a class="reference internal" href="connections.html#secondary-connection"><span class="std std-ref">Secondary Connection</span></a> can be used. This is a
+relatively complex test job with particular issues about how to
+identify the IP address of the virtual machine so that the secondary
+connection can login over SSH.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="connections.html#using-secondary-connections"><span class="std std-ref">Using secondary connections with VM groups</span></a> and
+<a class="reference internal" href="pipeline-writer-secondary.html#writing-secondary-connection-jobs"><span class="std std-ref">Writing jobs using Secondary Connections</span></a></p>
+</div>
+<p>The rest of this page deals with how to specify the options to QEMU
+when using QEMU on the dispatcher for testing emulation within QEMU.</p>
+</div>
+<div class="section" id="emulation-testing">
+<h2>Emulation testing<a class="headerlink" href="#emulation-testing" title="Permalink to this headline">¶</a></h2>
+<p>LAVA also supports running QEMU on the dispatcher, allowing testing of
+QEMU running on the host architecture of the worker. In many, but not
+all, cases this will create an x86 virtual machine. Emulation of other
+architectures is possible using the same device. The QEMU command line
+is built up by combining settings from the <a class="reference internal" href="glossary.html#term-jinja2"><span class="xref std std-term">jinja2</span></a> template, the
+<a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> and the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>.</p>
+<p>The Jinja2 template for QEMU tries to cover a range of use cases but
+QEMU has a very long and complex set of possible options and commands.</p>
+<p>The LAVA support for QEMU has three elements:</p>
+<ol class="arabic simple">
+<li><strong>substituted</strong> - options into which values must be inserted by
+LAVA.</li>
+<li><strong>mandatory</strong> - options which LAVA needs to use to ensure the
+automation operates.</li>
+<li><strong>specific</strong> - options which are specific to particular test jobs.</li>
+</ol>
+</div>
+<div class="section" id="substitution-support">
+<h2>Substitution support<a class="headerlink" href="#substitution-support" title="Permalink to this headline">¶</a></h2>
+<p>To execute QEMU in LAVA, various files need to be downloaded by LAVA,
+some may need to be modified or decompressed by LAVA, but all of the
+final paths to the files will be determined by LAVA. These paths need
+to be substituted into the commands so that QEMU is able to locate the
+files.</p>
+<p>This is handled in the test job definition using <code class="docutils literal notranslate"><span class="pre">image_arg</span></code> with
+placeholders like <code class="docutils literal notranslate"><span class="pre">{{KERNEL}}</span></code>. The <a class="reference internal" href="first-job.html#first-job-definition"><span class="std std-ref">Job Definition</span></a> uses
+this method.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="explain_first_job.html#first-deploy-action-qemu"><span class="std std-ref">Deploy action for QEMU</span></a></p>
+</div>
+</div>
+<div class="section" id="mandatory-support">
+<h2>Mandatory support<a class="headerlink" href="#mandatory-support" title="Permalink to this headline">¶</a></h2>
+<p>Mandatory commands and options include <code class="docutils literal notranslate"><span class="pre">-nographic</span></code> so that LAVA is
+able to interact with the virtual machine on the serial console instead
+of letting QEMU launch a new window which would be problematic on
+dispatchers when X11 is not available.</p>
+<p>Mandatory commands also include admin constraints like limiting the
+amount of memory available to each QEMU test job. This is achieved by
+allowing the <code class="docutils literal notranslate"><span class="pre">-m</span></code> option to take a variable in the <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device
+type</span></a> template but setting a value for that variable in the
+<a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a>. This value cannot then be overridden by the
+test writer.</p>
+<p>Other options of this kind include networking support, for example the
+MAC address used by QEMU devices needs to be strictly controlled by
+admins so that no two QEMU devices on one subnet have the same MAC
+address.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">arch</span></code> option in the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> is used in the
+<a class="reference internal" href="glossary.html#term-jinja2"><span class="xref std std-term">jinja2</span></a> template to determine which QEMU binary to execute.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#qemu-host-arch"><span class="std std-ref">Host architecture support</span></a></p>
+</div>
+</div>
+<div class="section" id="specific-support">
+<h2>Specific support<a class="headerlink" href="#specific-support" title="Permalink to this headline">¶</a></h2>
+<p>The breadth of the possible options available with QEMU means that
+there is a lot of scope for customization. Some of these elements have
+defaults in the device type template which can be overridden by the
+test writer. Other options can be specific to individual test jobs.</p>
+<p>When writing a new test job, it is best to start with an example
+command line based on how you would use QEMU to run the same test on
+your local machines.</p>
+</div>
+<div class="section" id="example-command-lines">
+<h2>Example command lines<a class="headerlink" href="#example-command-lines" title="Permalink to this headline">¶</a></h2>
+<p>An example QEMU command line might look like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/bin/qemu-system-x86_64 -cpu host -enable-kvm -nographic \
+ -net nic,model=virtio,macaddr=DE:AD:BE:EF:28:05 \
+ -net tap -m 1024 -monitor none \
+ -drive format=raw,file=/tmp/tmpUHeIM6/large-stable-6.img \
+ -drive format=qcow2,file=/tmp/tmp2sbOlI/lava-guest.qcow2,media=disk
+</pre></div>
+</div>
+<p>This example, on an x86_64 worker, would break into:</p>
+<ul class="simple">
+<li><strong>Mandatory</strong> from the device type template (using values from the
+device dictionary or the job context).<ul>
+<li><code class="docutils literal notranslate"><span class="pre">/usr/bin/qemu-system-x86_64</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-cpu</span> <span class="pre">host</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-enable-kvm</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-nographic</span></code></li>
+</ul>
+</li>
+<li><strong>Substituted</strong> using <code class="docutils literal notranslate"><span class="pre">image_arg</span></code> in the test job definition.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">-drive</span> <span class="pre">format=raw,file=/tmp/tmpUHeIM6/large-stable-6.img</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-drive</span> <span class="pre">format=qcow2,file=/tmp/tmp2sbOlI/lava-guest.qcow2,media=disk</span></code></li>
+</ul>
+</li>
+</ul>
+<p>A more complex QEMU command line would need to use <code class="docutils literal notranslate"><span class="pre">extra_options</span></code> in
+the test job context. e.g.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/bin/qemu-system-aarch64 -nographic -machine virt -cpu cortex-a57 -smp 1 \
+ -m 2048 -global virtio-blk-device.scsi=off -device virtio-scsi-device,id=scsi \
+ -kernel /tmp/tmpQi2ZR3/Image --append &quot;console=ttyAMA0 root=/dev/vda rw&quot; \
+ -drive format=raw,file=/tmp/tmpQi2ZR3/ubuntu-core-14.04.1-core-arm64-ext4.img \
+ -drive format=qcow2,file=/tmp/tmpMgsuvB/lava-guest.qcow2,media=disk
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The use of the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> option in the job context <strong>disables</strong>
+the use of <code class="docutils literal notranslate"><span class="pre">-enable-kvm</span></code>. If the worker can support KVM
+acceleration, this can be enabled using more QEMU options.</p>
+<div class="last admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#qemu-host-arch"><span class="std std-ref">Host architecture support</span></a></p>
+</div>
+</div>
+<p>This example would break into:</p>
+<ul>
+<li><p class="first"><strong>Mandatory</strong> from the device type template (using values from the
+device dictionary or the job context).</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/usr/bin/qemu-system-aarch64</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-nographic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">2048</span></code></li>
+</ul>
+</li>
+<li><p class="first"><strong>Substituted</strong> using <code class="docutils literal notranslate"><span class="pre">image_arg</span></code> in the test job definition.</p>
+<p>Use <em>substituted</em> for the complete argument. Include any other
+options which relate to the filepath into the <code class="docutils literal notranslate"><span class="pre">image_arg</span></code>.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">-kernel</span> <span class="pre">/tmp/tmpQi2ZR3/Image</span> <span class="pre">--append</span> <span class="pre">&quot;console=ttyAMA0</span> <span class="pre">root=/dev/vda</span> <span class="pre">rw&quot;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-drive</span> <span class="pre">format=raw,file=/tmp/tmpQi2ZR3/ubuntu-core-14.04.1-core-arm64-ext4.img</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-drive</span> <span class="pre">format=qcow2,file=/tmp/tmpMgsuvB/lava-guest.qcow2,media=disk</span></code></li>
+</ul>
+</li>
+<li><p class="first"><strong>Specific</strong> - using the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> to override defaults:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">-machine</span> <span class="pre">virt</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-cpu</span> <span class="pre">cortex-a57</span></code></li>
+</ul>
+<p>To use <code class="docutils literal notranslate"><span class="pre">/usr/bin/qemu-system-aarch64</span></code>, the job context also needs
+to include <code class="docutils literal notranslate"><span class="pre">arch:</span> <span class="pre">arm64</span></code> or <code class="docutils literal notranslate"><span class="pre">arch:</span> <span class="pre">aarch64</span></code>:</p>
+</li>
+<li><p class="first"><strong>Specific</strong> - using <code class="docutils literal notranslate"><span class="pre">extra_options</span></code> in the job context:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">-smp</span> <span class="pre">1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-global</span> <span class="pre">virtio-blk-device.scsi=off</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">-device</span> <span class="pre">virtio-scsi-device,id=scsi</span></code></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-override-variables">
+<span id="override-variables-context"></span><h2>How to override variables<a class="headerlink" href="#how-to-override-variables" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The specifics of which variables, the names of the variables
+themselves and the possible values are determined by the device type
+template and this can be modified by the local admin. This guide can
+only cover the general principles and give examples using the
+default templates.</p>
+</div>
+<ul>
+<li><p class="first">Substitution support is handled by the test job pipeline once the
+relevant files have been downloaded. The test writer has the ability
+to add relevant options and flags to these commands using the
+<code class="docutils literal notranslate"><span class="pre">image_arg</span></code> support in the test job definition.</p>
+<pre class="code yaml literal-block">
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="comment single"># DEPLOY_BLOCK</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tmpfs</span>
+    <span class="name tag">images</span><span class="punctuation">:</span>
+      <span class="name tag">rootfs</span><span class="punctuation">:</span>
+        <span class="name tag">image_arg</span><span class="punctuation">:</span> <span class="literal scalar plain">-drive format=raw,file={rootfs}</span>
+        <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://images.validation.linaro.org/kvm/standard/stretch-2.img.gz</span>
+        <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+</pre>
+</li>
+<li><p class="first">Mandatory options and commands cannot be overridden. These will
+either be hard-coded values in the device type template or variables
+set by the admin using the device dictionary.</p>
+</li>
+<li><p class="first">Specific options can be overridden in the job context. One of the
+most common specific options for QEMU in LAVA is <code class="docutils literal notranslate"><span class="pre">arch</span></code>. This
+allows admins to configure QEMU devices in LAVA to support multiple
+architectures instead of needing at least one device for each
+supported architecture. The test writer specifies the architecture of
+the files provided in the test job definition and this then
+determines which QEMU binary is used to execute the files.</p>
+<pre class="code yaml literal-block">
+<span class="comment single"># context allows specific values to be overridden or included</span>
+<span class="name tag">context</span><span class="punctuation">:</span>
+  <span class="comment single"># tell the qemu template which architecture is being tested</span>
+  <span class="comment single"># the template uses that to ensure that qemu-system-x86_64 is executed.</span>
+  <span class="name tag">arch</span><span class="punctuation">:</span> <span class="literal scalar plain">amd64</span>
+</pre>
+<p>When using the multiple architecture support, it is common to change
+the <code class="docutils literal notranslate"><span class="pre">machine</span></code> and <code class="docutils literal notranslate"><span class="pre">cpu</span></code> arguments passed to QEMU.</p>
+<pre class="code yaml literal-block">
+<span class="name tag">context</span><span class="punctuation">:</span>
+  <span class="name tag">arch</span><span class="punctuation">:</span> <span class="literal scalar plain">aarch64</span>
+  <span class="name tag">netdevice</span><span class="punctuation">:</span> <span class="literal scalar plain">tap</span>
+  <span class="name tag">machine</span><span class="punctuation">:</span> <span class="literal scalar plain">virt</span>
+  <span class="name tag">cpu</span><span class="punctuation">:</span> <span class="literal scalar plain">cortex-a57</span>
+</pre>
+<p>(This example simply restates the defaults but any value which QEMU
+would accept as an argument to <code class="docutils literal notranslate"><span class="pre">-machine</span></code> and <code class="docutils literal notranslate"><span class="pre">-cpu</span></code> respectively
+could be used.)</p>
+<p>If using QEMU to emulate a microcontroller, you might need to use the
+<code class="docutils literal notranslate"><span class="pre">vga</span></code> and <code class="docutils literal notranslate"><span class="pre">serial</span></code> options which each take a complete argument,
+passed unchanged to QEMU.</p>
+<p>Specific options can also extend beyond the range that the device
+type template needs to cover and in order to build a working QEMU
+command line, it is sometimes necessary to pass a list of further
+commands and options which LAVA needs to include into the final
+command line. This support is available using the <code class="docutils literal notranslate"><span class="pre">extra_options</span></code>
+job context variable:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">arm64</span>
+  <span class="nt">extra_options</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-global</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">virtio-blk-device.scsi=off</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-smp</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-device</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">virtio-scsi-device,id=scsi</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When specifying a QEMU command, ensure that the preceding
+hyphen is included as well as the hyphen indicating that the
+<code class="docutils literal notranslate"><span class="pre">extra_options</span></code> list is continuing. (<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">-device</span></code>). When
+specifying an option to that command, ensure that there is only
+the hyphen for the list. (<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">virtio...</span></code>). Errors in this syntax
+will cause the test job to fail as Incomplete when the QEMU
+command line is constructed.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-specify-qemu-environment-options">
+<h2>How to specify QEMU environment options<a class="headerlink" href="#how-to-specify-qemu-environment-options" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">QEMU also evaluates environment options that are used at runtime to
+determine e.g. what subsystem should be used for the sound output on
+the host. For obvious security reasons there is <strong>no way</strong> to
+influence environment variables from within a job. But LAVA provides
+the capability to specify (globally at the server level) what
+environment variables are to be used for jobs in the file
+<code class="docutils literal notranslate"><span class="pre">env.yaml</span></code>. See <a class="reference internal" href="simple-admin.html#simple-admin"><span class="std std-ref">Simple Administration</span></a>.</p>
+</li>
+<li><p class="first">One example is the use of <code class="docutils literal notranslate"><span class="pre">-soundhw</span> <span class="pre">hda</span></code> which emulates a soundcard
+on the target. To avoid having any sound output on the host (or
+worker), you can specify QEMU_AUDIO_DRV like so in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/env.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># A dictionary of (key, value) that will be added to the inherited environment.</span>
+<span class="c1"># If a key does not already exist in the inherited environment, it&#39;s added.</span>
+<span class="c1"># default: an empty dictionary</span>
+<span class="nt">overrides</span><span class="p">:</span>
+  <span class="nt">LC_ALL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C.UTF-8</span>
+  <span class="nt">LANG</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">C</span>
+<span class="c1">#  http_proxy: http://lava-lab-proxy</span>
+<span class="c1">#  https_proxy: http://lava-lab-proxy</span>
+<span class="c1">#  ftp_proxy: http://lava-lab-proxy</span>
+  <span class="nt">PATH</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/usr/sbin:/sbin</span>
+<span class="c1">#</span>
+<span class="c1"># For qemu-system-* (device_type qemu) if -soundhw is passed,</span>
+<span class="c1"># enable this to not forward sound to the host.</span>
+<span class="c1"># Check qemu-system-x86_64 --audio-help for other options.</span>
+  <span class="nt">QEMU_AUDIO_DRV</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="host-architecture-support">
+<span id="qemu-host-arch"></span><span id="index-1"></span><h2>Host architecture support<a class="headerlink" href="#host-architecture-support" title="Permalink to this headline">¶</a></h2>
+<p>QEMU will run test jobs of any supported combination of architecture,
+machine and CPU option. However, the underlying hardware of the worker
+can dramatically improve performance of QEMU test jobs if the
+appropriate acceleration can be used. This comes with a penalty that
+test jobs using hardware acceleration for virtual machines of one
+architecture will not transfer easily to another QEMU device (on this
+or some other LAVA instance) where hardware acceleration is only
+available for a different architecture. There will need to be changes
+to the test job submission. Running without hardware acceleration
+allows for portable test job submissions, however test jobs will not
+only run more slowly but also with wider variation in speed. This may
+make it hard to get sensible timeouts or usable results within a
+reasonable timeframe.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-enable-kvm</span></code> support is used as a default, based on x86_64
+workers. Specifying the <code class="docutils literal notranslate"><span class="pre">-cpu</span></code> option <strong>disables</strong> the
+<code class="docutils literal notranslate"><span class="pre">-enable-kvm</span></code> option in the LAVA Jinja2 templates but test writers
+are able to add KVM acceleration using more QEMU options.</p>
+<p>There are administrative issues here. It is entirely possible for a
+worker to not be x86_64 architecture. It is also possible to have QEMU
+devices on more than one worker and for those workers to be of
+differing architectures. To handle this, admins will need to:</p>
+<ul class="simple">
+<li>Create a copy of the <code class="docutils literal notranslate"><span class="pre">qemu.jinja2</span></code> template and name it according
+to their own convention, for example <code class="docutils literal notranslate"><span class="pre">qemu-arm.jinja2</span></code>.</li>
+<li>Set the <code class="docutils literal notranslate"><span class="pre">extends</span></code> of the QEMU devices on each worker to the
+corresponding QEMU jinja2 template.</li>
+<li>Create a new health check for the new Jinja2 template. For example,
+<code class="docutils literal notranslate"><span class="pre">qemu-arm.jinja2</span></code> needs a health check called <code class="docutils literal notranslate"><span class="pre">qemu-arm.yaml</span></code> in
+the health-checks directory of the master.</li>
+<li>Add device tags so that test writers can specify KVM acceleration
+where required. For example, <code class="docutils literal notranslate"><span class="pre">kvm_arm</span></code> on the devices extending
+<code class="docutils literal notranslate"><span class="pre">qemu-arm.jinja2</span></code> and <code class="docutils literal notranslate"><span class="pre">kvm_x86_64</span></code> on the devices extending the
+existing <code class="docutils literal notranslate"><span class="pre">qemu.jinja2</span></code>.</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">device_type</span></code> of all the QEMU devices can remain the same.</p>
+<p>The changes to the test job may not be intuitive - the QEMU support can
+require some experimentation and reading, depending on the hardware.</p>
+<p>For example, using the <a class="reference external" href="https://www.socionext.com/en/products/assp/SC2A11/">SynQuacer</a> the options
+required to be able to run 32bit ARM code using the KVM accelerator
+require running the 64bit QEMU binary:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">arm64</span>
+  <span class="nt">netdevice</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
+  <span class="nt">machine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">virt-2.10,accel=kvm</span>
+  <span class="nt">cpu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host,aarch64=off</span>
+  <span class="nt">guestfs_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<span class=" -Error"> </span><span class="nt">tags</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kvm-arm</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Even if there are no x86_64 workers running QEMU, there
+will still need to be a suitable health check and it is recommended
+to have a copy of the Jinja2 template in case an x86_64 worker is
+added later.</p>
+</div>
+</div>
+<div class="section" id="lava-test-storage">
+<h2>LAVA test storage<a class="headerlink" href="#lava-test-storage" title="Permalink to this headline">¶</a></h2>
+<p>If one or more test actions are included in a QEMU job, LAVA will
+create a disk image and will attach it to QEMU using a command like:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-drive format=qcow2,file=&lt;temporary_path&gt;/lava-guest.qcow2,media=disk,if=&lt;interface&gt;,id=lavatest
+</pre></div>
+</div>
+<p>The interface can be set in the device_type template or in the test job
+context using the <code class="docutils literal notranslate"><span class="pre">guestfs_interface</span></code> key in the context. Supported
+values include <code class="docutils literal notranslate"><span class="pre">ide</span> <span class="pre">scsi</span> <span class="pre">virtio</span> <span class="pre">none</span></code> with a default of <code class="docutils literal notranslate"><span class="pre">ide</span></code>. The
+size of the image is controlled via the <code class="docutils literal notranslate"><span class="pre">guestfs_size</span></code> parameter
+(default 512M).</p>
+<p>Some emulated devices have no bus available for attaching this image
+(Ex: cubieboard). Some emulated devices have an available bus but qemu
+is unable to attach to it due to the selected architecture (like
+vexpress). For these boards, you need to set <code class="docutils literal notranslate"><span class="pre">guestfs_interface</span></code> to
+<code class="docutils literal notranslate"><span class="pre">None</span></code> and add a device with <code class="docutils literal notranslate"><span class="pre">drive=lavatest</span></code>. The “lavatest” id
+can be set via the <code class="docutils literal notranslate"><span class="pre">guestfs_driveid</span></code> job option. If no storage bus is
+available, you will also need to attach a device which permit to attach
+a storage bus.</p>
+<p>Example for qemu cubieboard:
+(Cubieboard have an AHCI bus, but the support is incomplete)</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">arm</span>
+  <span class="nt">cpu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cortex-a7</span>
+  <span class="nt">extra_options</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-append &quot;console=ttyS0 root=/dev/ram0&quot;</span>
+<span class="hll">  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-device ide-hd,drive=lavatest</span>
+</span>  <span class="nt">guestfs_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span>
+  <span class="nt">machine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cubieboard</span>
+  <span class="nt">model</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">model=allwinner-emac</span>
+</pre></div>
+</td></tr></table></div>
+<p>Example for qemu vexpress-a9:
+(vexpress have a virtio bus, but by default, qemu try to add the drive as PCI virtio)</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">arm</span>
+  <span class="nt">cpu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cortex-a9</span>
+  <span class="nt">extra_options</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-append &quot;console=ttyAMA0 root=/dev/ram0&quot;</span>
+<span class="hll">  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-device virtio-bk-device,drive=lavatest</span>
+</span>  <span class="nt">guestfs_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span>
+  <span class="nt">machine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">vexpress-a9</span>
+  <span class="nt">model</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">model=lan9118</span>
+</pre></div>
+</td></tr></table></div>
+<p>Example for Qemu PPC bamboo:</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ppc</span>
+  <span class="nt">extra_options</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-append &quot;console=ttyS0 root=/dev/ram0&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-device virtio-scsi-pci,id=scsi</span>
+<span class="hll">  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-device scsi-hd,drive=test</span>
+</span><span class="hll">  <span class="nt">guestfs_driveid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+</span>  <span class="nt">guestfs_interface</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span>
+  <span class="nt">machine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bamboo</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/qemu_options.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:13 GMT -->
+</html>

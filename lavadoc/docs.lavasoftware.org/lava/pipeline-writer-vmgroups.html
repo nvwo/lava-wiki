@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-writer-vmgroups.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:43 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Replacing VMGroups using Secondary Connections &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using Jinja2 to generate LAVA test job submissions" href="templating.html" />
+    <link rel="prev" title="Writing jobs using Secondary Connections" href="pipeline-writer-secondary.html" />
+    <link rel="canonical" href="pipeline-writer-vmgroups.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Replacing VMGroups using Secondary Connections</a><ul>
+<li><a class="reference internal" href="#structure-of-an-example-job-for-a-mustang">Structure of an example job for a mustang</a><ul>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-operations-inside-the-guest-vm">Running operations inside the guest VM</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-writer-secondary.html" title="Previous Chapter: Writing jobs using Secondary Connections"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Writing jobs ...</span>
+    </a>
+  </li>
+  <li>
+    <a href="templating.html" title="Next Chapter: Using Jinja2 to generate LAVA test job submissions"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Using Jinja2 ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="replacing-vmgroups-using-secondary-connections">
+<span id="replacing-vmgroups"></span><span id="index-0"></span><h1>Replacing VMGroups using Secondary Connections<a class="headerlink" href="#replacing-vmgroups-using-secondary-connections" title="Permalink to this headline">¶</a></h1>
+<p>One of the primary use cases for secondary connections is the ability to <em>watch</em>
+a job from multiple perspectives. This includes being able to start a task in
+one job and interact with that task from another job. For example, if one job
+runs QEMU to start a VM on the host machine, another connection can test that
+the VM responds on the relevant ports, depending on what is installed inside
+the image downloaded onto the host machine. More complex jobs could start a
+daemon in a debugger and connect to the output of the daemon itself in one job
+and to the output of the debugger in another job. This does not necessarily
+require the watching job to do anything, the job could just record the output.</p>
+<p>The role of a Virtual Machine Group is to arrange a test job such that a host
+device, which <strong>must</strong> have virtualization support, boots into a base image and
+installs a daemon to allow other test jobs to connect - typically this will be
+<a class="reference internal" href="pipeline-writer-secondary.html#secure-secondary-shells"><span class="std std-ref">Secure Shell connections (ssh)</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="connections.html#host-role"><span class="std std-ref">Considerations with a secondary connection</span></a></p>
+</div>
+<p>Once the secondary connections are logged in, any program accessible in the
+base image can be used by the secondary connection. <a class="reference internal" href="connections.html#host-role"><span class="std std-ref">As highlighted</span></a> in the link above, tasks involving package installation or other
+system-wide operations are best done in the test job managing the host device
+and preferably <strong>before</strong> the secondary connection jobs start. So the
+<code class="docutils literal notranslate"><span class="pre">install:</span> <span class="pre">deps:</span></code> of all jobs in the group should all be collated into the
+test definition(s) of the host role.</p>
+<p>The secondary connection support performs all the synchronization steps that
+are required prior to the test shell starting in each of the secondary test
+jobs. The <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> remains available for any synchronization
+requirements during the test shell operation. <strong>Importantly</strong> the test shell
+running on the host device should wait for a <a class="reference internal" href="multinodeapi.html#lava-sync"><span class="std std-ref">lava-sync</span></a> before completing
+the test shell definition. Otherwise the secondary connection jobs may find
+that the underlying system suddenly goes away unexpectedly.</p>
+<p>With all of that in place, the actual operation of a test involving multiple
+virtual machines is little different to a test involving a daemon or long
+running task. Something in the secondary job test shell needs to start the
+process and something needs to end the process so that the final <code class="docutils literal notranslate"><span class="pre">sync</span></code> can
+occur. If the task is not capable of terminating itself, it will be necessary
+for one test shell (often the host role on the host device) to be able to
+terminate it or the test shell will not complete. The choice of how to do this
+is left to the test writer.</p>
+<p>The command line to use to start the VM(s) on the host device is controlled
+entirely by the test specification. This is different to the old deprecated
+<cite>vmgroups</cite> support. Image files and other components can be present in the
+image deployed to the host device or downloaded by the host device or after the
+secondary connection is logged in. The delayed start requirements are already
+covered by the secondary connections, so the test shell can start the VM
+immediately, if desired, or do any preliminary tests first.</p>
+<div class="section" id="structure-of-an-example-job-for-a-mustang">
+<h2>Structure of an example job for a mustang<a class="headerlink" href="#structure-of-an-example-job-for-a-mustang" title="Permalink to this headline">¶</a></h2>
+<p>This job uses an nfsrootfs for the host device on a mustang (using the U-Boot
+pipeline support for the mustang) as the host role. The NFS is a base Debian
+Jessie arm64, so the initial lava test shell operation on the host is to
+install <code class="docutils literal notranslate"><span class="pre">openssh-server</span></code> and then use the <code class="docutils literal notranslate"><span class="pre">lava-echo-ipv4</span></code> helper to
+declare the IPv4 address of the host machine.</p>
+<p>The secondary connection support picks up the IP address in the pipeline
+actions, so the id of the message needs to be declared to the relevant action.
+The test shell sends:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ifconfig</span>
+</pre></div>
+</div>
+<p>Then it tells the secondary connections to start:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)</span>
+</pre></div>
+</div>
+<p>This tells the dispatcher for the <code class="docutils literal notranslate"><span class="pre">guest</span></code> role to start the deployment. The
+test definition files for secondary connection jobs are copied onto the host
+device immediately before the connection is made, then the contents are
+unpacked to be able to run the test shell. The tarball will exist on the host
+device as <code class="docutils literal notranslate"><span class="pre">/&lt;job_id&gt;-overlay-&lt;level&gt;.tar.gz</span></code>. For job ID <code class="docutils literal notranslate"><span class="pre">74585</span></code> and level
+<code class="docutils literal notranslate"><span class="pre">1.1.5</span></code>, this would result in <code class="docutils literal notranslate"><span class="pre">/74585-overlay-1.1.5.tar.gz</span></code>.</p>
+<p>In this example job, the host test shell does nothing except wait for the clients to complete
+their own tests before proceeding to run a final test shell of smoke tests.</p>
+<p>The receiving action is declared as:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-multinode</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+        <span class="c1"># messageID matches hostID</span>
+        <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+        <span class="nt">message</span><span class="p">:</span>
+          <span class="c1"># the key of the message matches value of the host_key</span>
+          <span class="c1"># the value of the message gets substituted</span>
+          <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the messageID specified to <code class="docutils literal notranslate"><span class="pre">lava-send</span></code> (<em>ipv4</em>), is also the
+messageID specified to the <code class="docutils literal notranslate"><span class="pre">prepare-scp-overlay</span></code> action within the
+pipeline. In addition, the content of the sent message is declared.
+<code class="docutils literal notranslate"><span class="pre">lava-send</span></code> uses the syntax <code class="docutils literal notranslate"><span class="pre">key=value</span></code>, the YAML uses the equivalent
+syntax of <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code>. As the value will be substituted with the real IP
+address, the value in the YAML is marked as replaceable using the <code class="docutils literal notranslate"><span class="pre">$</span></code>
+prefix.</p>
+</div>
+<p>The message parameters are passed to the <code class="docutils literal notranslate"><span class="pre">boot</span></code> action of the <code class="docutils literal notranslate"><span class="pre">guest</span></code> role
+so that the details can be retrieved:</p>
+<p>Finally, the jobs with the <code class="docutils literal notranslate"><span class="pre">guest</span></code> role are <em>booted</em> - this establishes the
+connection between the dispatcher and the host device using ssh. Once logged
+in, each job completes the boot stage and starts the test shell for that job.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@linaro-developer:&#39;</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+      <span class="nt">hostID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>  <span class="c1"># messageID</span>
+</pre></div>
+</div>
+<div class="section" id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><strong>Starting the VM(s)</strong> is for the test writer to implement, depending on the
+support required and the objectives of the test. In the example below, the
+host device simply runs the smoke tests definition in the position where
+images could be downloaded and QEMU started.</p>
+</li>
+<li><p class="first"><strong>Use inlines</strong> - this example keeps all of the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> calls to
+the inline definitions. This is a recommended practice and future
+developments will make it easier to match up the synchronization calls from
+inline definitions. So, to adapt this job to do other tasks while the
+secondary connections jobs are running those test shells, move the final
+<code class="docutils literal notranslate"><span class="pre">lava-sync</span> <span class="pre">clients</span></code> to another inline definition and do the other calls in
+between.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#running-inside-vm"><span class="std std-ref">Running operations inside the guest VM</span></a></p>
+</div>
+</li>
+<li><p class="first"><strong>Completion</strong> - It is useful for the host device test shell to do
+<strong>something</strong> after completing the final <code class="docutils literal notranslate"><span class="pre">lava-sync</span></code> or the host device may
+complete the test shell before the secondary connections can logout
+correctly, resulting in the secondary connection jobs being incomplete. A
+final test definition of smoke tests or other quick checks could be useful.</p>
+</li>
+</ul>
+<p><a class="reference external" href="examples/test-jobs/mustang-ssh-guest.html">View or Download mustang-ssh-guest.yaml</a></p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh guest with standard images</span>
+
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+  <span class="nt">action</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+  <span class="nt">connection</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="nt">visibility</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+
+<span class="c1"># PROTOCOLS_BLOCK</span>
+<span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="nt">guest</span><span class="p">:</span>
+        <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+        <span class="nt">expect_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+<span class="hll">        <span class="nt">host_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+</span><span class="hll">        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-start</span>
+</span><span class="hll">        <span class="nt">timeout</span><span class="p">:</span>
+</span>          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+      <span class="nt">host</span><span class="p">:</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mustang</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">docs-source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions-deploy-to-ssh</span>
+  <span class="nt">docs-filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">examples/test-jobs/mustang-ssh-guest.yaml</span>
+  <span class="nt">build-readme</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/stretch/arm64/3/debian-arm64-readme.html</span>
+  <span class="nt">build-console</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://ci.linaro.org/view/lava-ci/job/lava-debian-stretch-arm64/3/console</span>
+  <span class="nt">build-script</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/stretch/arm64/3/build-foreign-nfs.sh</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="nt">authorize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">kernel</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/stretch/arm64/3/vmlinuz-4.9.0-2-arm64</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zimage</span>
+    <span class="nt">modules</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/stretch/arm64/3/modules.tar.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">nfsrootfs</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/stretch/arm64/3/stretch-arm64-nfs.tar.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">ramdisk</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://images.validation.linaro.org/snapshots.linaro.org/components/lava/standard/debian/stretch/arm64/3/initrd.img-4.9.0-2-arm64</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">12</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp</span>
+
+<span class="c1"># DEPLOY_SSH_BLOCK</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-multinode</span><span class="p">:</span>
+<span class="hll">      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+</span><span class="hll">        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+</span><span class="hll">        <span class="c1"># messageID matches hostID</span>
+</span><span class="hll">        <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+</span><span class="hll">        <span class="nt">message</span><span class="p">:</span>
+</span><span class="hll">          <span class="c1"># the key of the message matches value of the host_key</span>
+</span><span class="hll">          <span class="c1"># the value of the message gets substituted</span>
+</span><span class="hll">          <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+</span>        <span class="nt">timeout</span><span class="p">:</span>  <span class="c1"># delay_start timeout</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">21</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">22</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+
+<span class="c1"># BOOT_HOST_BLOCK</span>
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grub-efi</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@stretch:&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+<span class="hll">    <span class="p p-Indicator">-</span> <span class="s">&#39;root@linaro-developer:&#39;</span>
+</span><span class="hll">    <span class="nt">parameters</span><span class="p">:</span>
+</span><span class="hll">      <span class="nt">hostID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>  <span class="c1"># messageID</span>
+</span>      <span class="nt">host_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipaddr</span>  <span class="c1"># message key</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">23</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-inline</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-install.yaml</span>
+      <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">install</span><span class="p">:</span>
+          <span class="nt">deps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">openssh-server</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">install step</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">install-ssh</span>
+          <span class="nt">os</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+          <span class="nt">scope</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+        <span class="nt">install</span><span class="p">:</span>
+          <span class="nt">deps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">openssh-server</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">net-tools</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">iproute2</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ls -al /root/.ssh/</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ifconfig</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)</span>
+<span class="hll">          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send lava_start</span>
+</span>          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+    <span class="p p-Indicator">-</span> <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/params/nfs.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs-dns</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/single-node/singlenode03.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">guest</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-smoke-tests</span>
+    <span class="p p-Indicator">-</span> <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-client</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-client.yaml</span>
+      <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">client starts</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">client-ssh</span>
+          <span class="nt">os</span><span class="p">:</span>
+<span class="hll">          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+</span>          <span class="nt">scope</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">functional</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tar -tzf /$(pwd|awk -F&#39;-&#39; &#39;{print $2}&#39;|awk -F&#39;/&#39; &#39;{print $1}&#39;)-overlay*.tar.gz</span>
+    <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">post-smoke-tests</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="running-operations-inside-the-guest-vm">
+<span id="running-inside-vm"></span><h2>Running operations inside the guest VM<a class="headerlink" href="#running-operations-inside-the-guest-vm" title="Permalink to this headline">¶</a></h2>
+<p>A guest VM started by running QEMU on the command line is not a LAVA
+environment (unless the test writer deliberately copies files into it from
+another job), so it will not run a lava test shell by default. Tasks can be
+executed within the VM from any of the other jobs running on the host device,
+dependent on support provided by the test writer.</p>
+<p>Remember, although LAVA tries to stay out of the way of how the test runs once
+the secondary connection has logged in, there are some things test writers need
+to consider to be able to automate tests like these.</p>
+<ol class="arabic simple">
+<li>If you start QEMU with the <code class="docutils literal notranslate"><span class="pre">-nographics</span></code> option rather than as a daemon,
+the secondary connection gets connected to the console of that VM at the
+point within the test shell where the call to QEMU is made.</li>
+<li>Make sure you know if the image being used has a serial console configured.</li>
+<li>If the image being launched stops at a <code class="docutils literal notranslate"><span class="pre">login:</span></code> prompt, the test
+definition will need to handle that prompt or log in to the VM in some other
+way. e.g. by having one of the other secondary connections set up a
+configuration to use <code class="docutils literal notranslate"><span class="pre">ssh</span></code> to log in to the VM - the keys needed for this
+login will need to be handled by the test writer.</li>
+<li>The test shell will <strong>pause</strong>, waiting for QEMU to return, unless QEMU is
+configured to do otherwise or a wrapper like <code class="docutils literal notranslate"><span class="pre">pexpect</span></code> is used. (The LAVA
+QEMU devices run a QEMU command using <code class="docutils literal notranslate"><span class="pre">pexpect.spawn</span></code> but this is not
+necessarily suitable for test jobs.)</li>
+<li>If the VM is started as a daemon, then the test shell will need to have a
+way of monitoring when the VM is ready and then connect to the VM, as
+appropriate.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="actions-protocols.html#lava-start"><span class="std std-ref">lava-start API call</span></a> <strong>only acts once</strong> - i.e. the host role starts,
+then the other jobs wait until <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> is sent - at which point these
+jobs will download any test shell definitions and try to connect to the IP
+address declared. It is better to have a synchronization which the test
+writer controls, after all the jobs have connected to the host device.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-writer-vmgroups.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:46 GMT -->
+</html>

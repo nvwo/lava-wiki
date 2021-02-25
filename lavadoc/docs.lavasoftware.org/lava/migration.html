@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/migration.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Migrating to LAVA V2 &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test Writer use cases" href="pipeline-writer.html" />
+    <link rel="prev" title="Bootloader/Firmware Testing and Recovery" href="bootloaders.html" />
+    <link rel="canonical" href="migration.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Migrating to LAVA V2</a><ul>
+<li><a class="reference internal" href="#basics">Basics</a><ul>
+<li><a class="reference internal" href="#specific-information-and-guides">Specific information and guides</a><ul>
+<li><a class="reference internal" href="#test-writers">Test Writers</a></li>
+<li><a class="reference internal" href="#administrators">Administrators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#understanding-test-job-objectives">Understanding test job objectives</a><ul>
+<li><a class="reference internal" href="#pipeline-support">Pipeline support</a><ul>
+<li><a class="reference internal" href="#viewing-the-available-support">Viewing the available support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deployments">Deployments</a></li>
+<li><a class="reference internal" href="#boot-methods">Boot methods</a></li>
+<li><a class="reference internal" href="#protocol-support">Protocol support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="bootloaders.html" title="Previous Chapter: Bootloader/Firmware Testing and Recovery"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Bootloader/Fi...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pipeline-writer.html" title="Next Chapter: Test Writer use cases"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Test Writer use cases &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="migrating-to-lava-v2">
+<span id="migrating-to-pipeline"></span><span id="index-0"></span><h1>Migrating to LAVA V2<a class="headerlink" href="#migrating-to-lava-v2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Understand the <strong>objectives</strong> of the current test job.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#test-job-objectives"><span class="std std-ref">Understanding test job objectives</span></a></p>
+</div>
+</li>
+<li><p class="first">Revise the Test Plan.</p>
+</li>
+<li><p class="first">Use protocols and/or device configuration for any operation which is more
+than typing commands into a shell. If the V1 job required <a class="reference internal" href="glossary.html#term-multinode"><span class="xref std std-term">MultiNode</span></a>
+to be able to install custom software necessary to interact with the device,
+these commands should be executed using the <a class="reference internal" href="actions-protocols.html#lxc-protocol-reference"><span class="std std-ref">LXC protocol</span></a>
+which removes the need for MultiNode.</p>
+<ul class="simple">
+<li>Test Jobs which used MultiNode in V1 in this way will also include calls
+to the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> and these will need to be removed from the
+test definitions.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-protocols.html#protocols"><span class="std std-ref">Protocol Reference</span></a> and <a class="reference internal" href="writing-tests.html#test-definition-portability"><span class="std std-ref">Write portable test definitions</span></a>.</p>
+</div>
+</li>
+<li><p class="first">Use <strong>comments</strong> - the pipeline uses YAML submissions, so describe what the
+job is trying to do and why in comments - just start the line with <code class="docutils literal notranslate"><span class="pre">#</span></code>.</p>
+</li>
+<li><p class="first">Simplify the test job to make best use of the new functionality.</p>
+</li>
+<li><p class="first">Master images are not necessary - the test writer can implement fallbacks to
+known working images for specific tasks.</p>
+</li>
+<li><p class="first">Start with <a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">Gold standard test jobs</span></a></p>
+</li>
+<li><p class="first">Look for V2 jobs running on the same or similar <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device types</span></a></p>
+</li>
+<li><p class="first">Bundles no longer exist and there is no submit action. Results are reported
+live as the test job runs. Results can be downloaded or exported using the
+<a class="reference internal" href="results-intro.html#results-rest-api"><span class="std std-ref">results API</span></a>.</p>
+</li>
+<li><p class="first">If the results of your V1 jobs were being retrieved or processed by another
+service, ensure that the calls are adapted to the new <a class="reference internal" href="results-intro.html#results-rest-api"><span class="std std-ref">results API</span></a>.</p>
+</li>
+<li><p class="first">Filters and Image Reports (including Image Reports 2.0) have been
+<strong>replaced</strong> by <a class="reference internal" href="lava-queries-charts.html#result-queries"><span class="std std-ref">Queries and Charts</span></a>.</p>
+</li>
+<li><p class="first">Certain <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device-types</span></a> have changed. In particular, to
+start with the simplest V2 test job, you will typically be submitting a job
+to the <code class="docutils literal notranslate"><span class="pre">qemu</span></code> device-type instead of <code class="docutils literal notranslate"><span class="pre">kvm</span></code> in V1.</p>
+</li>
+</ol>
+<div class="section" id="specific-information-and-guides">
+<h3>Specific information and guides<a class="headerlink" href="#specific-information-and-guides" title="Permalink to this headline">¶</a></h3>
+<p>Migrating to LAVA V2 is not a trivial process. It is recommended to start by
+understanding how simple test jobs run, including starting from
+<a class="reference internal" href="first-job.html#submit-first-job"><span class="std std-ref">submitting your first V2 test job</span></a>.</p>
+<div class="section" id="test-writers">
+<h4>Test Writers<a class="headerlink" href="#test-writers" title="Permalink to this headline">¶</a></h4>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="first-job.html">Submitting your first job</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#job-definition">Job Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#job-submission">Job Submission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#test-definitions">Test Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#viewing-test-results">Viewing test results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#downloading-test-results">Downloading test results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#web-based-job-submission">Web Based Job Submission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first-job.html#xml-rpc-job-submission">XML-RPC Job Submission</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline-writer.html">Test Writer use cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-writer.html#writing-a-lava-job-submission">Writing a LAVA job submission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-writer.html#submissions-using-advanced-features">Submissions using advanced features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developing-tests.html">Writing Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developing-tests.html#introduction-to-the-lava-test-developer-guide">Introduction to the LAVA Test Developer Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing-tests.html#checking-device-availability">Checking device availability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing-tests.html#finding-an-image-to-run-on-the-device">Finding an image to run on the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing-tests.html#actions-to-be-run-for-a-lava-test">Actions to be run for a LAVA test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing-tests.html#example-of-lava-test">Example of Lava Test</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="standard-test-jobs.html">Gold standard test jobs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="standard-test-jobs.html#metadata">Metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="results-intro.html">Introduction to Results in LAVA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="results-intro.html#results-in-lava">Results in LAVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results-intro.html#accessing-results">Accessing results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results-intro.html#accessing-the-test-job-logs-from-results">Accessing the test job logs from results</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="administrators">
+<h4>Administrators<a class="headerlink" href="#administrators" title="Permalink to this headline">¶</a></h4>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline-admin.html">Understanding the Pipeline - an administrator guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#device-type-templates">Device type templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#device-dictionary">Device dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#information-sources">Information sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#extra-device-configuration">Extra device configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#extra-dispatcher-configuration">Extra dispatcher configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#requirements-for-a-lava-device">Requirements for a LAVA device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#adding-support-for-a-device-of-a-known-type">Adding support for a device of a known type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#obtaining-configuration-of-a-known-device">Obtaining configuration of a known device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#creating-a-new-device-entry-for-a-known-device-type">Creating a new device entry for a known device type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#creating-a-device-dictionary-for-the-device">Creating a device dictionary for the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline-admin.html#updating-a-device-dictionary">Updating a device dictionary</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="understanding-test-job-objectives">
+<span id="test-job-objectives"></span><h2>Understanding test job objectives<a class="headerlink" href="#understanding-test-job-objectives" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The migration to a pipeline job is <strong>not</strong> a simple case of
+reformatting JSON. There is no direct equivalence between the old JSON and
+the pipeline YAML. It is imperative that the test writer fully understands
+the reasons why the old JSON job does the things it does before starting to
+migrate that job to the pipeline. The migrated test job needs to provide
+equivalent validation to the V1 test job but that does not mean that the
+test job needs to work in the same or even a similar manner.</p>
+</div>
+<ol class="arabic simple">
+<li>Is there pipeline support for the test device type?</li>
+<li>How does the test job deploy the test files?<ul>
+<li>Does the V1 test job use a <code class="docutils literal notranslate"><span class="pre">master</span> <span class="pre">image</span></code>? This support has been
+replaced in V2. In general, devices simply boot directly from the
+bootloader. Where this is problematic, test jobs can use use
+<a class="reference internal" href="secondary-media.html#secondary-media"><span class="std std-ref">Secondary media</span></a>.</li>
+</ul>
+</li>
+<li>How does the test job boot the device?<ul>
+<li>Does the V1 test job use <code class="docutils literal notranslate"><span class="pre">linaro-media-create</span></code> or download a <code class="docutils literal notranslate"><span class="pre">hwpack</span></code>?
+This support has been <strong>removed</strong> and the files provided to the device
+using V2 will need to be in the form which the device can use directly.</li>
+</ul>
+</li>
+<li>Which test definitions can be joined into a single test action,
+which will need a simple reboot and which might need another
+deploy step?</li>
+<li>Which test definitions use <code class="docutils literal notranslate"><span class="pre">lava-test-case-attach</span></code>? These will need to be
+ported to <a class="reference internal" href="publishing-artifacts.html#publishing-artifacts"><span class="std std-ref">the Publishing API</span></a>.</li>
+</ol>
+<div class="section" id="pipeline-support">
+<h3>Pipeline support<a class="headerlink" href="#pipeline-support" title="Permalink to this headline">¶</a></h3>
+<p>The pipeline support is changing the way that the test jobs run so that some
+device types change and some multinode jobs can become single node. e.g. the
+old KVM device type is now QEMU, with the architecture of the QEMU binary
+specified by the test job. Equally, the availability of LXC and other protocols
+means that there is often no need for a KVM to run ADB or other components.</p>
+<div class="section" id="viewing-the-available-support">
+<h4>Viewing the available support<a class="headerlink" href="#viewing-the-available-support" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="data-export.html#xml-rpc"><span class="std std-ref">XML-RPC</span></a> call <code class="docutils literal notranslate"><span class="pre">scheduler.get_pipeline_device_config</span></code> can
+provide the full configuration for a device, including all the deployment and
+boot methods supported by that device and device-type on that instance.</p>
+<p>The Device type detail page has a Support tab which contains details of the
+methods supported by devices of this device type.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not all devices of any one device type necessarily support all
+methods of that type. e.g. some methods require additional hardware to
+be fitted. Check the <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tags</span></a> and other jobs running
+on devices of the same type.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="dispatcher-actions.html#dispatcher-actions"><span class="std std-ref">Dispatcher Action Reference</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="deployments">
+<h3>Deployments<a class="headerlink" href="#deployments" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-deploy.html#deploy-action"><span class="std std-ref">Deploy Action Reference</span></a></p>
+</div>
+<p>The deployments for a LAVA V2 test job determine how the test files and the
+LAVA test shell overlay files are delivered to the device prior to boot. This
+can include making the files available for TFTP or copying the files over to a
+running device using SCP.</p>
+<p>The deployment method chosen must match the boot method requirements and it is
+up to the test writer to ensure that a valid combination of deployment and boot
+methods are used.</p>
+</div>
+<div class="section" id="boot-methods">
+<h3>Boot methods<a class="headerlink" href="#boot-methods" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-boot.html#boot-action"><span class="std std-ref">Boot Action Reference</span></a></p>
+</div>
+<p>The boot method dictates how the device is instructed to boot. Depending on the
+method, this will usually also involve how to deliver the deployed files to the
+device, e.g. using TFTP, as well as controlling the commands sent to the device
+to set boot options and commands.</p>
+</div>
+<div class="section" id="protocol-support">
+<h3>Protocol support<a class="headerlink" href="#protocol-support" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-protocols.html#protocols"><span class="std std-ref">Protocol Reference</span></a></p>
+</div>
+<p>The <a class="reference internal" href="actions-protocols.html#multinode-protocol"><span class="std std-ref">MultiNode Protocol</span></a> is common to all device types. Other protocols
+may require specific configuration for the device type or not be available for
+all devices or on all instances.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/migration.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+</html>

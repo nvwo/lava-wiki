@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-admin.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:37 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Understanding the Pipeline - an administrator guide &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Device types" href="devicetypes.html" />
+    <link rel="prev" title="Setting up a LAVA instance" href="pipeline-server.html" />
+    <link rel="canonical" href="pipeline-admin.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Understanding the Pipeline - an administrator guide</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#device-type-templates">Device type templates</a></li>
+<li><a class="reference internal" href="#device-dictionary">Device dictionary</a><ul>
+<li><a class="reference internal" href="#checking-your-templates">Checking your templates</a></li>
+<li><a class="reference internal" href="#finding-your-way-around-the-files">Finding your way around the files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#information-sources">Information sources</a><ul>
+<li><a class="reference internal" href="#the-functional-tests-repository">The functional tests repository</a></li>
+<li><a class="reference internal" href="#the-lava-server-unit-test-support">The lava-server unit test support</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extra-device-configuration">Extra device configuration</a><ul>
+<li><a class="reference internal" href="#providing-permanent-ipv4-addresses">Providing permanent IPv4 addresses</a></li>
+<li><a class="reference internal" href="#providing-temporary-filesystem-storage">Providing temporary filesystem storage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extra-dispatcher-configuration">Extra dispatcher configuration</a><ul>
+<li><a class="reference internal" href="#per-dispatcher-environment-settings">Per dispatcher environment settings</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#requirements-for-a-lava-device">Requirements for a LAVA device</a><ul>
+<li><a class="reference internal" href="#hardware-requirements">Hardware Requirements</a></li>
+<li><a class="reference internal" href="#software-requirements">Software Requirements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-support-for-a-device-of-a-known-type">Adding support for a device of a known type</a></li>
+<li><a class="reference internal" href="#obtaining-configuration-of-a-known-device">Obtaining configuration of a known device</a></li>
+<li><a class="reference internal" href="#creating-a-new-device-entry-for-a-known-device-type">Creating a new device entry for a known device type</a></li>
+<li><a class="reference internal" href="#creating-a-device-dictionary-for-the-device">Creating a device dictionary for the device</a><ul>
+<li><a class="reference internal" href="#based-upon-an-existing-device">Based upon an existing device</a></li>
+<li><a class="reference internal" href="#viewing-current-device-dictionary-content">Viewing current device dictionary content</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-a-device-dictionary">Updating a device dictionary</a><ul>
+<li><a class="reference internal" href="#using-the-command-line">Using the command line</a></li>
+<li><a class="reference internal" href="#using-lavacli">Using lavacli</a></li>
+<li><a class="reference internal" href="#using-xml-rpc">Using XML-RPC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-server.html" title="Previous Chapter: Setting up a LAVA instance"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Setting up a ...</span>
+    </a>
+  </li>
+  <li>
+    <a href="devicetypes.html" title="Next Chapter: Device types"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Device types &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="understanding-the-pipeline-an-administrator-guide">
+<span id="admin-introduction"></span><span id="index-0"></span><h1>Understanding the Pipeline - an administrator guide<a class="headerlink" href="#understanding-the-pipeline-an-administrator-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Administrators who are familiar with the terminology of the pipeline and
+templates can skip this section. If so, move on to
+<a class="reference internal" href="#pipeline-device-requirements"><span class="std std-ref">Requirements for a LAVA device</span></a>.</p>
+</div>
+<div class="section" id="device-type-templates">
+<span id="index-1"></span><span id="id1"></span><h2>Device type templates<a class="headerlink" href="#device-type-templates" title="Permalink to this headline">¶</a></h2>
+<p>Device type templates exist on the master in the
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code> directory.</p>
+<p>Although the example templates include jinja markup, the template itself is
+YAML. The files use the <code class="docutils literal notranslate"><span class="pre">.jinja2</span></code> filename extension to make it easier for
+editors to pick up the correct syntax highlighting, but whatever jinja does not
+recognize is passed through unchanged. The output of rendering the template
+<strong>must always</strong> be valid YAML.</p>
+<p>If you are starting with just a single device of the relevant device type on a
+particular instance, you don’t need to include jinja markup in the device type
+template - it can stay as YAML. Once you have more than one device or you are
+considering contributing the template upstream, then you will need to support
+the jinja markup. Jinja is used to:</p>
+<ul class="simple">
+<li><strong>avoid code duplication</strong> - e.g. if a U-Boot command stanza is common to a
+number of device types (it does not have to be all devices capable of
+supporting U-Boot), then the common code needs to move into the base template
+and be inserted using jinja.</li>
+<li><strong>support multiple devices</strong> - e.g. if the configuration needs serial numbers
+(for adb) or references to unique IDs (like UUID of storage devices) or IP
+addresses (for primary ssh connections) then these can be set as defaults in
+the template but need a variable name which is then overridden by the device
+dictionary.</li>
+<li><strong>support job-level overrides</strong> - if a variable exists in the device type
+template and that variable is not set in the device dictionary, it becomes
+available for the job submission to set that variable.</li>
+</ul>
+</div>
+<div class="section" id="device-dictionary">
+<span id="admin-device-dictionary"></span><span id="index-2"></span><h2>Device dictionary<a class="headerlink" href="#device-dictionary" title="Permalink to this headline">¶</a></h2>
+<p>The device dictionary is a file. In the early stages, it can be very simple:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;mytemplate.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Comments may be used in device dictionary files, using the jinja syntax:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="c">{# comment goes here #}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>To remove a variable from a device dictionary, simply remove or comment out the
+variable in the file.</p>
+<p>It is recommended to keep device dictionary files in version control of some
+kind to make it easier to track changes. The <a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">administrative interface</span></a> tracks when and who changed the device dictionary but
+not the detail of what was changed within it.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference internal" href="#updating-device-dictionary-using-xmlrpc"><span class="std std-ref">Using XML-RPC</span></a> and
+<a class="reference internal" href="#updating-device-dictionary-on-command-line"><span class="std std-ref">Using the command line</span></a> for information on how to
+use the new file to update the device dictionary. (Needs superuser
+permissions on that instance.)</li>
+<li><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-help"><span class="std std-ref">Detailed device dictionary information in LAVA Scheduler</span></a></li>
+<li><a class="reference internal" href="#create-device-dictionary"><span class="std std-ref">Creating a device dictionary for the device</span></a></li>
+<li><a class="reference internal" href="connections.html#configuring-serial-ports"><span class="std std-ref">Configuring serial ports</span></a> and</li>
+<li><a class="reference internal" href="#viewing-device-dictionary-content"><span class="std std-ref">Viewing current device dictionary content</span></a>.</li>
+</ul>
+</div>
+<p>The <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/">Jinja template documentation</a> gives more information on jinja
+syntax, although the examples are for HTML. Not all features of the jinja
+template API can be supported in a device dictionary or device type template.
+All of the logic within the template support, such as conditionals and the use
+of blocks, is <strong>only</strong> to be done in the device type template.</p>
+<div class="section" id="checking-your-templates">
+<span id="checking-templates"></span><h3>Checking your templates<a class="headerlink" href="#checking-your-templates" title="Permalink to this headline">¶</a></h3>
+<p>Whenever you modify a device type template, take care to respect the
+indentation within the file. You can (temporarily) copy your template into
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types</span></code> and run the unit tests to verify that
+the template can be parsed and rendered as valid YAML:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -vcf lava_scheduler_app.tests.test_base_templates.TestBaseTemplates.test_all_templates
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="device-integration.html#integration-unit-test"><span class="std std-ref">Extend the template unit tests</span></a></p>
+</div>
+<p>All contributions are <strong>required</strong> to pass this test (amongst others) and you
+will not be able to successfully run jobs through your instance if it fails.</p>
+<p>Finally, although the final configuration sent to the dispatcher will be
+stripped of comments, it is <strong>strongly recommended</strong> to use <strong>comments</strong>
+liberally in all your YAML files, including device type templates.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#developer-jinja2-support"><span class="std std-ref">Jinja2 support</span></a> and
+<a class="reference internal" href="migrating-admin-example.html#testing-templates-dictionaries"><span class="std std-ref">Testing the template and dictionary</span></a></p>
+</div>
+</div>
+<div class="section" id="finding-your-way-around-the-files">
+<h3>Finding your way around the files<a class="headerlink" href="#finding-your-way-around-the-files" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Start with a device-type YAML file from the dispatcher which is similar to
+the one you want to support. Modify the YAML and verify using the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=&amp;type=json">Online
+YAML parser</a> to
+make sure you <strong>always</strong> have valid YAML. This is the basis of your device
+type template. Use <strong>comments</strong> liberally, this is YAML remember.</li>
+<li>Compare that with the device-specific YAML which is what the dispatcher will
+actually see. Again, modify the YAML and verify using the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=&amp;type=json">Online YAML parser</a> and make sure you
+<strong>always</strong> have valid YAML. This is what your device type template will need
+to produce.</li>
+<li>Identify variables which are device-specific and add <strong>comments</strong> about what
+will need to be handled when the device type template is used.</li>
+<li>Create a minimal device dictionary file which simply extends your initial
+device type template.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="information-sources">
+<h2>Information sources<a class="headerlink" href="#information-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-functional-tests-repository">
+<h3>The functional tests repository<a class="headerlink" href="#the-functional-tests-repository" title="Permalink to this headline">¶</a></h3>
+<p>This git repository holds working examples of a range of different jobs for a
+range of different devices. These jobs are routinely submitted as functional
+tests of upcoming releases of the LAVA software.</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/functional-tests">https://git.lavasoftware.org/lava/functional-tests</a></p>
+<p>Not every combination of deployment method or boot method can be expressed for
+all supported devices but we aim to have at least one example of each
+deployment method and each boot method on at least one supported device.</p>
+<p>Check the <code class="docutils literal notranslate"><span class="pre">standard</span></code> directory for tests which use
+<a class="reference internal" href="gold-standards.html#providing-gold-standard-files"><span class="std std-ref">gold standard images</span></a>.</p>
+</div>
+<div class="section" id="the-lava-server-unit-test-support">
+<h3>The lava-server unit test support<a class="headerlink" href="#the-lava-server-unit-test-support" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> device-type templates here are used for the unit tests and also
+become the default <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> templates when the packages are built.
+The <code class="docutils literal notranslate"><span class="pre">devices</span></code> directory contains working device dictionary examples for these
+device types.</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava/tree/master/lava_scheduler_app/tests">https://git.lavasoftware.org/lava/lava/tree/master/lava_scheduler_app/tests</a></p>
+</div>
+</div>
+<div class="section" id="extra-device-configuration">
+<span id="id3"></span><h2>Extra device configuration<a class="headerlink" href="#extra-device-configuration" title="Permalink to this headline">¶</a></h2>
+<p>There are a variety of optional elements of device configuration which need to
+be considered at an administrator level.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-exported-parameters"><span class="std std-ref">Exported parameters</span></a> and
+<a class="reference internal" href="writing-tests.html#test-device-info"><span class="std std-ref">Obtaining information about the device</span></a></p>
+</div>
+<div class="section" id="providing-permanent-ipv4-addresses">
+<h3>Providing permanent IPv4 addresses<a class="headerlink" href="#providing-permanent-ipv4-addresses" title="Permalink to this headline">¶</a></h3>
+<p>Not all devices of one device-type will necessarily need fixed IPv4 addresses
+to be configured in the device dictionary. Admins should consider the use of
+:term`device tags`.</p>
+</div>
+<div class="section" id="providing-temporary-filesystem-storage">
+<span id="temporary-filesystem-storage"></span><span id="index-3"></span><h3>Providing temporary filesystem storage<a class="headerlink" href="#providing-temporary-filesystem-storage" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-target-storage</span></code> - Where devices have alternative storage media
+fitted, the id of the block device can be exported. For example, this can help
+provide temporary storage on the device when the test shell is running a
+ramdisk or NFS. Some devices may provide a USB mass storage device which could
+also be exported in this way.</p>
+<p>Test writers need to be able to rely on getting a known block device, without
+complications from enumeration at boot. If a second block device is desired,
+the <code class="docutils literal notranslate"><span class="pre">method</span></code> label could simply append a unique ID, <code class="docutils literal notranslate"><span class="pre">SATA-1</span></code>, <code class="docutils literal notranslate"><span class="pre">SATA-2</span></code>
+etc.</p>
+<p>Only a <strong>single</strong> block device is supported per method. The <code class="docutils literal notranslate"><span class="pre">method</span></code> itself
+is simply a label specified by the admin. Often it will relate to the interface
+used by the block device, e.g. <code class="docutils literal notranslate"><span class="pre">SATA</span></code> or <code class="docutils literal notranslate"><span class="pre">USB</span></code> but it could be any string.
+In the example below, <code class="docutils literal notranslate"><span class="pre">UMS</span></code> is the label used by the device (as an
+abbreviation for USB Mass Storage).</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Do <strong>not</strong> specify the ID for a partition as this <strong>will change</strong>
+if a test changes the partition table. There must be <strong>no</strong> files on the
+exported block device which are necessary for the device to reboot and
+execute another test job successfully. Not all devices can support such
+temporary storage.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-exported-parameters"><span class="std std-ref">Exported parameters</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="extra-dispatcher-configuration">
+<span id="dispatcher-configuration"></span><h2>Extra dispatcher configuration<a class="headerlink" href="#extra-dispatcher-configuration" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to supply dispatcher-specific configuration along with each test
+job, by adding a configuration file on the master at
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher.d/&lt;hostname&gt;.yaml</span></code>.</p>
+<p>An example file exists in <code class="docutils literal notranslate"><span class="pre">/usr/share/lava-dispatcher/dispatcher.yaml</span></code> on
+each worker.</p>
+<p>Current support includes:</p>
+<ul class="simple">
+<li>Sets the dispatcher_ip, if the dispatcher has many IPs</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Only set this key, if this dispatcher has many IPs</span>
+<span class="c1">#dispatcher_ip: &lt;this-dispatcher-ip&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Sets the dispatcher_http_ip</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p># Only set this key, if this dispatcher is running separately from slave httpd
+# server or listening on a custom port.
+#dispatcher_http_ip: &lt;dispatcher-http-ip&gt;:&lt;port&gt;</p>
+<ul class="simple">
+<li>Sets the dispatcher_nfs_ip</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p># Only set this key, if this dispatcher is running separately from nfs server
+# or listening on a custom port.
+#dispatcher_nfs_ip: &lt;dispatcher-nfs-ip&gt;:&lt;port&gt;</p>
+<ul class="simple">
+<li>Sets the dispatcher_tftp_ip</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p># Only set this key, if this dispatcher is running separately from tftpd server
+# or listening on a custom port.
+#dispatcher_tftp_ip: &lt;dispatcher-tftp-ip&gt;:&lt;port&gt;</p>
+<ul class="simple">
+<li>Sets the container creation path.</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set this key, if you want to change the default lxc creation path</span>
+<span class="c1"># No trailing /</span>
+<span class="c1"># The default path is /var/lib/lxc</span>
+<span class="c1">#lxc_path: &lt;custom-path&gt;</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="review-criteria.html#keep-dispatcher-dumb"><span class="std std-ref">Keep the dispatcher dumb</span></a></p>
+</div>
+<ul class="simple">
+<li>Add a prefix to tmp directories on a worker. This can be useful if
+a worker runs more than one <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code>, e.g. using docker.</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prefix for all temporary directories</span>
+<span class="c1"># If this variable is set, the temporary files will be created in</span>
+<span class="c1"># /var/lib/lava/dispatcher/tmp/&lt;prefix&gt;&lt;job_id&gt; instead of</span>
+<span class="c1"># /var/lib/lava/dispatcher/tmp/&lt;job_id&gt;</span>
+<span class="c1">#prefix: &lt;prefix&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="per-dispatcher-environment-settings">
+<span id="dispatcher-environment"></span><h3>Per dispatcher environment settings<a class="headerlink" href="#per-dispatcher-environment-settings" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes individual dispatchers can need different environment
+settings, for example when a remote dispatcher is added then any
+settings for <code class="docutils literal notranslate"><span class="pre">HTTP_PROXY</span></code> for other internal dispatchers cannot
+apply to the remote dispatcher.</p>
+<p>To support this, LAVA will check for dispatcher-specific environment
+files. If the files exist, the content will be used instead of applying
+any environment files for the entire instance.</p>
+<p>In a similar manner to <a class="reference internal" href="#dispatcher-configuration"><span class="std std-ref">Extra dispatcher configuration</span></a> above, the
+configuration files are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher.d/&lt;hostname&gt;/env.yaml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher.d/&lt;hostname&gt;/env-dut.yaml</span></code></li>
+</ul>
+<p>If the dispatcher specific configuration files are not present,
+lava-master will fallback to the environment files for the entire
+instance:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/env.yaml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/env.dut.yaml</span></code></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">when using dispatcher specific environment, it can be useful
+(but not mandatory) to move the dispatcher configuration from
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher.d/&lt;hostname&gt;.yaml</span></code> to
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher.d/&lt;hostname&gt;/dispatcher.yaml</span></code>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="requirements-for-a-lava-device">
+<span id="pipeline-device-requirements"></span><span id="index-4"></span><h2>Requirements for a LAVA device<a class="headerlink" href="#requirements-for-a-lava-device" title="Permalink to this headline">¶</a></h2>
+<p>The new design makes less assumptions about the software support on the device
+- principally only a <em>working</em> bootloader is required. The detail of <em>working</em>
+includes but is not restricted to:</p>
+<div class="section" id="hardware-requirements">
+<h3>Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Serial</strong> - the principle method for connecting to any device during an
+automated test is serial. If a specific baud rate or particular UART
+connections are required, these must be declared clearly.</li>
+<li><strong>Network</strong> - tests will need a method for delivering files to the device
+using the bootloader. Unless the bootloader has full support for wireless
+connections, physical ethernet is required.</li>
+<li><strong>Power</strong> - automation requires that the board can be reliably reset by
+removing and then reapplying power. The board must support this in an
+automatic manner, without needing human intervention to press a reset button
+or similar. If such a button is present, each device will need to be modified
+to remove that barrier.</li>
+</ul>
+</div>
+<div class="section" id="software-requirements">
+<h3>Software Requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Interruptible</strong> - for example, <code class="docutils literal notranslate"><span class="pre">uBoot</span></code> must be configured to emit a
+recognizable message and wait for a sufficient number of seconds for a
+keyboard interrupt to get to a prompt.</li>
+<li><strong>Network aware</strong> - most common deployments will need to pull files
+over a network using TFTP.</li>
+<li><strong>Stable</strong> - the bootloader is the rescue system for the device and needs to
+be reliable - if the test causes a kernel panic or hardware lockup, resetting
+the board (by withdrawing and re-applying power) <strong>must always</strong> put the
+board back to the same bootloader operation as a standard power-on from cold.
+Note that USB serial connections can be a particular problem by allowing the
+device to continue to receive some power when the power supply itself is
+disconnected.</li>
+<li><strong>Configurable</strong> - the bootloader needs to be configured over the serial
+connection during a test. Such configuration support needs to be robust and
+not lock up the device in case of invalid user input.</li>
+<li><strong>Accessible</strong> - the bootloader will need to be updated by lab admins from
+time to time and this should be as trivial as possible, e.g. by simply
+copying a binary to a known location using an established protocol, not some
+board-specific routine requiring special software.</li>
+<li><strong>Flexible</strong> - the bootloader should support as wide a range of deployments
+as possible, without needing changes to the bootloader itself. e.g. only
+having support for uncompressed kernel images would be a problem.</li>
+</ul>
+<p>With such a bootloader installed on the device, the test writer has a wide
+range of possible deployments and boot methods.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="device-integration.html#device-requirements"><span class="std std-ref">Device requirements for integration</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="adding-support-for-a-device-of-a-known-type">
+<span id="adding-known-device"></span><span id="index-5"></span><h2>Adding support for a device of a known type<a class="headerlink" href="#adding-support-for-a-device-of-a-known-type" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not all devices supported by the old dispatcher are currently
+supported in the pipeline. The configuration for the old dispatcher is very
+different to pipeline support - the intrinsic data of load addresses and
+ports remains but the layout has changed.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="migrating-admin-example.html#migrating-known-device-example"><span class="std std-ref">Worked example of migrating a known device</span></a></p>
+</div>
+<p>A known device type for the pipeline means that a template file exists in
+<code class="file docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code>.</p>
+<p>This is a <a class="reference external" href="http://jinja.pocoo.org/docs/dev/">Jinja2</a> template which is turned into a complete YAML file when a
+job needs to run on the device using settings in the <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a>.
+Initially, you can work with a static YAML file and deal with how to use the
+template and the dictionary later.</p>
+<p>If this is the first device you are adding to this instance or the first device
+using a new remote worker, this will need to be configured first. The
+<a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> and a Device entry using that type will need to be created
+in the database. Once the device dictionary is working, the device can be
+marked as a pipeline device in the admin interface. See
+<a class="reference internal" href="#create-entry-known-type"><span class="std std-ref">Creating a new device entry for a known device type</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="naming-conventions.html#naming-conventions"><span class="std std-ref">Naming conventions and LAVA architecture</span></a></p>
+</div>
+</div>
+<div class="section" id="obtaining-configuration-of-a-known-device">
+<span id="obtain-known-device-config"></span><h2>Obtaining configuration of a known device<a class="headerlink" href="#obtaining-configuration-of-a-known-device" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to start is to download the working configuration of a device
+of the same known device type from a configured LAVA instance. Browse to the
+device and select “Device Dictionary”. There is a download link for the
+full rendered YAML or the original Jinja can be copied.</p>
+<p>The original Jinja2 file will then need some tweaks for your local setup.
+e.g. values like these will differ for every local LAVA instance.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">commands</span><span class="p">:</span>
+   <span class="nt">connect</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">telnet playgroundmaster 7018</span>
+   <span class="nt">hard_reset</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu09 --command reboot --port 04</span>
+   <span class="nt">power_off</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu09 --command off --port 04</span>
+   <span class="nt">power_on</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/pduclient --daemon services --hostname pdu09 --command on --port 04</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="dispatcher-testing.html#power-commands"><span class="std std-ref">Power Commands</span></a></p>
+</div>
+<p>Alternatively, the fully rendered YAML file, can be used to test jobs
+on that device <strong>but only from the command line on the worker</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-run --device ./bbb01.yaml bbb-ramdisk.yaml --output-dir=/tmp/test/
+</pre></div>
+</div>
+<p>A sample testjob definition can be downloaded from the same instance
+as you obtained the device configuration.</p>
+</div>
+<div class="section" id="creating-a-new-device-entry-for-a-known-device-type">
+<span id="create-entry-known-type"></span><h2>Creating a new device entry for a known device type<a class="headerlink" href="#creating-a-new-device-entry-for-a-known-device-type" title="Permalink to this headline">¶</a></h2>
+<p>If this device does not already exist in the database of the instance, it will
+need to be created by the admins using the <a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">Django administration interface</span></a></p>
+<p>If there are no devices of this device type in the instance, check that the
+device type exists and create it if not. Don’t worry about a health check at
+this stage.</p>
+<p>Create the device using the device type then set the worker hostname
+for this device and save the changes.</p>
+</div>
+<div class="section" id="creating-a-device-dictionary-for-the-device">
+<span id="create-device-dictionary"></span><h2>Creating a device dictionary for the device<a class="headerlink" href="#creating-a-device-dictionary-for-the-device" title="Permalink to this headline">¶</a></h2>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#updating-device-dictionary"><span class="std std-ref">Updating a device dictionary</span></a> to add a device dictionary to
+a new device.</p>
+</div>
+<div class="section" id="based-upon-an-existing-device">
+<h3>Based upon an existing device<a class="headerlink" href="#based-upon-an-existing-device" title="Permalink to this headline">¶</a></h3>
+<p>Download the device dictionary of an existing device in the original
+<code class="docutils literal notranslate"><span class="pre">jinja2</span></code> syntax, ready for modification. Compare with the existing
+device dictionary for the device and modify the dictionary (<a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#child-template">Jinja2
+child template</a> format) to set the values required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{% extends &#39;beaglebone-black.jinja2&#39; %}
+{% set power_off_command = &#39;/usr/bin/pduclient --daemon services --hostname pdu09 --command off --port 04&#39; %}
+{% set hard_reset_command = &#39;/usr/bin/pduclient --daemon services --hostname pdu09 --command reboot --port 04&#39; %}
+{% set connection_list = [‘uart0’] %}
+{% set connection_commands = {‘uart0’: ‘telnet playgroundmaster 7018’} %}
+{% set connection_tags = {‘uart0’: [‘primary’, &#39;telnet&#39;]} %}
+{% set power_on_command = &#39;/usr/bin/pduclient --daemon services --hostname pdu09 --command on --port 04&#39; %}
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">LAVA does not preserve history of a device dictionary, it is
+recommended that the files used to create the dictionaries are kept under
+version control.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#updating-device-dictionary"><span class="std std-ref">Updating a device dictionary</span></a></p>
+</div>
+</div>
+<div class="section" id="viewing-current-device-dictionary-content">
+<span id="viewing-device-dictionary-content"></span><h3>Viewing current device dictionary content<a class="headerlink" href="#viewing-current-device-dictionary-content" title="Permalink to this headline">¶</a></h3>
+<p>View the device in the UI and click the link to the device dictionary.
+The dictionary is displayed as Jinja2 by default. Click on “Rendered YAML” to
+see the full device configuration as it would be sent to the worker.</p>
+</div>
+</div>
+<div class="section" id="updating-a-device-dictionary">
+<span id="updating-device-dictionary"></span><span id="index-6"></span><h2>Updating a device dictionary<a class="headerlink" href="#updating-a-device-dictionary" title="Permalink to this headline">¶</a></h2>
+<p>The populated dictionary now needs to be updated on the filesystem of the
+instance.</p>
+<p>All operations to update a device dictionary need to be done by a
+superuser. The specified device must already exist in the database
+<strong>and</strong> be assigned to an active worker to run test jobs -</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#create-entry-known-type"><span class="std std-ref">Creating a new device entry for a known device type</span></a></p>
+</div>
+<ul class="simple">
+<li><a class="reference internal" href="#updating-device-dictionary-using-xmlrpc"><span class="std std-ref">Using XML-RPC</span></a></li>
+<li><a class="reference internal" href="#updating-device-dictionary-on-command-line"><span class="std std-ref">Using the command line</span></a></li>
+</ul>
+<div class="section" id="using-the-command-line">
+<span id="updating-device-dictionary-on-command-line"></span><h3>Using the command line<a class="headerlink" href="#using-the-command-line" title="Permalink to this headline">¶</a></h3>
+<p>Most commonly, a device dictionary is updated by placing a new file
+onto the master, typically using configuration management tools like
+<a class="reference external" href="https://www.saltstack.com/">salt</a>, <a class="reference external" href="https://puppet.com/">puppet</a> or <a class="reference external" href="https://www.ansible.com/">ansible</a>.</p>
+<p>The device dictionary exists as a <code class="docutils literal notranslate"><span class="pre">jinja2</span></code> file in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/devices</span></code> and can be updated by admins
+with the necessary access.</p>
+</div>
+<div class="section" id="using-lavacli">
+<span id="updating-device-dict-with-lavacli"></span><h3>Using lavacli<a class="headerlink" href="#using-lavacli" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lavacli -i &lt;identity&gt; devices dict get &lt;hostname&gt;
+</pre></div>
+</div>
+<p>Other options when using <code class="docutils literal notranslate"><span class="pre">get</span></code> include:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">field</span></code> to only show the given sub-fields</li>
+<li><code class="docutils literal notranslate"><span class="pre">--context</span> <span class="pre">CONTEXT</span></code> to pass a job context for template rendering</li>
+<li><code class="docutils literal notranslate"><span class="pre">--render</span></code> to render the dictionary into a configuration (YAML).</li>
+</ul>
+<p>Make changes within the <a class="reference external" href="http://jinja.pocoo.org/docs/dev/templates/#child-template">Jinja2 child template</a> syntax and then <code class="docutils literal notranslate"><span class="pre">lavacli</span></code>
+can be used to update a new device dictionary (replacing the previous device
+dictionary).</p>
+<p>The filename and extension of the <code class="docutils literal notranslate"><span class="pre">&lt;device_dict_file&gt;</span></code> are completely
+arbitrary but you may find that your preferred editor has highlighting
+support for jinja2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ lavacli -i &lt;identity&gt; devices dict set &lt;hostname&gt; &lt;device_dict_file&gt;
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference internal" href="lava-scheduler-device-dictionary.html#device-dictionary-help"><span class="std std-ref">Detailed device dictionary information in LAVA Scheduler</span></a>,</li>
+<li><a class="reference internal" href="#create-device-dictionary"><span class="std std-ref">Creating a device dictionary for the device</span></a>,</li>
+<li><a class="reference internal" href="connections.html#configuring-serial-ports"><span class="std std-ref">Configuring serial ports</span></a>,</li>
+<li><a class="reference internal" href="#viewing-device-dictionary-content"><span class="std std-ref">Viewing current device dictionary content</span></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="using-xml-rpc">
+<span id="updating-device-dictionary-using-xmlrpc"></span><h3>Using XML-RPC<a class="headerlink" href="#using-xml-rpc" title="Permalink to this headline">¶</a></h3>
+<p>Superusers can use <code class="docutils literal notranslate"><span class="pre">import_device_dictionary</span></code> to update a Jinja2 string for a
+specified Device hostname:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python3</span>
+<span class="kn">import</span> <span class="nn">xmlrpc.client</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;USERNAME&quot;</span>
+<span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;TOKEN_STRING&quot;</span>
+<span class="n">hostname</span> <span class="o">=</span> <span class="s2">&quot;HOSTNAME&quot;</span>
+<span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;PROTOCOL&quot;</span>  <span class="c1"># http or preferably https</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">xmlrpc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">ServerProxy</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">://</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">@</span><span class="si">%s</span><span class="s2">/RPC2&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">hostname</span><span class="p">))</span>
+<span class="n">server</span><span class="o">.</span><span class="n">scheduler</span><span class="o">.</span><span class="n">import_device_dictionary</span><span class="p">(</span><span class="n">device_hostname</span><span class="p">,</span> <span class="n">jinja_string</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the dictionary did not exist for this hostname, it will be created. The
+XML-RPC call will return:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Adding</span> <span class="n">new</span> <span class="n">device</span> <span class="n">dictionary</span> <span class="k">for</span> <span class="n">black01</span>
+</pre></div>
+</div>
+<p>The dictionary is then updated. If the file is valid, the XML-RPC call will
+return:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Device</span> <span class="n">dictionary</span> <span class="n">updated</span> <span class="k">for</span> <span class="n">black01</span>
+</pre></div>
+</div>
+<p>Superusers can also export the existing jinja2 device information using
+<code class="docutils literal notranslate"><span class="pre">export_device_dictionary</span></code> for a known device hostname. This output can then
+be edited and used to update the device dictionary information.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-admin.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:37 GMT -->
+</html>

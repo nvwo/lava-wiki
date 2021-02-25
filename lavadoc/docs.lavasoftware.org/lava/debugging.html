@@ -1,0 +1,613 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/debugging.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:24 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Debugging LAVA test failures &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced Use Cases" href="pipeline-usecases.html" />
+    <link rel="prev" title="VLANd support in LAVA test jobs" href="vland.html" />
+    <link rel="canonical" href="debugging.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Debugging LAVA test failures</a><ul>
+<li><a class="reference internal" href="#index-1">Read the logs</a></li>
+<li><a class="reference internal" href="#read-the-failure-comment">Read the failure comment</a></li>
+<li><a class="reference internal" href="#index-2">Boot failure</a></li>
+<li><a class="reference internal" href="#failure-to-find-mount-the-rootfs">Failure to find/mount the rootfs</a></li>
+<li><a class="reference internal" href="#start-simple">Start simple</a></li>
+<li><a class="reference internal" href="#change-one-thing-at-a-time">Change one thing at a time</a></li>
+<li><a class="reference internal" href="#make-your-tests-and-setup-verbose">Make your tests and setup verbose</a></li>
+<li><a class="reference internal" href="#provide-debug-data-in-all-test-jobs">Provide debug data in all test jobs</a></li>
+<li><a class="reference internal" href="#common-pitfalls">Common pitfalls</a><ul>
+<li><a class="reference internal" href="#handling-locally-built-files">Handling locally built files</a></li>
+<li><a class="reference internal" href="#avoid-using-shell-operators-in-yaml-lines">Avoid using shell operators in YAML lines</a></li>
+<li><a class="reference internal" href="#test-your-result-parsers">Test your result parsers</a></li>
+<li><a class="reference internal" href="#be-obsessive-about-paths-and-scripts">Be obsessive about paths and scripts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-automation-failures">Debugging automation failures</a><ul>
+<li><a class="reference internal" href="#infrastructure-effects">Infrastructure effects</a></li>
+<li><a class="reference internal" href="#hidden-assumptions-in-the-manual-operations">Hidden assumptions in the manual operations</a></li>
+<li><a class="reference internal" href="#differences-in-input-speeds">Differences in input speeds</a><ul>
+<li><a class="reference internal" href="#setting-boot-character-delay">Setting boot_character_delay</a></li>
+<li><a class="reference internal" href="#setting-test-character-delay">Setting test_character_delay</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-multinode-tests">Debugging MultiNode tests</a><ul>
+<li><a class="reference internal" href="#simplify-your-multinode-test">Simplify your MultiNode test</a></li>
+<li><a class="reference internal" href="#check-that-your-message-id-labels-are-consistent">Check that your message ID labels are consistent</a></li>
+<li><a class="reference internal" href="#a-failed-test-is-not-necessarily-a-bug-in-the-test">A failed test is not necessarily a bug in the test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="vland.html" title="Previous Chapter: VLANd support in LAVA test jobs"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; VLANd support...</span>
+    </a>
+  </li>
+  <li>
+    <a href="pipeline-usecases.html" title="Next Chapter: Advanced Use Cases"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Advanced Use Cases &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="debugging-lava-test-failures">
+<span id="debugging-test-failures"></span><span id="index-0"></span><h1>Debugging LAVA test failures<a class="headerlink" href="#debugging-lava-test-failures" title="Permalink to this headline">¶</a></h1>
+<p>There are many potential reasons why tests running in LAVA might fail, or
+produce unexpected behavior. Some of them can be easy to track down, but
+others may be more difficult. The devices, software and test suites can vary
+massively from one test job to the next, but nonetheless a few common ideas may
+help you to work out what’s going wrong.</p>
+<span class="target" id="read-the-logs"></span><div class="section" id="index-1">
+<span id="id1"></span><h2>Read the logs<a class="headerlink" href="#index-1" title="Permalink to this headline">¶</a></h2>
+<p>This may seem obvious, but it is all too easy to miss real problems in the test
+logs! For people not used to diagnosing failures, it is worth reading all the
+way from deployment through test device boot to the end of the logfile. If a
+test job fails to complete successfully, it can often be caused by a problem
+much earlier in the test - don’t assume that the final few lines of the logfile
+will tell the whole story:</p>
+<ul class="simple">
+<li>A kernel message about failing to load a module or a device failing to
+initialize may be very easily missed in a long stream of kernel boot
+messages. Equally, check that the expected device and module messages are
+present.</li>
+<li>A ‘syntax error’ from a shell script early in the test run could easily
+propagate errors to later test results.</li>
+<li>A test shell may timeout due to an earlier ‘Command not found’ or ‘No such
+file or directory’.</li>
+</ul>
+<p>When writing tests, <a class="reference internal" href="#make-tests-verbose"><span class="std std-ref">make things verbose</span></a> to give
+yourself more useful logs in case they fail.</p>
+</div>
+<div class="section" id="read-the-failure-comment">
+<h2>Read the failure comment<a class="headerlink" href="#read-the-failure-comment" title="Permalink to this headline">¶</a></h2>
+<p>Certain operations will cause a failure comment to be automatically added to
+the testjob.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-job.html#lava-failure-messages"><span class="std std-ref">LAVA Failure messages</span></a></p>
+</div>
+<span class="target" id="boot-failure"></span></div>
+<div class="section" id="index-2">
+<span id="id2"></span><h2>Boot failure<a class="headerlink" href="#index-2" title="Permalink to this headline">¶</a></h2>
+<p>If the test system does not (seem to) boot at all, there are a few things worth
+checking:</p>
+<ul class="simple">
+<li>Did the LAVA dispatcher manage to download and deploy the correct files that
+were specified in the test job? Check that all the files downloaded OK, and
+that any additional work needed on them worked OK (e.g. deploying any
+overlays). You can also specify the expected checksum for each file your test
+job deploys, to guard against download corruption (see <cite>_deploy_action</cite>).</li>
+<li>Did you specify the correct files in your test job? It’s quite easy to make a
+mistake and use the wrong kernel build, or cut and paste the wrong URL from a
+directory listing.</li>
+<li>(Where needed) Did you use the correct <a class="reference internal" href="glossary.html#term-dtb"><span class="xref std std-term">DTB</span></a> for the test device?
+Symptoms here could include apparent boot failure, as the kernel will either
+not boot or boot but not provide any useful boot messages.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#admin-triage"><span class="std std-ref">Admin Triage Guidelines</span></a></p>
+</div>
+<span class="target" id="rootfs-failure"></span></div>
+<div class="section" id="failure-to-find-mount-the-rootfs">
+<span id="index-3"></span><h2>Failure to find/mount the rootfs<a class="headerlink" href="#failure-to-find-mount-the-rootfs" title="Permalink to this headline">¶</a></h2>
+<p>Did the kernel boot OK but then fail to find the root filesystem? This is a
+common failure mode, and there are quite a few possible causes. Here are some
+of the more common failure cases.</p>
+<ul class="simple">
+<li>Again, check that the LAVA dispatcher could download and deploy the correct
+rootfs as specified in the test job.</li>
+<li>Make sure that your kernel has the right drivers available that it needs to
+support the rootfs. Depending on your particular setup, they may need to be
+built-in, or your kernel may need modules to be supplied by an initramfs.
+Typical modules that may be needed will be for disk devices (e.g.
+<code class="docutils literal notranslate"><span class="pre">sd_mod</span></code>), filesystems (e.g. <code class="docutils literal notranslate"><span class="pre">ext4</span></code>) or network interfaces (e.g.
+<code class="docutils literal notranslate"><span class="pre">e1000e</span></code>) if you’re using NFS for the rootfs. You should be able to see
+what devices are found by the kernel by reading the boot messages; check that
+the device you are expecting to use does show up there.</li>
+<li>Make sure that you have specified the correct root device on the
+kernel command line, using the <code class="docutils literal notranslate"><span class="pre">root=</span></code> parameter.</li>
+<li>Make sure that the rootfs includes a working <code class="docutils literal notranslate"><span class="pre">init</span></code> program, in the correct
+location. In an initramfs, the default location is <code class="docutils literal notranslate"><span class="pre">/init</span></code>; this can be
+over-ridden on the kernel command line using the <code class="docutils literal notranslate"><span class="pre">init=</span></code> parameter.</li>
+</ul>
+</div>
+<div class="section" id="start-simple">
+<span id="id3"></span><h2>Start simple<a class="headerlink" href="#start-simple" title="Permalink to this headline">¶</a></h2>
+<p>This is a common theme throughout the suggested workflow for developing tests
+in LAVA. Start with simple test jobs and verify they work as expected. Add
+complexity one step at a time, ensuring that each new option or test suite
+added behaves as expected. It’s much easier to work out what has broken in a
+test job if you’ve made just one small change to a previous test job that
+worked fine.</p>
+<p>Similarly, if you have a complex test job that’s not working correctly then
+often the easiest way to find the problem is to simplify the job - remove some
+of the complexity and re-test. By removing the complex setup in the test, it
+should be possible to identify the cause of the failure.</p>
+<p>If there are standard test jobs available for the device type in question, it
+might be useful to compare your test job to one of those standard jobs, or even
+start with one and append your test definitions.</p>
+</div>
+<div class="section" id="change-one-thing-at-a-time">
+<span id="change-one-thing"></span><h2>Change one thing at a time<a class="headerlink" href="#change-one-thing-at-a-time" title="Permalink to this headline">¶</a></h2>
+<p>When developing a test, resist the urge to make too many changes at once - test
+one element at a time. Avoid changing the deployed files and the test
+definition in the same job. When the deployed files change, use an older test
+definition and an inline definition to explicitly check for any new support
+your test will want to use from those new files. If you change too many
+variables at once, it may become impossible to work out what change caused
+things to break.</p>
+</div>
+<div class="section" id="make-your-tests-and-setup-verbose">
+<span id="make-tests-verbose"></span><h2>Make your tests and setup verbose<a class="headerlink" href="#make-your-tests-and-setup-verbose" title="Permalink to this headline">¶</a></h2>
+<p>Especially when developing a new test, add plenty of output to explain what is
+going on. If you are starting with a new test device or new boot files, make it
+easy to diagnose problems later by adding diagnostics early in the process. In
+general, it is much easier to debug a failed test when it is clear about what
+it expects to be happening than one which just stops or says “error” in the
+middle of a test. The presence of debug information in a known working test job
+can be invaluable when checking why a different test job or test case failed.</p>
+<ul>
+<li><p class="first">If your test configures one or more <strong>network interfaces</strong>, add the output of
+<code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> or <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">a</span> <span class="pre">show</span></code> afterwards to show that it worked. Consider
+adding calls to <code class="docutils literal notranslate"><span class="pre">route</span></code> or running <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/resolv.conf</span></code> as well.</p>
+</li>
+<li><p class="first">If your test uses a specific <strong>block device</strong> or <strong>filesystem</strong>, add the
+output of <code class="docutils literal notranslate"><span class="pre">df</span></code> or <code class="docutils literal notranslate"><span class="pre">mount</span></code> to show what devices and filesystems are
+available.</p>
+</li>
+<li><p class="first">Check the <strong>kernel support</strong> available inside the test image by running
+commands to output details into the test job log file. Once you know which
+parts of <code class="docutils literal notranslate"><span class="pre">/dev/</span></code>, <code class="docutils literal notranslate"><span class="pre">/proc/</span></code> and <code class="docutils literal notranslate"><span class="pre">/sys</span></code> are relevant to the commands used
+in your test definition, use <code class="docutils literal notranslate"><span class="pre">grep</span></code> and <code class="docutils literal notranslate"><span class="pre">cat</span></code> to ensure that details
+about the available support are available when you come to debug the test
+job.</p>
+</li>
+<li><p class="first">Check the available <strong>kernel modules</strong> using <code class="docutils literal notranslate"><span class="pre">lsmod</span></code> or by outputting the
+contents of <code class="docutils literal notranslate"><span class="pre">modules.dep</span></code>, depending on the configuration of the kernel
+used in the test job.</p>
+</li>
+<li><p class="first">Use the <a class="reference internal" href="glossary.html#term-metadata"><span class="xref std std-term">metadata</span></a> to reference the <strong>build log</strong> and <strong>configuration</strong>
+of files used in the test job, especially the kernel, initramfs and / or NFS.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#local-files-pitfalls"><span class="std std-ref">Handling locally built files</span></a></p>
+</div>
+</li>
+</ul>
+<p id="set-x">If you are writing shell scripts to wrap tests, try using <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">-x</span></code> - this
+will tell the shell to log all lines of your script as it runs them. For
+example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+<span class="nb">set</span> -e
+<span class="nb">set</span> -x
+<span class="nb">echo</span> <span class="s2">&quot;foo&quot;</span>
+<span class="nv">a</span><span class="o">=</span><span class="m">1</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$a</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">echo</span> <span class="s2">&quot;yes&quot;</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<p>will give the following output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+</span> <span class="n">echo</span> <span class="n">foo</span>
+<span class="n">foo</span>
+<span class="o">+</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">+</span> <span class="p">[</span> <span class="mi">1</span> <span class="o">-</span><span class="n">eq</span> <span class="mi">1</span> <span class="p">]</span>
+<span class="o">+</span> <span class="n">echo</span> <span class="n">yes</span>
+<span class="n">yes</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="provide-debug-data-in-all-test-jobs">
+<span id="retain-debug-output"></span><span id="index-4"></span><h2>Provide debug data in all test jobs<a class="headerlink" href="#provide-debug-data-in-all-test-jobs" title="Permalink to this headline">¶</a></h2>
+<p>The debug statements used when the test definitions are being developed can be
+retained in the final test definitions for later reference. It is much better
+to have the debug information available in every test than to have to resubmit
+the test job only to find that the problem is intermittent or can only be
+reproduced in particular operations.</p>
+<p>Debug checks which become common across a range of test job definitions or
+which are particularly important for quick triage can also be run as test cases
+so that the presence or absence of a critical element of the test shows up as a
+pass or fail. Many such checks will need to use scripts to isolate the relevant
+information from the available data in <code class="docutils literal notranslate"><span class="pre">proc</span></code> or <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> etc.</p>
+</div>
+<div class="section" id="common-pitfalls">
+<span id="index-5"></span><span id="id4"></span><h2>Common pitfalls<a class="headerlink" href="#common-pitfalls" title="Permalink to this headline">¶</a></h2>
+<p>There are some common mistakes using LAVA which can cause issues. If you are
+experiencing weird problems with your test job, maybe considering these will
+help.</p>
+<div class="section" id="handling-locally-built-files">
+<span id="local-files-pitfalls"></span><h3>Handling locally built files<a class="headerlink" href="#handling-locally-built-files" title="Permalink to this headline">¶</a></h3>
+<p>Triage will be a lot easier if you follow these guidelines when using files
+you have built or modified yourself in LAVA test jobs:</p>
+<ul>
+<li><p class="first">Use a <a class="reference internal" href="developing-tests.html#testjob-checksums"><span class="std std-ref">checksums</span></a> on all downloaded copies of
+locally rebuilt files. Frequent rebuilds lead to confusion about whether the
+file you have just built is the same file as the test job uses. Even when you
+are sure you have updated the file correctly, there may be caches between the
+upload location and the worker.</p>
+</li>
+<li><p class="first"><strong>Always</strong> update the <a class="reference internal" href="glossary.html#term-metadata"><span class="xref std std-term">metadata</span></a> every time a local file is rebuilt for
+use in a testjob. Include details of what was changed to require the file to
+be rebuilt and when that change was made.</p>
+</li>
+<li><p class="first"><strong>Always</strong> include and update files describing the configuration of the locally
+built file. If building a kernel, enabling <code class="docutils literal notranslate"><span class="pre">/proc/config.gz</span></code> can save large
+amounts of time in triage. Upload the full configuration and build log of all
+files and include the URL to those files in the <a class="reference internal" href="glossary.html#term-metadata"><span class="xref std std-term">metadata</span></a>. It can be
+very difficult for anyone to help you debug your test jobs if the details of
+how the test job files were built is not available. Consider using version
+control software for the test job definitions, configuration files, build
+logs or changelogs to make it easier to track what has changed. When
+rebuilding local files for your test jobs, please remember:
+<a class="reference internal" href="#change-one-thing"><span class="std std-ref">Change one thing at a time</span></a>.</p>
+</li>
+<li><p class="first"><strong>Retain old copies</strong> of locally built files, especially if test jobs using
+those files ran successfully.</p>
+</li>
+<li><p class="first"><strong>Compare</strong> your configuration with known working test jobs.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">Gold standard test jobs</span></a>.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="avoid-using-shell-operators-in-yaml-lines">
+<span id="shell-operators-yaml"></span><h3>Avoid using shell operators in YAML lines<a class="headerlink" href="#avoid-using-shell-operators-in-yaml-lines" title="Permalink to this headline">¶</a></h3>
+<p>Pipes, redirects and nested sub shells will not work reliably when put directly
+into the YAML. Use a wrapper script (with <a class="reference internal" href="#set-x"><span class="std std-ref">set -x</span></a>) instead for
+safety:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="nb">set</span> -e
+<span class="nb">set</span> -x
+ifconfig<span class="p">|</span>grep <span class="s2">&quot;inet addr&quot;</span><span class="p">|</span>grep -v <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">|</span>cut -d: -f2<span class="p">|</span>cut -d<span class="s1">&#39; &#39;</span> -f1
+</pre></div>
+</div>
+<p>Un-nested sub-shells do work, though:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- lava-test-case multinode-send-network --shell lava-send network hostname=$(hostname) fqdn=$(hostname -f)
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-your-result-parsers">
+<span id="parsers"></span><h3>Test your result parsers<a class="headerlink" href="#test-your-result-parsers" title="Permalink to this headline">¶</a></h3>
+<p>If you use a custom result parser, configure one of your YAML files to output
+the entire test result output to stdout so that you can reliably capture a
+representative block of output. Test your proposed result parser against the
+block using your favorite language.</p>
+<p>Comment out the parser from the YAML if there are particular problems, just to
+see what the default LAVA parsers can provide.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Parsers can be difficult to debug after being parsed from YAML into
+shell. LAVA developers used to recommend the use of custom parsers, but
+experience has shown this to be a mistake. Instead, it is suggested that new
+test definitions should use <a class="reference internal" href="writing-tests.html#custom-scripts"><span class="std std-ref">custom scripts</span></a>. This
+allows the parsing to be debugged outside LAVA, as well as making the test
+itself more portable.</p>
+</div>
+</div>
+<div class="section" id="be-obsessive-about-paths-and-scripts">
+<span id="paths"></span><h3>Be obsessive about paths and scripts<a class="headerlink" href="#be-obsessive-about-paths-and-scripts" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>If you use <code class="docutils literal notranslate"><span class="pre">cd</span></code> in your YAML, always store where you were and where you end
+up using <code class="docutils literal notranslate"><span class="pre">pwd</span></code>.</li>
+<li>Output your location prior to calling local wrapper scripts.</li>
+<li>Ensure that all wrapper scripts are executable in your VCS</li>
+<li>Ensure that the relevant interpreter is installed. e.g. python is not
+necessarily part of the test image.</li>
+<li>Consider installing <code class="docutils literal notranslate"><span class="pre">realpath</span></code> and use that to debug your directory
+structure.</li>
+<li>Avoid the temptation of using absolute paths - LAVA may need to change the
+absolute locations.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="debugging-automation-failures">
+<span id="debugging-automation"></span><span id="index-6"></span><h2>Debugging automation failures<a class="headerlink" href="#debugging-automation-failures" title="Permalink to this headline">¶</a></h2>
+<p>A first step in triage of a test job failure can be to replicate the
+steps manually. If this works, then consider the differences between
+running a test manually and through automation:</p>
+<div class="section" id="infrastructure-effects">
+<span id="infrastructure-changes"></span><h3>Infrastructure effects<a class="headerlink" href="#infrastructure-effects" title="Permalink to this headline">¶</a></h3>
+<p>Some devices have substantial requirements for infrastructure to
+support the automation: switchable USB hubs, relays, remote power
+control, multiple serial connections, <a class="reference internal" href="glossary.html#term-vland"><span class="xref std std-term">VLANd</span></a> support, etc.</p>
+<p>Triaging of test job failures in one automated system typically needs
+to be done on the same instance or, if using another instance, using
+infrastructure which is as close as possible to the original instance.
+It will still be difficult to identify the problem, especially with
+intermittent failures, unless key elements of the test instance can be
+disabled, replaced or otherwise eliminated from the test process
+without generating new failures.</p>
+<p>LAVA tries to identify the likely cause of the error and raise the
+correct exception. (This can be tracked in the <code class="docutils literal notranslate"><span class="pre">job</span></code> test case
+created by every test job in the <code class="docutils literal notranslate"><span class="pre">lava</span></code> test suite of the results.)</p>
+<p>It can be particularly hard to identify the cause of timeouts. Pay
+close attention to all devices across the instance to see if a third
+party element (like a distribution mirror) is the cause. Look for
+common factors - both those which trigger a failure and those which do
+not.</p>
+<p>When investigating intermittent errors, see if the error can be
+provoked in a health check and then use looping mode to generate data
+on how often the error occurs whilst keeping the test job identical.</p>
+<p>If the health check does generate the error, the device will go
+offline. Infrastructure problems can be debugged whilst keeping the
+device(s) offline by <a class="reference internal" href="dispatcher-design.html#running-lava-run"><span class="std std-ref">Running lava-run directly</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#change-one-thing"><span class="std std-ref">Change one thing at a time</span></a></p>
+</div>
+</div>
+<div class="section" id="hidden-assumptions-in-the-manual-operations">
+<span id="hidden-assumptions"></span><h3>Hidden assumptions in the manual operations<a class="headerlink" href="#hidden-assumptions-in-the-manual-operations" title="Permalink to this headline">¶</a></h3>
+<p>It is common to find that a manual user will <strong>know</strong> that something is
+meant to happen or that an error can simply be ignored and re-tried or
+simply add an extra command “just in case”. Automation will <strong>not</strong> do
+those steps and if the underlying problem is intermittent, a lot of
+engineering time will be wasted trying to work out <strong>why</strong>. Be
+meticulous in logging <strong>every</strong> operation done on the device to run a
+test job manually. Pay particular attention to:</p>
+<ul class="simple">
+<li><strong>Changes in prompts</strong> - exactly <strong>when</strong> and under what
+circumstances?</li>
+<li><strong>Hidden time limits</strong> - interrupting a process or waiting for an
+operation to take place. These will need to be carefully written into
+the device integration.</li>
+<li><strong>Extra commands</strong> - often not needed every single time but just
+<em>sometimes</em>. Define exactly when and prove whether the commands can
+be safely issued anyway or whether there are specific circumstances.</li>
+</ul>
+</div>
+<div class="section" id="differences-in-input-speeds">
+<span id="input-speeds"></span><span id="index-7"></span><h3>Differences in input speeds<a class="headerlink" href="#differences-in-input-speeds" title="Permalink to this headline">¶</a></h3>
+<p>Manual keyboard entry has noticeable gaps between every key press. Even
+the fastest typist will not approach the speed at which a computer can
+transmit the same string over a serial connection.</p>
+<p>In automation, strings will be sent as quickly as the connection
+allows. Some devices may then fail to process the characters correctly.
+This might manifest in several ways, including:</p>
+<ul class="simple">
+<li><strong>Missing characters</strong> - <code class="docutils literal notranslate"><span class="pre">rot</span></code> instead of <code class="docutils literal notranslate"><span class="pre">root</span></code> or <code class="docutils literal notranslate"><span class="pre">erverip</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">serverip</span></code>.  Often at the start of a line, although
+also includes loss of the newline itself, causing lines to join
+together. <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">foo</span> <span class="pre">;</span> <span class="pre">set</span> <span class="pre">bar</span></code> can be changed to <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">foo</span> <span class="pre">set</span>
+<span class="pre">bar</span></code>, causing a failure to process <code class="docutils literal notranslate"><span class="pre">bar</span></code>.</li>
+<li><strong>Reordered characters</strong> - <code class="docutils literal notranslate"><span class="pre">orot</span></code> instead of <code class="docutils literal notranslate"><span class="pre">root</span></code>. This is less
+common than missing characters and can sometimes indicate a hardware
+problem on the device. However, replicating an input speed which is
+closer to human typing can still alleviate the problem.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is <strong>not</strong> the same as the replacement of characters
+by invalid characters which is a different type of serial
+corruption. If you see ASCII strings being output to the device but
+unprintable or otherwise incorrect characters being received, then
+this could be a hardware problem with the DUT or the connections to
+it. Intermittent single bit flips in the serial data stream are all
+too common.</p>
+</div>
+<p>LAVA supports specifying <strong>character delays</strong> in the boot and test
+actions to help alleviate these problems. These are device-specific
+features, so best controlled in the device configuration.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">boot</span></code> action suffers from this problem more frequently than the
+<code class="docutils literal notranslate"><span class="pre">test</span></code> action, typically because <code class="docutils literal notranslate"><span class="pre">boot</span></code> has to interact with
+processes executed by firmware or a bootloader where processing can be
+more limited than in a POSIX-type test environment.</p>
+<div class="section" id="setting-boot-character-delay">
+<h4>Setting boot_character_delay<a class="headerlink" href="#setting-boot-character-delay" title="Permalink to this headline">¶</a></h4>
+<p>In the device-type template, set the number of milliseconds to add
+between each character of every string sent to the DUT during the
+<code class="docutils literal notranslate"><span class="pre">boot</span></code> action:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">boot_character_delay</span> <span class="o">=</span> <span class="m">10</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code> will then handle this variable to set the boot
+character delay to 10 milliseconds. Some devices may need more, up to
+100 or 500 milliseconds. In the case of such long delays, it is also
+necessary to consider the overall boot timeout and specify a minimum
+for the relevant boot action in the device-type template.</p>
+</div>
+<div class="section" id="setting-test-character-delay">
+<h4>Setting test_character_delay<a class="headerlink" href="#setting-test-character-delay" title="Permalink to this headline">¶</a></h4>
+<p>In the device-type template, set the number of milliseconds to add
+between each character of every string sent to the DUT during the
+<code class="docutils literal notranslate"><span class="pre">test</span></code> action:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">test_character_delay</span> <span class="o">=</span> <span class="m">10</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code> will then handle this variable to set the test
+character delay to 10 milliseconds.</p>
+</div>
+</div>
+</div>
+<div class="section" id="debugging-multinode-tests">
+<span id="debugging-multinode"></span><span id="index-8"></span><h2>Debugging MultiNode tests<a class="headerlink" href="#debugging-multinode-tests" title="Permalink to this headline">¶</a></h2>
+<p>MultiNode tests are necessarily more complex than jobs running on single test
+devices, and so there are extra places where errors can creep in and cause
+unexpected failures.</p>
+<div class="section" id="simplify-your-multinode-test">
+<span id="simplify-multinode"></span><h3>Simplify your MultiNode test<a class="headerlink" href="#simplify-your-multinode-test" title="Permalink to this headline">¶</a></h3>
+<p>This may seem obvious, but one of the most common causes of MultiNode test
+failure is nothing to do with MultiNode. If your MultiNode tests are failing to
+boot correctly, check that the basics of each of the desired roles works
+independently. Remove the MultiNode pieces and just check that the specified
+deploy and boot actions work alone in a single-node test with the right
+device-type. Then add back the MultiNode configuration, <a class="reference internal" href="#change-one-thing"><span class="std std-ref">changing one
+thing at a time</span></a> and ensuring that things still work as you
+build up complexity.</p>
+</div>
+<div class="section" id="check-that-your-message-id-labels-are-consistent">
+<span id="check-messageid"></span><h3>Check that your message ID labels are consistent<a class="headerlink" href="#check-that-your-message-id-labels-are-consistent" title="Permalink to this headline">¶</a></h3>
+<p>A <a class="reference internal" href="multinodeapi.html#lava-wait"><span class="std std-ref">lava-wait</span></a> must be preceded by a <a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> from at least one
+other device in the group, or the waiting device will <a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">timeout</span></a></p>
+<p>This can be a particular problem if you remove test definitions or edit a YAML
+file without checking other uses of the same file. The simplest (and hence
+recommended) way to use the MultiNode synchronization calls is using
+<a class="reference internal" href="writing-tests.html#inline-test-definitions"><span class="std std-ref">inline definitions</span></a>.</p>
+</div>
+<div class="section" id="a-failed-test-is-not-necessarily-a-bug-in-the-test">
+<span id="failed-tests"></span><h3>A failed test is not necessarily a bug in the test<a class="headerlink" href="#a-failed-test-is-not-necessarily-a-bug-in-the-test" title="Permalink to this headline">¶</a></h3>
+<p>Always check whether the test result came back as a failure due to some cause
+other than the test definition itself. Particularly with MultiNode test jobs, a
+test can fail for other reasons like an unrelated failure on a different board
+within the group.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/debugging.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:24 GMT -->
+</html>

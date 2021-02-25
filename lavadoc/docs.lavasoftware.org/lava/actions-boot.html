@@ -1,0 +1,1560 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/actions-boot.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Boot Action Reference &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test Action Reference" href="actions-test.html" />
+    <link rel="prev" title="Deploy Action Reference" href="actions-deploy.html" />
+    <link rel="canonical" href="actions-boot.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Boot Action Reference</a><ul>
+<li><a class="reference internal" href="#auto-login">auto_login</a><ul>
+<li><a class="reference internal" href="#login-prompt">login_prompt</a></li>
+<li><a class="reference internal" href="#username">username</a></li>
+<li><a class="reference internal" href="#password-prompt">password_prompt</a></li>
+<li><a class="reference internal" href="#password">password</a></li>
+<li><a class="reference internal" href="#login-commands">login_commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#prompts">prompts</a></li>
+<li><a class="reference internal" href="#connection">connection</a></li>
+<li><a class="reference internal" href="#connection-namespace">connection-namespace</a></li>
+<li><a class="reference internal" href="#commands">commands</a><ul>
+<li><a class="reference internal" href="#specifying-commands-in-full">Specifying commands in full</a></li>
+<li><a class="reference internal" href="#appending-to-the-kernel-command-line">Appending to the kernel command line</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#failure-message">failure_message</a></li>
+<li><a class="reference internal" href="#method">method</a><ul>
+<li><a class="reference internal" href="#bootloader">bootloader</a></li>
+<li><a class="reference internal" href="#cmsis-dap">cmsis-dap</a></li>
+<li><a class="reference internal" href="#depthcharge">depthcharge</a></li>
+<li><a class="reference internal" href="#docker">docker</a><ul>
+<li><a class="reference internal" href="#command">command</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fastboot">fastboot</a><ul>
+<li><a class="reference internal" href="#fastboot-boot-commands">fastboot boot commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fastboot-nfs">fastboot-nfs</a></li>
+<li><a class="reference internal" href="#fvp">fvp</a></li>
+<li><a class="reference internal" href="#grub">grub</a></li>
+<li><a class="reference internal" href="#grub-efi">grub-efi</a></li>
+<li><a class="reference internal" href="#ipxe">ipxe</a></li>
+<li><a class="reference internal" href="#lxc">lxc</a></li>
+<li><a class="reference internal" href="#openocd">openocd</a></li>
+<li><a class="reference internal" href="#minimal">minimal</a></li>
+<li><a class="reference internal" href="#musca">musca</a></li>
+<li><a class="reference internal" href="#pyocd">pyocd</a></li>
+<li><a class="reference internal" href="#jlink">jlink</a></li>
+<li><a class="reference internal" href="#new-connection">new_connection</a></li>
+<li><a class="reference internal" href="#qemu">qemu</a><ul>
+<li><a class="reference internal" href="#media">media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qemu-nfs">qemu-nfs</a><ul>
+<li><a class="reference internal" href="#boot-method-qemu-media-nfs">media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qemu-iso">qemu-iso</a><ul>
+<li><a class="reference internal" href="#boot-method-qemu-iso-media">media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transfer-overlay">transfer_overlay</a><ul>
+<li><a class="reference internal" href="#deployment-differences">Deployment differences</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#u-boot">u-boot</a><ul>
+<li><a class="reference internal" href="#boot-method-u-boot-commands">commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uefi-menu">uefi-menu</a></li>
+<li><a class="reference internal" href="#uuu">uuu</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#device-configuration">Device configuration</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#using-built-in-scripts">Using built-in scripts</a></li>
+<li><a class="reference internal" href="#using-commands">Using commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="actions-deploy.html" title="Previous Chapter: Deploy Action Reference"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Deploy Action...</span>
+    </a>
+  </li>
+  <li>
+    <a href="actions-test.html" title="Next Chapter: Test Action Reference"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Test Action Reference &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="boot-action-reference">
+<span id="boot-action"></span><h1><a class="toc-backref" href="#contents">Boot Action Reference</a><a class="headerlink" href="#boot-action-reference" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">boot</span></code> action is used to cause the device to boot using the deployed
+files. Depending on the parameters in the job definition, this could be by
+executing a command on the dispatcher (for example
+<code class="docutils literal notranslate"><span class="pre">/usr/bin/qemu-system-x86_64</span></code>) or by connecting to the device over serial or
+ssh. Depending on the power state of the device and the device configuration,
+the device may be powered up or reset to provoke the boot.</p>
+<p>Every <code class="docutils literal notranslate"><span class="pre">boot</span></code> action <strong>must</strong> specify a method which is used to determine how
+to boot the deployed files on the device. Depending on the method, other
+parameters will be required.</p>
+<p>Boot actions which result in a POSIX type login or shell must specify a list of
+expected prompts which will be matched against the output to determine the
+endpoint of the boot process. There are no default prompts, the test writer is
+responsible for providing a list of all possible prompts.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#boot-prompts"><span class="std std-ref">prompts</span></a></p>
+</div>
+<p>Boot is a top level action that is part of the <code class="docutils literal notranslate"><span class="pre">actions</span></code> list. Here is an
+example of full boot action from the test job definition:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target</span>
+  <span class="nt">timeout</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+  <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+  <span class="nt">auto_login</span><span class="p">:</span>
+    <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;am57xx-evm</span><span class="nv"> </span><span class="s">login:&#39;</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">password_prompt</span><span class="p">:</span> <span class="s">&quot;Password:&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;P@ssword-1&quot;</span>
+    <span class="nt">login_commands</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">P@ssword-1</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">azertAZERT12345</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">azertAZERT12345</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">azertAZERT12345</span>
+  <span class="nt">prompts</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">&#39;Current password</span><span class="p">:</span> <span class="s">&#39;</span>
+  <span class="s">-</span><span class="nv"> </span><span class="s">&#39;</span><span class="nt">New password</span><span class="p">:</span> <span class="s">&#39;</span>
+  <span class="s">-</span><span class="nv"> </span><span class="s">&#39;</span><span class="nt">Retype new password</span><span class="p">:</span> <span class="s">&#39;</span>
+  <span class="s">-</span><span class="nv"> </span><span class="s">&#39;</span><span class="l l-Scalar l-Scalar-Plain">root@am57xx-evm:&#39;</span>
+  <span class="nt">transfer_overlay</span><span class="p">:</span>
+    <span class="nt">download_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unset http_proxy ; dhclient eth1 ; cd /tmp ; wget</span>
+    <span class="nt">unpack_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tar -C / -xzf</span>
+  <span class="nt">commands</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdtfile am57xx-beagle-x15.dtb</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv console ttyS2,115200n8</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv mmcdev 1</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootpart 1:9</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">run mmcboot</span>
+</pre></div>
+</div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#boot-action-reference" id="id4">Boot Action Reference</a><ul>
+<li><a class="reference internal" href="#auto-login" id="id5">auto_login</a><ul>
+<li><a class="reference internal" href="#login-prompt" id="id6">login_prompt</a></li>
+<li><a class="reference internal" href="#username" id="id7">username</a></li>
+<li><a class="reference internal" href="#password-prompt" id="id8">password_prompt</a></li>
+<li><a class="reference internal" href="#password" id="id9">password</a></li>
+<li><a class="reference internal" href="#login-commands" id="id10">login_commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#prompts" id="id11">prompts</a></li>
+<li><a class="reference internal" href="#connection" id="id12">connection</a></li>
+<li><a class="reference internal" href="#connection-namespace" id="id13">connection-namespace</a></li>
+<li><a class="reference internal" href="#commands" id="id14">commands</a><ul>
+<li><a class="reference internal" href="#specifying-commands-in-full" id="id15">Specifying commands in full</a></li>
+<li><a class="reference internal" href="#appending-to-the-kernel-command-line" id="id16">Appending to the kernel command line</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#failure-message" id="id17">failure_message</a></li>
+<li><a class="reference internal" href="#method" id="id18">method</a><ul>
+<li><a class="reference internal" href="#bootloader" id="id19">bootloader</a></li>
+<li><a class="reference internal" href="#cmsis-dap" id="id20">cmsis-dap</a></li>
+<li><a class="reference internal" href="#depthcharge" id="id21">depthcharge</a></li>
+<li><a class="reference internal" href="#docker" id="id22">docker</a><ul>
+<li><a class="reference internal" href="#command" id="id23">command</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fastboot" id="id24">fastboot</a><ul>
+<li><a class="reference internal" href="#fastboot-boot-commands" id="id25">fastboot boot commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fastboot-nfs" id="id26">fastboot-nfs</a></li>
+<li><a class="reference internal" href="#fvp" id="id27">fvp</a></li>
+<li><a class="reference internal" href="#grub" id="id28">grub</a></li>
+<li><a class="reference internal" href="#grub-efi" id="id29">grub-efi</a></li>
+<li><a class="reference internal" href="#ipxe" id="id30">ipxe</a></li>
+<li><a class="reference internal" href="#lxc" id="id31">lxc</a></li>
+<li><a class="reference internal" href="#openocd" id="id32">openocd</a></li>
+<li><a class="reference internal" href="#minimal" id="id33">minimal</a></li>
+<li><a class="reference internal" href="#musca" id="id34">musca</a></li>
+<li><a class="reference internal" href="#pyocd" id="id35">pyocd</a></li>
+<li><a class="reference internal" href="#jlink" id="id36">jlink</a></li>
+<li><a class="reference internal" href="#new-connection" id="id37">new_connection</a></li>
+<li><a class="reference internal" href="#qemu" id="id38">qemu</a><ul>
+<li><a class="reference internal" href="#media" id="id39">media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qemu-nfs" id="id40">qemu-nfs</a><ul>
+<li><a class="reference internal" href="#boot-method-qemu-media-nfs" id="id41">media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qemu-iso" id="id42">qemu-iso</a><ul>
+<li><a class="reference internal" href="#boot-method-qemu-iso-media" id="id43">media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transfer-overlay" id="id44">transfer_overlay</a><ul>
+<li><a class="reference internal" href="#deployment-differences" id="id45">Deployment differences</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#u-boot" id="id46">u-boot</a><ul>
+<li><a class="reference internal" href="#boot-method-u-boot-commands" id="id47">commands</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uefi-menu" id="id48">uefi-menu</a></li>
+<li><a class="reference internal" href="#uuu" id="id49">uuu</a><ul>
+<li><a class="reference internal" href="#installation" id="id50">Installation</a></li>
+<li><a class="reference internal" href="#device-configuration" id="id51">Device configuration</a></li>
+<li><a class="reference internal" href="#usage" id="id52">Usage</a><ul>
+<li><a class="reference internal" href="#using-built-in-scripts" id="id53">Using built-in scripts</a></li>
+<li><a class="reference internal" href="#using-commands" id="id54">Using commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="auto-login">
+<span id="boot-auto-login"></span><span id="index-0"></span><h2><a class="toc-backref" href="#contents">auto_login</a><a class="headerlink" href="#auto-login" title="Permalink to this headline">¶</a></h2>
+<p>Some systems require the test job to specify a username and optionally a
+password to login. These values must be specified in the test job submission.
+If the system boots directly to a prompt without needing a login, the
+<code class="docutils literal notranslate"><span class="pre">auto_login</span></code> details can be omitted from the test job submission.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The test job submission uses <code class="docutils literal notranslate"><span class="pre">auto_login</span></code> with underscore.</p>
+</div>
+<div class="section" id="login-prompt">
+<span id="boot-auto-login-login-prompt"></span><span id="index-1"></span><h3><a class="toc-backref" href="#contents">login_prompt</a><a class="headerlink" href="#login-prompt" title="Permalink to this headline">¶</a></h3>
+<p>The prompt to match when the system requires a login. This prompt needs to be
+unique across the entire boot sequence, so typically includes <code class="docutils literal notranslate"><span class="pre">:</span></code> and should
+be quoted. If the hostname of the device is included in the prompt, this can be
+included in the <code class="docutils literal notranslate"><span class="pre">login_prompt</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+  <span class="nt">auto_login</span><span class="p">:</span>
+    <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If login_prompt is not matched during boot LAVA will send control
+characters to the shell “thinking” that the kernel alert happened
+which may result in incorrect login but after it recognizes the
+<code class="docutils literal notranslate"><span class="pre">Login</span> <span class="pre">incorrect</span></code> message it will automatically try to log in
+using provided credentials.</p>
+</div>
+</div>
+<div class="section" id="username">
+<span id="boot-auto-login-username"></span><span id="index-2"></span><h3><a class="toc-backref" href="#contents">username</a><a class="headerlink" href="#username" title="Permalink to this headline">¶</a></h3>
+<p>Whenever a <code class="docutils literal notranslate"><span class="pre">login_prompt</span></code> is specified, a <code class="docutils literal notranslate"><span class="pre">username</span></code> will also be required.
+The username should either be <code class="docutils literal notranslate"><span class="pre">root</span></code> or a user with <code class="docutils literal notranslate"><span class="pre">sudo</span></code> access without
+needing a password.</p>
+</div>
+<div class="section" id="password-prompt">
+<span id="boot-auto-login-password-prompt"></span><span id="index-3"></span><h3><a class="toc-backref" href="#contents">password_prompt</a><a class="headerlink" href="#password-prompt" title="Permalink to this headline">¶</a></h3>
+<p>If the login requires a password as well as a username, the <code class="docutils literal notranslate"><span class="pre">password_prompt</span></code>
+must be specified:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+      <span class="nt">password_prompt</span><span class="p">:</span> <span class="s">&#39;Password:&#39;</span>
+      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rootme</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If password_prompt is not matched during login or password is
+required but not provided LAVA will recognize the <code class="docutils literal notranslate"><span class="pre">Login</span> <span class="pre">timed</span> <span class="pre">out</span></code>
+message, stop the execution of the job and log the error.</p>
+</div>
+</div>
+<div class="section" id="password">
+<span id="boot-auto-login-password"></span><span id="index-4"></span><h3><a class="toc-backref" href="#contents">password</a><a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h3>
+<p>Whenever a <code class="docutils literal notranslate"><span class="pre">password_prompt</span></code> is specified, a <code class="docutils literal notranslate"><span class="pre">password</span></code> will also be
+required.</p>
+</div>
+<div class="section" id="login-commands">
+<span id="boot-auto-login-login-commands"></span><span id="index-5"></span><h3><a class="toc-backref" href="#contents">login_commands</a><a class="headerlink" href="#login-commands" title="Permalink to this headline">¶</a></h3>
+<p>A list of arbitrary <code class="docutils literal notranslate"><span class="pre">login_commands</span></code> can be run after the initial login and
+before setting the shell prompt. This is typically used to make a regular user
+become root with su. For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
+      <span class="nt">password_prompt</span><span class="p">:</span> <span class="s">&#39;Password:&#39;</span>
+      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pass</span>
+      <span class="nt">login_commands</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sudo su</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">No interactive input such as a password can be provided with the list
+of <code class="docutils literal notranslate"><span class="pre">login_commands</span></code>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="prompts">
+<span id="boot-prompts"></span><span id="index-6"></span><h2><a class="toc-backref" href="#contents">prompts</a><a class="headerlink" href="#prompts" title="Permalink to this headline">¶</a></h2>
+<p>After login (or directly from boot if no login is required), LAVA needs to
+match the first prompt offered by the booted system. The full list of possible
+prompts <strong>must</strong> be specified by the test writer in the test job submission.</p>
+<p>Each prompt needs to be unique across the entire boot sequence, so typically
+includes <code class="docutils literal notranslate"><span class="pre">:</span></code> and needs to be quoted. If the hostname of the device is
+included in the prompt, this can be included in the <code class="docutils literal notranslate"><span class="pre">prompt</span></code>:</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Take care with the specified prompts. Prompt strings which do not
+include enough characters can match early, resulting in a failed login.
+Prompt strings which include extraneous characters may fail to match for all
+test jobs. Avoid prompt elements which are user-specific, e.g. <code class="docutils literal notranslate"><span class="pre">$</span></code>
+indicates an unprivileged user in some shells and <code class="docutils literal notranslate"><span class="pre">#</span></code> indicates the
+superuser. <code class="docutils literal notranslate"><span class="pre">~</span></code> indicates the home directory in some shells. In general,
+the prompt string should <strong>include and usually end with</strong> a colon <code class="docutils literal notranslate"><span class="pre">:</span></code> or a
+colon and space.</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:&#39;</span>
+</pre></div>
+</div>
+<p>When using the <a class="reference internal" href="glossary.html#term-lxc"><span class="xref std std-term">LXC</span></a> <a class="reference internal" href="glossary.html#term-protocol"><span class="xref std std-term">protocol</span></a>, the hostname element of the
+prompt will vary:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):&#39;</span>
+</pre></div>
+</div>
+<p>When using a ramdisk, the prompt is likely to need to contain brackets which
+will need to be escaped:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="c1"># escape the brackets to ensure that the prompt does not match</span>
+    <span class="c1"># kernel debug lines which may mention initramfs</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;\(initramfs\)&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connection">
+<span id="boot-connection"></span><span id="index-7"></span><h2><a class="toc-backref" href="#contents">connection</a><a class="headerlink" href="#connection" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="connection-namespace">
+<span id="boot-connection-namespace"></span><span id="index-8"></span><h2><a class="toc-backref" href="#contents">connection-namespace</a><a class="headerlink" href="#connection-namespace" title="Permalink to this headline">¶</a></h2>
+<p>When using <a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">namespaces</span></a> in job definition, you can reuse the
+existing serial connection from another namespace via <code class="docutils literal notranslate"><span class="pre">connection-namespace</span></code>
+parameter. This applies only to <em>boot</em> action Example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot1</span>
+<span class="c1"># ...</span>
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot1</span>
+<span class="c1"># ...</span>
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot1</span>
+<span class="c1"># ...</span>
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot2</span>
+    <span class="nt">connection-namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot1</span>
+<span class="c1"># ...</span>
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot2</span>
+<span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="commands">
+<span id="boot-commands"></span><span id="index-9"></span><h2><a class="toc-backref" href="#contents">commands</a><a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<p>One of the key definitions in the <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> template for
+each device is the list(s) of boot <code class="docutils literal notranslate"><span class="pre">commands</span></code> that the device
+needs. These are sets of specific commands that will be run to boot
+the device to start a test. The definitions will typically include
+placeholders which LAVA will substitute with dynamic data as
+necessary. For example, the full path to a tftp kernel image will be
+expanded to include a job-specific temporary directory when a job is
+started.</p>
+<p>As a simple example from a U-Boot template:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+    <span class="l l-Scalar l-Scalar-Plain">commands</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv autoload no</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv initrd_high &#39;0xffffffff&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv fdt_high &#39;0xffffffff&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadkernel &#39;tftp {KERNEL_ADDR} {KERNEL}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadinitrd &#39;tftp {RAMDISK_ADDR} {RAMDISK}; setenv initrd_size ${filesize}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv loadfdt &#39;tftp {DTB_ADDR} {DTB}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">setenv bootcmd &#39;run loadkernel; run loadinitrd; run loadfdt; {BOOTX}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In some cases, the boot commands list in the template may
+not provide <strong>all</strong> of the commands used; lines will also be
+generated from other data in the template. For example: the command
+<code class="docutils literal notranslate"><span class="pre">setenv</span> <span class="pre">kernel_addr_r</span> <span class="pre">'0x82000000'</span></code> might be generated from the
+load addresses which match the type of kernel being deployed.</p>
+</div>
+<p>When a test is started, the appropriate list of commands will be
+selected. LAVA then substitutes the placeholders in the list to
+generate a complete command list. The final parsed and expanded boot
+commands used for a test are reported in the logs for that test job,
+e.g.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Parsed boot commands: setenv autoload no; setenv initrd_high &#39;0xffffffff&#39;;
+setenv fdt_high &#39;0xffffffff&#39;; setenv kernel_addr_r &#39;0x82000000&#39;; setenv
+initrd_addr_r &#39;0x83000000&#39;; setenv fdt_addr_r &#39;0x88000000&#39;; setenv loadkernel
+&#39;tftp ${kernel_addr_r} 158349/tftp-deploy-Fo78o6/vmlinuz&#39;; setenv loadinitrd
+&#39;tftp ${initrd_addr_r} 158349/tftp-deploy-Fo78o6/ramdisk.cpio.gz.uboot; setenv
+initrd_size ${filesize}&#39;; setenv loadfdt &#39;tftp ${fdt_addr_r}
+158349/tftp-deploy-Fo78o6/am335x-boneblack.dtb&#39;; setenv bootargs
+&#39;console=ttyO0,115200n8 root=/dev/ram0  ip=dhcp&#39;; setenv bootcmd &#39;dhcp; setenv
+serverip 10.3.1.1; run loadkernel; run loadinitrd; run loadfdt; bootz
+0x82000000 0x83000000 0x88000000&#39;; boot
+</pre></div>
+</div>
+<div class="section" id="specifying-commands-in-full">
+<span id="full-boot-commands"></span><span id="index-10"></span><h3><a class="toc-backref" href="#contents">Specifying commands in full</a><a class="headerlink" href="#specifying-commands-in-full" title="Permalink to this headline">¶</a></h3>
+<p>During testing and development, it can sometimes be useful to use
+a different set of boot commands instead of what is listed in the
+jinja2 template for the device-type. This allows test writers to
+change boot commands beyond the scope of existing overrides. To work
+sensibly in the LAVA environment, these commands will still need to
+<strong>include the placeholders</strong> such that temporary paths etc. can be
+substituted in when the test job is started.</p>
+<p>In this example (for an x86 test machine using iPXE), the commands
+change the <code class="docutils literal notranslate"><span class="pre">root</span></code> argument to the kernel to boot from a SATA drive
+which has been configured separately. (For example, by the admins or
+by test writers from a hacking session.)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>This support is recommended for use for corner cases that can’t
+be fixed on the level of device type. Accordingly, LAVA will
+raise a warning each time this support is used. Abuse of this
+support can potentially stop devices from working in subsequent
+tests, or maybe even damage them permanently - be careful!</p>
+<p class="last">If the commands are to be used regularly, <a class="reference external" href="https://lists.lavasoftware.org/mailman/listinfo/lava-users">ask on the lava-users mailing
+list</a> requesting
+that a label is created in the templates for this set of commands.
+Alternatively, you can request a new override to make the existing labels
+more flexible. You can also propose a patch yourself.</p>
+</div>
+</div>
+<div class="section" id="appending-to-the-kernel-command-line">
+<span id="appending-kernel-command-line"></span><span id="index-11"></span><h3><a class="toc-backref" href="#contents">Appending to the kernel command line</a><a class="headerlink" href="#appending-to-the-kernel-command-line" title="Permalink to this headline">¶</a></h3>
+<p>A test job may require extra kernel command line options to enable or disable
+particular functionality. The <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> can be used to append
+strings to the kernel command line:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">context:</span>
+<span class="x">  extra_kernel_args: vsyscall=native</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a> is a top level element of LAVA job definition. It is not
+a part of <cite>boot</cite> section.</p>
+<p>Values need to be separated by whitespace and will be added to the command
+line with a prefix of a single space and a suffix of a single space.</p>
+<p>The possible values which can be used are determined solely by the support
+available within the kernel provided to the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>.</p>
+<p>Depending on the boot method, it may also be possible to add specific options,
+for example to append values to the NFS options using <code class="docutils literal notranslate"><span class="pre">extra_nfsroot_args</span></code>:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">context:</span>
+<span class="x">  extra_nfsroot_args: ,rsize=4096 nfsrootdebug</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">extra_nfsroot_args</span></code> are appended directly to the existing NFS
+flags <code class="docutils literal notranslate"><span class="pre">nfsroot={NFS_SERVER_IP}:{NFSROOTFS},tcp,hard,intr</span></code> so if the
+appended string contains an extra flag, this must be put first and the
+string must start with a comma. Other options can then be separated by a
+space or can use <code class="docutils literal notranslate"><span class="pre">extra_kernel_args</span></code>. The example above would result in
+the string <code class="docutils literal notranslate"><span class="pre">nfsroot={NFS_SERVER_IP}:{NFSROOTFS},tcp,hard,intr,rsize=4096</span>
+<span class="pre">nfsrootdebug</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt">Kernel documentation for NFSROOT</a> ,
+<a class="reference internal" href="qemu_options.html#override-variables-context"><span class="std std-ref">How to override variables</span></a> and <a class="reference internal" href="dispatcher-format.html#override-support"><span class="std std-ref">Overriding values in device type, device dictionary and the job context</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="failure-message">
+<span id="boot-failure-message"></span><span id="index-12"></span><h2><a class="toc-backref" href="#contents">failure_message</a><a class="headerlink" href="#failure-message" title="Permalink to this headline">¶</a></h2>
+<p>Some devices deploy the boot commands inside the boot image which is
+then deployed using <code class="docutils literal notranslate"><span class="pre">fastboot</span></code>. To boot the device after deployment,
+LAVA does not interrupt the bootloader (e.g. U-Boot or Grub) and lets
+the configured boot arguments control the boot.</p>
+<p>In some situations, a test kernel can fail and cause the device to
+reset to the bootloader. The presence of configured boot commands leads
+to the device booting into an environment which is not necessarily the
+one required by the test writer and the failure of the test kernel can
+then be hidden. To handle this issue, a <code class="docutils literal notranslate"><span class="pre">failure_message</span></code> can be
+specified to match a string output by the bootloader after the device
+has reset. The test job will then fail after the reset and tracking the
+kernel errors.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#boot-method-fastboot"><span class="std std-ref">fastboot</span></a></p>
+</div>
+</div>
+<div class="section" id="method">
+<span id="boot-method"></span><span id="index-13"></span><h2><a class="toc-backref" href="#contents">method</a><a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h2>
+<p>The boot <code class="docutils literal notranslate"><span class="pre">method</span></code> determines how the device is booted and which commands and
+prompts are used to determine a successful boot.</p>
+<div class="section" id="bootloader">
+<span id="boot-method-bootloader"></span><span id="index-14"></span><h3><a class="toc-backref" href="#contents">bootloader</a><a class="headerlink" href="#bootloader" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">bootloader</span></code> method is used to power-on the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>, interrupt the
+bootloader, and wait for the bootloader prompt.</p>
+<p>In order to interrupt the bootloader, the bootloader type should be specified
+in the <code class="docutils literal notranslate"><span class="pre">bootloader</span></code> parameter:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+    <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">bootloader</span>
+    <span class="l l-Scalar l-Scalar-Plain">bootloader</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">u-boot</span>
+    <span class="l l-Scalar l-Scalar-Plain">commands</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[]</span>
+    <span class="nt">prompts</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;=&gt;&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the bootloader method type should match a boot method supported by
+the give device-type.
+For example <code class="docutils literal notranslate"><span class="pre">fastboot</span></code>, <code class="docutils literal notranslate"><span class="pre">minimal</span></code>, <code class="docutils literal notranslate"><span class="pre">pyocd</span></code>, <code class="docutils literal notranslate"><span class="pre">u-boot</span></code>, …</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">commands</span></code> parameter is required but can be kept empty.
+If some commands should be sent to the bootloader before the end of the action,
+give the list in the <code class="docutils literal notranslate"><span class="pre">commands</span></code> parameter.</p>
+</div>
+<div class="section" id="cmsis-dap">
+<span id="boot-method-cmsis-dap"></span><span id="index-15"></span><h3><a class="toc-backref" href="#contents">cmsis-dap</a><a class="headerlink" href="#cmsis-dap" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">cmsis-dap</span></code> boot method takes no arguments or parameters.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+    <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">cmsis-dap</span>
+    <span class="l l-Scalar l-Scalar-Plain">timeout</span><span class="p p-Indicator">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="depthcharge">
+<span id="boot-method-depthcharge"></span><span id="index-16"></span><h3><a class="toc-backref" href="#contents">depthcharge</a><a class="headerlink" href="#depthcharge" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">depthcharge</span></code> boot method takes no arguments or parameters.  It is used
+to boot the downloaded kernel image, and optionally a device tree and a
+ramdisk.  The files are converted into an FIT (U-Boot Flattened Image Tree
+format) image suitable to be booted by Coreboot using the Depthcharge payload,
+typically used by Chrome OS devices.  It also creates a separate text file with
+the kernel command line which is made available to the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> over TFTP
+alongside the FIT image.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">depthcharge</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike some other boot methods such as <code class="docutils literal notranslate"><span class="pre">u-boot</span></code>, the
+<code class="docutils literal notranslate"><span class="pre">depthcharge</span></code> boot method always expects the kernel image to be in
+the same standard format (zImage for arm, Image for arm64…).  So
+there should not be any <code class="docutils literal notranslate"><span class="pre">type</span></code> attribute for the kernel image in
+the <code class="docutils literal notranslate"><span class="pre">deploy</span></code> section as shown in the example below:</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">kernel</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://storage.kernelci.org/mainline/master/v4.18-1283-g10f3e23f07cb/arm/multi_v7_defconfig/zImage</span>
+    <span class="nt">ramdisk</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://storage.kernelci.org/images/rootfs/debian/stretchtests/20180627.0/armhf/rootfs.cpio.gz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker">
+<span id="boot-method-docker"></span><span id="index-17"></span><h3><a class="toc-backref" href="#contents">docker</a><a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h3>
+<p>Boot a docker image already deployed by a <a class="reference internal" href="actions-deploy.html#deploy-to-docker"><span class="std std-ref">deploy to docker action</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+   <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker</span>
+   <span class="nt">command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bash</span>
+   <span class="nt">prompts</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="s">&#39;root@lava:&#39;</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+<div class="section" id="command">
+<h4><a class="toc-backref" href="#contents">command</a><a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h4>
+<p>The command to run when starting the docker container.</p>
+</div>
+</div>
+<div class="section" id="fastboot">
+<span id="boot-method-fastboot"></span><span id="index-18"></span><h3><a class="toc-backref" href="#contents">fastboot</a><a class="headerlink" href="#fastboot" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> boot method takes no arguments or parameters.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">droid</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;hikey:/&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since all fastboot <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> depend on LXC to run jobs, it is
+mandatory to have the namespace specified.</p>
+</div>
+<div class="section" id="fastboot-boot-commands">
+<span id="boot-method-fastboot-commands"></span><span id="index-19"></span><h4><a class="toc-backref" href="#contents">fastboot boot commands</a><a class="headerlink" href="#fastboot-boot-commands" title="Permalink to this headline">¶</a></h4>
+<p>Some test jobs may need to add a <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> command prior to boot, for
+example to specify whether the <code class="docutils literal notranslate"><span class="pre">_a</span></code> or <code class="docutils literal notranslate"><span class="pre">_b</span></code> partitions are to be
+active.</p>
+<p>If the test job specifies the <code class="docutils literal notranslate"><span class="pre">images</span></code> labels as <code class="docutils literal notranslate"><span class="pre">boot_a</span></code> instead
+of <code class="docutils literal notranslate"><span class="pre">boot</span></code>, then a fastboot boot command will be required to make sure
+that the device boots from <code class="docutils literal notranslate"><span class="pre">boot_a</span></code> instead of <code class="docutils literal notranslate"><span class="pre">boot_b</span></code> (which may
+contain an old deployment from a previous test job or may contain nothing
+at all).</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">commands</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">--set-active=a</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fastboot-nfs">
+<span id="boot-method-fastboot-nfs"></span><span id="index-20"></span><h3><a class="toc-backref" href="#contents">fastboot-nfs</a><a class="headerlink" href="#fastboot-nfs" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">fastboot-nfs</span></code> boot is a method that allow you specify a <code class="docutils literal notranslate"><span class="pre">nfs</span></code> rootfs in
+a Android boot image via LXC image build and boot using <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> boot method.</p>
+<p>The job needs a require set of 3 primary actions:</p>
+<ul class="simple">
+<li>Deploy rootfs over NFS</li>
+<li>Download Kernel and DTB to LXC</li>
+<li>Create Android boot image with NFS details provided by NFS_{ROOTFS,SERVER_IP}
+environment variables</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dragonboard-410c</span>
+
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc-fastboot-nfs</span>
+<span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">hours</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="nt">action</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">medium</span>
+<span class="nt">visibility</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">docs-source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">actions-boot-qemu-nfs</span>
+  <span class="nt">docs-filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">doc/v2/examples/test-jobs/fastboot-nfs.yaml</span>
+
+<span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-lxc</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc-fastboot-nfs-test</span>
+    <span class="nt">template</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+    <span class="nt">distribution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+    <span class="nt">release</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">buster</span>
+    <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+    <span class="nt">mirror</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://mirror.bytemark.co.uk/debian</span>
+    <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">packages</span><span class="p">:</span>
+     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">mkbootimg</span>
+     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs</span>
+    <span class="nt">nfsrootfs</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://releases.linaro.org/96boards/dragonboard410c/linaro/openembedded/19.01/rpb/rpb-console-image-dragonboard-410c-20190130223248-110.rootfs.tar.xz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">xz</span>
+    <span class="nt">modules</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://releases.linaro.org/96boards/dragonboard410c/linaro/openembedded/19.01/rpb/modules--4.14-r0-dragonboard-410c-20190130223248-110.tgz</span>
+      <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target</span>
+    <span class="nt">images</span><span class="p">:</span>
+      <span class="nt">kernel</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://releases.linaro.org/96boards/dragonboard410c/linaro/openembedded/19.01/rpb/Image.gz--4.14-r0-dragonboard-410c-20190130223248-110.bin</span>
+        <span class="nt">compression</span><span class="p">:</span>
+      <span class="nt">dtb</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://releases.linaro.org/96boards/dragonboard410c/linaro/openembedded/19.01/rpb/Image.gz--4.14-r0-apq8016-sbc-20190130223248-110.dtb</span>
+        <span class="nt">compression</span><span class="p">:</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tlxc</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-testdef</span>
+      <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/test-testdef</span>
+      <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test definition env</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-testdef</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">env</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;$NFS_ROOTFS&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;$NFS_SERVER_IP&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cd /lava-lxc/</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">cp Image.gz--4.14-r0-dragonboard-410c-20190130223248-110.bin Image.gz+dtb</span> <span class="c1"># OE image already has dtb appended</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">mkbootimg --kernel Image.gz+dtb --cmdline &quot;root=/dev/nfs rw nfsroot=$NFS_SERVER_IP:$NFS_ROOTFS ip=dhcp console=tty0 console=ttyMSM0,115200n8&quot; -o boot.img</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ls /lava-lxc/</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target</span>
+    <span class="nt">images</span><span class="p">:</span>
+      <span class="nt">boot</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc:///boot.img</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+        <span class="nt">lava-lxc</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot-deploy</span>
+          <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-power-command</span>
+          <span class="nt">timeout</span><span class="p">:</span>
+              <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">target</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):[/~]#&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-lxc</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">auto-login-action</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-os-command</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#boot-method-fastboot"><span class="std std-ref">boot method fastboot</span></a>.</p>
+</div>
+</div>
+<div class="section" id="fvp">
+<span id="boot-method-fvp"></span><span id="index-21"></span><h3><a class="toc-backref" href="#contents">fvp</a><a class="headerlink" href="#fvp" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">fvp</span></code> boot method allows you to run Fixed Virtual Platforms.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fvp</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/path/to/FVP_Binary</span>
+    <span class="nt">licence_variable</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ARMLMD_LICENSE_FILE=foo</span>
+    <span class="nt">arguments</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;-C</span><span class="nv"> </span><span class="s">board.virtioblockdevice.image_path={DISK}&quot;</span>
+      <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="nt">docker</span><span class="p">:</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;fvp_foundation:11.8&quot;</span>
+      <span class="nt">local</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<p>This boot method will launch the <code class="docutils literal notranslate"><span class="pre">image</span></code> file
+(already present in the docker image provided)
+with the <code class="docutils literal notranslate"><span class="pre">arguments</span></code> as parameters,
+and the <code class="docutils literal notranslate"><span class="pre">licence_variable</span></code> set as an environment variable.</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">{IMAGE_NAME}</span></code> which will be replaced with the path to the
+image with the same key under <code class="docutils literal notranslate"><span class="pre">images</span></code> in the previous <code class="docutils literal notranslate"><span class="pre">fvp</span></code> deploy stage.
+<code class="docutils literal notranslate"><span class="pre">{ARTIFACT_DIR}</span></code> can also be used for the directory where all images are deployed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Previous to running an <code class="docutils literal notranslate"><span class="pre">fvp</span></code> boot, you should run an <code class="docutils literal notranslate"><span class="pre">fvp</span></code> deploy.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The docker image must have the fastmodel in it and must have the required tools, such as <code class="docutils literal notranslate"><span class="pre">telnet</span></code>.</p>
+</div>
+</div>
+<div class="section" id="grub">
+<span id="boot-method-grub"></span><span id="index-22"></span><h3><a class="toc-backref" href="#contents">grub</a><a class="headerlink" href="#grub" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">grub</span></code> boot method takes no arguments or parameters.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grub</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ramdisk</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="grub-efi">
+<span id="boot-method-grub-efi"></span><span id="index-23"></span><h3><a class="toc-backref" href="#contents">grub-efi</a><a class="headerlink" href="#grub-efi" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">grub-efi</span></code> boot method takes no arguments or parameters. <strong>However</strong>, in
+most cases, starting Grub from UEFI requires using the
+<a class="reference internal" href="#boot-method-uefi-menu"><span class="std std-ref">uefi-menu</span></a> as well.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@stretch:&#39;</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grub-efi</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nfs</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&quot;login:&quot;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+</pre></div>
+</div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/test-jobs/mustang-grub-efi.html">examples/test-jobs/mustang-grub-efi.yaml</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Admins can refer to the <code class="docutils literal notranslate"><span class="pre">mustang-grub-efi.jinja2</span></code> template for an
+example of how to make selections from a UEFI menu to load Grub. See
+<a class="reference internal" href="pipeline-admin.html#device-type-templates"><span class="std std-ref">Device type templates</span></a>.</p>
+</div>
+</div>
+<div class="section" id="ipxe">
+<span id="boot-method-ipxe"></span><span id="index-24"></span><h3><a class="toc-backref" href="#contents">ipxe</a><a class="headerlink" href="#ipxe" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">ipxe</span></code> boot method takes no arguments or parameters.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipxe</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ramdisk</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;/</span><span class="nv"> </span><span class="s">#&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lxc">
+<span id="boot-method-lxc"></span><span id="index-25"></span><h3><a class="toc-backref" href="#contents">lxc</a><a class="headerlink" href="#lxc" title="Permalink to this headline">¶</a></h3>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-protocols.html#lxc-protocol-reference"><span class="std std-ref">LXC protocol</span></a></p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lxc</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):/#&#39;</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="openocd">
+<span id="boot-method-openocd"></span><span id="index-26"></span><h3><a class="toc-backref" href="#contents">openocd</a><a class="headerlink" href="#openocd" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">openocd</span></code> boot method takes no arguments or parameters.</p>
+<p>The method works by passing through the command line options for the
+openocd command. It downloads and runs the executable specified by <code class="docutils literal notranslate"><span class="pre">binary</span></code>
+in the job definition. It also allows an openocd script file to be downloaded
+from the location specified by <code class="docutils literal notranslate"><span class="pre">openocd_script</span></code> in the job definition, if
+a custom script file should be used instead of the one specified by the
+device type.</p>
+<p><code class="docutils literal notranslate"><span class="pre">board_selection_cmd</span></code> can be used in the device-type to specify a command to
+pass the board id/serial number to OpenOCD. See OpenOCD documentation for
+details on the command to set the serial number for the interface your
+device type is using.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">openocd</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+</pre></div>
+</div>
+<span class="target" id="boot-method-pyocd"><span id="index-27"></span></span></div>
+<div class="section" id="minimal">
+<span id="boot-method-minimal"></span><span id="index-28"></span><h3><a class="toc-backref" href="#contents">minimal</a><a class="headerlink" href="#minimal" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">minimal</span></code> method is used to power-on the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> and to let the
+<a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> boot without any interaction.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+    <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">minimal</span>
+    <span class="l l-Scalar l-Scalar-Plain">prompts</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;/</span><span class="nv"> </span><span class="s">#&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">auto-login and transfer_overlay are both supported for this method.</p>
+</div>
+<p>By default LAVA will reset the board power when executing this action. Users
+can skip this step by adding <code class="docutils literal notranslate"><span class="pre">reset:</span> <span class="pre">false</span></code>. This can be useful when testing
+bootloader in interactive tests and then booting to the OS.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+    <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">minimal</span>
+    <span class="l l-Scalar l-Scalar-Plain">reset</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="musca">
+<span id="boot-method-musca"></span><span id="index-29"></span><h3><a class="toc-backref" href="#contents">musca</a><a class="headerlink" href="#musca" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">musca</span></code> method is used to boot musca devices. Currently supported are the <a class="reference external" href="https://developer.arm.com/products/system-design/development-boards/iot-test-chips-and-boards/musca-a-test-chip-board">musca a</a>,
+<a class="reference external" href="https://developer.arm.com/tools-and-software/development-boards/iot-test-chips-and-boards/musca-b-test-chip-board">musca b</a>,
+and <a class="reference external" href="https://developer.arm.com/tools-and-software/development-boards/iot-test-chips-and-boards/musca-s1-test-chip-board">musca s1</a>.
+Unlike the <code class="docutils literal notranslate"><span class="pre">minimal</span></code> boot, the board has to be powered on before the serial will be available
+as the board is powered by the USB that provides the serial connection also.
+Therefore, the board is powered on then connection to the serial is made.
+Optionally, <code class="docutils literal notranslate"><span class="pre">prompts</span></code> can be used to check for serial output before continuing.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">musca</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">No shell is expected and no boot string is checked. All checking should be done with test monitors.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some initial setup steps are required to ensure that the Musca device boots when it is powered on.
+Check <a class="reference external" href="https://github.com/ARMmbed/DAPLink/blob/master/docs/MSD_COMMANDS.md">here</a> for details
+on how to setup the board to auto-boot when it is programmed or turned on.
+Ensure <code class="docutils literal notranslate"><span class="pre">DETAILS.TXT</span></code> on the MSD shows “Auto Reset” and “Auto Power” are activated.</p>
+</div>
+</div>
+<div class="section" id="pyocd">
+<h3><a class="toc-backref" href="#contents">pyocd</a><a class="headerlink" href="#pyocd" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyocd</span></code> boot method takes no arguments or parameters.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pyocd</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="jlink">
+<span id="boot-method-jlink"></span><span id="index-30"></span><h3><a class="toc-backref" href="#contents">jlink</a><a class="headerlink" href="#jlink" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">jlink</span></code> boot method takes no arguments or parameters.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jlink</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="new-connection">
+<span id="boot-method-console"></span><span id="index-31"></span><h3><a class="toc-backref" href="#contents">new_connection</a><a class="headerlink" href="#new-connection" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">new_connection</span></code> boot method takes no arguments or
+parameters. This method can be used to switch to a new connection,
+allowing a test to isolate test and kernel messages (if the kernel and
+the device are both appropriately configured).</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="comment single"># make the connection to the second uart for use in the test shell</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">isolation</span>
+    <span class="name tag">connection</span><span class="punctuation">:</span> <span class="literal scalar plain">uart0</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">new_connection</span>
+</pre>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">new_connection</span></code> boot method <strong>must</strong> use a different
+<a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">namespace</span></a> to all other actions in the test job. The test
+shell(s) must pass this namespace label as the
+<code class="docutils literal notranslate"><span class="pre">connection-namespace</span></code>.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#boot-connection-namespace"><span class="std std-ref">connection-namespace</span></a></p>
+</div>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">hikey-oe</span>
+    <span class="name tag">connection-namespace</span><span class="punctuation">:</span> <span class="literal scalar plain">isolation</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">smoke-tests-basic-oe</span>
+</pre>
+</div>
+<div class="section" id="qemu">
+<span id="boot-method-qemu"></span><span id="index-32"></span><h3><a class="toc-backref" href="#contents">qemu</a><a class="headerlink" href="#qemu" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">qemu</span></code> method is used to boot the downloaded <code class="docutils literal notranslate"><span class="pre">image</span></code> from the
+deployment action using QEMU. This runs the QEMU command line on the
+dispatcher. Only certain elements of the command line are available for
+modification using the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>. The available values can vary
+depending on local admin configuration. For example, many admins restrict the
+available memory of each QEMU device, so the <code class="docutils literal notranslate"><span class="pre">memory</span></code> option in the job
+context may be ignored.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">aarch64</span>
+  <span class="nt">memory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2048</span>
+  <span class="c1"># comment out or change to user if the dispatcher does not support bridging.</span>
+  <span class="c1"># netdevice: tap</span>
+  <span class="nt">extra_options</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-smp</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-global</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">virtio-blk-device.scsi=off</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">-device virtio-scsi-device,id=scsi</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">--append &quot;console=ttyAMA0 root=/dev/vda rw&quot;</span>
+</pre></div>
+</div>
+<p>The version of <code class="docutils literal notranslate"><span class="pre">qemu</span></code> installed on the dispatcher is a choice made by the
+admin. Generally, this will be the same as the version of <code class="docutils literal notranslate"><span class="pre">qemu</span></code> available
+from Debian in the same suite as the rest of the packages installed on the
+dispatcher, e.g. <code class="docutils literal notranslate"><span class="pre">buster</span></code>. Information on the available versions of <code class="docutils literal notranslate"><span class="pre">qemu</span></code>
+in Debian is available at <a class="reference external" href="https://tracker.debian.org/pkg/qemu">https://tracker.debian.org/pkg/qemu</a></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="review-criteria.html#essential-components"><span class="std std-ref">Only protect the essential components</span></a> and <a class="reference internal" href="#boot-method-qemu-iso"><span class="std std-ref">qemu-iso boot method</span></a></p>
+</div>
+<div class="section" id="media">
+<span id="boot-method-qemu-media-tmpfs"></span><span id="index-33"></span><h4><a class="toc-backref" href="#contents">media</a><a class="headerlink" href="#media" title="Permalink to this headline">¶</a></h4>
+<p>When booting a QEMU image file directly, the <code class="docutils literal notranslate"><span class="pre">media</span></code> needs to be specified as
+<code class="docutils literal notranslate"><span class="pre">tmpfs</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+    <span class="nt">media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tmpfs</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="qemu-nfs">
+<span id="boot-method-qemu-nfs"></span><span id="index-34"></span><h3><a class="toc-backref" href="#contents">qemu-nfs</a><a class="headerlink" href="#qemu-nfs" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">qemu-nfs</span></code> method is used to boot a downloaded <code class="docutils literal notranslate"><span class="pre">kernel</span></code> with a root
+filesystem deployed on the worker. Only certain elements of the command line
+are available for modification using the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>. The available
+values can vary depending on local admin configuration. For example, many
+admins restrict the available memory of each QEMU device, so the <code class="docutils literal notranslate"><span class="pre">memory</span></code>
+option in the job context may be ignored.</p>
+<p>The version of <code class="docutils literal notranslate"><span class="pre">qemu</span></code> installed on the dispatcher is a choice made by the
+admin. Generally, this will be the same as the version of <code class="docutils literal notranslate"><span class="pre">qemu</span></code> available
+from Debian in the same suite as the rest of the packages installed on the
+dispatcher, e.g. <code class="docutils literal notranslate"><span class="pre">buster</span></code>. Information on the available versions of <code class="docutils literal notranslate"><span class="pre">qemu</span></code>
+in Debian is available at <a class="reference external" href="https://tracker.debian.org/pkg/qemu">https://tracker.debian.org/pkg/qemu</a></p>
+<p>QEMU can be used with an NFS using the <code class="docutils literal notranslate"><span class="pre">qemu-nfs</span></code> method and the <code class="docutils literal notranslate"><span class="pre">nfs</span></code>
+media:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-nfs</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):&#39;</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#boot-method-qemu"><span class="std std-ref">boot method qemu</span></a>.</p>
+</div>
+<p>When using <code class="docutils literal notranslate"><span class="pre">qemu-nfs</span></code>, the hostname element of the prompt will vary according
+to the worker running QEMU:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-nfs</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="boot-method-qemu-media-nfs">
+<span id="index-35"></span><span id="id1"></span><h4><a class="toc-backref" href="#contents">media</a><a class="headerlink" href="#boot-method-qemu-media-nfs" title="Permalink to this headline">¶</a></h4>
+<p>When booting a QEMU image using NFS, the <code class="docutils literal notranslate"><span class="pre">media</span></code> needs to be specified as
+<code class="docutils literal notranslate"><span class="pre">nfs</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-nfs</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;root@(.*):&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="qemu-iso">
+<span id="boot-method-qemu-iso"></span><span id="index-36"></span><h3><a class="toc-backref" href="#contents">qemu-iso</a><a class="headerlink" href="#qemu-iso" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">qemu-iso</span></code> method is used to boot the downloaded installer from the
+deployment action using QEMU. This runs the QEMU command line on the
+dispatcher. Only certain elements of the command line are available for
+modification using the <a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>.</p>
+<p>The version of <code class="docutils literal notranslate"><span class="pre">qemu</span></code> installed on the dispatcher is a choice made by the
+admin. Generally, this will be the same as the version of <code class="docutils literal notranslate"><span class="pre">qemu</span></code> available
+from Debian in the same suite as the rest of the packages installed on the
+dispatcher, e.g. <code class="docutils literal notranslate"><span class="pre">buster</span></code>. Information on the available versions of <code class="docutils literal notranslate"><span class="pre">qemu</span></code>
+in Debian is available at <a class="reference external" href="https://tracker.debian.org/pkg/qemu">https://tracker.debian.org/pkg/qemu</a></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="review-criteria.html#essential-components"><span class="std std-ref">Only protect the essential components</span></a> and <a class="reference internal" href="#boot-method-qemu"><span class="std std-ref">boot method qemu</span></a></p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-iso</span>
+    <span class="nt">media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">img</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+    <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">serial</span>
+    <span class="nt">auto_login</span><span class="p">:</span>
+      <span class="nt">login_prompt</span><span class="p">:</span> <span class="s">&#39;login:&#39;</span>
+      <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+      <span class="nt">password_prompt</span><span class="p">:</span> <span class="s">&#39;Password:&#39;</span>
+      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root</span>
+    <span class="nt">prompts</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="boot-method-qemu-iso-media">
+<span id="index-37"></span><span id="id2"></span><h4><a class="toc-backref" href="#contents">media</a><a class="headerlink" href="#boot-method-qemu-iso-media" title="Permalink to this headline">¶</a></h4>
+<p>When booting an installer using QEMU, the <code class="docutils literal notranslate"><span class="pre">media</span></code> needs to be specified as
+<code class="docutils literal notranslate"><span class="pre">img</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-iso</span>
+    <span class="nt">media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">img</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="transfer-overlay">
+<span id="boot-transfer-overlay"></span><span id="index-38"></span><h3><a class="toc-backref" href="#contents">transfer_overlay</a><a class="headerlink" href="#transfer-overlay" title="Permalink to this headline">¶</a></h3>
+<p>An overlay is a tarball of scripts which run the LAVA Test Shell for
+the test job. The tarball also includes the git clones of the
+repositories specified in the test job submission and the LAVA helper
+scripts. Normally, this overlay is integrated into the test job
+automatically. In some situations, for example when using a command
+list to specify an alternative rootfs, it is necessary to transfer the
+overlay from the worker to the device using commands within the booted
+system prior to starting to run the test shell.</p>
+<p>Some overlay tarballs can be quite large. The LAVA TestShell helpers are tiny
+shell scripts but the git repositories cloned for your test shell definitions
+can become large over time. Additionally, if your test shell definition clones
+the git repo of source code, those clones will also appear in the overlay
+tarball.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The situations where <code class="docutils literal notranslate"><span class="pre">transfer_overlay</span></code> is useful tend to
+also require restricting the test job to specific devices of a
+particular device type. This needs to be arranged with the lab
+admins who can create suitable <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tags</span></a>
+which will need to be specified in all test job definitions.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="secondary-media.html#secondary-media"><span class="std std-ref">Secondary media</span></a> which is more flexible but slower.</p>
+</div>
+<p>The overlay is transferred before any test shell operations can occur,
+so the method of transferring and then unpacking the overlay <strong>must</strong>
+work without any further setup of the rootfs. All dependencies must be
+pre-installed and all configuration must be in place (possibly using a
+hacking session). This includes the <strong>network</strong> configuration - the
+worker offers an apache host to download the overlay and LAVA can
+populate the URL but the device <strong>must</strong> automatically configure the
+networking immediately upon boot and the network <strong>must</strong> work
+straight away.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">transfer_overlay</span><span class="p">:</span>
+      <span class="nt">download_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">wget -S --progress=dot:giga</span>
+      <span class="nt">unpack_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tar -C / -xzf</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">-C</span> <span class="pre">/</span></code> command to tar is <strong>essential</strong> or the test shell will
+not be able to start. The overlay will use <code class="docutils literal notranslate"><span class="pre">gzip</span></code> compression, so pass
+the <code class="docutils literal notranslate"><span class="pre">z</span></code> option to <code class="docutils literal notranslate"><span class="pre">tar</span></code>.</p>
+</div>
+<div class="section" id="deployment-differences">
+<h4><a class="toc-backref" href="#contents">Deployment differences</a><a class="headerlink" href="#deployment-differences" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">-S</span> <span class="pre">--progress=dot:giga</span></code> options to wget in the example above optimize
+the output for serial console logging to avoid wasting line upon line of
+progress percentage dots. If the system uses <code class="docutils literal notranslate"><span class="pre">busybox</span></code>, these options may not
+be supported by the version of <code class="docutils literal notranslate"><span class="pre">wget</span></code> on the device.</p>
+<p>Some systems do not store the current time between boots. The <code class="docutils literal notranslate"><span class="pre">--warning</span>
+<span class="pre">no-timestamp</span></code> option is a useful addition for <code class="docutils literal notranslate"><span class="pre">tar</span></code> for those systems but
+note that <code class="docutils literal notranslate"><span class="pre">busybox</span> <span class="pre">tar</span></code> does not support this option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">download_command</span></code> and the <code class="docutils literal notranslate"><span class="pre">unpack_command</span></code> can include one or more
+shell commands. However, as with the test shell definitions, avoid using
+redirects (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>) or other complex shell syntax. This example changes
+to <code class="docutils literal notranslate"><span class="pre">/tmp</span></code> to ensure there is enough writeable space for the download.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">transfer_overlay</span><span class="p">:</span>
+      <span class="nt">download_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cd /tmp ; wget</span>
+      <span class="nt">unpack_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tar -C / -xzf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="u-boot">
+<span id="boot-method-u-boot"></span><span id="index-39"></span><h3><a class="toc-backref" href="#contents">u-boot</a><a class="headerlink" href="#u-boot" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">u-boot</span></code> method boots the downloaded files using U-Boot commands.</p>
+<div class="section" id="boot-method-u-boot-commands">
+<span id="index-40"></span><span id="id3"></span><h4><a class="toc-backref" href="#contents">commands</a><a class="headerlink" href="#boot-method-u-boot-commands" title="Permalink to this headline">¶</a></h4>
+<p>The predefined set of U-Boot commands into which the location of the downloaded
+files can be substituted (along with details like the SERVERIP and NFS
+location, where relevant). See the device configuration for the complete set of
+commands.</p>
+<p>Certain elements of the command line are available for modification using the
+<a class="reference internal" href="glossary.html#term-job-context"><span class="xref std std-term">job context</span></a>. The available values vary by <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>.</p>
+</div>
+</div>
+<div class="section" id="uefi-menu">
+<span id="boot-method-uefi-menu"></span><h3><a class="toc-backref" href="#contents">uefi-menu</a><a class="headerlink" href="#uefi-menu" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">uefi-menu</span></code> method selects a pre-defined menu in the UEFI configuration
+for the device. In most cases, this is used to execute a different bootloader.
+For example, a <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> device can execute <code class="docutils literal notranslate"><span class="pre">fastboot</span></code> from a menu item or
+a device could execute an <code class="docutils literal notranslate"><span class="pre">PXE</span></code> menu item to download and execute Grub.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Although it <em>is possible</em> to create new menu entries in UEFI each
+time a test job starts, this has proven to be unreliable on both of the
+device types tested so far. If the build of UEFI is not able to download a
+bootloader using <code class="docutils literal notranslate"><span class="pre">PXE</span></code>, then experiment with creating a UEFI menu item
+which is able to execute a local file and have a build of Grub on local
+storage. Build the grub binary using <code class="docutils literal notranslate"><span class="pre">grub-mkstandalone</span></code> to ensure that
+all modules are available.</p>
+</div>
+<p>UEFI menus will renumber themselves each time a new item is added or removed,
+so LAVA must be able to match the description of the menu item and then
+identify the correct selector to be able to send the correct character to
+execute that menu option. This means that the admins must create the same menu
+structures on each device of the same device type and correlate the text
+content of the menu with the <a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">jinja2 templates</span></a>.</p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">uefi-menu</span></code>, the device must offer a menu from which items can be
+selected using a standard regular expression: <code class="docutils literal notranslate"><span class="pre">'a-zA-Z0-9\s\:'</span></code>, for example:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">1</span><span class="o">]</span> bootloader
+<span class="o">[</span><span class="m">2</span><span class="o">]</span> boot from eMMC
+<span class="o">[</span><span class="m">3</span><span class="o">]</span> Boot Manager
+<span class="o">[</span><span class="m">4</span><span class="o">]</span> Reboot
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> template would need to specify the <code class="docutils literal notranslate"><span class="pre">separator</span></code>
+(whitespace in the example) as well as how to identify the <strong>item</strong> matching
+the requested selector:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uefi-menu</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+      <span class="nt">item_markup</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;[&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;]&quot;</span>
+      <span class="nt">item_class</span><span class="p">:</span> <span class="s">&#39;0-9&#39;</span>
+      <span class="nt">separator</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">&#39;</span>
+</pre></div>
+</div>
+<p>This allows LAVA to match a menu item matching <code class="docutils literal notranslate"><span class="pre">\[[0-9]\]</span> <span class="pre">['a-zA-Z0-9\s\:']</span></code>
+and select the correct selector when the menu item string matches one (and only
+one) line output by the UEFI menu. In this example, the selector must be a
+digit.</p>
+<p>The template must then also specify which menu item to select, according to
+the <code class="docutils literal notranslate"><span class="pre">commands</span></code> set in the testjob:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uefi-menu</span>
+    <span class="nt">commands</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+</pre></div>
+</div>
+<p>The template would then need:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uefi-menu</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+      <span class="nt">fastboot</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">select</span><span class="p">:</span>
+          <span class="nt">items</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&#39;boot</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">eMMC&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uuu">
+<span id="boot-method-uuu-menu"></span><h3><a class="toc-backref" href="#contents">uuu</a><a class="headerlink" href="#uuu" title="Permalink to this headline">¶</a></h3>
+<p>Integration of NXP <code class="docutils literal notranslate"><span class="pre">uuu</span></code> the flashing tool utility for i.mx platform.</p>
+<p>See the complete documentation of <cite>uuu / mfgtools</cite> on GitHub <a class="reference external" href="https://github.com/NXPmicro/mfgtools/wiki">https://github.com/NXPmicro/mfgtools/wiki</a></p>
+<div class="section" id="installation">
+<h4><a class="toc-backref" href="#contents">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">uuu</span></code> is not provided as a dependency within LAVA, you need to install it manually over all Slaves.</p>
+<p>You can get the latest release here : <a class="reference external" href="https://github.com/NXPmicro/mfgtools/releases/latest">https://github.com/NXPmicro/mfgtools/releases/latest</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># INSTALLATION SCRIPT</span>
+wget https://github.com/NXPmicro/mfgtools/releases/download/&lt;UUU_VERSION&gt;/uuu
+chmod a+x uuu
+mv uuu /bin/uuu
+</pre></div>
+</div>
+</div>
+<div class="section" id="device-configuration">
+<h4><a class="toc-backref" href="#contents">Device configuration</a><a class="headerlink" href="#device-configuration" title="Permalink to this headline">¶</a></h4>
+<p>To use <code class="docutils literal notranslate"><span class="pre">uuu</span></code> the <a class="reference internal" href="glossary.html#term-device"><span class="xref std std-term">device</span></a> template must specify two variables :</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">uuu_usb_otg_path</span> <span class="o">=</span> <span class="s1">&#39;2:143&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">uuu_corrupt_boot_media_command</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;mmc dev 1&#39;</span><span class="o">,</span> <span class="s1">&#39;mmc erase 0 0x400&#39;</span><span class="o">]</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">uuu_corrupt_boot_media_command</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">a list of commands to execute on the platform within u-boot to corrupt the primary boot media.</span></dt>
+<dd>On the next reboot, serial download protocol must be available on the platform to flash future images using uuu.</dd>
+</dl>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">uuu_usb_otg_path</span></code> : can be obtained using the command <code class="docutils literal notranslate"><span class="pre">uuu</span> <span class="pre">-lsusb</span></code> :</li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ uuu -lsusb
+uuu <span class="o">(</span>Universal Update Utility<span class="o">)</span> <span class="k">for</span> nxp imx chips -- libuuu_1.3.102-1-gddf2649
+Connected Known USB Devices
+    Path       Chip    Pro     Vid     Pid     <span class="nv">BcdVersion</span>
+    <span class="o">==================================================</span>
+    <span class="m">2</span>:143      MX8MQ   SDP:    0x1FC9 0x012B   0x0001
+</pre></div>
+</div>
+<p>If you want to use <code class="docutils literal notranslate"><span class="pre">uuu</span></code> within docker image, you could specify next variable:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">uuu_docker_image</span> <span class="o">=</span> <span class="s1">&#39;atline/uuu:1.3.191&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">uuu_docker_image</span></code> : This is a docker image which installed an uuu binary in it already.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>A docker image specified in job.yaml could also override this value in device configuration like next:</p>
+<div class="last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">docker</span><span class="p">:</span>
+      <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">atline/uuu:1.3.191</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uuu</span>
+    <span class="nt">commands</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">uuu </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-b sd {boot}</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</div>
+<p>If you also want to enable <code class="docutils literal notranslate"><span class="pre">remote</span> <span class="pre">uuu</span></code> feature, in which situation your device not directly linked to lava dispatcher, you could specify another variable:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">uuu_remote_options</span> <span class="o">=</span> <span class="s1">&#39;--tlsverify --tlscacert=/labScripts/remote_cert/ca.pem --tlscert=/labScripts/remote_cert/cert.pem --tlskey=/labScripts/remote_cert/key.pem -H 10.192.244.5:2376&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">uuu_remote_options</span></code> : This let docker client remotely operate an uuu docker container on a remote machine.</li>
+</ul>
+<p>You could follow <a class="reference external" href="https://docs.docker.com/engine/install/linux-postinstall/#configure-where-the-docker-daemon-listens-for-connections">https://docs.docker.com/engine/install/linux-postinstall/#configure-where-the-docker-daemon-listens-for-connections</a> to configure remote docker support.</p>
+<p>You could follow <a class="reference external" href="https://docs.docker.com/engine/security/https/">https://docs.docker.com/engine/security/https/</a> to protect the docker daemon socket if you are also care about security.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The minimal docker version to run uuu is 19.03. This is due to a bug in earlier docker versions. See <a class="reference external" href="https://github.com/moby/moby/pull/37665">https://github.com/moby/moby/pull/37665</a>.</p>
+</div>
+</div>
+<div class="section" id="usage">
+<h4><a class="toc-backref" href="#contents">Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h4>
+<p>Following the same syntax of <code class="docutils literal notranslate"><span class="pre">uuu</span></code> tool, commands are specified using a pair &lt;Protocol, Command&gt;.
+<code class="docutils literal notranslate"><span class="pre">commands</span></code> field is then a list of dictionary with only one pair of &lt;Protocol, Command&gt;.</p>
+<p>A special Protocol named <code class="docutils literal notranslate"><span class="pre">uuu</span></code> is defined to used build-int scripts.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Images passed to uuu commands must be first deployed using the <code class="docutils literal notranslate"><span class="pre">uuu</span></code> deploy action if used with overlay.</p>
+<p>Using the following :</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uuu</span>
+    <span class="nt">images</span><span class="p">:</span>
+      <span class="nt">boot</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://.../imx-boot-sd.bin-flash</span>
+      <span class="nt">system</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://../imx-image-multimedia.rootfs.wic</span>
+        <span class="nt">apply-overlay</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="nt">root_partition</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+</pre></div>
+</div>
+<p>Both <code class="docutils literal notranslate"><span class="pre">boot</span></code> and <code class="docutils literal notranslate"><span class="pre">system</span></code> keyword are stored as images name that you can reference within <code class="docutils literal notranslate"><span class="pre">uuu</span></code> boot method commands.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">boot</span></code> image is required by uuu boot method to perform USB serial download availability check.</p>
+</div>
+<p class="last">The USB serial availability check consist to try to write in memory a valid bootloader image using this command <code class="docutils literal notranslate"><span class="pre">uuu</span> <span class="pre">{boot}</span></code>.
+If the command does not terminate within 10 seconds, primary boot-media will be erased using <code class="docutils literal notranslate"><span class="pre">uuu_corrupt_boot_media_command</span></code>.</p>
+</div>
+<div class="section" id="using-built-in-scripts">
+<h5><a class="toc-backref" href="#contents">Using built-in scripts</a><a class="headerlink" href="#using-built-in-scripts" title="Permalink to this headline">¶</a></h5>
+<p>Example definition :</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uuu</span>
+    <span class="nt">commands</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">uuu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-b sd_all {boot} {system}</span>
+</pre></div>
+</div>
+<p>Non-exhaustive list of available built-in scripts :</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">uuu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-b emmc {boot}</span>                 <span class="c1"># Write bootloader to emmc</span>
+<span class="p p-Indicator">-</span> <span class="nt">uuu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-b emmc_all {boot} {system}</span>    <span class="c1"># Write bootloader &amp; rootfs to emmc</span>
+<span class="p p-Indicator">-</span> <span class="nt">uuu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-b sd {boot}</span>                   <span class="c1"># Write bootloader to sd card</span>
+<span class="p p-Indicator">-</span> <span class="nt">uuu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-b sd_all {boot} {system}</span>      <span class="c1"># Write bootloader &amp; rootfs to sd card</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-commands">
+<h5><a class="toc-backref" href="#contents">Using commands</a><a class="headerlink" href="#using-commands" title="Permalink to this headline">¶</a></h5>
+<p>Example code :</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+    <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uuu</span>
+    <span class="nt">commands </span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">SDPS</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot -f {boot}</span>
+    <span class="p p-Indicator">-</span> <span class="nt">FB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">continue</span>
+    <span class="p p-Indicator">-</span> <span class="nt">FB</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">done</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/actions-boot.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:10 GMT -->
+</html>

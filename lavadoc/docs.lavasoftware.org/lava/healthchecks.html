@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/healthchecks.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:45 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Writing Health Checks for devices &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="LAVA Hacking Sessions" href="hacking-session.html" />
+    <link rel="prev" title="Writing an interactive test action" href="interactive.html" />
+    <link rel="canonical" href="healthchecks.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Writing Health Checks for devices</a><ul>
+<li><a class="reference internal" href="#lava-yaml-health-checks">LAVA YAML health checks</a><ul>
+<li><a class="reference internal" href="#device-types-and-templates">Device Types and templates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tasks-within-health-checks">Tasks within health checks</a><ul>
+<li><a class="reference internal" href="#checking-infrastructure-and-peripherals-in-health-checks">Checking infrastructure and peripherals in health checks</a></li>
+<li><a class="reference internal" href="#using-lava-test-shell-inside-health-checks">Using lava_test_shell inside health checks</a></li>
+<li><a class="reference internal" href="#infrastructure-issues">Infrastructure issues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="interactive.html" title="Previous Chapter: Writing an interactive test action"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Writing an in...</span>
+    </a>
+  </li>
+  <li>
+    <a href="hacking-session.html" title="Next Chapter: LAVA Hacking Sessions"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">LAVA Hacking Sessions &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="writing-health-checks-for-devices">
+<span id="health-checks"></span><span id="index-0"></span><h1>Writing Health Checks for devices<a class="headerlink" href="#writing-health-checks-for-devices" title="Permalink to this headline">¶</a></h1>
+<p>A health check is a special type of test job, designed to validate that the a
+test device and the infrastructure around it are suitable for running LAVA
+tests. Health checks jobs are run periodically to check for equipment and/or
+infrastructure failures that may have happened. If a health check fails for any
+device, that device will be automatically taken offline. Reports are available
+which show these failures and track the general health of the lab.</p>
+<p><a class="reference external" href="https://validation.linaro.org/scheduler/reports">https://validation.linaro.org/scheduler/reports</a></p>
+<p>For any one day where at least one health check failed, there is also a table
+providing information on the failed checks:</p>
+<p><a class="reference external" href="https://validation.linaro.org/scheduler/reports/failures?start=-1&amp;end=0&amp;health_check=1">https://validation.linaro.org/scheduler/reports/failures?start=-1&amp;end=0&amp;health_check=1</a></p>
+<p>Health checks are defined in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/health-checks</span></code> according to the template
+used by the device. Health checks are run as the lava-health user.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To generate the filename of the health check of a device, the
+scheduler takes the name of the template extended in the device dictionary
+(for instance <code class="docutils literal notranslate"><span class="pre">qemu.jinja2</span></code> for qemu devices) and replace the extension
+with <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>. The health check will be called
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/health-checks/qemu.yaml</span></code>.  The health
+check job database field in the device-type is unused.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Admins can temporarily disable health checks for all devices of a
+given type in the device-type admin page.</p>
+</div>
+<div class="section" id="lava-yaml-health-checks">
+<span id="yaml-health-checks"></span><h2>LAVA YAML health checks<a class="headerlink" href="#lava-yaml-health-checks" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Before enabling a health check, ensure that all devices of the
+specified type have been enabled as pipeline devices or the health check
+will force any remaining devices <strong>offline</strong>.</p>
+</div>
+<p>It is recommended that the YAML health check follows these guidelines:</p>
+<ul class="simple">
+<li>It has a job name describing the test as a health check</li>
+<li>It has a minimal set of test definitions</li>
+<li>It uses <a class="reference internal" href="gold-standards.html#providing-gold-standard-files"><span class="std std-ref">gold standard files</span></a></li>
+</ul>
+<p>The rest of the job needs no changes.</p>
+<div class="section" id="device-types-and-templates">
+<span id="health-check-device-type"></span><h3>Device Types and templates<a class="headerlink" href="#device-types-and-templates" title="Permalink to this headline">¶</a></h3>
+<p>Some jinja2 device-type templates use multiple inheritance, e.g. <code class="docutils literal notranslate"><span class="pre">juno</span></code>. This
+is to allow devices to use multiple types of firmware in test jobs. Admins need
+to be aware that the <code class="docutils literal notranslate"><span class="pre">device_type</span></code> specified in the health check YAML must
+match a DeviceType name which exists in the database and which has devices
+available for health-check submissions. This can cause issues where admins want
+to share health checks between multiple instances.</p>
+<p>For example, if the DeviceType database object has the name <code class="docutils literal notranslate"><span class="pre">juno-r2</span></code>, the
+device dictionary can use:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;juno.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>However, the health check YAML needs to use <code class="docutils literal notranslate"><span class="pre">device_type:</span> <span class="pre">juno-r2</span></code> or the
+health check will not run.</p>
+<p>Check <code class="docutils literal notranslate"><span class="pre">/var/log/lava-server/django.log</span></code> if you get a 404 when trying to force
+a health check.</p>
+<p>This situation can be avoided by converting a working test job into the health
+check on the same instance.</p>
+</div>
+</div>
+<div class="section" id="tasks-within-health-checks">
+<h2>Tasks within health checks<a class="headerlink" href="#tasks-within-health-checks" title="Permalink to this headline">¶</a></h2>
+<p>The health check needs to at least check that the device will boot and deploy a
+test image. Multiple deploy tasks can be set, if required, although this will
+mean that each health check takes longer.</p>
+<p>Wherever a particular device type has common issues, a specific test for that
+behavior should be added to the health check for that device type.</p>
+<div class="section" id="checking-infrastructure-and-peripherals-in-health-checks">
+<span id="health-check-setup-checks"></span><h3>Checking infrastructure and peripherals in health checks<a class="headerlink" href="#checking-infrastructure-and-peripherals-in-health-checks" title="Permalink to this headline">¶</a></h3>
+<p>A device in LAVA increasingly includes not just the base board but
+peripherals and external hardware. Test writers may rely on such
+elements functioning correctly. Each case is different but there are
+ways that test writers and admins can work together to ensure that this
+support remains available.</p>
+<p>One special case is where the external hardware is defined using
+<code class="docutils literal notranslate"><span class="pre">static_info</span></code> in the device dictionary and the test jobs (including
+health checks) use LXC:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">static_info</span> <span class="o">=</span> <span class="o">[{</span><span class="s1">&#39;board_id&#39;</span><span class="o">:</span> <span class="s1">&#39;S_NO18080201&#39;</span><span class="o">}]</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>When the test job starts, this USB device needs to be added to the LXC,
+so LAVA will raise an <a class="reference internal" href="#infrastructure-issues-health"><span class="std std-ref">infrastructure issue</span></a> if the device cannot be found in
+<code class="docutils literal notranslate"><span class="pre">udev</span></code>.</p>
+<p>For other hardware, peripherals etc., it can be necessary to write a
+test script which can:</p>
+<ul class="simple">
+<li>download any tools needed to do the investigation</li>
+<li>use parameters from the test job (or the device dictionary in some
+cases) to do the check.</li>
+<li>ensure that the necessary element(s) are not only present but also
+functional (e.g. at a minimal level).</li>
+</ul>
+<p>These scripts need to use <a class="reference internal" href="writing-tests.html#call-test-raise"><span class="std std-ref">lava-test-raise</span></a> if
+any errors are detected. This will trigger an <a class="reference internal" href="#infrastructure-issues-health"><span class="std std-ref">infrastructure
+issue</span></a> to fail the health check and take
+the device offline.</p>
+<p>The scripts need to be used in health checks but also in all test jobs
+using the extra hardware or peripherals. Write a portable test shell
+definition for each element and add to start of each test action.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="writing-tests.html#call-test-raise"><span class="std std-ref">Call lava-test-raise if setup fails</span></a> for information on writing setup
+scripts using shell (<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">lava-common</span></code>) and Python.</p>
+</div>
+</div>
+<div class="section" id="using-lava-test-shell-inside-health-checks">
+<span id="health-check-tests"></span><h3>Using lava_test_shell inside health checks<a class="headerlink" href="#using-lava-test-shell-inside-health-checks" title="Permalink to this headline">¶</a></h3>
+<p>It is a mistake to think that lava_test_shell should not be run in health
+checks. The consequence of a health check failing is that devices of the
+specified type will be automatically taken offline but this applies to a job
+failure, not a fail result from a single lava-test-case.</p>
+<p>It is advisable to use a minimal set of sanity check test cases in all health
+checks, without making the health check unnecessarily long:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+   <span class="nt">definitions</span><span class="p">:</span>
+     <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+       <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+       <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+</pre></div>
+</div>
+<p>These tests run simple Debian/Ubuntu test commands to do with networking and
+basic functionality - it is common for <code class="docutils literal notranslate"><span class="pre">linux-linaro-ubuntu-lsusb</span></code> and/or
+<code class="docutils literal notranslate"><span class="pre">linux-linaro-ubuntu-lsb_release</span></code> to fail as individual test cases but these
+failed test cases will <strong>not</strong> cause the health check to fail or cause devices
+to go offline.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">lava_test_shell</span></code> in all health checks has several benefits:</p>
+<ol class="arabic simple">
+<li>health checks should use the same mechanisms as regular tests, including
+<code class="docutils literal notranslate"><span class="pre">lava_test_shell</span></code></li>
+<li>devices are tested to ensure that test repositories can be downloaded to the
+device.</li>
+<li>device capabilities can be retrieved from the health check result bundles
+and displayed on the device type status page.</li>
+<li>tests inside <code class="docutils literal notranslate"><span class="pre">lava_test_shell</span></code> can provide a lot more information than
+simply booting an image and each device type can have custom tests to pick
+up common hardware issues</li>
+</ol>
+<p>See also <a class="reference internal" href="developing-tests.html#test-developer"><span class="std std-ref">Writing Tests</span></a>.</p>
+</div>
+<div class="section" id="infrastructure-issues">
+<span id="infrastructure-issues-health"></span><h3>Infrastructure issues<a class="headerlink" href="#infrastructure-issues" title="Permalink to this headline">¶</a></h3>
+<p>If a health check fails, the device will be taken offline. If the
+failure was due to an infrastructure issue, then the device will
+continue to go offline.</p>
+<p>If the investigation involves changing the health check test job,
+use <a class="reference internal" href="dispatcher-design.html#running-lava-run"><span class="std std-ref">lava-run directly</span></a> on the worker to
+make local changes to the health check test job until you have a
+working test job whilst keeping the device offline.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/healthchecks.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:45 GMT -->
+</html>

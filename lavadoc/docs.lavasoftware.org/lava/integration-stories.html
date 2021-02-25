@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/integration-stories.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Integration Stories &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bootloader/Firmware Testing and Recovery" href="bootloaders.html" />
+    <link rel="prev" title="UEFI" href="integrate-uefi.html" />
+    <link rel="canonical" href="integration-stories.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Integration Stories</a><ul>
+<li><a class="reference internal" href="#integration-story-one-nexus">Integration Story One - Nexus</a><ul>
+<li><a class="reference internal" href="#deploy">Deploy</a></li>
+<li><a class="reference internal" href="#boot">Boot</a></li>
+<li><a class="reference internal" href="#issues">Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-story-two-pixel">Integration Story Two - Pixel</a><ul>
+<li><a class="reference internal" href="#pixel">Pixel</a></li>
+<li><a class="reference internal" href="#id1">Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-story-three-hikey-6220">Integration Story Three - HiKey 6220</a><ul>
+<li><a class="reference internal" href="#unstable-uefi-firmware">Unstable UEFI firmware</a></li>
+<li><a class="reference internal" href="#serial-numbers">Serial numbers</a></li>
+<li><a class="reference internal" href="#id2">Deploy</a><ul>
+<li><a class="reference internal" href="#aosp">AOSP</a></li>
+<li><a class="reference internal" href="#oe">OE</a></li>
+<li><a class="reference internal" href="#debian">Debian</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3">Boot</a><ul>
+<li><a class="reference internal" href="#id4">AOSP</a></li>
+<li><a class="reference internal" href="#oe-debian">OE / Debian</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#other-issues">Other Issues</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#v2-scenario">V2 Scenario</a></li>
+<li><a class="reference internal" href="#v1-scenario">V1 Scenario</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-story-dragonboard-410c">Integration Story - Dragonboard 410c</a><ul>
+<li><a class="reference internal" href="#id5">Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-story-five-hikey-960">Integration Story Five - HiKey 960</a><ul>
+<li><a class="reference internal" href="#cons">Cons</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="integrate-uefi.html" title="Previous Chapter: UEFI"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; UEFI</span>
+    </a>
+  </li>
+  <li>
+    <a href="bootloaders.html" title="Next Chapter: Bootloader/Firmware Testing and Recovery"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Bootloader/Fi... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="integration-stories">
+<h1>Integration Stories<a class="headerlink" href="#integration-stories" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="integration-story-one-nexus">
+<span id="integrating-fastboot-nexus"></span><span id="index-0"></span><h2>Integration Story One - Nexus<a class="headerlink" href="#integration-story-one-nexus" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This use case is merely illustrative and <strong>not a detailed
+guide</strong>. The <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">device integration guidelines</span></a>
+can only highlight certain aspects of previous device integrations in the
+hope that the experience will be useful. There is no step-by-step guide to
+any device integration into LAVA.</p>
+</div>
+<p>Google Nexus devices are standard devices which once unlocked or rooted will
+get into fastboot mode without any requirement for manual intervention. A
+suitable AOSP build (See assumption 4 above) flashed to the Nexus can make use
+of <code class="docutils literal notranslate"><span class="pre">adb</span> <span class="pre">reboot</span> <span class="pre">bootloader</span></code> in order to get into fastboot mode.</p>
+<div class="section" id="deploy">
+<h3>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline">¶</a></h3>
+<p>The only supported operating system on the Nexus would obviously be AOSP and
+this reduces the problem space to a greater extent. In case of Nexus devices
+the AOSP is supplied as images for the following partitions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">boot</span>
+<span class="n">cache</span>
+<span class="n">system</span>
+<span class="n">userdata</span>
+<span class="n">vendor</span>
+</pre></div>
+</div>
+<p>Which are straightforward to flash using fastboot command during the deploy
+stage or action. flash_cmds_order parameter from the device dictionary is used
+to determine the order in which the above images will be flashed to their
+respective partitions.</p>
+</div>
+<div class="section" id="boot">
+<h3>Boot<a class="headerlink" href="#boot" title="Permalink to this headline">¶</a></h3>
+<p>In case of boot action the <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">boot</span> <span class="pre">sequence</span></code> comes into place which is
+simple as seen below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">reboot</span>
+<span class="o">-</span> <span class="n">wait</span><span class="o">-</span><span class="n">usb</span><span class="o">-</span><span class="n">add</span>
+<span class="o">-</span> <span class="n">lxc</span><span class="o">-</span><span class="n">add</span><span class="o">-</span><span class="n">device</span>
+</pre></div>
+</div>
+<p>When the device is still in fastboot mode after the deployment of images to the
+respective partitions <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">reboot</span></code> is issued which will reboot the Nexus
+device to the AOSP operating system. We wait for a udev add event and then once
+the event happens, we add the device to the LXC container using the device_info
+values.</p>
+<p>Thus the device is booted and ready for running tests via ADB from an LXC
+container.</p>
+</div>
+<div class="section" id="issues">
+<h3>Issues<a class="headerlink" href="#issues" title="Permalink to this headline">¶</a></h3>
+<p>There is no serial console hence we cannot monitor the kernel boot log or
+messages while Nexus device boots. We need a mechanism such as
+<code class="docutils literal notranslate"><span class="pre">reboot-to-fastboot</span></code> set to false in order to not reboot the Nexus device to
+fastboot mode, since most of these devices do not charge in fastboot mode,
+hence the battery drains if the device is in fastboot mode which calls for
+manual intervention to juggle with the volume and power buttons at different
+combinations to make the device usable for automation. Nexus devices have
+inbuilt battery, hence these are not suitable for controlling them with a Power
+Distribution Unit (PDU). So hard reset literally means <code class="docutils literal notranslate"><span class="pre">adb</span> <span class="pre">reboot</span>
+<span class="pre">bootloader</span></code> (provided the AOSP build installed on the Nexus device is stable)
+or <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">reboot</span> <span class="pre">bootloader</span></code> (provided we are in fastboot mode), both of
+which are software triggered and not a proper hard reset.</p>
+<p>Sample job run - <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/175653">https://staging.validation.linaro.org/scheduler/job/175653</a>
+Currently LAVA V2 supports the following Google Nexus devices (provided
+suitable builds are available):</p>
+<ul class="simple">
+<li>Nexus 4</li>
+<li>Nexus 5x</li>
+<li>Nexus 9</li>
+<li>Nexus 10</li>
+</ul>
+</div>
+</div>
+<div class="section" id="integration-story-two-pixel">
+<span id="integrating-fastboot-pixel"></span><span id="index-1"></span><h2>Integration Story Two - Pixel<a class="headerlink" href="#integration-story-two-pixel" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This use case is merely illustrative and <strong>not a detailed
+guide</strong>. The <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">device integration guidelines</span></a>
+can only highlight certain aspects of previous device integrations in the
+hope that the experience will be useful. There is no step-by-step guide to
+any device integration into LAVA.</p>
+</div>
+<div class="section" id="pixel">
+<h3>Pixel<a class="headerlink" href="#pixel" title="Permalink to this headline">¶</a></h3>
+<p>Google Pixel is same as the Google Nexus device with very minimal differences.
+Everything said above for Nexus devices applies to Google Pixel except for the
+following described in the issues below.</p>
+</div>
+<div class="section" id="id1">
+<h3>Issues<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Google Pixel requires latest versions of fastboot and adb tools. The version of
+fastboot (4.2.2) and adb (4.2.2) found in Debian Jessie does not work correctly
+with Google Pixel. It requires a pretty recent version which is now available
+in Debian Stretch - fastboot (1:7.0.0) and adb (1:7.0.0).</p>
+<p>Google Pixel has two system partitions which is different from old Google Nexus
+devices:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">system_a</span>
+<span class="n">system_b</span>
+</pre></div>
+</div>
+<p>The partitions or images supplied for deployment in case of Google Pixel are as
+follows and the order in which they are flashed are of prime importance which
+is handled by flash_cmds_order:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">boot</span>
+<span class="n">userdata</span>
+<span class="n">system_a</span>
+<span class="n">system_b</span>
+<span class="n">vendor</span>
+</pre></div>
+</div>
+<p>Sample job run - <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/177188">https://staging.validation.linaro.org/scheduler/job/177188</a></p>
+</div>
+</div>
+<div class="section" id="integration-story-three-hikey-6220">
+<span id="integrating-fastboot-hikey6220"></span><span id="index-2"></span><h2>Integration Story Three - HiKey 6220<a class="headerlink" href="#integration-story-three-hikey-6220" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This use case is merely illustrative and <strong>not a detailed
+guide</strong>. The <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">device integration guidelines</span></a>
+can only highlight certain aspects of previous device integrations in the
+hope that the experience will be useful. There is no step-by-step guide to
+any device integration into LAVA.</p>
+</div>
+<p>HiKey 6220 is the most problematic board due to various reasons. There were too
+many workarounds put in place just for supporting HiKey 6220’s automation since
+the board was inherently not stable for automation. The key things that hinders
+automation on Hikey 6220 are as follows:</p>
+<div class="section" id="unstable-uefi-firmware">
+<h3>Unstable UEFI firmware<a class="headerlink" href="#unstable-uefi-firmware" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>For every new release of the firmware which happens once in two months the
+behavior or the interface changes.</li>
+<li>Text used for interrupting UEFI bootloader has changed many times.</li>
+<li>The timeout in order to hit any key to enter UEFI menu has changed which
+sometimes made automating it harder due to insufficient time to capture the
+interrupt prompt and feed the interrupt string.</li>
+<li>Inconsistent behavior of bringing up the UEFI bootloader after soft resets
+and hard resets.</li>
+<li>Changes with different versions of firmware in the way we get into fastboot
+mode.</li>
+</ul>
+</div>
+<div class="section" id="serial-numbers">
+<h3>Serial numbers<a class="headerlink" href="#serial-numbers" title="Permalink to this headline">¶</a></h3>
+<p>By default HiKey 6220 does not provide a unique serial number, though there is
+a way to set unique serial number.</p>
+<p>Due to the hardware design decisions made when creating HiKey 6220 the OTG port
+and TYPE A ports are not usable at the same time. To automate the image
+delivery we use fastboot, which requires the OTG port to be connected during
+flashing. However, for automated testing we would prefer to use a USB attached
+ethernet adapter as it is more reliable than WiFi. Somewhere between the
+delivery of images and booting the kernel, we need to disable the OTG port to
+allow the TYPE A ports to function.</p>
+<p>Irrespective of the operating system that is getting deployed we need to enable
+the USB OTG port which may have been disabled in the previous job run (Why this
+is done is explained in point 3 above). This is done using the
+<code class="docutils literal notranslate"><span class="pre">pre_power_command</span></code>, called via the lava-lxc protocol for deploy action.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="actions-protocols.html#using-protocols-from-actions"><span class="std std-ref">Using protocols from actions</span></a></p>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Deploy<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>HiKey 6220 supports different operating systems such as AOSP, GNU/Linux
+(Debian, Ubuntu, etc.) and OpenEmbedded (OE), for which different partition
+schemes and communication schemes has to be supported. HiKey has a UEFI
+firmware as seen above which can get you to a UEFI menu to choose the device or
+operating system from where you want to boot or get into fastboot mode. The
+primary method of flashing images to HiKey 6220 is by using <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">flash</span></code>
+commands.</p>
+<div class="section" id="aosp">
+<h4>AOSP<a class="headerlink" href="#aosp" title="Permalink to this headline">¶</a></h4>
+<p>In case of AOSP a HiKey needs to flash the images mentioned in the deploy
+action using the flash commands. The order in which images are getting flashed
+is important which is controlled by flash_cmds_order</p>
+<p>AOSP for HiKey 6220 is provided using the following images:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ptable</span>
+<span class="n">boot</span>
+<span class="n">cache</span>
+<span class="n">userdata</span>
+<span class="n">system</span>
+</pre></div>
+</div>
+<p>HiKey 6220 firmware has some issues when we do not hard-reset after flashing
+certain images such as ptable and boot. This is required especially when the
+HiKey’s following job requests to run a different operating system from the one
+that was run on the last job ie., if a job runs AOSP and the following job
+wants to run OE then we need to flash a partition different partition table
+which reflects after a reboot of the HiKey. Hence the deploy action in HiKey
+accepts a special parameter called <code class="docutils literal notranslate"><span class="pre">reboot</span></code> which indicates whether to reboot
+the HiKey after flashing the current image. The values accepted for this
+parameter are as follows:</p>
+<dl class="docutils">
+<dt>hard-reset</dt>
+<dd>does a power cycle with the help of PDU after flashing</dd>
+<dt>fastboot-reboot</dt>
+<dd>does a <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">reboot</span></code> after flashing</dd>
+<dt>fastboot-reboot-bootloader</dt>
+<dd>does a <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">reboot</span> <span class="pre">bootloader</span></code> after flashing</dd>
+</dl>
+<p>For some reason we have identified <code class="docutils literal notranslate"><span class="pre">hard-reset</span></code> always works and it is
+recommended. It is uncertain why fastboot-rebooot or fastboot-reboot-bootloader
+creates problem in identifying the partitions properly after flashing. This is
+a significant issue that was discovered after running too many jobs on the
+HiKey.</p>
+</div>
+<div class="section" id="oe">
+<h4>OE<a class="headerlink" href="#oe" title="Permalink to this headline">¶</a></h4>
+<p>In case of OE a HiKey needs to flash the images mentioned in the deploy action
+using the flash commands. Similar to AOSP the order in which images gets
+flashed is important which is controlled by flash_cmds_order</p>
+<p>OE for HiKey 6220 is provided using the following images:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ptable</span>
+<span class="n">boot</span>
+<span class="n">system</span>
+</pre></div>
+</div>
+<p>The same issue with rebooting after flashing ptable and boot partitions applies
+to OE images as explained above for AOSP.</p>
+</div>
+<div class="section" id="debian">
+<h4>Debian<a class="headerlink" href="#debian" title="Permalink to this headline">¶</a></h4>
+<p>In case of Debian a HiKey needs to flash the images mentioned in the deploy
+action using the flash commands. Similar to AOSP the order in which images gets
+flashed is important which is controlled by flash_cmds_order</p>
+<p>Debian for HiKey 6220 is provided using the following images:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ptable</span>
+<span class="n">boot</span>
+<span class="n">system</span> <span class="p">(</span><span class="n">the</span> <span class="n">rootfs</span> <span class="n">of</span> <span class="n">Debian</span> <span class="n">system</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The same issue with rebooting after flashing ptable and boot partitions applies
+to Debian images too.</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Boot<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h4>AOSP<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>The fastboot boot sequence for AOSP on HiKey is defined with the following
+steps on the device dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">boot</span>
+<span class="o">-</span> <span class="n">wait</span><span class="o">-</span><span class="n">usb</span><span class="o">-</span><span class="n">add</span>
+<span class="o">-</span> <span class="n">lxc</span><span class="o">-</span><span class="n">add</span><span class="o">-</span><span class="n">device</span>
+<span class="o">-</span> <span class="n">auto</span><span class="o">-</span><span class="n">login</span>
+<span class="o">-</span> <span class="n">shell</span><span class="o">-</span><span class="n">session</span>
+<span class="o">-</span> <span class="n">export</span><span class="o">-</span><span class="n">env</span>
+</pre></div>
+</div>
+<p>Since the HiKey has a serial connection we can watch the kernel boot log using
+the serial connection.</p>
+<p>AOSP provides ADB communication, hence the tests are run using lava-test-shell
+from within the LXC container communicating via ADB daemon on the HiKey.</p>
+</div>
+<div class="section" id="oe-debian">
+<h4>OE / Debian<a class="headerlink" href="#oe-debian" title="Permalink to this headline">¶</a></h4>
+<p>Both OpenEmbedded and Debian operating systems are booted using the selection
+on the UEFI Menu. We interrupt to get into the UEFI menu and then select the
+menu item which says “boot from eMMC” where the images will be flashed in the
+previous deploy action. Once this selection is done the OS starts booting, at
+which point we need a mechanism to switch off the OTG port so that Type A port
+starts working and brings up the connected USB ethernet adapter.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">pre_os_command</span></code> usage with <a class="reference internal" href="actions-protocols.html#using-protocols-from-actions"><span class="std std-ref">Using protocols from actions</span></a></p>
+</div>
+<p>We won’t require the OTG port henceforth since we have a serial connection to
+monitor and also ethernet is up for communicating to the internet.</p>
+<p>OE or Debian does not provide ADB communication, hence the tests are run using
+lava-test-shell directly on the HiKey using the serial connection where LXC is
+not used.</p>
+<p>Sample Job Runs
+AOSP - <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/179225">https://staging.validation.linaro.org/scheduler/job/179225</a>
+OE - <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/179207">https://staging.validation.linaro.org/scheduler/job/179207</a></p>
+</div>
+</div>
+<div class="section" id="other-issues">
+<h3>Other Issues<a class="headerlink" href="#other-issues" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="overview">
+<h4>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h4>
+<p>In LAVA V2 HiKey requires pins 5-6 shorted in order to get into fastboot mode
+every time after a reboot or a hard reset. This document discusses the need for
+shorting 5-6 pins and how it differs from V1.</p>
+<div class="section" id="v2-scenario">
+<h5>V2 Scenario<a class="headerlink" href="#v2-scenario" title="Permalink to this headline">¶</a></h5>
+<p>In LAVA V2 we assume HiKeys have pins 5-6 shorted so that the HiKey gets into
+fastboot mode every time there is a reboot or a hard reset. With this
+assumption in place we carry on the following actions:</p>
+<p>Deploy the images using fastboot flashing since the device is in fastboot mode
+by default.</p>
+<p>Once the flashing is done, we “fastboot reboot” the device which will take it
+to fastboot mode again. If the test job specifies to boot android, fastboot
+does not need to be interrupted a second time. To access the UEFI menu to boot
+other systems, fastboot is interrupted, to bring up blitthe uefi_menu on which
+we choose the second option ie., “[2] boot from eMMC” and boot the device to
+the operating system that was flashed in 1.</p>
+<p>The above is the right way of doing things, since we can enter into fastboot
+mode every time even when the test flashes the boot partition of the device
+with different boot.img, which is not possible in V1.</p>
+</div>
+<div class="section" id="v1-scenario">
+<h5>V1 Scenario<a class="headerlink" href="#v1-scenario" title="Permalink to this headline">¶</a></h5>
+<p>In LAVA V1 we have pins 3-4 shorted which will not take the device to fastboot
+mode by default. In order to get into fastboot, the bootloader prompt should be
+interrupted and the corresponding UEFI menu item has to be selected for
+fastboot. When pins 3-4 are shorted there is possibility of flashing the
+following from a job:</p>
+<p>fastboot flash fastboot fip.bin
+fastboot flash nvme nvme.img</p>
+<p>The above can leave the board inconsistent, which complicates automation since
+we need the same kind of interface every time the board is rebooted or
+hard-reset.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="integration-story-dragonboard-410c">
+<span id="integrating-fastboot-db410c"></span><span id="index-3"></span><h2>Integration Story - Dragonboard 410c<a class="headerlink" href="#integration-story-dragonboard-410c" title="Permalink to this headline">¶</a></h2>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This use case is merely illustrative and is <strong>not a detailed
+guide</strong>. The <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">device integration guidelines</span></a>
+can only highlight certain aspects of previous device integrations in the
+hope that the experience will be useful. There is no step-by-step guide to
+any device integration into LAVA.</p>
+</div>
+<p>Similar to <a class="reference internal" href="#integrating-fastboot-hikey6220"><span class="std std-ref">Integration Story Three - HiKey 6220</span></a>, the Dragonboard 410c (DB410C)
+supports different operating systems such as AOSP, GNU/Linux (Debian, Ubuntu,
+etc.) and OpenEmbedded (OE), for which different partition schemes and
+communication schemes has to be supported. DB410C uses fastboot for both deploy
+and boot actions. The primary method of flashing images to DB410c is by using
+<code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">flash</span></code> commands.</p>
+<p>Sample Job Run - <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/179278">https://staging.validation.linaro.org/scheduler/job/179278</a></p>
+<div class="section" id="id5">
+<h3>Issues<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>DB410C is a pretty stable platform and hasn’t given much pains during
+integration except for one issue where the images provided for DB410C (this is
+specific to Linaro images) are sparse images. In order to convert the sparse
+image to normal image we use a tool called simg2img. Once the sparse image is
+converted to a normal image we will apply the overlay and then do a normal
+image to sparse image conversion using a tool called img2simg. Both these tools
+simg2img and img2simg are available in Debian jessie and stretch. The
+conversions and application of overlay are done just before flashing these
+images within the LXC container which should have tools such as simg2img and
+img2simg installed.</p>
+</div>
+</div>
+<div class="section" id="integration-story-five-hikey-960">
+<span id="integrating-fastboot-hikey960"></span><span id="index-4"></span><h2>Integration Story Five - HiKey 960<a class="headerlink" href="#integration-story-five-hikey-960" title="Permalink to this headline">¶</a></h2>
+<p>So far, no advantages discovered. Less usable than the 6220.</p>
+<div class="section" id="cons">
+<h3>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h3>
+<p>Fastboot required to deploy non-fastboot systems due to lack of visibility of
+the USB stack in UEFI and the lack of a physical NIC on the device.</p>
+<p>Custom hardware which is required to provide serial over low speed connector
+does not have mount points and can wobble.</p>
+<p>Highly unstable device - continues to reset the serial connection arbitrarily.
+Appears to cause issues in the USB stack of the worker, making subsequent test
+jobs unreliable.</p>
+<p>Hardware is incapable of driving the OTG and the USB Host at the same time,
+causing complex problems with needing to use specialist USB hub control systems
+to change the mode of the OTG port during every test job to be able to have any
+network capability after deployment.</p>
+<p>Less reliable than the HiKey 6220.</p>
+<p>Unexpected changes in the UEFI compared to the 6220 which make the menus
+impossible to automate, necessitating a different code flow for support in V2.</p>
+<p>Gaps in the 96boards documentation and completely missing documentation for the
+changes made for Linaro CI caused several months of delays and wasted
+investigation.</p>
+<p>Original firmware changes the fastboot serial number randomly on every reboot.</p>
+<p>Apparent habit of dropping the serial connection arbitrarily during fastboot
+deployment - 3 out of every 5 test jobs failed this way during development.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/integration-stories.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+</html>

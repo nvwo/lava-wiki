@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/admin-secondary-media.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:46 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Enabling Secondary Media &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Growing your lab" href="growing_your_lab.html" />
+    <link rel="prev" title="Advanced Installation Topics" href="advanced-installation.html" />
+    <link rel="canonical" href="admin-secondary-media.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Enabling Secondary Media</a><ul>
+<li><a class="reference internal" href="#device-configuration">Device configuration</a><ul>
+<li><a class="reference internal" href="#identifying-secondary-media">Identifying secondary media</a></li>
+<li><a class="reference internal" href="#secondary-media-configuration">Secondary media configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-grub-with-sata-secondary-media">Using Grub with SATA secondary media</a><ul>
+<li><a class="reference internal" href="#device-dictionary">Device dictionary</a></li>
+<li><a class="reference internal" href="#device-template-example">Device template example</a></li>
+<li><a class="reference internal" href="#dispatcher-configuration">Dispatcher configuration</a></li>
+<li><a class="reference internal" href="#grub-sata-test-job-submission">Grub SATA Test Job submission</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-uboot-with-usb-secondary-media">Using UBoot with USB secondary media</a><ul>
+<li><a class="reference internal" href="#id3">Device dictionary</a></li>
+<li><a class="reference internal" href="#id4">Device template example</a></li>
+<li><a class="reference internal" href="#id5">Dispatcher configuration</a></li>
+<li><a class="reference internal" href="#usb-uboot-test-job-submission">USB UBoot Test Job submission</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="advanced-installation.html" title="Previous Chapter: Advanced Installation Topics"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Advanced Inst...</span>
+    </a>
+  </li>
+  <li>
+    <a href="growing_your_lab.html" title="Next Chapter: Growing your lab"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Growing your lab &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="enabling-secondary-media">
+<span id="admin-secondary-media"></span><span id="index-0"></span><h1>Enabling Secondary Media<a class="headerlink" href="#enabling-secondary-media" title="Permalink to this headline">¶</a></h1>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Admins should already have read about <a class="reference internal" href="secondary-media.html#secondary-media"><span class="std std-ref">Secondary media</span></a>.</p>
+</div>
+<div class="section" id="device-configuration">
+<h2>Device configuration<a class="headerlink" href="#device-configuration" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Not all test devices can support secondary media deployments in
+LAVA.</li>
+<li>Additional hardware is typically required and configuration details of this
+specific hardware need to be added to the <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> to be
+available to test writers.</li>
+<li>The use of operating system installers and/or the deployment of full
+system images to a <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a> can substantially increase the administrative
+burden of that device. Administrators can choose to not enable this support.</li>
+<li>Secondary media configuration can be complex and hard to deploy as admins
+need to understand how one specific device fits into the range of options
+which are available to cover other devices. Some level of familiarity with
+<a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">Developing using device-type templates</span></a> <strong>will</strong> be required to be able to
+follow the logic.</li>
+</ul>
+<div class="section" id="identifying-secondary-media">
+<span id="id1"></span><h3>Identifying secondary media<a class="headerlink" href="#identifying-secondary-media" title="Permalink to this headline">¶</a></h3>
+<p>A deployment to secondary media must be done by a running operating system, not
+by the bootloader. To allow this, the device configuration may need extra
+restrictions.</p>
+<p>To work reliably, media devices must be consistently, uniquely identifiable.
+Some test devices may have multiple SATA disks; on others, different types of
+media device (USB storage, SATA, SD) may even show up using the same style of
+device name (e.g. <code class="docutils literal notranslate"><span class="pre">sda</span></code>). Ordering of these devices is not guaranteed on each
+boot of the system, particularly when using different configurations and
+different kernels. To make such a setup work in all cases, the device_type
+needs to declare the flag <code class="docutils literal notranslate"><span class="pre">UUID-required:</span> <span class="pre">True</span></code> for each relevant interface.
+Using cubietruck as an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">media</span><span class="p">:</span>  <span class="c1"># two USB slots, one SATA connector</span>
+  <span class="n">usb</span><span class="p">:</span>
+    <span class="n">UUID</span><span class="o">-</span><span class="n">required</span><span class="p">:</span> <span class="kc">True</span>
+  <span class="n">sata</span><span class="p">:</span>
+    <span class="n">UUID</span><span class="o">-</span><span class="n">required</span><span class="p">:</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="secondary-media-configuration">
+<span id="id2"></span><h3>Secondary media configuration<a class="headerlink" href="#secondary-media-configuration" title="Permalink to this headline">¶</a></h3>
+<p>When configuring and using secondary media, there are <strong>six</strong> sets of
+parameters used. In each case, this section only deals with the generic or root
+parameter and each deployment method uses a specific variant to cope with the
+requirements of the possible bootloaders. Admins need to obtain the various
+pieces of information required for the parameters from a running device before
+starting to write the configuration for secondary media on the same device. To
+obtain the correct values, it may be necessary to take the device offline,
+connect to it over serial and interact with the bootloader directly. Once this
+data has been obtained, the specific configuration for a deployment method can
+involve setting other values beyond the core six.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Should a device fail or the secondary media on a device need to be
+replaced, the secondary media identifiers will need to be updated before
+the new hardware can work with the device.</p>
+</div>
+<p>The presence of the <code class="docutils literal notranslate"><span class="pre">uuid</span></code> for the particular deployment will enable all the
+other options used by secondary media using the same deployment method. Each
+deployment method has a dedicated <code class="docutils literal notranslate"><span class="pre">uuid</span></code> so that the template can provide the
+correct information to the dispatcher. Typically, one device will have one
+<code class="docutils literal notranslate"><span class="pre">uuid</span></code> for one deployment method, so the other deployment methods will be
+disabled.</p>
+<p>Three deployment methods are currently supported. <code class="docutils literal notranslate"><span class="pre">sata</span></code>, <code class="docutils literal notranslate"><span class="pre">sd</span></code> and <code class="docutils literal notranslate"><span class="pre">usb</span></code>.
+The examples in this section are not intended to provide a complete overview of
+all deployment methods but to provide context for why particular values need to
+be obtained from the device before secondary media configuration can begin.</p>
+<p>Admins will typically also need to use <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> if more than one
+device of this device-type exists in the instance.</p>
+<p>The first two parameters must be configured by admins in the <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device
+dictionary</span></a>. They define the storage device that will be used for the secondary
+media deployment, and for safety test writers should not be able to override
+these settings.</p>
+<p>The last three parameters, <code class="docutils literal notranslate"><span class="pre">boot_part</span></code>, <code class="docutils literal notranslate"><span class="pre">root_uuid</span></code> and <code class="docutils literal notranslate"><span class="pre">root_part</span></code> can
+be used by the test writer in their job submission, depending on how the
+deployed image has been built:</p>
+<ol class="arabic">
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">uuid</span></code> parameter in the device configuration</p>
+<p>This is the ID of the storage device as it appears to the kernel
+running the <code class="docutils literal notranslate"><span class="pre">deploy</span></code> action. This can be found by looking in
+<code class="docutils literal notranslate"><span class="pre">/dev/disk/by-id/</span></code> on a booted system.</p>
+<p>For example, a SATA drive which appears as
+<code class="docutils literal notranslate"><span class="pre">/dev/disk/by-id/ata-ST500DM002-1BD142_S2AKYFSN</span></code> would define
+<code class="docutils literal notranslate"><span class="pre">sata_uuid</span></code> and have an entry in the device dictionary of:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_uuid</span> <span class="o">=</span> <span class="s1">&#39;ata-ST500DM002-1BD142_S2AKYFSN&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently, <strong>only one</strong> UUID (and hence <strong>only one</strong> storage
+device) is supported for each of the available interfaces (SATA, USB and
+SD) for each <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>.</p>
+</div>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">device_id</span></code> parameter in the device configuration</p>
+<p>This is the ID of the device as it appears to the bootloader when reading
+deployed files into memory. This can be found by interrupting the bootloader
+and listing the filesystem contents on the specified interface. The
+<code class="docutils literal notranslate"><span class="pre">device_id</span></code> is closely related to the <code class="docutils literal notranslate"><span class="pre">interface</span></code> name used in the
+bootloader to specify the name of the interface which the bootloader will
+use to access the <code class="docutils literal notranslate"><span class="pre">device_id</span></code>. With some bootloaders, only the
+<code class="docutils literal notranslate"><span class="pre">interface</span></code> value is required.</p>
+<p>For example, when using GRUB, the first detected SATA drive would
+be <code class="docutils literal notranslate"><span class="pre">(hd0)</span></code>, so the device dictionary only needs:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_interface</span> <span class="o">=</span> <span class="s1">&#39;hd0&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The parentheses are omitted here, as GRUB also needs to know the
+partition number - <code class="docutils literal notranslate"><span class="pre">boot_part</span></code> within the syntax <code class="docutils literal notranslate"><span class="pre">(hd0,1)</span></code>. The final
+string is a combination of device and test job configuration because it
+is the submitted image which determines where the kernel image has been
+installed.</p>
+</div>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">label</span></code> by which test writers can select the secondary media. Admins
+need to consider how best to create the label. The string should relate to
+the kind of media which is supported - USB stick or SATA drive etc. However,
+the label itself should not be entirely specific to the hardware on one
+specific machine. Often, DUTs will be deployed with similar hardware of the
+same overall brand or model and this provides a good label. For example, if
+all devices of the same device-type have Seagate Barracuda 500GB SATA drives
+as secondary media, then the <code class="docutils literal notranslate"><span class="pre">sata_label</span></code> could be usefully set as:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_label</span> <span class="o">=</span> <span class="s1">&#39;ST500DM002&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>If all devices of another device-type have SanDisk Cruzer Blade USB sticks
+as secondary media, the <code class="docutils literal notranslate"><span class="pre">usb_label</span></code> could be usefully set as:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">usb_label</span> <span class="o">=</span> <span class="s1">&#39;SanDiskCruzerBlade&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Remember that unless the <code class="docutils literal notranslate"><span class="pre">uuid</span></code> is set, this label has no effect. If
+there are some devices of the same device-type without SATA drives, the
+device dictionary for those devices simply omits the <code class="docutils literal notranslate"><span class="pre">sata_uuid</span></code>. Use
+a <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> on the devices with secondary media to allow test
+writers to submit to one of the supported devices.</p>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">boot_part</span></code> can be specified in the job submission if the default in
+the device type template is not correct for the deployed image. This is the
+number of the partition within the deployed image which will contain files
+for the bootloader to use too boot (kernel, initramfs, etc.). Files in this
+partition will be accessed directly through the bootloader, not via any
+mount point specified inside the image.</p>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">root_uuid</span></code> can be specified in the job submission if the default in
+the device type template is not correct for the deployed image. This is the
+ID of the partition to specify as <code class="docutils literal notranslate"><span class="pre">root</span></code> on the kernel command line of the
+deployed kernel when booting the kernel inside the image. This must be
+specified if the device has <code class="docutils literal notranslate"><span class="pre">UUID-required</span></code> set to True.</p>
+</li>
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">root_part</span></code> can be specified in the job submission if the default in
+the device type template is not correct for the deployed image. This is the
+partition number inside the deployed image where the rootfs lives.
+<code class="docutils literal notranslate"><span class="pre">root_part</span></code> cannot be used with <code class="docutils literal notranslate"><span class="pre">root_uuid</span></code> - to do so causes a
+JobError.</p>
+</li>
+</ol>
+<p>Media settings are configured per test device, based on the capability
+of the device type. An individual test device of a specified type
+<em>may</em> have exactly one of the available slots populated on any one
+interface. These individual devices would need <code class="docutils literal notranslate"><span class="pre">UUID-required:</span>
+<span class="pre">False</span></code> for that interface. e.g. A panda has two USB host slots. For
+each panda, if both slots are occupied, specify <code class="docutils literal notranslate"><span class="pre">UUID-required:</span>
+<span class="pre">True</span></code> in the device configuration. If only one is occupied, specify
+<code class="docutils literal notranslate"><span class="pre">UUID-required:</span> <span class="pre">False</span></code>.</p>
+<p>If none are occupied, avoid enabling <code class="docutils literal notranslate"><span class="pre">usb_uuid</span></code> in the device dictionary to
+disable the <code class="docutils literal notranslate"><span class="pre">usb</span></code> interface section in the configuration for that one device.</p>
+<p>List each specific storage device attached to that interface
+using a human-usable string, e.g. a SanDisk Ultra usb stick with a
+UUID of <code class="docutils literal notranslate"><span class="pre">usb-SanDisk_Ultra_20060775320F43006019-0:0</span></code> could simply be
+called <code class="docutils literal notranslate"><span class="pre">SanDisk_Ultra</span></code>. Jobs will specify this label in order to
+look up the actual UUID, allowing physical media to be replaced with
+an equivalent device without needing to change the job submission
+data.</p>
+<p>The device configuration should always include the UUID for all media
+on each supported interface, even if <code class="docutils literal notranslate"><span class="pre">UUID-required</span></code> is False. The
+UUID is the recommended way to specify the media, even when not
+strictly required. Record the symlink name (without the path) for the
+top level device in <code class="docutils literal notranslate"><span class="pre">/dev/disk/by-id/</span></code> for the media concerned,
+i.e. the symlink pointing at <code class="docutils literal notranslate"><span class="pre">../sda</span></code> not the symlink(s) pointing at
+individual partitions. The UUID should be <strong>quoted</strong> to ensure that
+the YAML can be parsed correctly. Also include the <code class="docutils literal notranslate"><span class="pre">device_id</span></code> which
+is the bootloader view of the same device on this interface.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">commands</span><span class="p">:</span>
+ <span class="nt">connect</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">telnet localhost 6000</span>
+<span class="nt">media</span><span class="p">:</span>
+  <span class="nt">usb</span><span class="p">:</span>  <span class="c1"># bootloader interface name</span>
+    <span class="nt">UUID-required</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>  <span class="c1"># cubie1 is pretending to have two usb media attached</span>
+    <span class="nt">SanDisk_Ultra</span><span class="p">:</span>
+      <span class="nt">uuid</span><span class="p">:</span> <span class="s">&quot;usb-SanDisk_Ultra_20060775320F43006019-0:0&quot;</span>  <span class="c1"># /dev/disk/by-id/</span>
+      <span class="nt">device_id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>  <span class="c1"># the bootloader device id for this media on the &#39;usb&#39; interface</span>
+</pre></div>
+</div>
+<p>There is <strong>no</strong> reasonable way for the device configuration to specify
+the device node directly, as this may change from job to job depending
+on the configuration of the deployed system.</p>
+</div>
+</div>
+<div class="section" id="using-grub-with-sata-secondary-media">
+<span id="secondary-media-grub-sata"></span><h2>Using Grub with SATA secondary media<a class="headerlink" href="#using-grub-with-sata-secondary-media" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="device-dictionary">
+<h3>Device dictionary<a class="headerlink" href="#device-dictionary" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_uuid</span> <span class="o">=</span> <span class="s1">&#39;ata-ST500DM002-1BD142_S2AKYFSN&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_label</span> <span class="o">=</span> <span class="s1">&#39;ST500DM002&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">sata_uuid</span></code> enables secondary media on a SATA interface for this device and
+is used to locate the device node as it appears to the kernel of the first
+deployment stage to allow LAVA to write the secondary image.</li>
+<li><code class="docutils literal notranslate"><span class="pre">sata_label</span></code> will need to be specified in the test job to identify the
+SATA device to use for secondary media.</li>
+</ul>
+<p>In this case, <code class="docutils literal notranslate"><span class="pre">boot_part</span></code>, <code class="docutils literal notranslate"><span class="pre">device_id</span></code>, <code class="docutils literal notranslate"><span class="pre">grub_interface</span></code> and
+<code class="docutils literal notranslate"><span class="pre">uboot_interface</span></code> are left as default values from the device-type template.</p>
+<p>A more complete device dictionary would look like:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_label</span> <span class="o">=</span> <span class="s1">&#39;ST500DM002&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_uuid</span> <span class="o">=</span> <span class="s1">&#39;ata-ST500DM002-1BD142_S2AKYFSN&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">device_id</span> <span class="o">=</span> <span class="m">0</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">sata_interface</span> <span class="o">=</span> <span class="s1">&#39;hd0&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">boot_part</span> <span class="o">=</span> <span class="m">1</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="device-template-example">
+<h3>Device template example<a class="headerlink" href="#device-template-example" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/device-types/base.jinja2">https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/device-types/base.jinja2</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The duplication of <code class="docutils literal notranslate"><span class="pre">uboot_interface</span></code> and <code class="docutils literal notranslate"><span class="pre">grub_interface</span></code> is yet
+to be fixed in the dispatcher code. Currently, the same interface gets set
+for each for this specific item and one entry is simply unused at runtime.</p>
+</div>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">sata_uuid</span> <span class="k">or</span> <span class="nv">sd_uuid</span> <span class="k">or</span> <span class="nv">usb_uuid</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x"> media:</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">sata_uuid</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">   sata:</span>
+<span class="x">     UUID-required: </span><span class="cp">{{</span> <span class="nv">uuid_required</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="kp">True</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">     </span><span class="cp">{{</span> <span class="nv">sata_label</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;ST160LM003&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">:</span>
+<span class="x">       uuid: </span><span class="cp">{{</span> <span class="nv">sata_uuid</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">       device_id: </span><span class="cp">{{</span> <span class="nv">sata_id</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="m">0</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">       uboot_interface: </span><span class="cp">{{</span> <span class="nv">sata_interface</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;scsi&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">       grub_interface: </span><span class="cp">{{</span> <span class="nv">sata_interface</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;hd0&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">       boot_part: </span><span class="cp">{{</span> <span class="nv">boot_part</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="m">1</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"> #  sata_uuid</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">sd_uuid</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">   sd:</span>
+<span class="x">     </span><span class="cp">{{</span> <span class="nv">sd_label</span> <span class="cp">}}</span><span class="x">:</span>
+<span class="x">       uuid: </span><span class="cp">{{</span> <span class="nv">sd_uuid</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">       device_id: </span><span class="cp">{{</span> <span class="nv">sd_device_id</span> <span class="cp">}}</span><span class="x">  # the bootloader device id for this media on the &#39;sd&#39; interface</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"> #  sd_uuid</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">usb_uuid</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">   usb:</span>
+<span class="x">     </span><span class="cp">{{</span> <span class="nv">usb_label</span><span class="o">|</span><span class="nf">default</span><span class="o">(</span><span class="s1">&#39;SanDisk_Ultra&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">:</span>
+<span class="x">       uuid: </span><span class="cp">{{</span> <span class="nv">usb_uuid</span> <span class="cp">}}</span><span class="x">  # /dev/disk/by-id/</span>
+<span class="x">       device_id: </span><span class="cp">{{</span> <span class="nv">usb_device_id</span> <span class="cp">}}</span><span class="x">  # the bootloader device id for this media on the &#39;usb&#39; interface</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"> # usb_uuid</span>
+<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x"> pass:</span>
+<span class="cp">{%</span>- <span class="k">endif</span> <span class="cp">%}</span><span class="x"> # sata_uuid_sd_uuid_usb_uuid</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dispatcher-configuration">
+<h3>Dispatcher configuration<a class="headerlink" href="#dispatcher-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The device dictionary is combined with the template to create the actual
+configuration sent to the worker:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;media&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;sata&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;ST500DM002&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;boot_part&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s1">&#39;device_id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s1">&#39;grub_interface&#39;</span><span class="p">:</span> <span class="s1">&#39;hd0&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;uboot_interface&#39;</span><span class="p">:</span> <span class="s1">&#39;scsi&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="s1">&#39;ata-ST500DM002-1BD142_S2AKYFSN&#39;</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;UUID-required&#39;</span><span class="p">:</span> <span class="bp">True</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="grub-sata-test-job-submission">
+<h3>Grub SATA Test Job submission<a class="headerlink" href="#grub-sata-test-job-submission" title="Permalink to this headline">¶</a></h3>
+<p>A test writer constructs a deployment action, after booting their chosen
+primary deployment, selecting the relevant <code class="docutils literal notranslate"><span class="pre">device_id</span></code> and deployment
+method (<code class="docutils literal notranslate"><span class="pre">to:</span> <span class="pre">sata</span></code>).</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+   <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">satadeploy</span>
+   <span class="c1"># secondary media - use the first deploy to get to a system which can deploy the next</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+   <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sata</span>
+   <span class="nt">device</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ST500DM002</span> <span class="c1"># needs to be exposed in the device-specific UI</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-uboot-with-usb-secondary-media">
+<h2>Using UBoot with USB secondary media<a class="headerlink" href="#using-uboot-with-usb-secondary-media" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Device dictionary<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">usb_label</span> <span class="o">=</span> <span class="s1">&#39;SanDiskCruzerBlade&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">usb_uuid</span> <span class="o">=</span> <span class="s1">&#39;usb-SanDisk_Cruzer_Blade_20060266531DA442AD42-0:0&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">usb_device_id</span> <span class="o">=</span> <span class="m">0</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Device template example<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/device-types/base.jinja2">https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/device-types/base.jinja2</a></p>
+<p>The template is the same as with <a class="reference internal" href="#secondary-media-grub-sata"><span class="std std-ref">Using Grub with SATA secondary media</span></a> above.</p>
+</div>
+<div class="section" id="id5">
+<h3>Dispatcher configuration<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="s2">&quot;media&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;usb&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;SanDiskCruzerBlade&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;usb-SanDisk_Cruzer_Blade_20060266531DA442AD42-0:0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="mi">0</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;UUID-required&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usb-uboot-test-job-submission">
+<h3>USB UBoot Test Job submission<a class="headerlink" href="#usb-uboot-test-job-submission" title="Permalink to this headline">¶</a></h3>
+<p>A test writer constructs a deployment action, after booting their chosen
+primary deployment, selecting the relevant <code class="docutils literal notranslate"><span class="pre">device_id</span></code> and deployment
+method (<code class="docutils literal notranslate"><span class="pre">to:</span> <span class="pre">sata</span></code>).</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+   <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">android</span>
+   <span class="nt">timeout</span><span class="p">:</span>
+     <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
+   <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">usb</span>
+   <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">android</span>
+   <span class="nt">image</span><span class="p">:</span>
+       <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://releases.linaro.org/members/arm/android/juno/16.09/juno.img.bz2</span>
+       <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bz2</span>
+   <span class="nt">device</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">SanDiskCruzerBlade</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/admin-secondary-media.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:46 GMT -->
+</html>

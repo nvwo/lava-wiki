@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/standard-armmp-ramdisk-bbb.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:46 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Standard test job for beaglebone-black &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="First steps installing LAVA" href="first-installation.html" />
+    <link rel="prev" title="Standard test job for QEMU - Sid arm64" href="standard-qemu-kernel.html" />
+    <link rel="canonical" href="standard-armmp-ramdisk-bbb.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Standard test job for beaglebone-black</a><ul>
+<li><a class="reference internal" href="#standard-test-jobs-for-other-devices">Standard test jobs for other devices</a></li>
+<li><a class="reference internal" href="#standard-armmp-bbb">Standard test job for beaglebone-black</a><ul>
+<li><a class="reference internal" href="#features-of-a-ramdisk-test-job">Features of a ramdisk test job</a></li>
+<li><a class="reference internal" href="#features-of-an-nfs-test-job">Features of an NFS test job</a></li>
+<li><a class="reference internal" href="#deploy">Deploy</a><ul>
+<li><a class="reference internal" href="#specific-options">Specific options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#boot">Boot</a></li>
+<li><a class="reference internal" href="#test">Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="standard-qemu-kernel.html" title="Previous Chapter: Standard test job for QEMU - Sid arm64"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Standard test...</span>
+    </a>
+  </li>
+  <li>
+    <a href="first-installation.html" title="Next Chapter: First steps installing LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">First steps i... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="standard-test-job-for-beaglebone-black">
+<span id="standard-known-devices"></span><span id="index-0"></span><h1>Standard test job for beaglebone-black<a class="headerlink" href="#standard-test-job-for-beaglebone-black" title="Permalink to this headline">¶</a></h1>
+<p>If you do not have access to a <code class="docutils literal notranslate"><span class="pre">beaglebone-black</span></code> device in a LAVA instance
+yet, you will still benefit from following the example as an introduction to
+integrating a range of ARMv7 U-Boot devices into LAVA.</p>
+<div class="section" id="standard-test-jobs-for-other-devices">
+<h2>Standard test jobs for other devices<a class="headerlink" href="#standard-test-jobs-for-other-devices" title="Permalink to this headline">¶</a></h2>
+<p>If you do not have a beaglebone-black available, there are very similar
+standard test jobs available for <code class="docutils literal notranslate"><span class="pre">arndale</span></code>, <code class="docutils literal notranslate"><span class="pre">cubietruck</span></code> and <code class="docutils literal notranslate"><span class="pre">panda</span></code>
+devices. “These files are very similar; typically the only substantive changes
+come down to the <abbr title="Device Tree Blob">DTB</abbr> for the relevant device type.</p>
+<ul class="simple">
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-ramdisk-panda.html">panda ramdisk</a>: <code class="docutils literal notranslate"><span class="pre">omap4-panda.dtb</span></code></li>
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-nfs-panda.html">panda NFS</a>: <code class="docutils literal notranslate"><span class="pre">omap4-panda.dtb</span></code></li>
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-ramdisk-arndale.html">arndale</a>: <code class="docutils literal notranslate"><span class="pre">exynos5250-arndale.dtb</span></code></li>
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-ramdisk-cubietruck.html">cubietruck ramdisk</a>: <code class="docutils literal notranslate"><span class="pre">sun7i-a20-cubietruck.dtb</span></code></li>
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-nfs-cubietruck.html">cubietruck NFS</a>: <code class="docutils literal notranslate"><span class="pre">sun7i-a20-cubietruck.dtb</span></code></li>
+</ul>
+</div>
+<div class="section" id="standard-armmp-bbb">
+<span id="id1"></span><h2>Standard test job for beaglebone-black<a class="headerlink" href="#standard-armmp-bbb" title="Permalink to this headline">¶</a></h2>
+<p>The first standard job for a beaglebone-black is a simple ramdisk test job.</p>
+<ul class="simple">
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-ramdisk-bbb.html">standard-armmp-ramdisk-bbb.yaml</a></li>
+<li><a class="reference external" href="examples/test-jobs/standard-armmp-nfs-bbb.html">standard-armmp-nfs-bbb.yaml</a></li>
+</ul>
+<div class="section" id="features-of-a-ramdisk-test-job">
+<h3>Features of a ramdisk test job<a class="headerlink" href="#features-of-a-ramdisk-test-job" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Minimal system</strong> -  sometimes based on a full OS like Debian or
+OpenEmbedded, sometimes a custom built system. In this standard test job, the
+ramdisk is built by installing the associated kernel package in a Debian
+system. The ramdisk is not a full system, certain utilities are omitted or
+replaced with minimal alternatives from <code class="docutils literal notranslate"><span class="pre">busybox</span></code>.</li>
+<li><strong>Custom prompt</strong> - <code class="docutils literal notranslate"><span class="pre">(initramfs)</span></code> needs to be specified instead of a login
+prompt like <code class="docutils literal notranslate"><span class="pre">root&#64;debian</span></code>.</li>
+<li><strong>Modifications</strong> - LAVA needs to modify the ramdisk if a test action is
+specified in a ramdisk test job to be able to add the scripts which support
+the operation of the test shell. Once modified, LAVA has to repack the
+ramdisk, including adding a U-Boot header if the device requires one.</li>
+</ul>
+</div>
+<div class="section" id="features-of-an-nfs-test-job">
+<h3>Features of an NFS test job<a class="headerlink" href="#features-of-an-nfs-test-job" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Full system</strong> - a basic bootstrap of the OS like Debian, Ubuntu or Fedora
+with configured users and a full init system, e.g. systemd. When building a
+new rootfs, ensure the root user password is set or cleared, many systems
+will use a random root password until set. Network configuration may also
+be needed, e.g. to use DNS.</li>
+<li><strong>Standard prompt</strong> - typically <code class="docutils literal notranslate"><span class="pre">root&#64;jessie:</span></code> or similar. When building
+or modifying a rootfs, ensure that the prompt is described alongside the
+rootfs tarball so that other users are able to use the file.</li>
+<li><strong>Modifications</strong> - LAVA needs to modify the rootfs if a test action is
+specified in an NFS test job to be able to add the scripts which support the
+operation of the test shell. If modules are provided, these are added to the
+rootfs as well.</li>
+</ul>
+</div>
+<div class="section" id="deploy">
+<h3>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline">¶</a></h3>
+<p>U-Boot support in LAVA supports a variety of deployment methods. This standard
+job will use the Debian <abbr title="ARM Multiple Platform">ARMMP</abbr> kernel package.
+The standard build script for this test job prepares a simple root filesystem
+and installs the ARMMP kernel. The installation scripts in Debian generate a
+suitable ramdisk and the script builds a tarball (<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>) of the kernel
+modules from the package.</p>
+<ul class="simple">
+<li><strong>kernel</strong> - <code class="docutils literal notranslate"><span class="pre">vmlinuz</span></code></li>
+<li><strong>dtb</strong> - <code class="docutils literal notranslate"><span class="pre">dtbs/am335x-boneblack.dtb</span></code></li>
+<li><strong>ramdisk</strong> - <code class="docutils literal notranslate"><span class="pre">initramfs.cpio.gz</span></code></li>
+<li><strong>modules</strong> - <code class="docutils literal notranslate"><span class="pre">modules.tar.gz</span></code></li>
+</ul>
+<div class="section" id="specific-options">
+<h4>Specific options<a class="headerlink" href="#specific-options" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">modules.tar.gz</span></code> and <code class="docutils literal notranslate"><span class="pre">initramfs.cpio.gz</span></code> are both compressed using
+<code class="docutils literal notranslate"><span class="pre">gzip</span></code> and this <strong>must</strong> be specified in the test job definition.</p>
+<p>Finally, although the ramdisk was built on a Debian system, the ramdisk itself
+does not behave in the same way as a full Debian system. It lacks critical
+components like <code class="docutils literal notranslate"><span class="pre">apt</span></code>, so the test job specifies that the test shell can only
+expect basic compatibility by specifying <code class="docutils literal notranslate"><span class="pre">oe</span></code> for OpenEmbedded.</p>
+<pre class="code yaml literal-block">
+<span class="name tag">actions</span><span class="punctuation">:</span>
+<span class="comment single"># DEPLOY_BLOCK</span>
+<span class="punctuation indicator">-</span> <span class="name tag">deploy</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">4</span>
+    <span class="name tag">to</span><span class="punctuation">:</span> <span class="literal scalar plain">tftp</span>
+    <span class="name tag">kernel</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://example.com/vmlinuz-4.9.0-4-armmp</span>
+      <span class="name tag">type</span><span class="punctuation">:</span> <span class="literal scalar plain">zimage</span>
+    <span class="name tag">ramdisk</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://example.com/initrd.img-4.9.0-4-armmp.gz</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="comment single"># modules</span>
+    <span class="name tag">modules</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://example.com/modules.tar.gz</span>
+      <span class="name tag">compression</span><span class="punctuation">:</span> <span class="literal scalar plain">gz</span>
+    <span class="comment single"># despite this being a Debian initramfs, it is not a complete Debian rootfs, so use oe compatibility</span>
+    <span class="name tag">dtb</span><span class="punctuation">:</span>
+      <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">http://example.com/am335x-boneblack.dtb</span>
+</pre>
+</div>
+</div>
+<div class="section" id="boot">
+<h3>Boot<a class="headerlink" href="#boot" title="Permalink to this headline">¶</a></h3>
+<p>U-Boot support in LAVA supports a variety of deployment methods. This standard
+job will use the <code class="docutils literal notranslate"><span class="pre">ramdisk</span></code> commands from the <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> template.</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">boot</span><span class="punctuation">:</span>
+    <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">u-boot</span>
+    <span class="name tag">commands</span><span class="punctuation">:</span> <span class="literal scalar plain">ramdisk</span>
+    <span class="name tag">prompts</span><span class="punctuation">:</span>
+    <span class="comment single"># escape the brackets to ensure that the prompt does not match</span>
+    <span class="comment single"># kernel debug lines which may mention initramfs</span>
+    <span class="punctuation indicator">-</span> <span class="literal string">'\(initramfs\)'</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">2</span>
+</pre>
+</div>
+<div class="section" id="test">
+<h3>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h3>
+<p>The limitation of a ramdisk deployment is that certain tools (like <code class="docutils literal notranslate"><span class="pre">apt</span></code>) are
+not available, so the test definition used with this test job is a fairly
+minimal <em>smoke-test</em>. Avoid test definitions which specify packages to be
+installed in the <code class="docutils literal notranslate"><span class="pre">install:</span> <span class="pre">deps:</span></code> list.</p>
+<pre class="code yaml literal-block">
+<span class="punctuation indicator">-</span> <span class="name tag">test</span><span class="punctuation">:</span>
+    <span class="name tag">timeout</span><span class="punctuation">:</span>
+      <span class="name tag">minutes</span><span class="punctuation">:</span> <span class="literal scalar plain">5</span>
+    <span class="name tag">definitions</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">repository</span><span class="punctuation">:</span> <span class="literal scalar plain">http://git.linaro.org/lava-team/lava-functional-tests.git</span>
+      <span class="name tag">from</span><span class="punctuation">:</span> <span class="literal scalar plain">git</span>
+      <span class="name tag">path</span><span class="punctuation">:</span> <span class="literal scalar plain">lava-test-shell/smoke-tests-basic.yaml</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">smoke-tests</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/standard-armmp-ramdisk-bbb.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:06 GMT -->
+</html>

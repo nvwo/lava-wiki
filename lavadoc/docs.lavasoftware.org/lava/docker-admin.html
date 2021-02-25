@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/docker-admin.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Administering LAVA using Docker &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="FVP" href="fvp.html" />
+    <link rel="prev" title="Administrator debugging" href="pipeline-debug.html" />
+    <link rel="canonical" href="docker-admin.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Administering LAVA using Docker</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li><a class="reference internal" href="#docker-networking">Docker Networking</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#official-lava-software-docker-images">Official LAVA Software Docker images</a><ul>
+<li><a class="reference internal" href="#daily-builds">Daily builds</a></li>
+<li><a class="reference internal" href="#official-lava-releases-using-docker">Official LAVA Releases using Docker</a><ul>
+<li><a class="reference internal" href="#lava-dispatcher">lava-dispatcher</a></li>
+<li><a class="reference internal" href="#lava-server">lava-server</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#command-lines">Command lines</a><ul>
+<li><a class="reference internal" href="#posix-shell">POSIX shell</a></li>
+<li><a class="reference internal" href="#python">Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-dispatcher-in-docker">lava-dispatcher in docker</a><ul>
+<li><a class="reference internal" href="#mocking-up-lxc-inside-docker">Mocking up LXC inside docker</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-server-in-docker">lava-server in docker</a></li>
+<li><a class="reference internal" href="#lava-coordinator">LAVA Coordinator</a></li>
+<li><a class="reference internal" href="#ci-images">CI images</a></li>
+<li><a class="reference internal" href="#id2">lava-dispatcher</a></li>
+<li><a class="reference internal" href="#id3">lava-server</a><ul>
+<li><a class="reference internal" href="#superusers">Superusers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-lava-server-lava-dispatcher-together">Running lava-server &amp; lava-dispatcher together</a></li>
+<li><a class="reference internal" href="#separate-services-in-separate-docker-containers">Separate services in separate Docker containers</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-debug.html" title="Previous Chapter: Administrator debugging"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Administrator...</span>
+    </a>
+  </li>
+  <li>
+    <a href="fvp.html" title="Next Chapter: FVP"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">FVP &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="administering-lava-using-docker">
+<span id="docker-admin"></span><span id="index-0"></span><h1>Administering LAVA using Docker<a class="headerlink" href="#administering-lava-using-docker" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<span id="docker-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">For buster or later, use docker.io from Debian
+<a class="reference external" href="https://tracker.debian.org/pkg/docker.io">https://tracker.debian.org/pkg/docker.io</a></p>
+</li>
+<li><p class="first">add yourself to the docker group to avoid the need for <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+</li>
+<li><p class="first">Ensure that your docker installation has created a suitable
+network bridge (often called <code class="docutils literal notranslate"><span class="pre">docker0</span></code>).</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#docker-networking"><span class="std std-ref">Docker Networking</span></a></p>
+</div>
+</li>
+<li><p class="first">Not all docker images are available for all architectures. LAVA
+has support for amd64 and arm64 docker images.</p>
+</li>
+</ol>
+<p>Using LAVA with Docker is also a regular topic of discussion on the
+<a class="reference internal" href="support.html#lava-devel"><span class="std std-ref">lava-devel</span></a> mailing list.</p>
+<p><a class="reference external" href="https://docs.docker.com/engine/reference/commandline/run/">https://docs.docker.com/engine/reference/commandline/run/</a></p>
+<div class="section" id="docker-networking">
+<span id="index-1"></span><span id="id1"></span><h3>Docker Networking<a class="headerlink" href="#docker-networking" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://docs.docker.com/engine/reference/commandline/network_create/">https://docs.docker.com/engine/reference/commandline/network_create/</a></p>
+<p>LAVA typically uses network connections not just for the communication
+between master and worker but also to control the <a class="reference internal" href="glossary.html#term-dut"><span class="xref std std-term">DUT</span></a>. It is
+important to have reliable networking for the docker components.</p>
+<p>If you have not done so already, create a new network for docker to
+use, based on the <code class="docutils literal notranslate"><span class="pre">docker0</span></code> bridge which should already have been
+created by docker. The subnet you choose is up to you.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker network create --subnet=172.18.0.0/16 dockernet
+f9ca89ac46ab97e5d905a0858a03f8983941e8f4583b71e1996bbaa0d57d3138
+</pre></div>
+</div>
+<p>When you start containers, you can specify that network name and then
+provide a static IPv4 address for the container. This is particularly
+important if you want to start a <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> container and then
+connect a worker. The worker can be another docker container or it can
+use <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> installed directly on this or another system.
+You will need to make sure that the docker network is accessible to any
+worker you want to attach to the new container.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker run --net dockernet --ip 172.18.0.5 -it hub.lavasoftware.org/lava/lava/lava-dispatcher:2018.10
+</pre></div>
+</div>
+<p>This IP address (or a hostname if you configure local DNS
+appropriately) can then be used in commands to docker run to start a
+<code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> container by updating the MASTER_URL and LOGGER_URL
+variables.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>...
+-e &quot;LOGGER_URL=tcp://172.18.0.5:5555&quot; \
+-e &quot;MASTER_URL=tcp://172.18.0.5:5556&quot; \
+...
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="official-lava-software-docker-images">
+<span id="lava-docker-images"></span><h1>Official LAVA Software Docker images<a class="headerlink" href="#official-lava-software-docker-images" title="Permalink to this headline">¶</a></h1>
+<p>Official LAVA Software Docker images are available via
+<code class="docutils literal notranslate"><span class="pre">hub.lavasoftware.org</span></code> and <code class="docutils literal notranslate"><span class="pre">hub.docker.com</span></code>. In each case, two
+images are built at the same version: <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lava-server</span></code>, each image is built for two architectures, <code class="docutils literal notranslate"><span class="pre">amd64</span></code>
+and <code class="docutils literal notranslate"><span class="pre">aarch64</span></code>.</p>
+<div class="section" id="daily-builds">
+<h2>Daily builds<a class="headerlink" href="#daily-builds" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">hub.lavasoftware.org</span></code> hosts CI images regularly built from the
+<code class="docutils literal notranslate"><span class="pre">master</span></code> branch of <code class="docutils literal notranslate"><span class="pre">lava</span></code>. Images are listed in GitLab:</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava/container_registry">https://git.lavasoftware.org/lava/lava/container_registry</a></p>
+</div>
+<div class="section" id="official-lava-releases-using-docker">
+<span id="official-docker-releases"></span><h2>Official LAVA Releases using Docker<a class="headerlink" href="#official-lava-releases-using-docker" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">lavasoftware</span></code> organization on <code class="docutils literal notranslate"><span class="pre">hub.docker.com</span></code> hosts releases
+of LAVA (<a class="reference external" href="https://hub.docker.com/u/lavasoftware/">https://hub.docker.com/u/lavasoftware/</a>) by retagging images
+from hub.lavasoftware.org and pushing to hub.docker.com . Users are
+free to use either hub.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Due to naming conventions on hub.docker.com, the architecture
+is included in the image name <code class="docutils literal notranslate"><span class="pre">amd64-lava-server</span></code> when tagged for
+hub.docker.com.</p>
+</div>
+<div class="section" id="lava-dispatcher">
+<h3>lava-dispatcher<a class="headerlink" href="#lava-dispatcher" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://hub.docker.com/r/lavasoftware/lava-dispatcher">https://hub.docker.com/r/lavasoftware/lava-dispatcher</a></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker pull lavasoftware/lava-dispatcher:2019.01
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker pull hub.lavasoftware.org/lava/lava/lava-dispatcher:2019.01
+</pre></div>
+</div>
+</div>
+<div class="section" id="lava-server">
+<h3>lava-server<a class="headerlink" href="#lava-server" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://hub.docker.com/r/lavasoftware/lava-server/">https://hub.docker.com/r/lavasoftware/lava-server/</a></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker pull lavasoftware/lava-server:2019.01
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>docker pull hub.lavasoftware.org/lava/lava/lava-server:2019.01
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="command-lines">
+<h2>Command lines<a class="headerlink" href="#command-lines" title="Permalink to this headline">¶</a></h2>
+<p>The use of docker with LAVA is an active area of development, including
+how to configure containers for a variety of situations and how to
+manage a LAVA lab where docker is in use. If you are doing work in
+this area, please subscribe to the <a class="reference internal" href="support.html#lava-devel"><span class="std std-ref">lava-devel</span></a> mailing list and
+ask for advice on how to use LAVA and docker for your use case.</p>
+<div class="section" id="posix-shell">
+<h3>POSIX shell<a class="headerlink" href="#posix-shell" title="Permalink to this headline">¶</a></h3>
+<p>Command lines get long, so use wrapper scripts, e.g.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#!/bin/sh
+set -e
+set -x
+
+docker run \
+-e &quot;DISPATCHER_HOSTNAME=--hostname=calvin-2018.7-88&quot; \
+-e &quot;LOGGER_URL=tcp://calvin:5555&quot; \
+-e &quot;MASTER_URL=tcp://calvin:5556&quot; \
+--name calvin-docker-88-3 \
+hub.lavasoftware.org/lava/lava/lava-dispatcher/master:2018.7-88-ga7b7939dd
+</pre></div>
+</div>
+</div>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>If you are using docker for more than a few test containers, you will
+probably find the Python docker SDK library very useful.</p>
+<ul class="simple">
+<li>Debian <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">install</span> <span class="pre">python3-docker</span></code>
+<a class="reference external" href="https://packages.debian.org/unstable/python3-docker">https://packages.debian.org/unstable/python3-docker</a> - If you install
+the full <code class="docutils literal notranslate"><span class="pre">lava</span></code> set on Debian Buster or newer, <code class="docutils literal notranslate"><span class="pre">python3-docker</span></code>
+and <code class="docutils literal notranslate"><span class="pre">docker.io</span></code> will be installed by the <code class="docutils literal notranslate"><span class="pre">lava</span></code> metapackage.</li>
+<li>GitHub <a class="reference external" href="https://github.com/docker/docker-py">https://github.com/docker/docker-py</a></li>
+<li>Documentation: <a class="reference external" href="https://docker-py.readthedocs.io/en/stable/">https://docker-py.readthedocs.io/en/stable/</a></li>
+</ul>
+<p>The Python Docker SDK lets you do anything the docker command does,
+but from within Python apps – run containers, manage containers, manage
+Swarms, etc.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">docker</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">from_env</span><span class="p">()</span>
+<span class="n">container_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">containers</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;debian&quot;</span><span class="p">,</span> <span class="n">detach</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="lava-dispatcher-in-docker">
+<span id="modifying-docker-dispatcher"></span><h2>lava-dispatcher in docker<a class="headerlink" href="#lava-dispatcher-in-docker" title="Permalink to this headline">¶</a></h2>
+<p>The official LAVA Software docker images for <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> do not
+include details like <code class="docutils literal notranslate"><span class="pre">ser2net</span></code> configuration or <code class="docutils literal notranslate"><span class="pre">pdudaemon</span></code> or
+other remote power control scripts. These will need to be added
+according to your local lab configuration. Depending on the size of
+your lab, you may choose to use a docker volume or <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span></code> to
+create one or more customized docker images based on the official
+images.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://docs.docker.com/storage/volumes/">Docker documentation on volumes</a> and <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/build/">Docker
+documentation on building</a>
+images.</p>
+</div>
+<div class="section" id="mocking-up-lxc-inside-docker">
+<span id="lava-lxc-mocker"></span><span id="index-2"></span><h3>Mocking up LXC inside docker<a class="headerlink" href="#mocking-up-lxc-inside-docker" title="Permalink to this headline">¶</a></h3>
+<p>LXC cannot be installed/used inside a Docker container and the Docker
+container can replace the need for the LXC. This has the useful
+advantages that specialized tools which need to be isolated inside an
+LXC can be pre-installed in a docker container instead of needing to be
+installed or compiled within the LXC.</p>
+<p>However, there are also disadvantages:</p>
+<ul class="simple">
+<li><strong>The Docker is persistent</strong> - currently, <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lava-run</span></code> need to be inside the container, so the next test job
+for that worker picks up the changes to the docker from this test
+job.</li>
+<li>The test job would need modification to not call LXC.</li>
+</ul>
+<p>Work is underway to solve the persistence problem. In the meantime, it
+is possible to run test jobs using Docker if the persistence is handled
+correctly but this is usually only practical for single-user developer
+instances.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lava-lxc-mocker</span></code> exists to solve the second problem. By mocking up
+the calls to <code class="docutils literal notranslate"><span class="pre">lxc-*</span></code> utilities, <code class="docutils literal notranslate"><span class="pre">lava-lxc-mocker</span></code> allows the same
+test job to be run on a device managed by a <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> in Docker
+as on a device managed by a <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> running on bare metal.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lava-lxc-mocker</span></code> is pre-installed in all <a class="reference internal" href="#lava-docker-images"><span class="std std-ref">Official LAVA Software Docker images</span></a>.</p>
+</div>
+</div>
+<div class="section" id="lava-server-in-docker">
+<span id="docker-master"></span><h2>lava-server in docker<a class="headerlink" href="#lava-server-in-docker" title="Permalink to this headline">¶</a></h2>
+<p>The official LAVA Software docker images for <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> currently
+include PostgreSQL. Work is planned to use an external PostgreSQL.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#docker-superusers"><span class="std std-ref">Superusers</span></a></p>
+</div>
+</div>
+<div class="section" id="lava-coordinator">
+<h2>LAVA Coordinator<a class="headerlink" href="#lava-coordinator" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> is neither installed nor configured in any
+official LAVA Software docker image.  Therefore, a worker running from
+one of these images will not have the configuration file
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-coordinator/lava-coordinator.conf</span></code> to use
+<code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code>, so cannot run <a class="reference internal" href="multinode.html#multinode"><span class="std std-ref">MultiNode LAVA</span></a> test jobs. The
+configuration file would need to be provided (configured for an
+external coordinator installed using packages), either using a docker
+volume used as a fileshare or by a modification to the docker image for
+lava-dispatcher.</p>
+<p>Work is planned to refactor <code class="docutils literal notranslate"><span class="pre">lava-coordinator</span></code> to not require
+external configuration or packaging.</p>
+</div>
+<div class="section" id="ci-images">
+<h2>CI images<a class="headerlink" href="#ci-images" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lava/lava/lava-dispatcher/master</span></code> on <code class="docutils literal notranslate"><span class="pre">hub.lavasoftware.org</span></code>
+contains images like 2018.7-101-g5987db8b5</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#official-docker-releases"><span class="std std-ref">Official LAVA Releases using Docker</span></a></p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>lava-dispatcher<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This example runs a new worker for an existing master which can be:</p>
+<ul class="simple">
+<li>on the same machine but installed from packages, not docker</li>
+<li>on a different machine and accessible through DNS</li>
+</ul>
+<p>In either case, the machine running <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> is accessible on
+the network as <code class="docutils literal notranslate"><span class="pre">calvin</span></code>. (Replace this hostname with your local
+machine hostname.)</p>
+<p>To run both master and worker on a single machine, both using docker,
+see <a class="reference internal" href="#two-dockers-together"><span class="std std-ref">Running lava-server &amp; lava-dispatcher together</span></a>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DISPATCHER_HOSTNAME=--name=calvin-2018.7-88
+
+/usr/bin/lava-worker --level $LOGLEVEL --log-file $LOGFILE --url $SERVER_URL $DISPATCHER_HOSTNAME
+
+$ docker run -e &quot;DISPATCHER_HOSTNAME=--name=calvin-2018.7-88&quot; -e &quot;URL=http://calvin/&quot; --name calvin-docker-88-4  hub.lavasoftware.org/lava/lava/lava-dispatcher/master:2018.7-88-ga7b7939dd
+2018-10-03 15:08:32,852    INFO [INIT] LAVA worker has started.
+2018-10-03 15:08:32,852    INFO [INIT] Using protocol version 3
+</pre></div>
+</div>
+<p>If you make mistakes, set the worker to Retired in the Django admin
+interface and use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">&lt;name&gt;</span></code> to allow you to re-use the same
+container with different arguments next time.</p>
+</div>
+<div class="section" id="id3">
+<h2>lava-server<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker run --net dockernet --ip 172.18.0.5 -it hub.lavasoftware.org/lava/lava/lava-server/master:2018.7-88-ga7b7939dd
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the <code class="docutils literal notranslate"><span class="pre">dockernet</span></code> docker network needs to already exist and
+is just an example name - choose your own name according to your own
+preferences. See <a class="reference external" href="https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge">https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge</a></p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#docker-networking"><span class="std std-ref">Docker Networking</span></a></p>
+</div>
+<div class="section" id="superusers">
+<span id="docker-superusers"></span><h3>Superusers<a class="headerlink" href="#superusers" title="Permalink to this headline">¶</a></h3>
+<p>There is no superuser in the <cite>lava-server</cite> docker container, admins
+need to login to the container and create an initial superuser:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker exec -it a936cc14b913 lava-server manage users add --staff --superuser --email &lt;EMAIL&gt; --passwd &lt;PASSWORD&gt; &lt;USERNAME&gt;
+</pre></div>
+</div>
+<p>Then this user can <a class="reference internal" href="first_steps.html#logging-in"><span class="std std-ref">login through the normal UI</span></a> and
+create <a class="reference internal" href="first_steps.html#authentication-tokens"><span class="std std-ref">Authentication Tokens</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#modifying-docker-dispatcher"><span class="std std-ref">lava-dispatcher in docker</span></a> and <a class="reference internal" href="#docker-master"><span class="std std-ref">using
+lava-server from docker</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="running-lava-server-lava-dispatcher-together">
+<span id="two-dockers-together"></span><h2>Running lava-server &amp; lava-dispatcher together<a class="headerlink" href="#running-lava-server-lava-dispatcher-together" title="Permalink to this headline">¶</a></h2>
+<p>The worker <strong>must</strong> be on the same <strong>docker network</strong> as the master
+because docker only exposes the master ports to that network.</p>
+<blockquote>
+<div>Containers connected to the same user-defined bridge network
+automatically expose all ports to each other, and no ports to the
+outside world. This allows containerized applications to communicate
+with each other easily, without accidentally opening access to the
+outside world.</div></blockquote>
+<p>So to run a worker in docker to work with a master in docker on the
+same machine, the worker must be given the <code class="docutils literal notranslate"><span class="pre">--net</span> <span class="pre">dockernet</span></code> option.</p>
+<p>Depending on the tasks, you should also assign an IP address to the
+worker, on the same docker network.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ docker run --net dockernet --ip 172.18.0.6 ....
+</pre></div>
+</div>
+<p>(This is why docker start up scripts are going to be so useful.)</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#docker-networking"><span class="std std-ref">Docker Networking</span></a></p>
+</div>
+</div>
+<div class="section" id="separate-services-in-separate-docker-containers">
+<span id="docker-microservices"></span><h2>Separate services in separate Docker containers<a class="headerlink" href="#separate-services-in-separate-docker-containers" title="Permalink to this headline">¶</a></h2>
+<p>Work is beginning to extend the <a class="reference internal" href="#docker-admin"><span class="std std-ref">Docker support</span></a> to
+have different parts of LAVA in different containers. Some parts of
+this are easier to implement than others, so the support will arrive in
+stages.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="advanced-installation.html#configuring-ui"><span class="std std-ref">Configuring the LAVA UI</span></a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/docker-admin.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+</html>

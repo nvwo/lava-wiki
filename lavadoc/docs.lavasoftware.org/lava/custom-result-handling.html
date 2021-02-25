@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/custom-result-handling.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Custom result handling &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Correlating a test result with the source code" href="relating.html" />
+    <link rel="prev" title="Exporting data out of LAVA" href="data-export.html" />
+    <link rel="canonical" href="custom-result-handling.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Custom result handling</a><ul>
+<li><a class="reference internal" href="#closing-the-ci-loop">Closing the CI loop</a><ul>
+<li><a class="reference internal" href="#important-features-of-a-ci-loop">Important features of a CI loop</a></li>
+<li><a class="reference internal" href="#where-lava-fits-into-the-testing">Where LAVA fits into the testing</a></li>
+<li><a class="reference internal" href="#splitting-the-testing">Splitting the testing</a></li>
+<li><a class="reference internal" href="#questions-to-ask">Questions to ask</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#kernelci-org">KernelCI.org</a></li>
+<li><a class="reference internal" href="#squad">SQUAD</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="data-export.html" title="Previous Chapter: Exporting data out of LAVA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Exporting dat...</span>
+    </a>
+  </li>
+  <li>
+    <a href="relating.html" title="Next Chapter: Correlating a test result with the source code"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Correlating a... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="custom-result-handling">
+<span id="index-0"></span><span id="id1"></span><h1>Custom result handling<a class="headerlink" href="#custom-result-handling" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="closing-the-ci-loop">
+<span id="ci-loop"></span><span id="index-1"></span><h2>Closing the CI loop<a class="headerlink" href="#closing-the-ci-loop" title="Permalink to this headline">¶</a></h2>
+<p>LAVA is generic and will just display results as generic results - LAVA does
+not have any specific intelligence to know how to do anything more or how to
+make those results meaningful to the developers who originally caused the
+<abbr title="Continuous Integration">CI</abbr> system to spawn the test job.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/ci-loop.svg"><img alt="A CI Loop" src="_images/ci-loop.svg" width="50%" /></a>
+</div>
+<p>The stages in light blue, (<strong>analyze</strong>, <strong>develop</strong> and <strong>commit</strong>) are the
+developer input. (The <em>develop</em> stage is here assumed to include some amount of
+local testing). Building the tree after a commit is typically handed off to a
+dedicated service like <a class="reference external" href="https://jenkins.io/">Jenkins</a>. Jenkins in turn is able to hand off the
+testing of the build to LAVA.</p>
+<p>The missing step here is the reporting. Each team needs customized reports and
+data based on custom criteria. LAVA cannot meet all these requirements at the
+same time. Instead, teams are advised to design a custom frontend which
+collects data from LAVA, the build system and the VCS and presents that data in
+a cohesive manner.</p>
+<p>If the development team is very small, the entire team may be able to retain an
+overview of the entire CI system. This allows the team to get useful, relevant
+results directly. However, this model does not scale to larger teams.</p>
+<div class="section" id="important-features-of-a-ci-loop">
+<h3>Important features of a CI loop<a class="headerlink" href="#important-features-of-a-ci-loop" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><strong>Time</strong> - developers need test results in a timely fashion, before they
+have moved on to a completely unrelated topic.</p>
+</li>
+<li><p class="first"><strong>Relevance</strong> - the results which the developer sees need to be directly
+relevant to the work which started the CI loop in the first place.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">this can easily involve multiple variants of the final results
+report to cover the various topics which that development team needs to
+handle.</p>
+</div>
+</li>
+<li><p class="first"><strong>Usefulness</strong> - this includes not sending reports that everything is working
+when only failure reports are useful, or sending reports that only hint at
+the problem rather than provide access to the actual fault. This can be the
+hardest element to get right. The more time is spent here talking to the
+development team, the better the process will work for everyone.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="where-lava-fits-into-the-testing">
+<h3>Where LAVA fits into the testing<a class="headerlink" href="#where-lava-fits-into-the-testing" title="Permalink to this headline">¶</a></h3>
+<p>Build tools like Jenkins can also do an amount of testing on the built files,
+for example unit tests. On the basis of always optimizing the CI loop to fail
+early, it is always worth balancing the number of tests run after the build
+against how long those tests take to run. It may be pointless to test a build
+in LAVA when that a unit test on that build would have failed. It is also
+possible to execute the build, submit to LAVA and run the unit tests as a new
+Jenkins job in parallel if the unit tests are slow.</p>
+<p>LAVA is best suited for those tests where the hardware is directly relevant. In
+some cases, the machines used for building the files will be faster than the
+machines used to test the files in LAVA. If those files can be tested on the
+faster build machine, omit that part of the testing from the submission to
+LAVA.</p>
+<p>LAVA combines the benefits of ready access to a multiple types of device with a
+genuinely scalable scheduler. LAVA is capable of running thousands of test jobs
+a day across hundreds of devices on a single instance. With a custom frontend
+organizing the submissions and collating the results, this can scale to larger
+groups using multiple LAVA instances.</p>
+</div>
+<div class="section" id="splitting-the-testing">
+<h3>Splitting the testing<a class="headerlink" href="#splitting-the-testing" title="Permalink to this headline">¶</a></h3>
+<p>Not all tests need to be run on every commit. Identify which tests can be run
+on a daily or weekly cycle or as a bespoke per-release test.</p>
+<p>It is not necessarily appropriate for all commits to go through the entire CI
+loop. The hook in the version control system which triggers the Jenkins build
+could be based on merges rather than commits.</p>
+</div>
+<div class="section" id="questions-to-ask">
+<h3>Questions to ask<a class="headerlink" href="#questions-to-ask" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><strong>Frequency</strong> - how often is the loop to be triggered?<ul>
+<li>Set up some test builds and test jobs and run through a variety of use
+cases to get an idea of how long it takes to get from the commit hook to
+the results being available to what will become your frontend.</li>
+<li>Investigate where the hardware involved in each stage can be improved and
+analyze what kind of hardware upgrades may be useful.</li>
+<li>Reassess the entire loop design and look at splitting the testing if the
+loop cannot be optimized to the time limits required by the team. The loop
+exists to serve the team but the expectations of the team may need to be
+managed compared to the cost of hardware upgrades or finite time limits.</li>
+</ul>
+</li>
+<li><strong>Scale</strong> - how many branches, variants, configurations and tests are
+actually needed?<ul>
+<li>Scale has a direct impact on the affordability and feasibility of the final
+loop and frontend. Ensure that the build infrastructure can handle the
+total number of variants, not just at build time but for storage.
+Developers will need access to the files which demonstrate a particular
+bug or regression</li>
+<li>Scale also provides benefits of being able to ignore anomalies.</li>
+<li>Identify how many test devices, LAVA instances and Jenkins slaves are
+needed. (As a hint, start small and design the frontend so that more can be
+added later.)</li>
+</ul>
+</li>
+<li><strong>Interface</strong> - the development of a custom interface is not a small task.
+Capturing the requirements for the interface may involve lengthy discussions
+across the development team. Where there are irreconcilable differences, a
+second frontend may become necessary, potentially pulling the same data and
+presenting it in a radically different manner.<ul>
+<li>Include discussions on how or whether to push notifications to the
+development team. Take time to consider the frequency of notification
+messages and how to limit the content to only the essential data.</li>
+<li><strong>Bisect</strong> support can flow naturally from the design of the loop <strong>if</strong>
+the loop is carefully designed. Bisect requires that a simple boolean test
+can be generated, built and executed across a set of commits. If the
+frontend implements only a single test (for example, does the kernel boot?)
+then it can be easy to identify how to provide bisect support. Tests which
+produce hundreds of results need to be slimmed down to a single pass/fail
+criterion for the bisect to work.</li>
+</ul>
+</li>
+<li><strong>Results</strong> - this may take the longest of all elements of the final loop.
+Just what results do the developers actually want and can those results be
+delivered? There may be requirements to aggregate results across many LAVA
+instances, with comparisons based on metadata from the original build as well
+as the LAVA test.<ul>
+<li>What level of detail is relevant?</li>
+<li>Different results for different members of the team or different teams?</li>
+<li>Is the data to be summarized and if so, how?</li>
+</ul>
+</li>
+<li><strong>Resourcing</strong> - a frontend has the potential to become complex and need
+long term maintenance and development.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="kernelci-org">
+<span id="index-2"></span><span id="id2"></span><h1>KernelCI.org<a class="headerlink" href="#kernelci-org" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://kernelci.org/faq/">KernelCI</a> is a build and boot automation tool for upstream Linux kernel trees.
+Under the hood, kernelci uses LAVA alongside other automation systems. The LAVA
+workload is based on booting each build of the kernel with a known working
+rootfs on as many devices as possible. KernelCI schedules builds of supported
+kernel configurations, then submits those builds to test instances. It imports
+the test results and generates a user interface which is specific to the needs
+of the upstream Linux kernel developer teams.</p>
+<p>Development of KernelCI started in 2013, gathering the requirements from the
+kernel developers. This included a number of sessions covering what the
+developers wanted and needed from the project.</p>
+<p>The specific details of the interface of KernelCI may not be directly relevant
+to other development teams, but it is a good example of the kind of custom
+frontend that the LAVA team recommend. Specific frontends may differ, but the
+ideas are common - using the results from LAVA effectively, targeting the needs
+of the development team.</p>
+<p>One important feature from KernelCI is that the devices themselves are
+development boards and can fail for reasons other than the build being tested.
+Mitigating this problem requires a balance of having enough devices to smooth
+out the anomalous results against the risk of missing an unusual corner case
+which genuinely only affects devices in a specific set of circumstances.</p>
+</div>
+<div class="section" id="squad">
+<h1>SQUAD<a class="headerlink" href="#squad" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/Linaro/squad">SQUAD</a> is a general purpose reporting dashboard. It was started  with idea
+to display the testing results from different sources together. SQUAD supports
+both direct data submissions from testing tools as well as integration with
+test execution backends. One of the supported backends is LAVA. SQUAD is able
+to work with multiple LAVA instances. It supports test jobs submission, data
+collection, data post processing and test job re-submission (in case test job
+fails due to infrastructure error).</p>
+<p><a class="reference external" href="https://qa-reports.linaro.org/">qa-reports.linaro.org</a> is an instance of SQUAD maintained at Linaro. It hosts data
+collected by <a class="reference external" href="https://lkft.linaro.org/">LKFT</a> project. Main source of testing data for LKFT is LAVA.
+The CI loop for LKFT is constructed from Jenkins (building artifacts),
+AWS S3 (storing artifacts), LAVA (test execution) and SQUAD (data dashboard).
+SQUAD proxies test job submission between Jenkins and LAVA. Than it
+subscribes to LAVA’s ZMQ publisher for test job status updates. Finally,
+when test jobs are completed, downloads test results and logs to local
+database. Storing all data locally is important for features like regression
+detection or log post processing.</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/custom-result-handling.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:34 GMT -->
+</html>

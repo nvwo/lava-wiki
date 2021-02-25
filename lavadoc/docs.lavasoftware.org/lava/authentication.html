@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/authentication.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuring user authentication &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adding your first devices" href="first-devices.html" />
+    <link rel="prev" title="Installing on a Debian system" href="installing_on_debian.html" />
+    <link rel="canonical" href="authentication.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Configuring user authentication</a><ul>
+<li><a class="reference internal" href="#using-lightweight-directory-access-protocol-ldap">Using Lightweight Directory Access Protocol (LDAP)</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="installing_on_debian.html" title="Previous Chapter: Installing on a Debian system"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Installing on...</span>
+    </a>
+  </li>
+  <li>
+    <a href="first-devices.html" title="Next Chapter: Adding your first devices"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Adding your f... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="configuring-user-authentication">
+<span id="user-authentication"></span><span id="index-0"></span><h1>Configuring user authentication<a class="headerlink" href="#configuring-user-authentication" title="Permalink to this headline">¶</a></h1>
+<p>The LAVA frontend is developed using the <a class="reference external" href="https://www.djangoproject.com/">Django</a> web application framework and
+user authentication and authorization is based on the standard <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/auth/">Django auth
+subsystems</a>. This means that it is fairly easy to integrate authentication
+against any source for which a Django backend exists. Discussed below are the
+tested and supported authentication methods for LAVA.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">LAVA used to include support for OpenID authentication (prior to
+version 2016.8), but this support had to be <strong>removed</strong> when incompatible
+changes in Django (version 1.8) caused it to break.</p>
+</div>
+<p>Local Django user accounts are supported. When using local Django user
+accounts, new user accounts need to be created by Django admin prior to use.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#admin-adding-users"><span class="std std-ref">Adding users and groups</span></a></p>
+</div>
+<div class="section" id="using-lightweight-directory-access-protocol-ldap">
+<span id="ldap-authentication"></span><h2>Using Lightweight Directory Access Protocol (LDAP)<a class="headerlink" href="#using-lightweight-directory-access-protocol-ldap" title="Permalink to this headline">¶</a></h2>
+<p>LAVA server may be configured to authenticate via Lightweight
+Directory Access Protocol (LDAP). LAVA uses the <a class="reference external" href="https://django-auth-ldap.readthedocs.io/en/latest/">django_auth_ldap</a>
+backend for LDAP authentication.</p>
+<p>LDAP server support is configured using the following parameters in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> (JSON syntax):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;AUTH_LDAP_SERVER_URI&quot;</span><span class="p">:</span> <span class="s2">&quot;ldap://ldap.example.com&quot;</span><span class="p">,</span>
+<span class="s2">&quot;AUTH_LDAP_BIND_DN&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="s2">&quot;AUTH_LDAP_BIND_PASSWORD&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="s2">&quot;AUTH_LDAP_USER_DN_TEMPLATE&quot;</span><span class="p">:</span> <span class="s2">&quot;uid=</span><span class="si">%(user)s</span><span class="s2">,ou=users,dc=example,dc=com&quot;</span><span class="p">,</span>
+<span class="s2">&quot;AUTH_LDAP_USER_ATTR_MAP&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="s2">&quot;first_name&quot;</span><span class="p">:</span> <span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;mail&quot;</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<p>Use the following parameter to configure a custom LDAP login page
+message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;LOGIN_MESSAGE_LDAP&quot;</span><span class="p">:</span> <span class="s2">&quot;If your Linaro email is first.second@linaro.org then use first.second as your username&quot;</span>
+</pre></div>
+</div>
+<p>Other supported parameters are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;AUTH_LDAP_GROUP_SEARCH&quot;</span><span class="p">:</span> <span class="s2">&quot;LDAPSearch(&#39;ou=groups,dc=example,dc=com&#39;, ldap.SCOPE_SUBTREE, &#39;(objectClass=groupOfNames)&#39;&quot;</span><span class="p">,</span>
+<span class="s2">&quot;AUTH_LDAP_USER_FLAGS_BY_GROUP&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="s2">&quot;is_active&quot;</span><span class="p">:</span> <span class="s2">&quot;cn=active,ou=django,ou=groups,dc=example,dc=com&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;is_staff&quot;</span><span class="p">:</span> <span class="s2">&quot;cn=staff,ou=django,ou=groups,dc=example,dc=com&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;is_superuser&quot;</span><span class="p">:</span> <span class="s2">&quot;cn=superuser,ou=django,ou=groups,dc=example,dc=com&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Similarly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;AUTH_LDAP_USER_SEARCH&quot;</span><span class="p">:</span> <span class="s2">&quot;LDAPSearch(&#39;o=base&#39;, ldap.SCOPE_SUBTREE, &#39;(uid=</span><span class="si">%(user)s</span><span class="s2">)&#39;)&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you need to make deeper changes that don’t fit into the
+exposed configuration, it is quite simple to tweak things in
+the code here. Edit
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/python3/dist-packages/lava_server/settings/common.py</span></code></p>
+</div>
+<p>Restart the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and <code class="docutils literal notranslate"><span class="pre">apache2</span></code> services after any
+changes.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/authentication.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:33 GMT -->
+</html>

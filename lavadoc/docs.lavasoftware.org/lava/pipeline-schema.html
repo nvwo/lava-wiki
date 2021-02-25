@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-schema.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:45 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>LAVA schema &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing the design" href="dispatcher-testing.html" />
+    <link rel="prev" title="Writing YAML job submission files" href="dispatcher-format.html" />
+    <link rel="canonical" href="pipeline-schema.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">LAVA schema</a><ul>
+<li><a class="reference internal" href="#job-submission-schema">Job Submission Schema</a><ul>
+<li><a class="reference internal" href="#schema-elements">Schema elements</a><ul>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+<li><a class="reference internal" href="#job-name">Job Name</a></li>
+<li><a class="reference internal" href="#device-type">Device Type</a></li>
+<li><a class="reference internal" href="#timeouts">Timeouts</a></li>
+<li><a class="reference internal" href="#priority">Priority</a></li>
+<li><a class="reference internal" href="#context">Context</a></li>
+<li><a class="reference internal" href="#protocols">Protocols</a></li>
+<li><a class="reference internal" href="#actions">Actions</a><ul>
+<li><a class="reference internal" href="#deploy-action">Deploy Action</a></li>
+<li><a class="reference internal" href="#boot-action">Boot Action</a></li>
+<li><a class="reference internal" href="#test-action">Test Action</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="dispatcher-format.html" title="Previous Chapter: Writing YAML job submission files"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Writing YAML ...</span>
+    </a>
+  </li>
+  <li>
+    <a href="dispatcher-testing.html" title="Next Chapter: Testing the design"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Testing the design &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-schema">
+<span id="pipeline-schema"></span><span id="index-0"></span><h1>LAVA schema<a class="headerlink" href="#lava-schema" title="Permalink to this headline">¶</a></h1>
+<p>In general, the schema used for the pipeline are constrained, not strict or
+free form. This means that the schema requires that specific elements <strong>must</strong>
+exist in specific formats but that other structures can be added without
+invalidating the file according to the schema.</p>
+<p>There are several types of schema in the pipeline:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#job-submission-schema"><span class="std std-ref">Job Submission Schema</span></a> - used by test writers</li>
+<li>Device schema - used internally to validate the output of calls to
+the <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a>.</li>
+<li>Dispatcher schema - a modified version of the job submission schema
+to handle the changes imposed when splitting multinode jobs.</li>
+</ul>
+<p>As high level constrained schema, the detail of valid files can change without
+needing a change in the schema. Schema will update only if large additions are
+made, for example is a new protocol is added but the schema itself is not
+versioned. The strategy classes impose any change of requirements in a much
+more precise manner than any schema.</p>
+<div class="section" id="job-submission-schema">
+<span id="id1"></span><h2>Job Submission Schema<a class="headerlink" href="#job-submission-schema" title="Permalink to this headline">¶</a></h2>
+<p>The Job Submission Schema exists to act as an initial filter on strings
+submitted over XML-RPC. Only a simple, fast, check is made on YAML syntax and
+basic object structure. Once this test passes, the YAML is entered into the
+database and a JobID is returned to the submitter.</p>
+<p>After submission, jobs are subject to full validation by the dispatcher where
+the details of the submission will be checked against the requirements of the
+pipeline determined by the strategies requested within the job. This validation
+check happens after the scheduler has assigned a device to the job but before
+the job starts Running. If this check fails, the job will be marked as
+Incomplete with a failure comment. During the check, URLs included in the job
+submission will be checked as well as whether the job submission can be
+successfully built into a valid pipeline. This validation step can only be
+repeated with full access to the device configuration of the instance.</p>
+<p>During the submission process, there are also checks on the device type, device
+restrictions and other scheduler criteria. These are checked after the schema
+check.</p>
+<p>An example pipeline job for a QEMU device looks like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample JOB definition for a KVM</span>
+
+<span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu-pipeline</span>
+<span class="nt">timeouts</span><span class="p">:</span>
+ <span class="nt">job</span><span class="p">:</span>
+   <span class="nt">minutes</span><span class="p">:</span> <span class="nt">15            # timeout for the whole job (default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">??h)</span>
+ <span class="nt">action</span><span class="p">:</span>
+   <span class="nt">minutes</span><span class="p">:</span> <span class="nt">5         # default timeout applied for each action; can be overridden in the action itself (default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">?h)</span>
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">medium</span>
+
+<span class="nt">actions</span><span class="p">:</span>
+
+   <span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+       <span class="nt">timeout</span><span class="p">:</span>
+         <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+       <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tmpfs</span>
+       <span class="nt">images</span><span class="p">:</span>
+         <span class="nt">rootfs</span><span class="p">:</span>
+           <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://images.validation.linaro.org/kvm/standard/stretch-2.img.gz</span>
+           <span class="nt">image_arg</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">-drive format=raw,file={rootfs}</span>
+           <span class="nt">compression</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gz</span>
+       <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+
+   <span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span>
+       <span class="nt">prompts</span><span class="p">:</span>
+         <span class="p p-Indicator">-</span> <span class="s">&#39;linaro-test&#39;</span>
+         <span class="p p-Indicator">-</span> <span class="s">&#39;root@debian:~#&#39;</span>
+       <span class="nt">method</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+       <span class="nt">media</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tmpfs</span>
+       <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+
+   <span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+       <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm-basic-singlenode</span>  <span class="c1"># is not present, use &quot;test $N&quot;</span>
+       <span class="c1"># only s, m &amp; h are supported.</span>
+       <span class="nt">timeout</span><span class="p">:</span>
+         <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span> <span class="c1"># uses install:deps, so takes longer than singlenode01</span>
+       <span class="nt">definitions</span><span class="p">:</span>
+           <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+             <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+             <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+             <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+           <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://git.linaro.org/lava-team/lava-functional-tests.git</span>
+             <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+             <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/single-node/singlenode03.yaml</span>
+             <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">singlenode-advanced</span>
+</pre></div>
+</div>
+<p>The submission schema for pipeline jobs can be represented as follows:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">qemu</span>
+
+<span class="nt">job_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string (max 200 chars) Required</span>
+<span class="nt">timeouts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Required Extra</span>
+ <span class="l l-Scalar l-Scalar-Plain">job</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Required</span>
+   <span class="l l-Scalar l-Scalar-Plain">days|hours|minutes|seconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">integer Required</span>
+ <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Required</span>
+   <span class="l l-Scalar l-Scalar-Plain">days|hours|minutes|seconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">integer Required</span>
+<span class="nt">priority</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">high|medium|low|integer ([0, 100])</span>
+<span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span> <span class="nt">days|hours|minutes|seconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer Required</span>
+    <span class="nt">roles</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dictionary</span>
+<span class="nt">context</span><span class="p">:</span>
+  <span class="nt">string</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="nt">actions</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Required</span>
+   <span class="l l-Scalar l-Scalar-Plain">- deploy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Extra</span>
+       <span class="l l-Scalar l-Scalar-Plain">timeout</span><span class="p p-Indicator">:</span>
+         <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class=" -Error">       </span><span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string Required</span>
+<span class=" -Error">   </span><span class="p p-Indicator">-</span> <span class="nt">boot</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Extra</span>
+       <span class="l l-Scalar l-Scalar-Plain">prompts</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Required</span>
+         <span class="l l-Scalar l-Scalar-Plain">- string Required</span>
+       <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string Required</span>
+   <span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Extra</span>
+       <span class="l l-Scalar l-Scalar-Plain">timeout</span><span class="p p-Indicator">:</span>
+         <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+     <span class=" -Error">  </span><span class="nt">definitions</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Required Extra</span>
+           <span class="l l-Scalar l-Scalar-Plain">- repository</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string|inline</span>
+             <span class="l l-Scalar l-Scalar-Plain">from</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+             <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+             <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Elements indicated as <strong>Required</strong> must be provided if the element has
+no parent or if that parent is also Required. All other elements are
+optional.</li>
+<li>Elements indicated with <strong>Extra</strong> can have arbitrary other values
+inserted as long as the YAML remains valid. These extra values must
+still make sense to the dispatcher validation process.</li>
+<li>The type of the element is enforced within the meaning of that
+type to the python interpreter and the python YAML parser.</li>
+<li>Where alternatives are shown, only one of those alternatives is allowed,
+anything else is disallowed.</li>
+<li>Where the YAML indicates a list or a dictionary, that list or
+dictionary can be extended with other allowed elements.</li>
+</ul>
+<div class="section" id="schema-elements">
+<span id="id2"></span><h3>Schema elements<a class="headerlink" href="#schema-elements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="comments">
+<h4>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h4>
+<p>Comments in YAML start with <code class="docutils literal notranslate"><span class="pre">#</span></code> and continue to the end of that line.</p>
+<p>Comments are retained in the submission and are stored in the database as part
+of the job definition. If the job is multinode, no comments are generated for
+individual nodes but comments in the multinode job submission YAML are retained
+in the Multinode Definition.</p>
+</div>
+<div class="section" id="job-name">
+<span id="job-name-element"></span><h4>Job Name<a class="headerlink" href="#job-name" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">job_name</span></code>: string</li>
+<li><strong>Required</strong>, max length 200 characters, minimum length 1 character.</li>
+</ul>
+<p>Convention in the current dispatcher is that the job name does not use
+whitespace. This convention does not need to be observed with the refactoring
+as the job name is only stored in the database, the dispatcher does not care.
+As a database field, there is a maximum character length of 200 characters. A
+Job Name is Required as it becomes an important part of how the web frontend
+displays information about the job. The name itself should be a description of
+the objective of the test job rather than duplicating information already
+available, like the type of device or the submitter.</p>
+</div>
+<div class="section" id="device-type">
+<span id="device-type-element"></span><h4>Device Type<a class="headerlink" href="#device-type" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">device_type</span></code>: string</li>
+<li>minimum length 1 character.</li>
+</ul>
+<p>Although not required by the schema, single node jobs will fail to validate if
+no device type is given. Multi node jobs need the device type of particular
+roles to be specified.</p>
+<p>The <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> <strong>must</strong> exist on that instance for the submission to
+be accepted by the scheduler even if the schema is otherwise valid.</p>
+</div>
+<div class="section" id="timeouts">
+<span id="timeout-element"></span><h4>Timeouts<a class="headerlink" href="#timeouts" title="Permalink to this headline">¶</a></h4>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a></p>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">timeouts</span></code>: dictionary</li>
+<li><strong>Required</strong></li>
+</ul>
+<p>The refactoring introduces a new method of determining timeouts. The schema
+requires that a job timeout is specified and that the default timeout for each
+action is also specified. See <a class="reference internal" href="actions-timeout.html#dispatcher-timeouts"><span class="std std-ref">Timeout Reference</span></a>.</p>
+<p>A job timeout and an action timeout must be specified for the schema to
+validate.</p>
+<p>Timeouts should be specified as integers of the number of days, hours, minutes
+or seconds required. There is generally no need to specify more than one
+designator, just round up to the nearest. e.g. instead of 90 seconds, use 2
+minutes. Timeouts lasting longer than 1 day should be used with extreme
+caution. Being a good citizen in a LAVA instance means not blocking other users
+from using the device, should your job fail early in a way that can only be
+cleared via a timeout.</p>
+<p>Use <a class="reference internal" href="actions-timeout.html#individual-action-timeout"><span class="std std-ref">Individual action timeouts</span></a> to handle situations where the job can
+hang until it times out. The named action which is running at the time that the
+job can hang should have a timeout which stops the action within a time period
+<em>around twice the average duration</em> of the same action when the job is
+successful.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">timeouts</span><span class="p">:</span>
+  <span class="nt">job</span><span class="p">:</span>
+    <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="priority">
+<h4>Priority<a class="headerlink" href="#priority" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">priority</span></code>: high, medium or low.</li>
+</ul>
+<p>Same as the existing <a class="reference internal" href="glossary.html#term-priority"><span class="xref std std-term">priority</span></a> support.</p>
+</div>
+<div class="section" id="context">
+<h4>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h4>
+<p>Context allows individual jobs to override selected device configuration
+values. The fields which can and cannot be overridden are not (yet) obvious but
+include the architecture of the QEMU command and the console device and/or baud
+rate of other devices. It is also possible to override the NFS args and UEFI
+Menu selections. See <a class="reference internal" href="dispatcher-format.html#override-support"><span class="std std-ref">Overriding values in device type, device dictionary and the job context</span></a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">menu_interrupt_prompt</span><span class="p">:</span> <span class="s">&#39;Default</span><span class="nv"> </span><span class="s">boot</span><span class="nv"> </span><span class="s">will</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">in&#39;</span>
+</pre></div>
+</div>
+<p>(The default values and which values can be overridden will be exposed in the
+next stages of development.)</p>
+<p>Some menu selections may embed device-specific information, e.g.:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span>  <span class="nt">&#39;TFTP on MAC Address</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">00:01:73:69:5A:EF&#39;</span>
+</pre></div>
+</div>
+<p>The MAC address is a fixed part of the device configuration for a particular
+physical interface on that device and therefore needs to be retained even if an
+update causes other elements of the menu to change.</p>
+<p>This is handled by asking the template to retain the MAC address specified for
+that device using a placeholder in the context specified in the job submission:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">mustang_menu_list</span><span class="p">:</span>
+  <span class="c1"># ... other menu entries</span>
+  <span class="p p-Indicator">-</span> <span class="nt">&#39;item&#39;</span><span class="p">:</span> <span class="nt">&quot;TFTP on MAC Address</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tftp_mac&quot;</span>
+  <span class="c1"># ... other menu entries</span>
+</pre></div>
+</div>
+<p>Always take care to quote all strings containing a colon when using YAML.</p>
+<p>Details of which placeholders are available for which devices and which
+values has not yet been collated.</p>
+</div>
+<div class="section" id="protocols">
+<span id="protocols-element"></span><h4>Protocols<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="actions">
+<span id="actions-element"></span><h4>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><strong>Required</strong>: list of action dictionaries, <strong>Extra</strong></li>
+<li>List entries <strong>must</strong> each be one of <strong>deploy</strong>, <strong>boot</strong> or <strong>test</strong>
+and can be repeated or omitted, as long as at least one action is
+specified.</li>
+</ul>
+<p>Each action element allows <strong>Extra</strong> which means that the full list of
+dictionary items which can be included beneath the action is defined by the
+pipeline, not by the schema. The schema only asserts that selected fields must
+exist (like where to deploy data to and how to boot or the definitions to be
+used for the test).</p>
+<div class="section" id="deploy-action">
+<span id="deploy-action-element"></span><h5>Deploy Action<a class="headerlink" href="#deploy-action" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>to</strong> element is Required.</li>
+</ul>
+<p>The deploy action dictates the deployment strategy for the pipeline. The
+elements of the deploy action (and details from the assigned device) are used
+by the pipeline to determine how the deployment will happen and whether the
+submission is able to build a valid pipeline. If a <strong>test</strong> action is also
+defined, the <strong>deploy</strong> action also uses the deploy elements to determine which
+type of operating system support will be included into the deployment data.</p>
+<p>Deploy Actions will typically occur on the dispatcher and are collectively
+assigned tasks which prepare the device to be booted in preparation for the
+test.</p>
+</div>
+<div class="section" id="boot-action">
+<span id="boot-action-element"></span><h5>Boot Action<a class="headerlink" href="#boot-action" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>prompts</strong> element is Required.</li>
+</ul>
+<p>The boot action prompts is a list of strings or a single string which will be
+matched against the prompt of the booted system.</p>
+<ul class="simple">
+<li><strong>method</strong> element is Required.</li>
+</ul>
+<p>The boot action dictates the boot strategy for the pipeline. The elements of
+the boot action (and details of the assigned device) are used by the pipeline
+to determine the boot commands and boot sequence as well as whether the
+submission is able to build a valid pipeline.</p>
+<p>The first action in a boot strategy will typically be an attempt to establish a
+connection to the device and cause either a reboot or a power-on event.</p>
+<p>Some boot actions do not actually involve a reboot but can simply be a
+connection to a device which is already running. Boot Actions are collectively
+assigned tasks which communicate with the device in such a way as to allow the
+test to start.</p>
+</div>
+<div class="section" id="test-action">
+<span id="test-action-element"></span><h5>Test Action<a class="headerlink" href="#test-action" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>repository</strong> element is Required.</li>
+</ul>
+<p>The test action dictates the test definitions which will be used by the
+pipeline. The elements of the test action are used by the pipeline to prepare
+the overlay of test definitions and test script helpers which will be deployed
+to the assigned device and then executed after the device has booted.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/pipeline-schema.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:48 GMT -->
+</html>

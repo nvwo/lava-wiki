@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/devicetypes.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Device types &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Device Capabilities Support" href="device-capabilities.html" />
+    <link rel="prev" title="Understanding the Pipeline - an administrator guide" href="pipeline-admin.html" />
+    <link rel="canonical" href="devicetypes.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Device types</a><ul>
+<li><a class="reference internal" href="#permanency">Permanency</a></li>
+<li><a class="reference internal" href="#device-sub-types">Device sub-types</a></li>
+<li><a class="reference internal" href="#choosing-a-name-for-a-device-type">Choosing a name for a device type</a><ul>
+<li><a class="reference internal" href="#matching-the-template">Matching the template</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-device-types">Example device types</a></li>
+<li><a class="reference internal" href="#database-elements-for-a-device-type">Database elements for a device type</a><ul>
+<li><a class="reference internal" href="#descriptive-fields">Descriptive fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-admin.html" title="Previous Chapter: Understanding the Pipeline - an administrator guide"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Understanding...</span>
+    </a>
+  </li>
+  <li>
+    <a href="device-capabilities.html" title="Next Chapter: Device Capabilities Support"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Device Capabi... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="device-types">
+<span id="id1"></span><h1>Device types<a class="headerlink" href="#device-types" title="Permalink to this headline">¶</a></h1>
+<p>When adding devices, there is a decision to be made about what
+qualifies as a distinct device type and what does not. A different
+type of device can mean different things, including:</p>
+<ul class="simple">
+<li>different hardware.</li>
+<li>different access methods (typically, bootloaders).</li>
+<li>different test writer use cases, e.g. testing firmware or testing user space
+performance.</li>
+</ul>
+<p>However, a slight or incremental change to hardware does not
+necessarily mean that the updated device must be a different device
+type. Even if a change adds significant functionality, e.g. if USB
+hot-plug becomes available on revision C, that does not necessarily
+mean that revision C should be a different device type compared to to
+revision A and B.</p>
+<p>Typically, the distinction between two device types comes down to
+whether the two devices can be driven in the same way at bootloader
+level, from initial power on.</p>
+<p>Another example to consider is <a class="reference internal" href="glossary.html#term-dtb"><span class="xref std std-term">DTB</span></a> support. If there is more
+than one DTB available for a particular family of devices, this will
+probably lead to multiple different device types. Also consider
+whether all devices of the proposed device type can boot all DTBs
+available for that type.</p>
+<p>In the end, LAVA lab administrators are free to make their own choices
+about what qualifies as a distinct device type. Some factors to
+consider in this judgment call include:</p>
+<ul>
+<li><p class="first"><strong>Interchangeable jobs</strong>: Does a single health check work for all
+devices of this type? It is recommended to always test all of the
+supported boot methods of a device type during a single health check
+test job.</p>
+</li>
+<li><p class="first"><strong>Interchangeable bootloaders</strong>: Some devices can change bootloader
+type within a single job, allowing a single device type to meet the
+needs of a variety of different use cases. There are issues to
+consider here:</p>
+<ul>
+<li><p class="first"><strong>Latency</strong>: Changing the bootloader on every test job may have
+significant costs in terms of job runtime. This is particularly
+noticeable in the length of time required before the actual test
+can start. In such cases, it may be worth considering a
+<strong>sub-type</strong> instead.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#sub-device-types"><span class="std std-ref">Device sub-types</span></a></p>
+</div>
+</li>
+<li><p class="first"><strong>Hardware lifetime of the device</strong>: Frequently, writing a new
+bootloader may cause problems on some devices where the bootloader
+may be stored on media which can only be written a limited number
+of times.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>Multi-stage bootloaders</strong>: Some devices may have a first or second
+stage bootloader which can then load different higher level
+bootloaders. This is often described as a chained
+bootloader. Depending on the types of tests desired, some admins may
+choose to expose a choice of higher level bootloader or may choose
+to not allow interrupting the lower stage(s). For example, some test
+writers will want to test the firmware and some test writers will
+only want to interact with GRUB or later.</p>
+</li>
+<li><p class="first"><strong>Equivalence</strong>: Different labs may make different decisions - if you
+are looking to work with an existing lab, try to follow their device
+type layout and ask about how a new device should be classified
+before committing to a decision in your own lab.</p>
+</li>
+<li><p class="first"><strong>Test requirements</strong>: Talk to the test writers and establish
+whether an apparent hardware difference is sufficient that the
+device needs to be described using a different device type. Also
+consider whether the test writer requirements are going to change
+over time. Just because there is no current desire to test the
+experimental bootloader available on one device, this does not mean
+that this will remain unused in a year.</p>
+</li>
+<li><p class="first"><strong>Scheduling</strong>: If two devices have the same device type, each
+device needs to be able to run any test job submitted for that
+device type. There is support within LAVA for encoding small
+differences between devices within a single device type - see
+<a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a>.</p>
+</li>
+<li><p class="first"><strong>LAVA support</strong>: There are some considerations which are
+constrained by LAVA support, For example, the V1 dispatcher had a
+<code class="docutils literal notranslate"><span class="pre">kvm</span></code> device type but the improved device configuration design in
+V2 made this unnecessary. If the only factor requiring two device
+types is LAVA support, please <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk to us</span></a>.</p>
+</li>
+</ul>
+<div class="section" id="permanency">
+<h2>Permanency<a class="headerlink" href="#permanency" title="Permalink to this headline">¶</a></h2>
+<p>Once a device type has been implemented, devices added and test jobs run, it
+can be awkward to change the device type. Changing the device type later will
+make it difficult for users to find test results across this and other devices
+and may cause significant issues with data consistency.</p>
+<p>Separate device types can also complicate queries and result reporting -
+combining two devices which eventually end up being different device types
+causes issues with a loss of history when the split is finally made.</p>
+<p>It is not a good idea to split device types arbitrarily - sooner or later there
+may be a requirement to look at the results of jobs across both types and
+having an unnecessary device type is confusing for test writers. Use a
+<a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> to describe small differences between devices of the same
+device type where it makes sense.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lava-scheduler-device-type-help.html#device-type-metadata"><span class="std std-ref">Device-type metadata</span></a>.</p>
+</div>
+</div>
+<div class="section" id="device-sub-types">
+<span id="sub-device-types"></span><h2>Device sub-types<a class="headerlink" href="#device-sub-types" title="Permalink to this headline">¶</a></h2>
+<p>A balance needs to be drawn between test jobs which simply want to use a
+known working build of the firmware and/or bootloader and those test jobs
+where the latest build is relevant to the success or failure of the test
+itself. Different test writers may have different requirements here.</p>
+<p>An example of sub-types could be <code class="docutils literal notranslate"><span class="pre">juno-uboot</span></code> compared to
+<code class="docutils literal notranslate"><span class="pre">juno-firmware</span></code>. Consider the principle of <em>test one thing at a
+time</em>. Let userspace test jobs run without needing to change the
+bootloader, and let bootloader test jobs have the ability to update by
+separating the device type into two sub-types.</p>
+<p>Think about device integration here. You need to be able to interrupt the boot
+process at a level below whatever you are exposing to test writers. For
+example, to offer test writers the ability to modify and test the firmware, the
+platform <strong>must</strong> offer a way to replace the firmware in an automatable manner.</p>
+</div>
+<div class="section" id="choosing-a-name-for-a-device-type">
+<span id="naming-device-types"></span><h2>Choosing a name for a device type<a class="headerlink" href="#choosing-a-name-for-a-device-type" title="Permalink to this headline">¶</a></h2>
+<p>There are some considerations for the names of a device type in LAVA.</p>
+<ul class="simple">
+<li>The name of the device type in the database will be used as part of
+the URL of the page covering details of that device type, so the
+name <strong>must not</strong> include characters that would be encoded in a
+URL. This includes whitespace, UTF-8 characters, brackets and other
+common punctuation characters.</li>
+<li>Hyphens and underscores are supported.</li>
+<li>In general, the name should represent the hardware in a way that
+uniquely separates that type from similar hardware, e.g. panda and
+panda-es or imx6q-wandboard instead of just ‘wandboard’.</li>
+<li>Each type has a description which can be used to provide
+lab-specific information, so the name does not have to include all
+details.</li>
+<li>Check other LAVA instances, especially if your instance is likely to
+need to work with other instances with a single frontend (like
+kernelci.org)</li>
+<li>Choose a sensible, descriptive name that will make sense to test
+writers. For example, <code class="docutils literal notranslate"><span class="pre">panda</span></code> or <code class="docutils literal notranslate"><span class="pre">panda-es</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">panda1</span></code> or <code class="docutils literal notranslate"><span class="pre">panda2</span></code>.</li>
+</ul>
+<div class="section" id="matching-the-template">
+<span id="template-mismatch"></span><span id="index-0"></span><h3>Matching the template<a class="headerlink" href="#matching-the-template" title="Permalink to this headline">¶</a></h3>
+<p>The name of a device type does not need to match an available template, however
+the <a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> for all devices <strong>must</strong> <code class="docutils literal notranslate"><span class="pre">extend</span></code> a template
+file which exists on the instance. Templates are a lot more than configuration.
+The format supports conditional logic, inheritance and other features of code.
+On the master, device type templates are configured using <a class="reference internal" href="glossary.html#term-jinja2"><span class="xref std std-term">jinja2</span></a> files
+in the directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">dispatcher</span><span class="o">-</span><span class="n">config</span><span class="o">/</span><span class="n">device</span><span class="o">-</span><span class="n">types</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>When creating a new device type, it is recommended to add the new template
+file first and <strong>use version control</strong> to track changes then copy the template
+file to the system location.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Adding a new device type template is the most complex
+part of administering a LAVA instance and it can be a lot of work
+(sometimes several months) to integrate a completely new device into
+LAVA. V2 offers a different and wider range of support to what was
+available in V1, but some devices may still need new support to be
+written directly within the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> code. <strong>It may not
+always be possible to automate a new device</strong>, depending on how the
+device connects to LAVA, how the device is powered and whether the
+software on the device allows the device to be controlled remotely.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">Adding new device types</span></a> and <a class="reference internal" href="development-intro.html#developing-device-type-templates"><span class="std std-ref">creating new device type
+templates</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="example-device-types">
+<span id="index-1"></span><span id="id2"></span><h2>Example device types<a class="headerlink" href="#example-device-types" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The <code class="docutils literal notranslate"><span class="pre">panda</span></code> and <code class="docutils literal notranslate"><span class="pre">panda-es</span></code> device types are separate in the Cambridge
+LAVA lab. When originally introduced, there was an expectation that the
+hardware differences between the devices would be relevant to how the jobs
+were constructed. As it turned out, no such difference was actually exploited
+by the test writers.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">mustang</span></code> device type can support both U-Boot and UEFI bootloaders but
+not on the same machine at the same time. The bootloader can be changed, but
+this is a custom process which is not manageable during a test job. In the
+Cambridge lab, <code class="docutils literal notranslate"><span class="pre">mustang</span></code> implies U-Boot and a separate sub device type
+called <code class="docutils literal notranslate"><span class="pre">mustang-uefi</span></code> is available for test jobs needing UEFI.</li>
+<li><code class="docutils literal notranslate"><span class="pre">panda</span></code> devices can support operating systems like Debian as well
+as supporting Android deployments using the same bootloader in both
+cases (U-Boot). Therefore, only one device type was needed here.</li>
+</ul>
+</div>
+<div class="section" id="database-elements-for-a-device-type">
+<span id="device-type-elements"></span><h2>Database elements for a device type<a class="headerlink" href="#database-elements-for-a-device-type" title="Permalink to this headline">¶</a></h2>
+<p>The device type exists as a django database object which can be modified using
+the <a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">django admin interface</span></a>. The following fields
+are supported:</p>
+<ul class="simple">
+<li><strong>Name</strong> - the name of the device type
+See <a class="reference internal" href="#naming-device-types"><span class="std std-ref">Choosing a name for a device type</span></a>. It is helpful to make the device type name
+similar to or the same as the name of the template file which will be
+extended by the device dictionary. The scheduler logs will use the database
+name, irrespective of what the device dictionaries extend. Use an <code class="docutils literal notranslate"><span class="pre">alias</span></code>
+where the device type name differs from the template name(s) in use by
+devices of this type. (An Alias is one of the
+<a class="reference internal" href="#device-type-descriptive-fields"><span class="std std-ref">Descriptive fields</span></a>.)</li>
+<li><strong>Health check job</strong> - the YAML test job submission for a health check
+See <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health check</span></a></li>
+<li><strong>Display</strong> - should this device type be displayed in the GUI or not?
+Enabled by default - device type display can be disabled to hide the data
+about the device type from the UI, without deleting the object and
+associated data. The device type remains accessible in the django
+administrative interface.</li>
+<li><strong>Owners only</strong> - device type is only visible to owners of devices of this type
+Disabled by default - enable to create a <a class="reference internal" href="glossary.html#term-hidden-device-type"><span class="xref std std-term">hidden device type</span></a>.</li>
+<li><strong>Health check frequency</strong> - how often to run health checks
+Each device type can run health checks at a specified frequency which can be
+based on time intervals or numbers of test jobs.</li>
+</ul>
+<div class="section" id="descriptive-fields">
+<span id="device-type-descriptive-fields"></span><h3>Descriptive fields<a class="headerlink" href="#descriptive-fields" title="Permalink to this headline">¶</a></h3>
+<p>The device type database also includes some optional fields which may be
+completed by the admin to provide information for test writers:</p>
+<ul class="simple">
+<li><strong>Architecture name</strong>
+e.g. ARMv7, ARMv8</li>
+<li><strong>Processor name</strong>
+e.g. AM335X</li>
+<li><strong>Alias</strong>
+A list of <a class="reference internal" href="glossary.html#term-alias"><span class="xref std std-term">aliases</span></a> for this device type.
+e.g. ‘am335x-boneblack’</li>
+<li><strong>CPU model name</strong>
+e.g. OMAP 4430 / OMAP4460</li>
+<li><strong>List of cores</strong>
+The number of cores on the device and the type of CPUs. In the admin
+interface, cores can be added and the number of each core specified. e.g. 4 x
+Cortex-A9</li>
+<li><strong>Bit count</strong>
+e.g. 32 or 64</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When modifying device type objects in the
+<a class="reference internal" href="first-devices.html#django-admin-interface"><span class="std std-ref">Django administration interface</span></a>, take care with multiple selection boxes.
+Fields like architecture name can show in the list as being available for
+selection in a device type object but only the <strong>selected</strong> line or lines
+will actually be saved as references within the device type object. The
+references will show up on the device type detail page in the <em>Information</em>
+tab.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/devicetypes.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+</html>

@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/lava-scheduler-device-help.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Detailed device information in LAVA Scheduler &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Device type information in LAVA Scheduler" href="lava-scheduler-device-type-help.html" />
+    <link rel="prev" title="LAVA Scheduler summary help" href="lava-scheduler.html" />
+    <link rel="canonical" href="lava-scheduler-device-help.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Detailed device information in LAVA Scheduler</a><ul>
+<li><a class="reference internal" href="#static-device-information">Static device information</a></li>
+<li><a class="reference internal" href="#device-state">Device state</a><ul>
+<li><a class="reference internal" href="#state">State</a></li>
+<li><a class="reference internal" href="#health">Health</a></li>
+<li><a class="reference internal" href="#health-state">Health State</a></li>
+<li><a class="reference internal" href="#edit-device-description">Edit device description</a></li>
+<li><a class="reference internal" href="#restrict-submissions">Restrict submissions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="lava-scheduler.html" title="Previous Chapter: LAVA Scheduler summary help"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; LAVA Schedule...</span>
+    </a>
+  </li>
+  <li>
+    <a href="lava-scheduler-device-type-help.html" title="Next Chapter: Device type information in LAVA Scheduler"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Device type i... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="detailed-device-information-in-lava-scheduler">
+<span id="device-help"></span><h1>Detailed device information in LAVA Scheduler<a class="headerlink" href="#detailed-device-information-in-lava-scheduler" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="static-device-information">
+<span id="id1"></span><h2>Static device information<a class="headerlink" href="#static-device-information" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><strong>Hostname</strong> - The unique name of this device in this LAVA instance,
+used to link all jobs, results and device information to a specific
+device configuration. The name does not necessarily relate to a
+specific piece of hardware - administrators can replace hardware at
+any time without needing to change any device details.</p>
+</li>
+<li><p class="first"><strong>Device type</strong> See <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="simple-admin.html#jinja-template-triage"><span class="std std-ref">Jinja2 Templates</span></a> and <a class="reference internal" href="devicetypes.html#template-mismatch"><span class="std std-ref">Matching the template</span></a></p>
+</div>
+</li>
+<li><dl class="first docutils">
+<dt><strong>Owner</strong> - If <code class="docutils literal notranslate"><span class="pre">Restriction</span></code> is not <strong>Public</strong>, submissions are</dt>
+<dd><p class="first last">restricted to the specified user or group. Administrators can
+restrict submissions by unchecking the <code class="docutils literal notranslate"><span class="pre">Public</span></code> option for the
+device in the admin interface.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>Restriction</strong> - <code class="docutils literal notranslate"><span class="pre">Public</span></code> or a listed user or group set by the
+administrators.</p>
+</li>
+<li><p class="first"><strong>Device tags</strong> - Device specific labels to allow test jobs to
+request specific hardware capabilities. A <a class="reference internal" href="glossary.html#term-device-tag"><span class="xref std std-term">device tag</span></a> can only
+be used in a TestJob if supported by a device of the relevant device
+type.</p>
+</li>
+<li><p class="first"><strong>State</strong> - <a class="reference internal" href="#device-status"><span class="std std-ref">Device state</span></a></p>
+</li>
+<li><p class="first"><strong>Health</strong> - <a class="reference internal" href="#device-status"><span class="std std-ref">Device state</span></a></p>
+</li>
+<li><p class="first"><strong>Worker Hostname</strong> - The dispatcher which has a configuration file
+for a device matching the hostname. Note that this is the result of
+checking the network communication between the dispatcher and the
+server, not the serial connection between the dispatcher and the
+board.</p>
+</li>
+<li><p class="first"><strong>Device dictionary</strong> - link to the device dictionary information.</p>
+</li>
+<li><p class="first"><strong>Physical access</strong> - The user with <a class="reference internal" href="glossary.html#term-physical-access"><span class="xref std std-term">physical access</span></a> to the
+device.</p>
+</li>
+<li><p class="first"><strong>Description</strong> - Free text description of this individual device.
+This field can be used to give more information about the device.
+This field can be edited by the lab administrators.</p>
+</li>
+<li><p class="first"><strong>Device version</strong> - Optional field which can be edited by the lab
+administrators.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="device-state">
+<span id="device-status"></span><span id="index-0"></span><h2>Device state<a class="headerlink" href="#device-state" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="state">
+<h3>State<a class="headerlink" href="#state" title="Permalink to this headline">¶</a></h3>
+<p>Describes the current device status which can be one of:</p>
+<ul class="simple">
+<li><strong>Idle</strong> - available for job submissions, subject to device ownership
+restrictions</li>
+<li><strong>Running</strong> - the device is running a test job. A link to the job
+will appear below this section of the page.</li>
+<li><strong>Reserved</strong> - the device is part of a <a class="reference internal" href="glossary.html#term-multinode"><span class="xref std std-term">MultiNode</span></a> job but one
+or more other devices in the same job is not currently available.
+(Reserved is also used for single node jobs but the device quickly
+moves into Running.)</li>
+</ul>
+</div>
+<div class="section" id="health">
+<h3>Health<a class="headerlink" href="#health" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="health-state">
+<h3>Health State<a class="headerlink" href="#health-state" title="Permalink to this headline">¶</a></h3>
+<p>State of the health of the device, used to schedule a <a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health
+check</span></a>, if health checks have not been disabled for the <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device
+type</span></a>. If the health status is <code class="docutils literal notranslate"><span class="pre">Unknown</span></code>, a health check will be run
+as soon as the device has finished any current job but before starting
+any other submitted job.</p>
+<ul class="simple">
+<li><strong>Good</strong> - the previous health check completed successfully. The
+device is available for immediate scheduling.</li>
+<li><strong>Unknown</strong> - the device has not run a health check, either because
+a health check has not been defined for the <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> or
+health checks have been disabled for this device type.</li>
+<li><strong>Bad</strong> - temporarily not available for scheduling due to a
+<a class="reference internal" href="glossary.html#term-health-check"><span class="xref std std-term">health check</span></a> failure. Test jobs can still be submitted. If no
+other devices of this <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device type</span></a> have Good or Unknown
+health, test jobs will be held in the Queue.</li>
+<li><dl class="first docutils">
+<dt><strong>Maintenance</strong> - temporarily not available for scheduling due to a</dt>
+<dd>manual admin action, possibly for short term maintenance. Test jobs
+can still be submitted. If no other devices of this <a class="reference internal" href="glossary.html#term-device-type"><span class="xref std std-term">device
+type</span></a> have Good or Unknown health, test jobs will be held in the
+Queue.</dd>
+</dl>
+</li>
+<li><strong>Looping</strong> - an administrator mode which continuously submits a
+health check each time the previous health check completes,
+<strong>irrespective</strong> of how that health check finished. This is used to
+test health checks, devices and infrastructure. Looping is
+particularly useful to provide data to assist when triaging
+intermittent test job, device or infrastructure failures.</li>
+<li><strong>Retired</strong> - the device may have been relocated to another server,
+or failed due to a hardware fault or some other physical problem with
+the device. Contact the device owner or the user with physical access
+for more information.</li>
+</ul>
+</div>
+<div class="section" id="edit-device-description">
+<span id="index-1"></span><span id="id2"></span><h3>Edit device description<a class="headerlink" href="#edit-device-description" title="Permalink to this headline">¶</a></h3>
+<p>Administrators can edit a free text description of this individual
+device. Suggested content includes more information about the specific
+device, the reasons for restricting submissions, information about the
+device owner and the purposes for which the device is used etc. Text
+can include links to external sites for more information.</p>
+<p>It can be particularly useful to expand on the
+<a class="reference internal" href="device-capabilities.html#device-capabilities"><span class="std std-ref">Device Capabilities Support</span></a> by adding details which cannot be easily
+identified at runtime, e.g. big.LITTLE details or particular hardware
+features available on this specific device.</p>
+</div>
+<div class="section" id="restrict-submissions">
+<span id="restrict-device"></span><span id="index-2"></span><h3>Restrict submissions<a class="headerlink" href="#restrict-submissions" title="Permalink to this headline">¶</a></h3>
+<p>Administrators can restrict devices so that new job submissions will
+only be accepted from the device owner. If the device owner is a group,
+any user in that group will be able to submit new jobs.</p>
+<p>Any currently running jobs will complete normally, unless the device
+owner cancels the job.</p>
+<p>Administrators are strongly recommended to edit the device description
+in such a way as to explain why the restriction is necessary and how
+long the restriction may last.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/lava-scheduler-device-help.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:08 GMT -->
+</html>

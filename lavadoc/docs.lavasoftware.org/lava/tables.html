@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/tables.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:29 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using tables in LAVA &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simple Administration" href="simple-admin.html" />
+    <link rel="prev" title="Correlating a test result with the source code" href="relating.html" />
+    <link rel="canonical" href="tables.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Using tables in LAVA</a><ul>
+<li><a class="reference internal" href="#table-search-support">Table search support</a><ul>
+<li><a class="reference internal" href="#simple-text-search">Simple text search</a></li>
+<li><a class="reference internal" href="#custom-table-queries">Custom table queries</a></li>
+<li><a class="reference internal" href="#exclusive-table-searches">Exclusive table searches</a></li>
+<li><a class="reference internal" href="#other-filters">Other filters</a></li>
+<li><a class="reference internal" href="#resetting-a-table">Resetting a table</a></li>
+<li><a class="reference internal" href="#unavailable-entries">Unavailable entries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="relating.html" title="Previous Chapter: Correlating a test result with the source code"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Correlating a...</span>
+    </a>
+  </li>
+  <li>
+    <a href="simple-admin.html" title="Next Chapter: Simple Administration"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Simple Administration &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="using-tables-in-lava">
+<span id="using-tables"></span><span id="index-0"></span><h1>Using tables in LAVA<a class="headerlink" href="#using-tables-in-lava" title="Permalink to this headline">¶</a></h1>
+<p>LAVA presents much of the data about jobs, devices, results and tasks inside
+tables. The length of a table can be controlled, the table can be sorted by
+selected columns and the data itself can be searched. All options can be
+controlled from the query string in the browser address bar. This allows
+particular views of a table to be shared as links. See <a class="reference internal" href="#time-queries"><span class="std std-ref">Custom table queries</span></a>.</p>
+<p>For pages which only contain a single table, the number of rows displayed in
+each page of data is controlled via the <strong>length</strong> parameter. For convenience,
+there is a drop down box on the left of each table where the table length can
+be selected.</p>
+<div class="section" id="table-search-support">
+<h2>Table search support<a class="headerlink" href="#table-search-support" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Tables are only the base representation of the data available
+in LAVA and whenever the table search support seems incomplete, the solution
+is to create a Query which can also be represented as a simple URL.</p>
+</div>
+<p>Unless specified explicitly, all table searches are case-sensitive.</p>
+<div class="section" id="simple-text-search">
+<h3>Simple text search<a class="headerlink" href="#simple-text-search" title="Permalink to this headline">¶</a></h3>
+<p>The search box above each table allows arbitrary text strings to be used as
+filters on the data within the table. Each table has support for matching
+simple text strings against certain columns within the table and these searches
+are additive - the data in the row will be included in the results if the text
+matches any of the search fields.</p>
+<p>The fields which support text search are listed above each table.</p>
+</div>
+<div class="section" id="custom-table-queries">
+<span id="time-queries"></span><h3>Custom table queries<a class="headerlink" href="#custom-table-queries" title="Permalink to this headline">¶</a></h3>
+<p>Some tables also support customized queries on specific fields, typically these
+will be <strong>time based fields</strong> like <em>submit_time</em>, <em>end_time</em> and <em>duration</em>.
+These queries allow a specific function to be called within the filter to match
+only results where the timestamp occurred within the specified number of
+minutes, hours or days, relative to the current time on the server.</p>
+<p>The queries supported by a table are listed above the table, along with details
+of whether that query is based on minutes, hours or days.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Time based queries will always take the current time on the
+server into account, so links containing such queries may not give the same
+results when viewed at a later time.</p>
+</div>
+<p>Time based queries can take calculations in the query string as well, e.g.
+<code class="docutils literal notranslate"><span class="pre">end_time</span></code> is based on hours, so <code class="docutils literal notranslate"><span class="pre">?end_time=4*24</span></code> matches <code class="docutils literal notranslate"><span class="pre">end_time</span></code>
+within the last 4 days (the search summary will still show the <code class="docutils literal notranslate"><span class="pre">4*24</span></code>.)</p>
+</div>
+<div class="section" id="exclusive-table-searches">
+<span id="discrete-queries"></span><h3>Exclusive table searches<a class="headerlink" href="#exclusive-table-searches" title="Permalink to this headline">¶</a></h3>
+<p>Fields used in simple text searches can also be used as exclusive searches by
+adding the exclusive search field to the querystring. The data in the row will
+be included in the results only if the text matches all of the search fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>?device=mx5&amp;length=25&amp;description=ARMMP&amp;status=Incom
+</pre></div>
+</div>
+<p>This querystring would only show rows where the <em>device hostname</em> contains
+<code class="docutils literal notranslate"><span class="pre">mx5</span></code> <strong>and</strong> the <em>description</em> contains <code class="docutils literal notranslate"><span class="pre">ARMMP</span></code> <strong>and</strong> the <em>status</em> of
+the job contains <code class="docutils literal notranslate"><span class="pre">Incom</span></code>, therefore showing up to 25 results for jobs on such
+devices with that description which finished with a status of Incomplete.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Exclusive searches are not supported via the search box in
+the table header. Add to the querystring directly. Exclusive text
+search cannot be combined with simple text search. Replace the
+<strong>search</strong> variable in the querystring with the closest discrete
+query term, e.g. description.</p>
+</div>
+<p>The fields which support exclusive search are listed above each table.</p>
+</div>
+<div class="section" id="other-filters">
+<h3>Other filters<a class="headerlink" href="#other-filters" title="Permalink to this headline">¶</a></h3>
+<p>Individual tables may also provide filters via javascript or other
+support.</p>
+</div>
+<div class="section" id="resetting-a-table">
+<h3>Resetting a table<a class="headerlink" href="#resetting-a-table" title="Permalink to this headline">¶</a></h3>
+<p>The breadcrumb link should take you back to the default table. Alternatively,
+clear the querystring in the browser address bar manually.</p>
+</div>
+<div class="section" id="unavailable-entries">
+<h3>Unavailable entries<a class="headerlink" href="#unavailable-entries" title="Permalink to this headline">¶</a></h3>
+<p>Certain tables may contain data relating to a hidden device type which would
+show as <code class="docutils literal notranslate"><span class="pre">Unavailable</span></code> if the user viewing the table does not own a device of
+this type. It is not possible to search these tables for details of the hidden
+type and the <code class="docutils literal notranslate"><span class="pre">Unavailable</span></code> label itself does not match as a search term.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/tables.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:29 GMT -->
+</html>

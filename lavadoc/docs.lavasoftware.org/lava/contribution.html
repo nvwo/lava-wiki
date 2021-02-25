@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/contribution.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:34 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>LAVA Software Community Project Contribution Guide &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Naming conventions and LAVA architecture" href="naming-conventions.html" />
+    <link rel="prev" title="LAVA Software Project Contribution - Introduction" href="contribution-intro.html" />
+    <link rel="canonical" href="contribution.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">LAVA Software Community Project Contribution Guide</a><ul>
+<li><a class="reference internal" href="#about-the-contribution-guidelines">About the Contribution Guidelines</a><ul>
+<li><a class="reference internal" href="#conflicting-priorities">Conflicting priorities</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pre-requisites-to-start-with-development">Pre-requisites to start with development</a><ul>
+<li><a class="reference internal" href="#other-elements-involved-in-lava-development">Other elements involved in LAVA development</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-online-documentation">Updating online documentation</a></li>
+<li><a class="reference internal" href="#the-lava-contribution-process">The LAVA contribution process</a><ul>
+<li><a class="reference internal" href="#creating-a-gitlab-account">Creating a GitLab Account</a></li>
+<li><a class="reference internal" href="#request-gitlab-fork-permissions">Request GitLab Fork Permissions</a></li>
+<li><a class="reference internal" href="#fork-the-code">Fork the code</a></li>
+<li><a class="reference internal" href="#access-to-the-ci-runners">Access to the CI runners</a></li>
+<li><a class="reference internal" href="#create-a-development-branch">Create a development branch</a></li>
+<li><a class="reference internal" href="#make-test-and-commit-your-changes">Make, test and commit your changes</a></li>
+<li><a class="reference internal" href="#push-your-changes-to-your-development-branch">Push your changes to your development branch</a></li>
+<li><a class="reference internal" href="#submit-a-merge-request-mr">Submit a Merge Request (MR)</a></li>
+<li><a class="reference internal" href="#mrs-are-reviewed-and-rebased-and-reworked-as-needed">MRs are reviewed (and rebased and reworked as needed)</a></li>
+<li><a class="reference internal" href="#how-changes-get-merged">How changes get merged</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="contribution-intro.html" title="Previous Chapter: LAVA Software Project Contribution - Introduction"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; LAVA Software...</span>
+    </a>
+  </li>
+  <li>
+    <a href="naming-conventions.html" title="Next Chapter: Naming conventions and LAVA architecture"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Naming conven... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-software-community-project-contribution-guide">
+<span id="contribution-guide"></span><span id="index-0"></span><h1>LAVA Software Community Project Contribution Guide<a class="headerlink" href="#lava-software-community-project-contribution-guide" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="code-of-conduct.html#code-of-conduct"><span class="std std-ref">LAVA Software Community Project Code of Conduct</span></a></p>
+</div>
+<div class="section" id="about-the-contribution-guidelines">
+<span id="contribution-guidelines"></span><span id="index-1"></span><h2>About the Contribution Guidelines<a class="headerlink" href="#about-the-contribution-guidelines" title="Permalink to this headline">¶</a></h2>
+<p>We want to make it as easy as possible for LAVA Software users to
+become LAVA Software Community Project contributors, so we have created
+this guide to help you get started.</p>
+<p>The LAVA Software Community Project has published this Contribution
+Guide, and all contributors will be expected to adhere to these
+guidelines when submitting issues or merge requests. They are designed
+to clarify the requirements for contributions, to make contributing
+more efficient for all involved.</p>
+<p>Following the guidelines is a great way to prevent your contributions
+from being rejected or delayed. Most maintainers won’t intend to
+discredit your work or be tough on contributors. However, many are busy
+and some may be working on LAVA in their free time. Well-formed
+contributions are much easier to review and work with.</p>
+<div class="section" id="conflicting-priorities">
+<h3>Conflicting priorities<a class="headerlink" href="#conflicting-priorities" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes a request will be turned down because of conflicting
+priorities. It is important to talk about the reasons on the
+<a class="reference internal" href="support.html#mailing-lists"><span class="std std-ref">mailing list</span></a>. Whether you’re requesting a new
+feature, or providing a fix, remember that the maintainer has to weigh
+up your contribution. They are the people who may have to support the
+new code in the future, and resources are often scarce. Additionally,
+it’s important to understand whether a feature will be helpful to the
+wider user community. Try not to be discouraged if your feature request
+or merge request is turned down. Be open-minded and, if necessary,
+propose an alternative idea on the mailing list after hearing their
+concerns. It might not be clear why your change is helpful, so be ready
+to discuss it and maybe re-design it to make it fit better.</p>
+</div>
+</div>
+<div class="section" id="pre-requisites-to-start-with-development">
+<span id="development-pre-requisites"></span><h2>Pre-requisites to start with development<a class="headerlink" href="#pre-requisites-to-start-with-development" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>LAVA is written in <a class="reference external" href="http://www.python.org/">Python</a>, so you will need to know (or be willing to
+learn) the language.</li>
+<li>Likewise, the web interface is a <a class="reference external" href="https://www.djangoproject.com/">Django</a> application so you will need
+to use and debug Django if you need to modify the web interface.</li>
+<li>LAVA uses <a class="reference external" href="https://yaml.org/">YAML</a> heavily internally, so you’ll likely need to
+understand the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=&amp;type=json">YAML Parser</a></li>
+<li>LAVA also uses <a class="reference external" href="http://jinja.pocoo.org/docs/dev/">Jinja2</a>.</li>
+<li>All LAVA software is maintained in <a class="reference external" href="https://www.git-scm.org/">git</a>, as are many of the support
+scripts, test definitions and job submissions.</li>
+<li>Some familiarity with <a class="reference external" href="https://www.debian.org/">Debian</a> is going to be useful; helper scripts
+are available when preparing updated .deb packages based on your
+modifications.</li>
+</ul>
+<p>LAVA is complex and designed to solve complex problems. This has
+implications for how LAVA is developed, tested, deployed and used.</p>
+<div class="section" id="other-elements-involved-in-lava-development">
+<h3>Other elements involved in LAVA development<a class="headerlink" href="#other-elements-involved-in-lava-development" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The Django backend used with LAVA is <a class="reference external" href="https://www.postgresql.org/">PostgreSQL</a> and some
+<a class="reference external" href="https://www.postgresql.org/docs/9.5/static/rules-materializedviews.html">postgres-specific support</a>
+is used.</li>
+<li>The LAVA UI includes <a class="reference external" href="https://www.javascript.com/">Javascript</a> and <a class="reference external" href="https://www.w3.org/Style/CSS/Overview.en.html">CSS</a>.</li>
+<li>LAVA also uses <a class="reference external" href="http://zeromq.org/">ZMQ</a> and <a class="reference external" href="http://xmlrpc.scripting.com/">XML-RPC</a> and the LAVA documentation is
+written in reStructuredText (<a class="reference external" href="http://sphinx-doc.org/rest.html">RST</a>).</li>
+</ul>
+<p>In addition, test jobs and device support can involve use of:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.denx.de/wiki/U-Boot">U-Boot</a></li>
+<li><a class="reference external" href="http://libguestfs.org/">GuestFS</a></li>
+<li><a class="reference external" href="https://developer.android.com/studio/command-line/adb">ADB</a></li>
+<li><a class="reference external" href="http://wiki.qemu.org/Main_Page">QEMU</a></li>
+<li><a class="reference external" href="https://www.gnu.org/software/grub/">Grub</a></li>
+<li><a class="reference external" href="http://www.openssh.com/">SSH</a></li>
+<li><a class="reference external" href="https://linuxcontainers.org/">LXC</a></li>
+<li><a class="reference external" href="https://www.docker.com/">Docker</a></li>
+</ul>
+<p>A very wide variety of other systems and tools are used to access
+devices and debug test jobs.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="naming-conventions.html#naming-conventions"><span class="std std-ref">Naming conventions and LAVA architecture</span></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="updating-online-documentation">
+<h2>Updating online documentation<a class="headerlink" href="#updating-online-documentation" title="Permalink to this headline">¶</a></h2>
+<p>LAVA documentation is written in reStructuredText, and then converted
+into other formats using Sphinx. You can use the command below to
+generate html format files for LAVA V2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make -C doc/v2 clean
+$ make -C doc/v2 html
+$ firefox doc/v2/_build/html/index.html
+(or whatever browser you prefer)
+</pre></div>
+</div>
+<p>We welcome contributions to improve our documentation. If you are
+considering adding new features to LAVA or changing current behavior,
+also please ensure that the changes include matching updates for the
+documentation. Great new features may go unused (or unmerged!) without
+documentation to help people use them.</p>
+<p>Wherever possible, all new sections of documentation should come with
+worked examples.</p>
+<ul class="simple">
+<li>Add a testjob submission YAML file to <code class="docutils literal notranslate"><span class="pre">doc/v2/examples/test-jobs</span></code></li>
+<li>If the change relates to or includes particular test definitions to
+demonstrate the new support, add a test definition YAML file to
+<code class="docutils literal notranslate"><span class="pre">doc/v2/examples/test-definitions</span></code></li>
+<li>Use the <a class="reference external" href="http://docutils.sourceforge.net/docs/ref/rst/directives.html#include">include options</a>
+supported in RST to quote snippets of the test job or test definition
+YAML, following the examples of the existing examples.</li>
+<li>Use comments <strong>liberally</strong> in the examples and link to existing terms
+and sections - make it easy for other people to understand how to use
+your new feature.</li>
+<li>Read the comments in the <code class="docutils literal notranslate"><span class="pre">doc/v2/index.rst</span></code> file if you are adding
+new pages or altering section headings.</li>
+</ul>
+</div>
+<div class="section" id="the-lava-contribution-process">
+<span id="lava-contribution-process"></span><span id="index-2"></span><h2>The LAVA contribution process<a class="headerlink" href="#the-lava-contribution-process" title="Permalink to this headline">¶</a></h2>
+<p>To contribute changes to LAVA, there is a simple process:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#creating-gitlab-account"><span class="std std-ref">Creating a GitLab Account</span></a></li>
+<li><a class="reference internal" href="#request-gitlab-fork-permissions"><span class="std std-ref">Request GitLab Fork Permissions</span></a></li>
+<li><a class="reference internal" href="#fork-the-code"><span class="std std-ref">Fork the current code</span></a></li>
+<li><a class="reference internal" href="#create-development-branch"><span class="std std-ref">Create a development branch</span></a></li>
+<li><a class="reference internal" href="#develop-your-changes"><span class="std std-ref">Make, test and commit your changes</span></a></li>
+<li><a class="reference internal" href="#dind-access"><span class="std std-ref">Access to the CI runners</span></a></li>
+<li><a class="reference internal" href="#push-development-branch"><span class="std std-ref">Push your changes to your development branch</span></a></li>
+<li><a class="reference internal" href="#submit-merge-request"><span class="std std-ref">Submit a Merge Request (MR)</span></a></li>
+<li><a class="reference internal" href="#review-and-fix-mr"><span class="std std-ref">MRs are reviewed (and rebased and reworked as needed)</span></a></li>
+<li><a class="reference internal" href="#developer-merging-changes"><span class="std std-ref">How changes get merged</span></a></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is worth checking if someone already has a merge request
+which relates to your proposed changes. Check for open merge
+requests at <a class="reference external" href="https://git.lavasoftware.org/lava/lava/merge_requests">https://git.lavasoftware.org/lava/lava/merge_requests</a></p>
+</div>
+<div class="section" id="creating-a-gitlab-account">
+<span id="creating-gitlab-account"></span><span id="index-3"></span><h3>Creating a GitLab Account<a class="headerlink" href="#creating-a-gitlab-account" title="Permalink to this headline">¶</a></h3>
+<p>To be able to work with the LAVA Software Community Project, start by
+creating an account on <a class="reference external" href="https://git.lavasoftware.org/lava/">https://git.lavasoftware.org/lava/</a> . Fill in
+details in your profile, and make sure you add a public SSH key to your
+account. You will need that to be able to push code changes.</p>
+</div>
+<div class="section" id="request-gitlab-fork-permissions">
+<span id="index-4"></span><span id="id2"></span><h3>Request GitLab Fork Permissions<a class="headerlink" href="#request-gitlab-fork-permissions" title="Permalink to this headline">¶</a></h3>
+<p>Next, you will need to be given permissions to create forks of our
+repositories on the LAVA GitLab instance
+(<a class="reference external" href="https://git.lavasoftware.org/lava/">https://git.lavasoftware.org/lava/</a>). This is an unfortunate step that
+has only become necessary recently - spammers and trolls are
+everywhere on the Internet and will apparently abuse any resources
+that are not locked down. :-(</p>
+<p>To counter the spam problem, all new accounts are tagged as
+<code class="docutils literal notranslate"><span class="pre">external</span></code> by default, which means that they do not have permissions
+to fork projects or create their own new projects. If you are
+genuinely looking to work on LAVA, please <a class="reference external" href="https://git.lavasoftware.org/lava/lava/issues/new">file an issue</a> to ask for
+access once you have created your account. The GitLab admins should
+respond quickly and give you access.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To be able to later push changes and trigger CI, you will
+also need to <a class="reference internal" href="#dind-access"><span class="std std-ref">request access</span></a> to the
+<code class="docutils literal notranslate"><span class="pre">DinD</span></code> (“Docker in Docker”) based CI
+runners. Unfortunately, you can only do that once you have
+created repositories within your account (e.g. by forking).</p>
+</div>
+</div>
+<div class="section" id="fork-the-code">
+<span id="index-5"></span><span id="id3"></span><h3>Fork the code<a class="headerlink" href="#fork-the-code" title="Permalink to this headline">¶</a></h3>
+<p>Fork the lava project in the GitLab web interface. This will set up a
+copy of the lava project in your own personal namespace. From here, you
+can create new branches as you like, ready for making changes.</p>
+</div>
+<div class="section" id="access-to-the-ci-runners">
+<span id="dind-access"></span><span id="index-6"></span><h3>Access to the CI runners<a class="headerlink" href="#access-to-the-ci-runners" title="Permalink to this headline">¶</a></h3>
+<p>If you want to contribute to LAVA projects, you will also need to ask
+the GitLab admins to grant access to our <code class="docutils literal notranslate"><span class="pre">DinD</span></code> (Docker in Docker)
+CI runners. Due to the way that permissions for CI runners is handled
+within GitLab, this can <strong>only</strong> be done on a per-project basis rather
+than by user account. It’s therefore worth asking for this DinD access
+straight away once you have made your first fork of each
+repository. Please <a class="reference external" href="https://git.lavasoftware.org/lava/lava/issues/new">file an issue</a> to ask for
+access once you have forked. The GitLab admins should respond quickly
+and give you access.</p>
+</div>
+<div class="section" id="create-a-development-branch">
+<span id="create-development-branch"></span><span id="index-7"></span><h3>Create a development branch<a class="headerlink" href="#create-a-development-branch" title="Permalink to this headline">¶</a></h3>
+<p>Clone your fork of the lava software repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git@git.lavasoftware.org:yourname/lava.git
+</pre></div>
+</div>
+<p>We recommend always making a new local branch for your changes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd lava
+$ git checkout -b my_branch
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://docs.gitlab.com/ee/gitlab-basics/create-branch.html">https://docs.gitlab.com/ee/gitlab-basics/create-branch.html</a></p>
+</div>
+</div>
+<div class="section" id="make-test-and-commit-your-changes">
+<span id="develop-your-changes"></span><span id="index-8"></span><h3>Make, test and commit your changes<a class="headerlink" href="#make-test-and-commit-your-changes" title="Permalink to this headline">¶</a></h3>
+<p>Make and test the changes you need. The details here are down to you!</p>
+<p>When preparing changes, you will need to think about the LAVA design
+and <a class="reference internal" href="review-criteria.html#criteria"><span class="std std-ref">LAVA review criteria</span></a> which will be applied during the code review.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#lava-development"><span class="std std-ref">LAVA development</span></a></p>
+</div>
+<p>Use the normal git process to stage and commit the changes. Make sure
+that your commit messages are suitable. They need to be clear and they
+should describe <em>what</em> you’ve changed, and <em>why</em>:</p>
+<p><a class="reference external" href="https://chris.beams.io/posts/git-commit/">https://chris.beams.io/posts/git-commit/</a></p>
+<p>When you commit, use the <code class="docutils literal notranslate"><span class="pre">--signoff</span></code> or <code class="docutils literal notranslate"><span class="pre">-s</span></code> option to <code class="docutils literal notranslate"><span class="pre">git</span>
+<span class="pre">commit</span></code> to acknowledge that you have the rights to submit this change
+under the terms of the licenses applicable to the LAVA Software. This
+is commonly known as the “Developer’s Certificate of Origin” (<a class="reference external" href="https://developercertificate.org/">DCO</a>),
+and is used in a wide variety of other Open Source projects like the
+Linux kernel.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git commit -s
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git commit --amend -s
+</pre></div>
+</div>
+<p>GitLab supports including multiple commits in a single merge request,
+so at this stage feel free to collect your changes in as many logical
+changesets as you like. Don’t include unrelated changes - use a
+separate branch (and therefore a separate merge request) instead.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#making-git-changes"><span class="std std-ref">Making changes in git</span></a></p>
+</div>
+</div>
+<div class="section" id="push-your-changes-to-your-development-branch">
+<span id="push-development-branch"></span><span id="index-9"></span><h3>Push your changes to your development branch<a class="headerlink" href="#push-your-changes-to-your-development-branch" title="Permalink to this headline">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code> to publish the changes on your branch back to your own
+fork. This will share the code with other developers. In this example,
+replace <code class="docutils literal notranslate"><span class="pre">my_username</span></code> with the username of the fork and <code class="docutils literal notranslate"><span class="pre">my_branch</span></code>
+with the name of the local branch which will be pushed to that fork:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push --set-upstream my_username my_branch
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 430 bytes | 430.00 KiB/s, done.
+Total 5 (delta 3), reused 0 (delta 0)
+remote:
+remote: To create a merge request for my_branch, visit:
+remote:   https://git.lavasoftware.org/my_username/lava/merge_requests/new?merge_request%5Bsource_branch%5D=my_branch
+remote:
+To git.lavasoftware.org:my_username/lava.git
+* [new branch]          my_branch -&gt; my_branch
+Branch &#39;my_branch&#39; set up to track remote branch &#39;my_branch&#39; from &#39;my_username&#39;.
+</pre></div>
+</div>
+<p>You can push here as many times as you like, as you make more changes.</p>
+<p>Pushing to your fork will trigger the CI process - your changes will
+now be automatically tested and the results will be displayed for the
+MR. You will also receive email to tell you how things went.</p>
+</div>
+<div class="section" id="submit-a-merge-request-mr">
+<span id="submit-merge-request"></span><span id="index-10"></span><h3>Submit a Merge Request (MR)<a class="headerlink" href="#submit-a-merge-request-mr" title="Permalink to this headline">¶</a></h3>
+<p>When your code is clean and ready to be reviewed, create a merge
+request against the <em>master</em> branch of the original lava project.
+GitLab will track all the changes that you have pushed to your
+development branch, and present them together for review in one
+patchset. To create the MR, use the link that gitlab gave you when you
+pushed your branch or visit the “Merge Requests” area in the web UI.</p>
+<p>It is useful to select both these options in GitLab when creating or
+editing a merge request:</p>
+<ul class="simple">
+<li>Remove source branch when merge request is accepted.</li>
+<li>Allow commits from members who can merge to the target branch.</li>
+</ul>
+<p>By allowing commits, reviewers can make small changes themselves, to
+correct typos etc., without needing to start a new discussion.</p>
+<p>Changes will only be merged after a merge request is created and
+the CI process for that MR has passed.</p>
+<p><a class="reference external" href="https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html">https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html</a></p>
+<p>There are six headlines that we expect in each merge request, so that
+we have all the information we need to understand the purpose of the
+proposed change.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not all of these headlines need to appear in a git commit
+message. Screenshots and points for checking need to go into the
+comments on the merge request itself.</p>
+</div>
+<p>In the git commit message:</p>
+<ol class="arabic simple">
+<li>What does this change do?</li>
+<li>Why was this change needed?</li>
+<li>What are the relevant issue numbers?</li>
+</ol>
+<p>In the merge request, as comments:</p>
+<ol class="arabic simple" start="4">
+<li>Are there points in the code the reviewer needs to double check?</li>
+<li>Screenshots or test job log files as links or attachments (if
+relevant)</li>
+<li>If helpful, links to external resources like gold standard images to
+demonstrate how to use and/or test a new feature.</li>
+</ol>
+<p>Once you are familiar with creating merge requests, you can also set
+labels to help reviewers identify the type of change to be reviewed.</p>
+</div>
+<div class="section" id="mrs-are-reviewed-and-rebased-and-reworked-as-needed">
+<span id="review-and-fix-mr"></span><span id="index-11"></span><h3>MRs are reviewed (and rebased and reworked as needed)<a class="headerlink" href="#mrs-are-reviewed-and-rebased-and-reworked-as-needed" title="Permalink to this headline">¶</a></h3>
+<p>If your MR failed its tests, you will receive a detailed email
+explaining where the failures occurred. It is up to you to make any
+fixes required.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#developer-commit-for-review"><span class="std std-ref">Debugging lava-dispatcher with pdb, the Python debugger</span></a></p>
+</div>
+<p>If you are not sure how to fix things here, please ask for help!</p>
+<p>Fixes for test failures should be pushed to the same GitLab branch.
+Each time you push, GitLab will automatically update your related merge
+request and re-run the CI loop. As and when the code is functional,
+maintainers will comment on your changes and if all is well they will
+approve the merge. They may also ask you to make more changes - this is
+an iterative process.</p>
+</div>
+<div class="section" id="how-changes-get-merged">
+<span id="developer-merging-changes"></span><span id="index-12"></span><h3>How changes get merged<a class="headerlink" href="#how-changes-get-merged" title="Permalink to this headline">¶</a></h3>
+<p>As the final step in merging a change, we will want the list of commits
+in the merge request to be squashed. The objective here is to ensure
+that each commit on the master branch is clean and intact, while also
+keeping logical changes in separate commits. You can use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span>
+<span class="pre">-i</span> <span class="pre">HEAD~5</span></code> or equivalent support for squashing git commits.</p>
+<ul class="simple">
+<li>Ensure that commits to fix unit test failures, CI failures or other
+breakage are squashed into the parent commit.</li>
+<li>Ensure that separate logical changes remain as separate commits. It
+is often easier to use separate branches for this reason.</li>
+<li>Ensure that your commits are all rebased onto the current master
+branch</li>
+</ul>
+<p>Pushing the squashed branch will need you to use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">--force</span></code>
+to replace the existing commits in your merge request. The merge
+request will get one final code review and if a Maintainer approves of
+the final state, the change will be merged when the CI completes
+successfully.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">This is the <strong>only</strong> time that <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">--force</span></code> is
+ever recommended. Forcing a push makes it hard for other
+contributors to work on the changes by triggering lots of merge
+conflicts.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/contribution.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:34 GMT -->
+</html>

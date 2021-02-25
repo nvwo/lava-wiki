@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/templating.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:14 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using Jinja2 to generate LAVA test job submissions &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction to Results in LAVA" href="results-intro.html" />
+    <link rel="prev" title="Replacing VMGroups using Secondary Connections" href="pipeline-writer-vmgroups.html" />
+    <link rel="canonical" href="templating.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Using Jinja2 to generate LAVA test job submissions</a><ul>
+<li><a class="reference internal" href="#starting-with-templates">Starting with templates</a><ul>
+<li><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extending-templates-with-contexts">Extending templates with contexts</a></li>
+<li><a class="reference internal" href="#templates-can-extend-templates">Templates can extend templates</a></li>
+<li><a class="reference internal" href="#logic-control-within-templates">Logic control within templates</a></li>
+<li><a class="reference internal" href="#template-best-practice">Template best practice</a></li>
+<li><a class="reference internal" href="#using-templates-for-test-jobs">Using templates for test jobs</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-writer-vmgroups.html" title="Previous Chapter: Replacing VMGroups using Secondary Connections"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Replacing VMG...</span>
+    </a>
+  </li>
+  <li>
+    <a href="results-intro.html" title="Next Chapter: Introduction to Results in LAVA"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Introduction ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="using-jinja2-to-generate-lava-test-job-submissions">
+<span id="jinja-templating"></span><span id="index-0"></span><h1>Using Jinja2 to generate LAVA test job submissions<a class="headerlink" href="#using-jinja2-to-generate-lava-test-job-submissions" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://jinja.pocoo.org/docs/dev/">http://jinja.pocoo.org/docs/dev/</a></p>
+</div>
+<p>LAVA is just one part of a complete CI solution. There will be other
+automated steps feeding data into LAVA, and often other automated steps
+retrieving data from LAVA to provide information to developers.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="custom-result-handling.html#ci-loop"><span class="std std-ref">Closing the CI loop</span></a></p>
+</div>
+<p>Retrieving data from LAVA typically involves using some of the metadata
+included in the original submission, for example the commit hash of the
+change which triggered the build used in this test job. Other metadata
+like the kernel branch, test series and source location also become
+important.</p>
+<p>Changing the commit hash manually or semi-automatically using <code class="docutils literal notranslate"><span class="pre">sed</span></code>
+etc. is possible but does not scale. Although the test job submission
+is in YAML, editing the test job submission after loading YAML into a
+language like Python means that all the useful comments are lost.</p>
+<p>A better solution is to use a simple templating language to generate
+the YAML job submissions. LAVA already uses <code class="docutils literal notranslate"><span class="pre">Jinja2</span></code> for device
+dictionaries and device-type templates, so it is a natural next step to
+use it when creating job submissions too. As a bonus, the jinja syntax
+is also very similar to the markup used within Django - a lot of
+developers are familiar with it.</p>
+<div class="section" id="starting-with-templates">
+<span id="templates-starting"></span><h2>Starting with templates<a class="headerlink" href="#starting-with-templates" title="Permalink to this headline">¶</a></h2>
+<p><strong>The format you start with, is the format you will output.</strong></p>
+<p>Any YAML file can be a starting template. Jinja2 will only operate
+directly on text which is written in Jinja2 syntax. Anything else will
+be passed through <strong>unaltered</strong>. This has two valuable properties for
+our YAML job submissions: comments are preserved, and the ordering of
+items (dictionaries, etc.) will be kept.</p>
+<p>The same cannot be said if you load YAML data into a Python program
+directly, e.g:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># example dictionary</span>
+<span class="nt">first_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">second_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">third_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">fourth_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+<p>Loading this snippet (a YAML dictionary) into Python2 will generate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;second_key&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;third_key&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;fourth_key&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;first_key&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Loading the same snippet into Python3 will generate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;first_key&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;second_key&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;third_key&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;fourth_key&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Loading this as a template would generate:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># example dictionary</span>
+<span class="nt">first_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="nt">second_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">third_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">fourth_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+<p>To make a change in that output, we save the template to a file and add
+some Jinja2 syntax to the template:</p>
+<div class="highlight-yaml notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># example dictionary</span>
+<span class="hll"><span class="nt">first_key</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">first_key</span> <span class="p p-Indicator">}}</span>
+</span><span class="nt">second_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">third_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">fourth_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</td></tr></table></div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/templates/content.html">examples/templates/content.jinja2</a></p>
+<p>Data is then presented as a <code class="docutils literal notranslate"><span class="pre">details.jinja</span></code> dictionary:</p>
+<div class="highlight-jinja notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;content.jinja2&#39;</span> <span class="cp">%}</span><span class="x"></span>
+<span class="hll"><span class="cp">{%</span> <span class="k">set</span> <span class="nv">first_key</span> <span class="o">=</span> <span class="m">15</span> <span class="cp">%}</span><span class="x"></span>
+</span></pre></div>
+</td></tr></table></div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/templates/details.html">examples/templates/details.jinja2</a></p>
+<p>The python script to process the template is based on the LAVA source
+code and only requires Jinja2:</p>
+<p><a class="reference external" href="https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/test_base_templates.py#L22">https://git.lavasoftware.org/lava/lava/blob/master/lava_scheduler_app/tests/test_base_templates.py#L22</a></p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">jinja2</span>
+
+
+<span class="n">CONFIG_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>  <span class="c1"># set this to your local needs.</span>
+
+<span class="n">job_ctx</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;first_key&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}</span>
+
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;details.jinja2&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">details</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">details</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="hll"><span class="n">string_loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">DictLoader</span><span class="p">({</span><span class="s2">&quot;details.jinja2&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
+</span><span class="n">type_loader</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">FileSystemLoader</span><span class="p">([</span><span class="n">CONFIG_PATH</span><span class="p">])</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">jinja2</span><span class="o">.</span><span class="n">Environment</span><span class="p">(</span>  <span class="c1"># nosec - YAML, not HTML, no XSS scope.</span>
+    <span class="n">loader</span><span class="o">=</span><span class="n">jinja2</span><span class="o">.</span><span class="n">ChoiceLoader</span><span class="p">([</span><span class="n">string_loader</span><span class="p">,</span> <span class="n">type_loader</span><span class="p">]),</span>
+    <span class="n">trim_blocks</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">autoescape</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>Download or view the complete example:
+<a class="reference external" href="examples/templates/templating.py">examples/templates/templating.py</a></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">templating.py</span></code> script loads the details data as a dictionary
+(line 12) and then looks up the <code class="docutils literal notranslate"><span class="pre">content.jinja2</span></code> as the <strong>extended</strong>
+template, based on the <code class="docutils literal notranslate"><span class="pre">CONFIG_PATH</span></code>. (The template can easily be in
+a different directory to the details dictionary.)</p>
+<div class="section" id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># example dictionary</span>
+<span class="nt">first_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="nt">second_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">third_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">fourth_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="extending-templates-with-contexts">
+<span id="template-contexts"></span><span id="index-1"></span><h2>Extending templates with contexts<a class="headerlink" href="#extending-templates-with-contexts" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">templating.py</span></code> above includes a <code class="docutils literal notranslate"><span class="pre">job_ctx</span></code> dictionary which sets a
+different value but this value is currently ignored. This is because
+the details dictionary sets <code class="docutils literal notranslate"><span class="pre">first_key</span></code> without allowing for an
+override.</p>
+<p>This is a key part of how templating works with Jinja2. Each element
+controls the ability of the next element to provide overrides or
+changes.</p>
+<ol class="arabic">
+<li><p class="first"><strong>hard coded template values</strong> - nothing can override the raw YAML
+of the template itself. In the example for this section,
+<code class="docutils literal notranslate"><span class="pre">content.jinja2</span></code> contains a YAML comment and a basic YAML
+dictionary. <strong>Anything</strong> (including whitespace) in the template
+which is not marked up with Jinja2 syntax will be preserved in the
+final output unchanged and without an ability to support changes via
+the details dictionary or the job context.</p>
+</li>
+<li><p class="first"><strong>template defaults</strong> - templates can include default values:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="x">first_key: </span><span class="cp">{{</span> <span class="nv">first_key</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="m">4</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>If neither the details dictionary nor the job context set a value
+for <code class="docutils literal notranslate"><span class="pre">first_key</span></code>, the default from the template will be used. In
+the original <code class="docutils literal notranslate"><span class="pre">content.jinja2</span></code>, there is no default. If the details
+dictionary and job context do not override <code class="docutils literal notranslate"><span class="pre">first_key</span></code>, the value
+will be left blank:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">first_key</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>If this output is then loaded into Python as a YAML file, the value
+of the <code class="docutils literal notranslate"><span class="pre">first_key</span></code> key in the Python dictionary would be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</li>
+<li><p class="first"><strong>details dictionary values</strong> - in the example above, the details
+dictionary sets a value of <code class="docutils literal notranslate"><span class="pre">15</span></code> and the job context cannot change
+that value.</p>
+<p>It is also possible to add new blocks of YAML output using the same
+<code class="docutils literal notranslate"><span class="pre">set</span></code> function of the details dictionary. Take care with the
+whitespace in such dictionaries. <strong>Always</strong> test the output and
+verify not only that the output is valid YAML but that when loaded
+into Python, that the dictionary contains the correct values for the
+correct keys. Whitespace problems are a common cause of errors. It’s
+easy to cause invalid syntax in the output, or for a value to be
+assigned in the wrong place (as a value for a sub key instead of as
+a new key, or vice versa).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+<span class="c1"># not the same as:</span>
+<span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Details dictionary values can be other Python types. It is common to
+find strings, floats, lists and dictionaries. Syntax can be either
+Python or YAML.</p>
+</li>
+<li><p class="first"><strong>details dictionary defaults</strong> - the details dictionary can use
+defaults in the same way as the template:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">first_key</span> <span class="o">=</span> <span class="nv">first_key</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="m">15</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>This allows a value in the job context to override the value.
+Download the example files and edit <code class="docutils literal notranslate"><span class="pre">details.jinja2</span></code> to set the
+value <code class="docutils literal notranslate"><span class="pre">15</span></code> but only as a default. Re-run <code class="docutils literal notranslate"><span class="pre">templating.py</span></code> and
+the job context value of <code class="docutils literal notranslate"><span class="pre">9</span></code> will be used in the output instead:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># example dictionary</span>
+<span class="nt">first_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9</span>
+<span class="nt">second_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">third_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">fourth_key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>job context</strong> - To set a value in the job context, there must be a
+placeholder in the template and usually a default value as well.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="templates-can-extend-templates">
+<span id="templates-extend-templates"></span><h2>Templates can extend templates<a class="headerlink" href="#templates-can-extend-templates" title="Permalink to this headline">¶</a></h2>
+<p>Once you have more than a couple of related templates, it becomes
+obvious that some content will be duplicated across many of those
+templates. Create a new template (possibly using the conventions of
+<code class="docutils literal notranslate"><span class="pre">base-foo</span></code> or <code class="docutils literal notranslate"><span class="pre">foo-common</span></code>) containing a single copy of the base
+content and then each template simply <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">extends</span> <span class="pre">'base.jinja2'</span> <span class="pre">%}</span></code>.</p>
+</div>
+<div class="section" id="logic-control-within-templates">
+<span id="templates-logic"></span><h2>Logic control within templates<a class="headerlink" href="#logic-control-within-templates" title="Permalink to this headline">¶</a></h2>
+<p>Jinja2 supports a range of logical elements, for example:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">a</span> <span class="k">in</span> <span class="nv">b</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">a</span> <span class="k">is</span> <span class="nf">b</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">label</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>See the Jinja documentation and the LAVA device-type templates for
+more examples.</p>
+</div>
+<div class="section" id="template-best-practice">
+<span id="index-2"></span><span id="id1"></span><h2>Template best practice<a class="headerlink" href="#template-best-practice" title="Permalink to this headline">¶</a></h2>
+<p>Here are some recommendations on how to use templates effectively with
+LAVA job submissions.</p>
+<ul>
+<li><p class="first"><strong>Avoid repetition</strong> - of content or logic.</p>
+</li>
+<li><p class="first"><strong>Avoid complexity</strong> - keep the number of possible overrides,
+defaults and templates to a workable level.</p>
+</li>
+<li><p class="first"><strong>Keep the YAML in the templates</strong> - the structure of the final
+output should be visible directly from the template, subject to
+templates extending other templates. The details dictionary should
+ideally contain only Jinja2 syntax content. This makes it much easier
+to verify that the templates will always produce valid YAML.</p>
+</li>
+<li><p class="first"><strong>Build tests alongside the templates</strong> - check that every template
+outputs valid YAML on it’s own, with example details dictionaries and
+with example job contexts.</p>
+</li>
+<li><p class="first"><strong>Use version control</strong> - templates can quickly become complex. Make
+sure errors can be traced and triaged against the history of changes.</p>
+</li>
+<li><p class="first"><strong>Keep the output human readable</strong> - use <strong>Comments</strong> liberally to
+describe the content, particularly when using logic in templates.
+Structure the YAML in a way that makes sense to humans. For example,
+for a LAVA Test Job submission, <code class="docutils literal notranslate"><span class="pre">job_name</span></code> and <code class="docutils literal notranslate"><span class="pre">device_type</span></code> are
+commonly at the top and the <code class="docutils literal notranslate"><span class="pre">actions</span></code> list follows at the end.
+A big advantage of templating is that comments and structure are
+preserved; use that to your advantage.</p>
+</li>
+<li><p class="first"><strong>Use automated submission bots</strong> - some habits are hard to break and
+many test writers will simply copy and paste a test job submission
+without changing either the job_name or the metadata. To be sure that
+you can retrieve only the data that was submitted via the templating,
+ensure that the output of the templates is submitted by an automated
+user and create sufficient automated users for each Test Plan or
+“Project” if multiple projects share a LAVA instance.</p>
+<p>This will allow you to easily filter results later.</p>
+</li>
+<li><p class="first"><strong>Use checksums</strong> - when referring to build artifacts like kernel
+binaries and filesystem images, include checksums for those artifacts
+in your job submission too. Most build systems can be configured to
+generate checksums at build time; use the job dictionary and
+templates to insert checksums. This will ensure that LAVA is using
+exactly what was specified for your test. This can be particularly
+important when network caches and proxies might affect what your
+system downloads.</p>
+</li>
+<li><p class="first"><strong>Avoid using latest directory names</strong> - again, specify <strong>exactly</strong>
+what artifacts your test will use, with <strong>stable</strong> URLs. It is a
+common and useful feature of build systems to include a
+human-friendly <code class="docutils literal notranslate"><span class="pre">latest</span></code> link in a download directory. However, what
+happens when the next build happens? The <code class="docutils literal notranslate"><span class="pre">latest</span></code> link now moves.
+You might not be able to determine later exactly which files were
+used in your test, and you will not be able to resubmit the same test
+in the future (for example if you want to debug some of your test
+definitions).</p>
+<p>Templating provides a simple way to refer to the exact file or
+directory that you need, to match the metadata you specify.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="using-templates-for-test-jobs">
+<span id="templates-test-jobs"></span><h2>Using templates for test jobs<a class="headerlink" href="#using-templates-for-test-jobs" title="Permalink to this headline">¶</a></h2>
+<p>The specifics of how to build templates for test job submission will
+depend on the data being provided by the rest of your CI system.</p>
+<p>Common elements which would need to be modified by the details
+dictionary (or job dictionary for test jobs) might be:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">job_name</span></code>: Avoid making this cryptic or excessively long. The job
+name is meant to be human readable and is not well suited to
+searching or data analysis. Use <code class="docutils literal notranslate"><span class="pre">metadata</span></code> for that. Let the job
+name be a descriptive sentence which is sufficiently identifiable
+without having to include a mangled version of every identifier used
+in the CI process to this point.</li>
+<li><code class="docutils literal notranslate"><span class="pre">metadata</span></code>: This is a free form dictionary which test writers can
+use to provide searchable key:value pairs which preserve all of the
+variables and generated dynamic data from the CI loop up to this
+point. Commit hashes, build numbers, branch names and URLs, series
+labels, name and/or URL of the configuration, build logs …</li>
+<li><code class="docutils literal notranslate"><span class="pre">urls</span></code>: when testing software using hardware, the software will be
+constantly changing. Templating is the best way to ensure that the
+URLs and the metadata for those URLs change in lockstep.</li>
+</ol>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/templating.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:18 GMT -->
+</html>

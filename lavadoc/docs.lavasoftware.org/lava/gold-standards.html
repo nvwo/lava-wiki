@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/gold-standards.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:45 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Providing gold standard images &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Gold standard test jobs" href="standard-test-jobs.html" />
+    <link rel="prev" title="lavacli" href="lavacli.html" />
+    <link rel="canonical" href="gold-standards.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Providing gold standard images</a><ul>
+<li><a class="reference internal" href="#creating-a-gold-standard-image">Creating a gold standard image</a></li>
+<li><a class="reference internal" href="#other-gold-standard-components">Other gold standard components</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="lavacli.html" title="Previous Chapter: lavacli"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; lavacli</span>
+    </a>
+  </li>
+  <li>
+    <a href="standard-test-jobs.html" title="Next Chapter: Gold standard test jobs"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Gold standard... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="providing-gold-standard-images">
+<span id="providing-gold-standard-files"></span><span id="index-0"></span><h1>Providing gold standard images<a class="headerlink" href="#providing-gold-standard-images" title="Permalink to this headline">¶</a></h1>
+<p>Test writers are strongly recommended to only use a known working setup
+for their job. A set of gold standard jobs has been defined in
+association with the Linaro QA team. These jobs will provide a known
+baseline for test definition writers, in a similar manner as the
+existing QA test definitions provide a base for more elaborate testing.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">Gold standard test jobs</span></a></p>
+</div>
+<p>There will be a series of images provided for as many device types as
+practical, covering the basic deployments. Test definitions will be
+required to be run against these images before the LAVA team will spend
+time investigating bugs arising from tests. These images will provide a
+measure of reassurance around the following issues:</p>
+<ul class="simple">
+<li>Kernel fails to load NFS or ramdisk.</li>
+<li>Kernel panics when asked to use secondary media.</li>
+<li>Image containing a different kernel to the gold standard fails
+to deploy.</li>
+</ul>
+<p>The refactoring will provide <a class="reference internal" href="dispatcher-testing.html#diagnostic-actions"><span class="std std-ref">Diagnostic subclasses</span></a> which point at
+these issues and recommend that the test is retried using the standard
+kernel, dtb, initramfs, rootfs and other components.</p>
+<p>The reason to give developers enough rope is precisely so that kernel
+developers are able to fix issues in the test images before problems
+show up in the gold standard images. Test writers need to work with the
+QA team, using the gold standard images.</p>
+<div class="section" id="creating-a-gold-standard-image">
+<span id="creating-gold-standard-files"></span><h2>Creating a gold standard image<a class="headerlink" href="#creating-a-gold-standard-image" title="Permalink to this headline">¶</a></h2>
+<p>Part of the benefit of a standard image is that the methods for
+building the image - and therefore the methods for updating it,
+modifying it and preparing custom images based upon it - must be
+documented clearly.</p>
+<p>Where possible, standard tools familiar to developers of the OS
+concerned should be used, e.g. <code class="docutils literal notranslate"><span class="pre">debootstrap</span></code> for Debian based images.
+The image can also be a standard OS installation. Gold standard images
+are not “Linaro” images and should not require Linaro tools. Use
+AutoLogin support where required instead of modifying existing images
+to add Linaro-specific tools.</p>
+<p>All gold standard images need to be kept up to date with the base OS as
+many tests will want to install extra software on top and it will waste
+time during the test if a lot of other packages need to be updated at
+the same time. An update of a gold standard image still needs to be
+tested for equivalent or improved performance compared to the current
+image before replacing it.</p>
+<p>The documentation for building and updating the image needs to be
+provided alongside the image itself as a README. This text file should
+also be reproduced on a wiki page and contain a link to that page. Any
+wiki can be used - if a suitable page does not already exist elsewhere,
+use wiki.linaro.org.</p>
+</div>
+<div class="section" id="other-gold-standard-components">
+<h2>Other gold standard components<a class="headerlink" href="#other-gold-standard-components" title="Permalink to this headline">¶</a></h2>
+<p>The standard does not have to be a complete OS image - a kernel with a
+DTB (and possibly an initrd) can also count as a standard ramdisk
+image. Similarly, a combination of kernel and rootfs can count as a
+standard NFS configuration.</p>
+<p>The same requirement exists for documenting how to build, modify and
+update all components of the “image” and the set of components need to
+be tested as a whole to represent a test using the standard.</p>
+<p>In addition, information about the prompts within the image needs to be
+exposed. LAVA no longer has a list of potential prompts and each job
+must specify a list of prompts to use for the job.</p>
+<p>Other information should also be provided, for example, memory
+requirements or CPU core requirements for images to be used with QEMU
+or dependencies on other components (like firmware or kernel support).</p>
+<p>Test writers need to have enough information to submit a job without
+needing to resubmit after identifying and providing missing data.</p>
+<p>One or more sample test jobs is one way of providing this information
+but it is still recommended to provide the prompts and other
+information explicitly.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="standard-test-jobs.html#using-gold-standard-files"><span class="std std-ref">Using Gold standard files</span></a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/gold-standards.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:45 GMT -->
+</html>

@@ -1,0 +1,939 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/development.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:24 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>LAVA development &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pipeline Design" href="pipeline-design.html" />
+    <link rel="prev" title="Development process" href="process.html" />
+    <link rel="canonical" href="development.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">LAVA development</a><ul>
+<li><a class="reference internal" href="#run-the-unit-tests">Run the unit tests</a></li>
+<li><a class="reference internal" href="#functional-testing">Functional testing</a></li>
+<li><a class="reference internal" href="#make-your-changes">Make your changes</a><ul>
+<li><a class="reference internal" href="#blackened-source-code">Blackened source code</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#add-some-unit-tests">Add some unit tests</a><ul>
+<li><a class="reference internal" href="#lava-dispatcher">lava_dispatcher</a></li>
+<li><a class="reference internal" href="#lava-scheduler-app">lava_scheduler_app</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#re-run-the-unit-tests">Re-run the unit tests</a></li>
+<li><a class="reference internal" href="#testing-local-changes">Testing local changes</a><ul>
+<li><a class="reference internal" href="#id2">lava_dispatcher</a></li>
+<li><a class="reference internal" href="#lava-server">lava-server</a></li>
+<li><a class="reference internal" href="#lava-server-doc">lava-server-doc</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-lava-dispatcher-with-pdb-the-python-debugger">Debugging lava-dispatcher with pdb, the Python debugger</a></li>
+<li><a class="reference internal" href="#send-your-commits-for-review">Send your commits for review</a></li>
+<li><a class="reference internal" href="#adding-reviewers">Adding reviewers</a></li>
+<li><a class="reference internal" href="#handling-your-local-branches">Handling your local branches</a></li>
+<li><a class="reference internal" href="#future-proofing">Future proofing</a></li>
+<li><a class="reference internal" href="#use-templates-to-generate-device-configuration">Use templates to generate device configuration</a></li>
+<li><a class="reference internal" href="#database-migrations">Database migrations</a></li>
+<li><a class="reference internal" href="#python-3-x">Python 3.x</a></li>
+<li><a class="reference internal" href="#xml-rpc-changes">XML-RPC changes</a></li>
+<li><a class="reference internal" href="#instance-settings">Instance settings</a></li>
+<li><a class="reference internal" href="#pylint3">Pylint3</a></li>
+<li><a class="reference internal" href="#pep8">pep8</a></li>
+<li><a class="reference internal" href="#unit-tests">Unit-tests</a></li>
+<li><a class="reference internal" href="#lava-database-model-visualization">LAVA database model visualization</a></li>
+<li><a class="reference internal" href="#developer-access-to-django-shell">Developer access to django shell</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="process.html" title="Previous Chapter: Development process"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Development process</span>
+    </a>
+  </li>
+  <li>
+    <a href="pipeline-design.html" title="Next Chapter: Pipeline Design"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Pipeline Design &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-development">
+<span id="index-0"></span><span id="id1"></span><h1>LAVA development<a class="headerlink" href="#lava-development" title="Permalink to this headline">¶</a></h1>
+<p>Before you start, ensure you’ve read:</p>
+<ul class="simple">
+<li><a class="reference internal" href="contribution.html#development-pre-requisites"><span class="std std-ref">Pre-requisites to start with development</span></a></li>
+<li><a class="reference internal" href="contribution.html#contribution-guide"><span class="std std-ref">LAVA Software Community Project Contribution Guide</span></a></li>
+<li><a class="reference internal" href="code-of-conduct.html#code-of-conduct"><span class="std std-ref">LAVA Software Community Project Code of Conduct</span></a></li>
+<li><a class="reference internal" href="review-criteria.html#criteria"><span class="std std-ref">LAVA review criteria</span></a>.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#contribute-upstream"><span class="std std-ref">Contributing Upstream</span></a></p>
+</div>
+<div class="section" id="run-the-unit-tests">
+<span id="running-all-unit-tests"></span><h2>Run the unit tests<a class="headerlink" href="#run-the-unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>Extra dependencies are required to run the tests. On Debian based
+distributions, you can install <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code>.</p>
+<p>To run the tests, use the <code class="docutils literal notranslate"><span class="pre">ci-run</span></code> script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./ci-run
+</pre></div>
+</div>
+<p>There is never any need to use <code class="docutils literal notranslate"><span class="pre">sudo</span></code> for unit tests, it causes lots
+of complications by changing file permissions in your local git clone.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="dispatcher-testing.html#testing-pipeline-code"><span class="std std-ref">Testing the design</span></a> and
+<a class="reference internal" href="debian.html#developer-preparations"><span class="std std-ref">Preparing for LAVA development</span></a></p>
+</div>
+</div>
+<div class="section" id="functional-testing">
+<h2>Functional testing<a class="headerlink" href="#functional-testing" title="Permalink to this headline">¶</a></h2>
+<p>Unit tests cannot replicate all tests required on LAVA code, some tests
+will need to be run with real devices under test. On Debian based
+distributions, see <a class="reference internal" href="debian.html#dev-builds"><span class="std std-ref">Developer package build</span></a>. See <a class="reference internal" href="developing-tests.html#test-developer"><span class="std std-ref">Writing Tests</span></a> for
+information on writing LAVA test jobs to test particular device
+functionality.</p>
+</div>
+<div class="section" id="make-your-changes">
+<span id="making-git-changes"></span><span id="index-1"></span><h2>Make your changes<a class="headerlink" href="#make-your-changes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Follow PEP8 style for Python code.</li>
+<li>Use one topic branch for each logical change.</li>
+<li>Include new unit tests in the proposed merge request.</li>
+<li>Write good commit messages.<ul>
+<li>Describe why the change was made, not what files were changed.
+The commit message should reflect your intention, not the contents
+of the commit.</li>
+<li>Avoid putting documentation into the commit message. Keep the
+commit message to a reasonable length (about 10 to 12 lines at
+most). Include changes to the existing documentation in your
+commit.</li>
+<li>Usage examples need to go into the documentation, not the commit
+message. Everything which is intended to help users to add this
+support to their own test jobs must be in the documentation.</li>
+<li>Avoid duplicating or summarizing the documentation in the commit
+message, reviewers will be reading the documentation as well.</li>
+<li>Use comments in the code in preference to detailed commit messages.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="blackened-source-code">
+<span id="running-black"></span><span id="index-2"></span><h3>Blackened source code<a class="headerlink" href="#blackened-source-code" title="Permalink to this headline">¶</a></h3>
+<p><cite>black</cite> is now applied to <strong>all</strong> LAVA source code files and merge
+requests will <strong>fail</strong> CI if a change breaks the formatting.</p>
+<p>When changing files formatted by black, make your changes and then run
+<code class="docutils literal notranslate"><span class="pre">black</span></code> on all modified Python files before pushing the branch to
+GitLab. In some situations, <code class="docutils literal notranslate"><span class="pre">black</span></code> and <code class="docutils literal notranslate"><span class="pre">pylint</span></code> can disagree on
+continuation of long lines, particularly when using multiple operators
+and bracketing. In case of conflict, <strong>black is always correct</strong>. If
+you disagree with how <cite>black</cite> has formatted your change, consider
+expanding list comprehensions and other syntax until you and black can
+agree.</p>
+</div>
+</div>
+<div class="section" id="add-some-unit-tests">
+<span id="developer-adding-unit-tests"></span><span id="index-3"></span><h2>Add some unit tests<a class="headerlink" href="#add-some-unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>Some changes will <strong>always</strong> need additional unit tests and reviews
+will not be merged without this support. The purpose is to ensure that
+future changes in the codebase have some assurance that existing
+support has not been affected. The intent is that as much as possible
+of the test job and device configuration is covered by at least one
+unit test. Some examples include:</p>
+<ol class="arabic simple">
+<li>Changes to an existing jinja2 device-type template which change the
+output YAML of the device configuration need a unit test to show that
+the change is being included.</li>
+<li>Adding a new deployment or boot method needs unit tests (including
+sample test jobs) which check that all <code class="docutils literal notranslate"><span class="pre">validate()</span></code> functions work
+correctly and particular tests checking for the specific details of
+the new method.</li>
+<li>Adding a change to an existing deployment or boot method which
+changes the construction of the pipeline based on test job or device
+configuration. Unit tests will be required to show that the change is
+being made.</li>
+</ol>
+<p>Reviewers may ask for unit test support for any change, so <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk
+to us</span></a> during development. You can also use an
+<code class="docutils literal notranslate"><span class="pre">WIP:</span></code> prefix in your git commit to indicate that the change is not
+ready for merging but is ready for comments.</p>
+<div class="section" id="lava-dispatcher">
+<h3>lava_dispatcher<a class="headerlink" href="#lava-dispatcher" title="Permalink to this headline">¶</a></h3>
+<p>Whenever new functionality is added to <code class="docutils literal notranslate"><span class="pre">lava_dispatcher</span></code>, especially
+a new <a class="reference internal" href="dispatcher-design.html#using-strategy-classes"><span class="std std-ref">Strategy class</span></a>, there <strong>must</strong> be
+some new unit tests added to allow some assurance that the new classes
+continue to operate as expected as the rest of the codebase continues
+to develop. There are a lot of examples in the current unit tests.</p>
+<ol class="arabic">
+<li><p class="first">Start with a sample test job which is known to work. Copy that into
+<code class="docutils literal notranslate"><span class="pre">lava_dispatcher/tests/sample_jobs</span></code>. The URLs in that sample job
+will need to be valid URLs but do not need to be working files.
+(This sample_job is not being submitted to run on a device, it is
+only being used to check that the construction of the pipeline is
+valid.) If you need files which other sample jobs do not use then
+<a class="reference internal" href="support.html#getting-support"><span class="std std-ref">we can help with that</span></a> by putting files onto
+images.validation.linaro.org.</p>
+</li>
+<li><p class="first">Use the updated <code class="docutils literal notranslate"><span class="pre">Factory</span></code> support to generate the device
+configuration directly from the <code class="docutils literal notranslate"><span class="pre">lava_scheduler_app</span></code> templates.</p>
+<p>If a suitable device dictionary does not already exist in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/devices</span></code>, a new one can be added to
+support the unit tests.</p>
+</li>
+<li><p class="first">Add a function to a suitable Factory class to use the device config
+file to create a device and use the parser to create a Job instance
+by following the examples in the existing unit tests</p>
+</li>
+<li><p class="first">Create the pipeline ref by following the <code class="docutils literal notranslate"><span class="pre">readme.txt</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">pipeline_ref</span></code> directory. The simplest way to create a single new
+pipeline reference file is to add one line to the new unit test
+function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">update_ref</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>Run the unit test and the pipeline reference will be created. Remove
+the line before committing for review or the <code class="docutils literal notranslate"><span class="pre">./ci-run</span></code> check will
+fail.</p>
+<p>This file acts as a description of the classes involved in the
+pipeline which has been constructed from the supplied test job and
+device configuration. Validating it in the unit tests ensures that
+later development does not invalidate the new code by accidentally
+removing or adding unexpected actions.</p>
+</li>
+<li><p class="first">In the new function, use the <code class="docutils literal notranslate"><span class="pre">pipeline_refs</span></code> README to add a check
+that the pipeline reference continues to reflect the pipeline which
+has been constructed by the parser.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">unit tests do not typically check any of the <code class="docutils literal notranslate"><span class="pre">run</span></code> function
+code. Do as much checking as is practical in the <code class="docutils literal notranslate"><span class="pre">validate</span></code>
+functions of all the new classes. For example, if <code class="docutils literal notranslate"><span class="pre">run</span></code> relies on
+a parameter being set, check for that parameter in <code class="docutils literal notranslate"><span class="pre">validate</span></code> and
+check that the value of that parameter is correct based on the
+sample job and the supplied device configuration.</p>
+</div>
+</div>
+<div class="section" id="lava-scheduler-app">
+<h3>lava_scheduler_app<a class="headerlink" href="#lava-scheduler-app" title="Permalink to this headline">¶</a></h3>
+<p>Some parts of lava_scheduler_app are easier to test than others. New
+device-type templates need to have specific unit tests added to
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/test_templates</span></code> or one of the relevant
+specialist template unit test files. Follow the examples and make sure
+that if the new template adds new items then those items are checked
+for existence and validity in the new function which tests the new
+template.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -vcf lava_scheduler_app.tests.test_fastboot_templates
+
+$ python3 -m unittest -vcf lava_scheduler_app.tests.test_qemu_templates
+
+$ python3 -m unittest -vcf lava_scheduler_app.tests.test_uboot_templates
+</pre></div>
+</div>
+<p>If you are adding or modifying documentation in <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>, make sure that
+the documentation builds cleanly:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ make -C doc/v2 clean
+$ make -C doc/v2 html
+</pre></div>
+</div>
+<p>For other parts of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>, follow the examples of the existing unit
+tests and <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk to us</span></a>.</p>
+</div>
+</div>
+<div class="section" id="re-run-the-unit-tests">
+<h2>Re-run the unit tests<a class="headerlink" href="#re-run-the-unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>Make sure that your changes do not cause any failures in the unit tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./ci-run
+</pre></div>
+</div>
+<p>Wherever possible, always add new unit tests for new code.</p>
+</div>
+<div class="section" id="testing-local-changes">
+<h2>Testing local changes<a class="headerlink" href="#testing-local-changes" title="Permalink to this headline">¶</a></h2>
+<p>For any sufficiently large change, <a class="reference internal" href="debian.html#dev-builds"><span class="std std-ref">building</span></a> and
+installing a new package on a local instance is recommended. Ensure
+that the test instance is already running the most recent production
+release.</p>
+<p>If the test instance has a separate worker, ensure that the master and
+the worker always have precisely the same code applied. For some
+changes, it may be necessary to have a test instance which is a clone
+of a production instance, complete with devices. <strong>Never</strong> make live
+changes to a production instance. (This is why integrating new device
+types into LAVA requires multiple devices.)</p>
+<p>Once your change is working successfully:</p>
+<ol class="arabic simple">
+<li>Ensure that your local branch is clean - check for left over debug
+code.</li>
+<li>Ensure that your local branch has been rebased against current
+<code class="docutils literal notranslate"><span class="pre">master</span></code></li>
+<li>Build and install a package from the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch. If you have
+added any new files in your local change, make sure these have been
+removed. Reproduce the original bug or problem.</li>
+<li>Build and install a package from your local branch and repeat the
+tests.</li>
+</ol>
+<div class="section" id="id2">
+<h3>lava_dispatcher<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Changes to most files in <code class="docutils literal notranslate"><span class="pre">lava_dispatcher</span></code> can be symlinked or copied
+into the packaged locations. e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ PYTHONDIR=/usr/lib/python3/dist-packages/
+$ sudo cp &lt;path_to_file&gt; $PYTHONDIR/&lt;path_to_file&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The path used for <code class="docutils literal notranslate"><span class="pre">PYTHONDIR</span></code> has changed with the LAVA
+runtime support moving to Python3 in 2018.4.</p>
+</div>
+<p>There is no need to copy files used solely by the unit tests.</p>
+<p>Changes to files in <code class="docutils literal notranslate"><span class="pre">./etc/</span></code> will require restarting the relevant
+service.</p>
+<p>Changes to files in <code class="docutils literal notranslate"><span class="pre">./lava/dispatcher/</span></code> will need the <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code>
+service to be restarted but changes to <code class="docutils literal notranslate"><span class="pre">./lava_dispatcher/</span></code> will not.</p>
+<ul>
+<li><p class="first">When adding or modifying <code class="docutils literal notranslate"><span class="pre">run</span></code>, <code class="docutils literal notranslate"><span class="pre">validate</span></code>, <code class="docutils literal notranslate"><span class="pre">populate</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cleanup</span></code> functions, <strong>always</strong> ensure that <code class="docutils literal notranslate"><span class="pre">super</span></code> is called
+appropriately, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">max_end_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">When adding or modifying <code class="docutils literal notranslate"><span class="pre">run</span></code> functions in subclasses of
+<code class="docutils literal notranslate"><span class="pre">Action</span></code>, <strong>always</strong> ensure that each return point out of the
+<code class="docutils literal notranslate"><span class="pre">run</span></code> function returns the <code class="docutils literal notranslate"><span class="pre">connection</span></code> object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">connection</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">When adding new classes, use <strong>hyphens</strong>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, as separators in
+<code class="docutils literal notranslate"><span class="pre">self.name</span></code>, <em>not underscores</em>,  <code class="docutils literal notranslate"><span class="pre">_</span></code>. The function will fail if
+underscore or whitespace is used. Action names need to all be
+lowercase and describe something about what the action does at
+runtime. More information then needs to be added to the
+<code class="docutils literal notranslate"><span class="pre">self.summary</span></code> and an extended sentence in <code class="docutils literal notranslate"><span class="pre">self.description</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;do-something-at-runtime&#39;</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="developer-example.html#developing-new-classes"><span class="std std-ref">Developing new classes for LAVA V2</span></a></p>
+</div>
+</li>
+<li><p class="first">Use <strong>namespaces</strong> for all dynamic data. Parameters of actions are
+immutable. Use the namespace functions when an action needs to store
+dynamic data, for example the location of files which have been
+downloaded to temporary directories, Do not access <code class="docutils literal notranslate"><span class="pre">self.data</span></code>
+directly (except for use in iterators). Use the get and set
+primitives, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">set_namespace_data</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;boot&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;shared&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;boot-result&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">res</span><span class="p">)</span>
+
+<span class="n">image_arg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_namespace_data</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;download-action&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;image_arg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="lava-server">
+<h3>lava-server<a class="headerlink" href="#lava-server" title="Permalink to this headline">¶</a></h3>
+<p>Changes to device-type templates and device dictionaries take effect
+immediately, so simply submitting a test job will pick up the latest
+version of the code in
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code>. Make changes to
+the templates in <code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types/</span></code>. Check them
+using the <code class="docutils literal notranslate"><span class="pre">test_all_templates</span></code> test, and only then copy the updates
+into <code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code> when the
+tests pass.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#testing-new-devicetype-templates"><span class="std std-ref">Testing new device-type templates</span></a></p>
+</div>
+<p>Changes to django templates can be applied immediately by copying the
+template into the packaged path, e.g. html files in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/templates/lava_scheduler_app/</span></code> can be copied or
+symlinked to
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/python3/dist-packages/lava_scheduler_app/templates/lava_scheduler_app/</span></code></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The path changed when the LAVA runtime support moved to
+Python3 with the 2018.4 release.</p>
+</div>
+<p>Changes to python code generally require copying the files and
+restarting the <code class="docutils literal notranslate"><span class="pre">lava-server-gunicorn</span></code> service before the changes will
+be applied:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">lava</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">gunicorn</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<p>Changes to <code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/models.py</span></code>,
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/db_utils.py</span></code> or <code class="docutils literal notranslate"><span class="pre">lava_results_app/dbutils</span></code> will
+require restarting the <code class="docutils literal notranslate"><span class="pre">lava-master</span></code> service:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">lava</span><span class="o">-</span><span class="n">master</span> <span class="n">restart</span>
+</pre></div>
+</div>
+<p>Changes to files in <code class="docutils literal notranslate"><span class="pre">./etc/</span></code> will require restarting the relevant
+service. If multiple services are affected, it is normally best to
+build and install a new package.</p>
+<p><a class="reference internal" href="#database-migrations"><span class="std std-ref">Database migrations</span></a> are a complex area - read up on the django
+documentation for migrations. Instead of <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./manage.py</span></code>, use
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">lava-server</span> <span class="pre">manage</span></code>.</p>
+</div>
+<div class="section" id="lava-server-doc">
+<h3>lava-server-doc<a class="headerlink" href="#lava-server-doc" title="Permalink to this headline">¶</a></h3>
+<p>Documentation files in <code class="docutils literal notranslate"><span class="pre">doc/v2</span></code> can be built locally in the git
+checkout using <code class="docutils literal notranslate"><span class="pre">make</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="n">doc</span><span class="o">/</span><span class="n">v2</span> <span class="n">clean</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="n">doc</span><span class="o">/</span><span class="n">v2</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>Files can then be checked in a web browser using the <code class="docutils literal notranslate"><span class="pre">file://</span></code> url
+scheme and the <code class="docutils literal notranslate"><span class="pre">_build/html/</span></code> subdirectory. For example:
+<code class="docutils literal notranslate"><span class="pre">file:///home/neil/code/lava/lava-server/doc/v2/_build/html/first_steps.html</span></code></p>
+<p>Some documentation changes can add images, example test jobs, test
+definitions and other files. Depending on the type of file, it may be
+necessary to make changes to the packaging, so <a class="reference internal" href="support.html#getting-support"><span class="std std-ref">talk to us</span></a> before making such changes.</p>
+<p>Documentation is written in RST, so the <a class="reference external" href="http://www.sphinx-doc.org/en/stable/rest.html">RST Primer</a> is essential reading
+when modifying the documentation.</p>
+<ol class="arabic simple">
+<li>Keep all documentation paragraphs wrapped to 80 columns.</li>
+<li>Strip trailing whitespace from all modified files.</li>
+<li>When you build your changes from clean, make sure there are no
+warning or error messages from the build.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">en_US</span></code> in both code and documentation.</li>
+<li>Use syntax highlighting for code and check the rendered page. For
+example, <code class="docutils literal notranslate"><span class="pre">code-block::</span> <span class="pre">shell</span></code> relates to the contents of shell
+scripts, not the output of commands or scripts in a shell (those
+should use <code class="docutils literal notranslate"><span class="pre">code-block::</span> <span class="pre">none</span></code>)</li>
+<li>Wherever possible, pull in code samples from working example files
+so that these can be checked for accuracy on <a class="reference external" href="https://staging.validation.linaro.org/">staging</a> before future releases.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="debugging-lava-dispatcher-with-pdb-the-python-debugger">
+<span id="developer-commit-for-review"></span><h2>Debugging lava-dispatcher with pdb, the Python debugger<a class="headerlink" href="#debugging-lava-dispatcher-with-pdb-the-python-debugger" title="Permalink to this headline">¶</a></h2>
+<p>Due to the nature of how <code class="docutils literal notranslate"><span class="pre">lava-run</span></code> is executed by <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code>, it’s
+tricky to debug <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> directly. However, one can use the
+<a class="reference external" href="https://pypi.org/project/remote-pdb/">remote-pdb</a> package and do remote debugging.</p>
+<p>You need to have the <code class="docutils literal notranslate"><span class="pre">remote-pdb</span></code> python package installed, and a <code class="docutils literal notranslate"><span class="pre">telnet</span></code>
+client.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">lava-worker</span></code> is started with the <code class="docutils literal notranslate"><span class="pre">--debug</span></code> command line option, then it
+will make <code class="docutils literal notranslate"><span class="pre">lava-run</span></code> stop right before running the test job for debugging.
+You will see a message on the console where <code class="docutils literal notranslate"><span class="pre">lava-run</span></code> is running that is
+similar to this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RemotePdb</span> <span class="n">session</span> <span class="nb">open</span> <span class="n">at</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">37865</span><span class="p">,</span> <span class="n">waiting</span> <span class="k">for</span> <span class="n">connection</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Note the address where the debuggin server is listening.  Then, to access the
+debugger, you point <code class="docutils literal notranslate"><span class="pre">telnet</span></code> to the provided address and port:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">telnet</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">37865</span>
+<span class="n">Connected</span> <span class="n">to</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">.</span>
+<span class="n">Escape</span> <span class="n">character</span> <span class="ow">is</span> <span class="s1">&#39;^]&#39;</span><span class="o">.</span>
+<span class="o">&gt;</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">lava</span><span class="o">/</span><span class="n">dispatcher</span><span class="o">/</span><span class="n">lava</span><span class="o">-</span><span class="n">run</span><span class="p">(</span><span class="mi">274</span><span class="p">)</span><span class="n">main</span><span class="p">()</span>
+<span class="o">-&gt;</span> <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="p">(</span><span class="n">Pdb</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From that point on, you have a normal <a class="reference external" href="https://docs.python.org/3/library/pdb.html">pdb</a> session, and can debug the
+execution of <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>.</p>
+</div>
+<div class="section" id="send-your-commits-for-review">
+<h2>Send your commits for review<a class="headerlink" href="#send-your-commits-for-review" title="Permalink to this headline">¶</a></h2>
+<p>From each topic branch, just run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li>each merge request is reviewed and approved individually and</li>
+<li>later commits will depend on earlier commits, so if a later commit
+is approved and the one before it is not, the later commit will not
+be merged until the earlier one is approved.</li>
+<li>you are responsible for <strong>rebasing</strong> your branch(es) against updates
+on master and this can become more difficult when there are multiple
+commits on one local branch.</li>
+<li>Fixes from comments or unit test failures in one review are <strong>not</strong>
+acceptable as separate merge requests.</li>
+<li>It is common for merge requests to go through repeated cycles of
+comments and updates. This is not a reflection on the usefulness of
+the change or on any particular contributors, it is a natural
+evolution of the code. Comments may reflect changes being made in
+other parallel reviews or reviews merged whilst this change was
+being reviewed. Contributors may be added to other reviews where the
+team consider this to be useful for feedback or where the
+documentation is being updated in areas which relate to your change.
+The number of comments per review is no indication of the quality of
+that review and does not affect when the review would be merged.</li>
+<li>It is common for changes to develop merge conflicts during the
+review process as other reviews are merged. You are responsible for
+fixing all merge conflicts in your merge requests.</li>
+<li>All merge requests must pass all CI tests.</li>
+</ol>
+<p>Therefore the recommendations are:</p>
+<ol class="arabic simple">
+<li><strong>Always</strong> use a separate local branch per change and a new commit
+for changes on that branch each time branch gets pushed until it
+is merged.</li>
+<li>Think carefully about whether to base one local branch on another
+local branch. This is recommended when one change logically extends
+an earlier change and makes it a lot easier than having multiple
+commits on a single branch.</li>
+<li>Keep all your branches up to date with master <strong>regularly</strong>. It is
+much better to resolve merge conflicts one change at a time instead
+of having multiple merge commits all in the one rebase operation
+when the merge request is finally ready to be merged. GitLab will
+show a message if a rebase is required but you can also simply
+rebase your local branch before pushing any new changes.</li>
+<li>Check gitlab periodically and ensure that you address <strong>all</strong>
+comments on the review.</li>
+</ol>
+</div>
+<div class="section" id="adding-reviewers">
+<span id="developer-adding-reviewers"></span><h2>Adding reviewers<a class="headerlink" href="#adding-reviewers" title="Permalink to this headline">¶</a></h2>
+<p>The lava group is automatically added as approver for every merge
+request.</p>
+<p>Optionally, you can put <code class="docutils literal notranslate"><span class="pre">WIP:</span></code> at the start of your git commit
+message and then amend the message when the request is ready to merge.</p>
+</div>
+<div class="section" id="handling-your-local-branches">
+<h2>Handling your local branches<a class="headerlink" href="#handling-your-local-branches" title="Permalink to this headline">¶</a></h2>
+<p>After placing a few reviews, there will be a number of local branches.
+To keep the list of local branches under control, the local branches
+can be easily deleted after the merge. Note: git will warn if the
+branch has not already been merged when used with the lower case <code class="docutils literal notranslate"><span class="pre">-d</span></code>
+option. This is a useful check that you are deleting a merged branch
+and not an unmerged one, so work with git to help your workflow.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout bugfix
+$ git rebase master
+$ git checkout master
+$ git branch -d bugfix
+</pre></div>
+</div>
+<p>If the final command fails, check the status of the review of the
+branch. If you are completely sure the branch should still be deleted
+or if the review of this branch was abandoned, use the <cite>-D</cite> option
+instead of <cite>-d</cite> and repeat the command.</p>
+</div>
+<div class="section" id="future-proofing">
+<h2>Future proofing<a class="headerlink" href="#future-proofing" title="Permalink to this headline">¶</a></h2>
+<p>All developers are encouraged to write code with future changes in
+mind, so that it is easy to do a technology upgrade. This includes
+watching for errors and warnings generated by dependency packages, as
+well as upgrading and migrating to newer APIs as a normal part of
+development.</p>
+<p>This is particularly true for Django where the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> package
+needs to retain support for multiple django versions as well as
+monitoring for deprecation warnings in the newest django version. Where
+necessary, write code for different versions and separate with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">django</span>
+<span class="k">if</span> <span class="n">django</span><span class="o">.</span><span class="n">VERSION</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+    <span class="k">pass</span>  <span class="c1"># newer code</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">pass</span>  <span class="c1"># older compatibility code</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-templates-to-generate-device-configuration">
+<span id="use-templates-in-dispatcher"></span><h2>Use templates to generate device configuration<a class="headerlink" href="#use-templates-to-generate-device-configuration" title="Permalink to this headline">¶</a></h2>
+<p>One of the technical reasons to merge the lava-dispatcher and
+lava-server source trees into a single source is to allow
+lava-dispatcher to use the output of the lava-server templates in
+development. Further changes are being made in this area to provide a
+common module but it is already possible to build a lava_dispatcher
+unit test which pulls device configuration directly from the templates
+in lava_scheduler_app. This removes the problem of static YAML files in
+<code class="docutils literal notranslate"><span class="pre">lava_dispatcher/devices</span></code> getting out of date compared to the actual
+YAML created by changes in the templates.</p>
+<p>The YAML device configuration is generated from a device dictionary in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app</span></code> which extends a template in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app</span></code> - the same template which is used at runtime on
+LAVA instances. Any change to the template or device dictionary is
+immediately reflected in the YAML sent to the <code class="docutils literal notranslate"><span class="pre">lava_dispatcher</span></code> unit
+test.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">lava_dispatcher.tests.test_basic</span> <span class="kn">import</span> <span class="n">Factory</span><span class="p">,</span> <span class="n">StdoutTestCase</span>
+<span class="kn">from</span> <span class="nn">lava_dispatcher.tests.utils</span> <span class="kn">import</span> <span class="n">infrastructure_error_multi_paths</span>
+
+<span class="k">class</span> <span class="nc">TestFastbootDeploy</span><span class="p">(</span><span class="n">StdoutTestCase</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-many-public-methods</span>
+
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">Factory</span><span class="p">()</span>
+
+    <span class="nd">@unittest.skipIf</span><span class="p">(</span><span class="n">infrastructure_error_multi_paths</span><span class="p">(</span>
+        <span class="p">[</span><span class="s1">&#39;lxc-info&#39;</span><span class="p">,</span> <span class="s1">&#39;img2simg&#39;</span><span class="p">,</span> <span class="s1">&#39;simg2img&#39;</span><span class="p">]),</span>
+        <span class="s2">&quot;lxc or img2simg or simg2img not installed&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_lxc_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span><span class="s1">&#39;d02-01.jinja2&#39;</span><span class="p">,</span> <span class="s1">&#39;sample_jobs/grub-ramdisk.yaml&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="database-migrations">
+<span id="id3"></span><h2>Database migrations<a class="headerlink" href="#database-migrations" title="Permalink to this headline">¶</a></h2>
+<p>The LAVA team recommend using Debian stable but also support testing
+and unstable which have a newer version of <a class="reference external" href="https://tracker.debian.org/pkg/python-django">python-django</a>.</p>
+<p>Database migrations on Debian Jessie and later are managed within
+django. Support for <a class="reference external" href="https://tracker.debian.org/pkg/python-django-south">python-django-south</a> has been
+<strong>dropped</strong>. <strong>Only django</strong> migration types should be included in any
+reviews which involve a database migration.</p>
+<p>Once modified, the updated <code class="docutils literal notranslate"><span class="pre">models.py</span></code> file needs to be copied into
+the system location for the relevant extension, e.g.
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app</span></code>. This is a step which needs to be done by the
+developer - developer packages <strong>cannot</strong> be installed cleanly and
+<strong>unit tests will likely fail</strong> until the migration has been created
+and applied.</p>
+<p>On Debian Jessie and later:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage makemigrations lava_scheduler_app
+</pre></div>
+</div>
+<p>The migration file will be created in
+<code class="docutils literal notranslate"><span class="pre">/usr/lib/python3/dist-packages/lava_scheduler_app/migrations/</span></code>
+(which is why <code class="docutils literal notranslate"><span class="pre">sudo</span></code> is required) and will need to be copied into
+your git working copy and added to the review.</p>
+<p>The migration is applied using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage migrate lava_scheduler_app
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://docs.djangoproject.com/en/1.8/topics/migrations/">django docs</a> for more
+information.</p>
+</div>
+<div class="section" id="python-3-x">
+<span id="use-python3"></span><span id="index-4"></span><h2>Python 3.x<a class="headerlink" href="#python-3-x" title="Permalink to this headline">¶</a></h2>
+<p>Python3 support in LAVA is related to a number of factors:</p>
+<ul class="simple">
+<li>Forthcoming LTS releases of django which will remove support for
+python2.7</li>
+<li>Transition within Debian to full python3 support.</li>
+</ul>
+<p><a class="reference external" href="https://lists.lavasoftware.org/pipermail/lava-announce/2017-June/000032.html">https://lists.lavasoftware.org/pipermail/lava-announce/2017-June/000032.html</a></p>
+<p><a class="reference external" href="https://lists.lavasoftware.org/pipermail/lava-announce/2018-January/000046.html">https://lists.lavasoftware.org/pipermail/lava-announce/2018-January/000046.html</a></p>
+<p>lava-dispatcher and lava-server now fully support python3, runtime and
+testing. Code changes to either codebase <strong>must</strong> be Python3
+compatible.</p>
+<p>All reviews run the <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> unit tests
+against python 3.x and changes must pass all unit tests.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">./ci-run</span></code> script for <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> can
+run the unit tests using Python3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">ci</span><span class="o">-</span><span class="n">run</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>Some additional Python3 dependencies will be required. In particular,
+<code class="docutils literal notranslate"><span class="pre">python3-django-auth-ldap</span></code> will need to be installed.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Django will be dropping python2.7 support with the 2.2LTS
+release, <em>frozen</em> instances of LAVA will not be able to use django
+updates after that point.</p>
+</div>
+</div>
+<div class="section" id="xml-rpc-changes">
+<h2>XML-RPC changes<a class="headerlink" href="#xml-rpc-changes" title="Permalink to this headline">¶</a></h2>
+<p>Each of the installed django apps in <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> are able to expose
+functionality using <a class="reference internal" href="data-export.html#xml-rpc"><span class="std std-ref">XML-RPC</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">linaro_django_xmlrpc.models</span> <span class="kn">import</span> <span class="n">ExposedAPI</span>
+
+<span class="k">class</span> <span class="nc">SomeAPI</span><span class="p">(</span><span class="n">ExposedAPI</span><span class="p">):</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p class="first">The <code class="docutils literal notranslate"><span class="pre">docstring</span></code> <strong>must</strong> include the full user-facing documentation of
+each function exposed through the API.</p>
+</li>
+<li><p class="first">Authentication should be supported using the base class support:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">_authenticate</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Catch exceptions for all errors, <code class="docutils literal notranslate"><span class="pre">SubmissionException</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DoesNotExist</span></code> and others, then re-raise as
+<code class="docutils literal notranslate"><span class="pre">xmlrpc.client.Fault</span></code>.</p>
+</li>
+<li><p class="first">Move as much of the work into the relevant app as possible, either
+in <code class="docutils literal notranslate"><span class="pre">models.py</span></code> or in <code class="docutils literal notranslate"><span class="pre">dbutils.py</span></code>. Wherever possible, re-use
+existing functions with wrappers for error handling in the API code.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="instance-settings">
+<span id="lava-instance-settings"></span><h2>Instance settings<a class="headerlink" href="#instance-settings" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">/etc/lava-server/instance.conf</span></code> is principally for V1 configuration.
+V2 uses this file only for the database connection settings on the
+master, instance name and the <code class="docutils literal notranslate"><span class="pre">lavaserver</span></code> user.</p>
+<p>Most settings for the instance are handled inside django using
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code>. (For historical reasons, this file
+uses <strong>JSON</strong> syntax.)</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="advanced-installation.html#branding"><span class="std std-ref">LAVA server branding support</span></a>, <a class="reference internal" href="debian.html#django-debug-toolbar"><span class="std std-ref">Debugging Django issues</span></a> and
+<a class="reference internal" href="#developer-access-to-django-shell"><span class="std std-ref">Developer access to django shell</span></a></p>
+</div>
+</div>
+<div class="section" id="pylint3">
+<span id="pylint-tool"></span><h2>Pylint3<a class="headerlink" href="#pylint3" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.pylint.org/">Pylint</a> is a tool that checks for errors in Python code, tries to
+enforce a coding standard and looks for bad code smells. We encourage
+developers to run LAVA code through pylint and fix warnings or errors
+shown by pylint to maintain a good score. For more information about
+code smells, refer to Martin Fowler’s <a class="reference external" href="https://www.refactoring.com/">refactoring book</a>. LAVA
+developers stick on to <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 008</a> (aka <a class="reference external" href="https://www.python.org/doc/essays/styleguide.html">Guido’s style guide</a>) across
+all the LAVA component code.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pylint3</span></code> does need to be used with some caution, the messages
+produced should not be followed blindly. It can be very useful for
+spotting unused imports, unused variables and other issues. To simplify
+the pylint output, some warnings are recommended to be disabled:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pylint3 -d line-too-long -d missing-docstring
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Docstrings should still be added wherever a docstring would
+be useful.</p>
+</div>
+<p>Many developers use a <code class="docutils literal notranslate"><span class="pre">~/.pylintrc</span></code> file which already includes a
+sample list of warnings to disable. Other warnings frequently disabled
+in <code class="docutils literal notranslate"><span class="pre">~/.pylintrc</span></code> include:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>too-many-locals,
+too-many-ancestors,
+too-many-arguments,
+too-many-instance-attributes,
+too-many-nested-blocks,
+too-many-return-statements,
+too-many-branches,
+too-many-statements,
+too-few-public-methods,
+wrong-import-order,
+ungrouped-imports,
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pylint</span></code> also supports local disabling of warnings and there are many
+examples of:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">variable</span> <span class="o">=</span> <span class="n">func_call</span><span class="p">()</span>  <span class="c1"># pylint: disable=</span>
+</pre></div>
+</div>
+<p>There is a <code class="docutils literal notranslate"><span class="pre">pylint-django</span></code> plugin available in unstable and testing
+and whilst it improves the pylint output for the <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>
+codebase, it still has a high level of false indications, particularly
+when extending an existing model.</p>
+</div>
+<div class="section" id="pep8">
+<h2>pep8<a class="headerlink" href="#pep8" title="Permalink to this headline">¶</a></h2>
+<p>In order to check for <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 008</a> compliance the following command is
+recommended:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pep8 --ignore E501
+</pre></div>
+</div>
+<p><cite>pep8</cite> can be installed in Debian based systems as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ apt install pep8
+</pre></div>
+</div>
+</div>
+<div class="section" id="unit-tests">
+<span id="index-5"></span><span id="id4"></span><h2>Unit-tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>LAVA has set of unit tests which the developers can run on a regular
+basis for each change they make in order to check for regressions if
+any. Most of the LAVA components such as <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>,
+<code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>, <a class="reference internal" href="lavacli.html#lavacli"><span class="std std-ref">lavacli</span></a> have unit tests.</p>
+<p>Extra dependencies are required to run the tests. On Debian based
+distributions, you need to install <code class="docutils literal notranslate"><span class="pre">lava-dev</span></code>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development-intro.html#unit-test-dependencies"><span class="std std-ref">Dependencies required to run unit tests</span></a></p>
+</div>
+<p>To run the tests, use the ci-run / ci-build scripts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./ci-run
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#developer-preparations"><span class="std std-ref">Preparing for LAVA development</span></a>,
+<a class="reference internal" href="development-intro.html#unit-test-dependencies"><span class="std std-ref">Dependencies required to run unit tests</span></a> and <a class="reference internal" href="dispatcher-testing.html#testing-pipeline-code"><span class="std std-ref">Testing the design</span></a> for
+examples of how to run individual unit tests or all unit tests
+within a class or module.</p>
+</div>
+</div>
+<div class="section" id="lava-database-model-visualization">
+<h2>LAVA database model visualization<a class="headerlink" href="#lava-database-model-visualization" title="Permalink to this headline">¶</a></h2>
+<p>LAVA database models can be visualized with the help of
+<a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/">django_extensions</a> along with tools such as <a class="reference external" href="https://pypi.org/project/pydot/">pydot</a>. In Debian based
+systems install the following packages to get the visualization of LAVA
+database models:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ apt install python-django-extensions python-pydot
+</pre></div>
+</div>
+<p>Once the above packages are installed successfully, use the following command
+to get the visualization of <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> models in PNG format:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage graph_models --pydot -a -g -o lava-server-model.png
+</pre></div>
+</div>
+<p>More documentation about graph models is available in
+<a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/graph_models.html">https://django-extensions.readthedocs.io/en/latest/graph_models.html</a></p>
+<p>Other useful features from <a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/">django_extensions</a> are as follows:</p>
+<ul>
+<li><p class="first"><a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/shell_plus.html">shell_plus</a> - similar to the built-in “shell” but autoloads all models</p>
+</li>
+<li><p class="first"><a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/validate_templates.html">validate_templates</a> - check templates for rendering errors:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage validate_templates
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/runscript.html">runscript</a> - run arbitrary scripts inside <code class="docutils literal notranslate"><span class="pre">lava-server</span></code>
+environment:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ sudo lava-server manage runscript fix_user_names --script-args<span class="o">=</span>all
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="developer-access-to-django-shell">
+<span id="id5"></span><h2>Developer access to django shell<a class="headerlink" href="#developer-access-to-django-shell" title="Permalink to this headline">¶</a></h2>
+<p>Default configurations use a side-effect of the logging behavior to
+restrict access to the <code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span></code> operations which typical
+Django apps expose through the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> interface. This is because
+<code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span> <span class="pre">shell</span></code> provides read-write access to the
+database, so the command requires <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+<p>On developer machines, this can be unnecessary. Set the location of the
+django log to a new location to allow easier access to the management
+commands to simplify debugging and to be able to run a Django Python
+Console inside a development environment. In
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/settings.conf</span></code> add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;DJANGO_LOGFILE&quot;</span><span class="p">:</span> <span class="s2">&quot;/tmp/django.log&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">settings.conf</span></code> is JSON syntax, so ensure that the previous
+line ends with a comma and that the resulting file validates as
+JSON. Use <a class="reference external" href="https://jsonlint.com/">JSONLINT</a></p>
+</div>
+<p>The new location needs to be writable by the <code class="docutils literal notranslate"><span class="pre">lavaserver</span></code> user (for
+use by localhost) and by the developer user (but would typically be
+writeable by anyone).</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/development.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:24 GMT -->
+</html>

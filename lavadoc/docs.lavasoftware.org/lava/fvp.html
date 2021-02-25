@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/fvp.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:13 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FVP &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="LAVA Software Community Project Code of Conduct" href="code-of-conduct.html" />
+    <link rel="prev" title="Administering LAVA using Docker" href="docker-admin.html" />
+    <link rel="canonical" href="fvp.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">FVP</a><ul>
+<li><a class="reference internal" href="#lava-fvp-dispatcher-setup">LAVA FVP Dispatcher Setup</a></li>
+<li><a class="reference internal" href="#fvp-binaries">FVP Binaries</a></li>
+<li><a class="reference internal" href="#building-fvp-docker-images">Building FVP Docker Images</a></li>
+<li><a class="reference internal" href="#networking-inside-models">Networking inside Models</a></li>
+<li><a class="reference internal" href="#reading-from-all-model-consoles">Reading from all model consoles</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="docker-admin.html" title="Previous Chapter: Administering LAVA using Docker"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Administering...</span>
+    </a>
+  </li>
+  <li>
+    <a href="code-of-conduct.html" title="Next Chapter: LAVA Software Community Project Code of Conduct"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">LAVA Software... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="fvp">
+<span id="index-0"></span><h1>FVP<a class="headerlink" href="#fvp" title="Permalink to this headline">¶</a></h1>
+<p>The FVP device-type in LAVA refers to running <a class="reference external" href="https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms">Fixed Virtual Platforms</a>.</p>
+<div class="section" id="lava-fvp-dispatcher-setup">
+<h2>LAVA FVP Dispatcher Setup<a class="headerlink" href="#lava-fvp-dispatcher-setup" title="Permalink to this headline">¶</a></h2>
+<p>LAVA executes FVP devices inside Docker containers.
+Therefore, like any other LAVA dispatcher that can run <cite>docker</cite> device types,
+Docker needs to be
+<a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/debian/">installed</a>.</p>
+</div>
+<div class="section" id="fvp-binaries">
+<h2>FVP Binaries<a class="headerlink" href="#fvp-binaries" title="Permalink to this headline">¶</a></h2>
+<p>LAVA does not handle the download of FVP binaries: these are assumed to be in
+the Docker image defined in the LAVA job.</p>
+<p>FVP binaries are not available in any public Docker images and must be download
+at <a class="reference external" href="https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms">developer.arm.com</a>.
+Therefore, custom Docker images must be created for this purpose. Either these
+images should be built on the dispatcher to use a local image, or they can be
+pushed to a <strong>private</strong> registry: FVP binaries must not be redistributed.</p>
+</div>
+<div class="section" id="building-fvp-docker-images">
+<h2>Building FVP Docker Images<a class="headerlink" href="#building-fvp-docker-images" title="Permalink to this headline">¶</a></h2>
+<p>Once FVP binaries have been obtained from <a class="reference external" href="https://developer.arm.com/tools-and-software/simulation-models/fixed-virtual-platforms">developer.arm.com</a>,
+these must be built into a Docker image.</p>
+<dl class="docutils">
+<dt>There are few dependencies:</dt>
+<dd><ul class="first last simple">
+<li>FVP Binaries</li>
+<li><code class="docutils literal notranslate"><span class="pre">telnet</span></code> command. This is used to connect to a UART.</li>
+</ul>
+</dd>
+</dl>
+<p>For these basics, here is a sample <a class="reference external" href="examples/source/fvp/Dockerfile.html">Dockerfile</a> to create a Docker image for
+running FVPs in LAVA, which can be built with a <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span></code> command.</p>
+</div>
+<div class="section" id="networking-inside-models">
+<h2>Networking inside Models<a class="headerlink" href="#networking-inside-models" title="Permalink to this headline">¶</a></h2>
+<p>Optionally, if you require networking in the model, here is a way to enable this.
+For this example the base OS is Ubuntu.</p>
+<ul class="simple">
+<li>Ensure <code class="docutils literal notranslate"><span class="pre">libvirt-bin</span></code> package is installed in the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</li>
+<li>Add the following contents into <code class="docutils literal notranslate"><span class="pre">/etc/libvirt/hooks/network</span></code>.</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="c1"># If the change occurs to the &quot;default&quot; libvirt managed network</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+  <span class="c1"># If the network is started</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;started&quot;</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then</span>
+    ip tuntap add mode tap tap01
+    ip link <span class="nb">set</span> tap01 promisc on
+    ip link <span class="nb">set</span> tap01 up
+    brctl addif virbr0 tap01
+  <span class="k">fi</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Create a custom entrypoint script that calls <code class="docutils literal notranslate"><span class="pre">/usr/sbin/libvirtd</span> <span class="pre">&amp;</span></code> before the commands given: <code class="docutils literal notranslate"><span class="pre">exec</span> <span class="pre">&quot;$&#64;&quot;</span></code>.</li>
+<li>libvirt will create a <code class="docutils literal notranslate"><span class="pre">virbr0</span></code> bridge and then a tap interface <code class="docutils literal notranslate"><span class="pre">tap01</span></code> connected to it. <code class="docutils literal notranslate"><span class="pre">tap01</span></code> is what the model will use.</li>
+<li>Add the following arguments to your foundation model (other models will differ):</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">arguments</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="p p-Indicator">-</span> <span class="s">&quot;--network=bridged&quot;</span>
+<span class="p p-Indicator">-</span> <span class="s">&quot;--network-bridge=tap01&quot;</span>
+</pre></div>
+</div>
+<p>This will be required if you require the use of <code class="docutils literal notranslate"><span class="pre">transfer_overlay</span></code>.
+This could be useful in the event you want to pass binaries to the model that
+contains the filesystem but stored in a way LAVA cannot currently put the overlay into.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">transfer_overlay</span><span class="p">:</span>
+  <span class="c1"># It may be required to suppress some kernel messages</span>
+  <span class="nt">download_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">echo 3 &gt; /proc/sys/kernel/printk ; wget</span>
+  <span class="nt">unpack_command</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tar -C / -xzf</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-from-all-model-consoles">
+<h2>Reading from all model consoles<a class="headerlink" href="#reading-from-all-model-consoles" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes models offer more than one console that produces useful output. LAVA can only write to one console at a time.
+Reading can be done from multiple consoles. In some cases it’s essential to read from all consoles to prevent
+model from hanging. This happens when internal model buffer is not able to accept more output because previously
+generated output is not consumed. FVP boot method allows to define additional regexes to match more than one console.
+This is done with <code class="docutils literal notranslate"><span class="pre">feedbacks</span></code> keyword:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">console_string</span><span class="p">:</span> <span class="nt">&#39;terminal_0</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Listening for serial connection on port (?P&lt;PORT&gt;\d+)&#39;</span>
+<span class="nt">feedbacks</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="s">&#39;(?P&lt;NAME&gt;terminal_1):</span><span class="nv"> </span><span class="s">Listening</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">serial</span><span class="nv"> </span><span class="s">connection</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">port</span><span class="nv"> </span><span class="s">(?P&lt;PORT&gt;\d+)&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="s">&#39;(?P&lt;NAME&gt;terminal_2):</span><span class="nv"> </span><span class="s">Listening</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">serial</span><span class="nv"> </span><span class="s">connection</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">port</span><span class="nv"> </span><span class="s">(?P&lt;PORT&gt;\d+)&#39;</span>
+  <span class="p p-Indicator">-</span> <span class="s">&#39;(?P&lt;NAME&gt;terminal_3):</span><span class="nv"> </span><span class="s">Listening</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">serial</span><span class="nv"> </span><span class="s">connection</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">port</span><span class="nv"> </span><span class="s">(?P&lt;PORT&gt;\d+)&#39;</span>
+</pre></div>
+</div>
+<p>Feedbacks will be read twice during boot process (before matching login prompt) and periodically during test-shell.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/fvp.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:14 GMT -->
+</html>

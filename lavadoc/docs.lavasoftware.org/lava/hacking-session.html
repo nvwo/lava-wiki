@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/hacking-session.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>LAVA Hacking Sessions &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="QEMU options" href="qemu_options.html" />
+    <link rel="prev" title="Writing Health Checks for devices" href="healthchecks.html" />
+    <link rel="canonical" href="hacking-session.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">LAVA Hacking Sessions</a><ul>
+<li><a class="reference internal" href="#assumptions">Assumptions</a></li>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+<li><a class="reference internal" href="#device-requirements">Device requirements</a></li>
+<li><a class="reference internal" href="#definitions">Definitions</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#starting-a-hacking-session">Starting a Hacking Session</a></li>
+<li><a class="reference internal" href="#connecting-to-a-hacking-session">Connecting to a Hacking Session</a><ul>
+<li><a class="reference internal" href="#ssh-tunnels">SSH tunnels</a></li>
+<li><a class="reference internal" href="#lava-test-shell-helper-functions-in-a-hack-session">lava-test-shell helper functions in a hack session</a></li>
+<li><a class="reference internal" href="#record-text-to-the-lava-log">Record text to the LAVA log</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stopping-a-hacking-session">Stopping a Hacking Session</a></li>
+<li><a class="reference internal" href="#hacking-session-timeouts">Hacking Session timeouts</a></li>
+<li><a class="reference internal" href="#continuing-a-hacking-session">Continuing a Hacking Session</a></li>
+<li><a class="reference internal" href="#multiple-hacking-sessions">Multiple hacking sessions</a><ul>
+<li><a class="reference internal" href="#sharing-a-single-device">Sharing a single device</a></li>
+<li><a class="reference internal" href="#separating-users-using-virtual-machines">Separating users using virtual machines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="healthchecks.html" title="Previous Chapter: Writing Health Checks for devices"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Writing Healt...</span>
+    </a>
+  </li>
+  <li>
+    <a href="qemu_options.html" title="Next Chapter: QEMU options"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">QEMU options &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="lava-hacking-sessions">
+<span id="hacking-session"></span><h1>LAVA Hacking Sessions<a class="headerlink" href="#lava-hacking-sessions" title="Permalink to this headline">¶</a></h1>
+<p>A LAVA hacking session is a special lava-test-shell test that provides
+interactive ssh access to a LAVA device inside a defined test environment. This
+support differs from the normal LAVA SSH protocol support in that the job waits
+for a real user to log in, instead of using an ssh connection to run a test
+shell.</p>
+<div class="section" id="assumptions">
+<h2>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The user has TCP/IP access to the device (this may require a VPN or other
+access if firewalls exist between the user and the device).</li>
+<li>The test job deployment raises a usable networking interface.</li>
+<li>The test job deployment starts a suitable daemon, <code class="docutils literal notranslate"><span class="pre">sshd</span></code> or
+<code class="docutils literal notranslate"><span class="pre">dropbear</span></code></li>
+<li>The test action uses <a class="reference internal" href="writing-tests.html#writing-tests-1-0"><span class="std std-ref">Lava-Test Test Definition 1.0</span></a></li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<span id="hacking-session-limitations"></span><h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<p>The session connection is SSH, not serial. This can change the way that certain
+operations run within the session compared to an automated test job. In
+particular, the <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> does not operate either within a hacking
+session or between two hacking sessions. A test definition which runs either
+before or after the hacking session <strong>will</strong> be able to use the full MultiNode
+API.</p>
+</div>
+<div class="section" id="device-requirements">
+<h2>Device requirements<a class="headerlink" href="#device-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Some devices may need parameters to configure the network correctly to allow
+the user to log in to the hacking session. e.g. QEMU jobs need to setup a
+<code class="docutils literal notranslate"><span class="pre">tap</span></code> device:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">context</span><span class="p">:</span>
+  <span class="nt">arch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+  <span class="nt">netdevice</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tap</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<p>There are Lava-Test Test Definition 1.0 test definitions for hacking
+sessions provided by the LAVA developers at
+<a class="reference external" href="https://git.linaro.org/lava-team/hacking-session.git">https://git.linaro.org/lava-team/hacking-session.git</a> . Currently the
+following definitions are supported:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://git.linaro.org/lava-team/hacking-session.git/tree/hacking-session-debian.yaml">hacking-session-debian.yaml</a> - Run the hacking session on a Debian or
+Ubuntu filesystem. The package <strong>openssh-server will be installed using the
+package manager</strong> if not already installed in the test image. The test image
+<strong>must</strong> raise a network interface automatically (this can be done with
+<code class="docutils literal notranslate"><span class="pre">lava_command_run</span></code>, see <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/138105/definition">example</a>).</li>
+<li><a class="reference external" href="https://git.linaro.org/lava-team/hacking-session.git/tree/hacking-session-fedora.yaml">hacking-session-fedora.yaml</a> - Run the hacking session on a Fedora
+filesystem. The package <strong>openssh-server will be installed using the package
+manager</strong> if not already installed in the test image. The test image <strong>must</strong>
+raise a network interface automatically (this can be done with
+<code class="docutils literal notranslate"><span class="pre">lava_command_run</span></code>, see <a class="reference external" href="https://staging.validation.linaro.org/scheduler/job/138105/definition">example</a>).</li>
+<li><a class="reference external" href="https://git.linaro.org/lava-team/hacking-session.git/tree/hacking-session-oe.yaml">hacking-session-oe.yaml</a> - Run the hacking session on an Open Embedded
+filesystem. <strong>openssh-server must be installed in the test image</strong>, as it
+cannot easily be installed afterwards.</li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>There are several extra parameters to set when using these test
+definitions, some optional:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">PUB_KEY</span></code>: A plain-text string containing the ssh public key(s) you wish to
+use when connecting to the device</li>
+<li><code class="docutils literal notranslate"><span class="pre">GATEWAY</span></code>: (optional) The gateway for the network the test device is on.
+This only needs to be set if the test is unable to determine the gateway
+correctly - check with your LAVA admins</li>
+<li><code class="docutils literal notranslate"><span class="pre">IRC_USER</span></code>: (optional) IRC nick - this user will be alerted when the
+hacking session is ready for a connection with a private IRC message
+containing the details of how to connect to the session. (Debian hacking
+sessions only.)</li>
+<li><code class="docutils literal notranslate"><span class="pre">IRC_SERVER</span></code>: (optional) The IRC network to use for notifications, used if
+IRC_USER is also set. This defaults to <code class="docutils literal notranslate"><span class="pre">irc.freenode.net</span></code></li>
+</ul>
+</div>
+<div class="section" id="starting-a-hacking-session">
+<h2>Starting a Hacking Session<a class="headerlink" href="#starting-a-hacking-session" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Create a test job with your desired target and image</li>
+<li>Add a lava-test-shell action at the point where you want hacking access:</li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+      <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm-basic-hacking-session</span>
+      <span class="nt">timeout</span><span class="p">:</span>
+        <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+      <span class="nt">definitions</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://git.linaro.org/lava-team/hacking-session.git</span>
+         <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+         <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hacking-session-debian.yaml</span>
+         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hacking</span>
+         <span class="nt">parameters</span><span class="p">:</span>
+            <span class="nt">&quot;IRC_USER&quot;</span><span class="p">:</span> <span class="s">&quot;TYPE</span><span class="nv"> </span><span class="s">YOUR</span><span class="nv"> </span><span class="s">IRC</span><span class="nv"> </span><span class="s">NICK</span><span class="nv"> </span><span class="s">HERE&quot;</span>
+            <span class="nt">&quot;PUB_KEY&quot;</span><span class="p">:</span> <span class="s">&quot;PASTE_PUBKEY(S)</span><span class="nv"> </span><span class="s">HERE&quot;</span>
+</pre></div>
+</div>
+<p>Other types of test action are <strong>not</strong> supported for hacking sessions.</p>
+<p>It is possible to include multiple hacking sessions in the same job, even
+interleaved with other test actions.</p>
+<p>As an alternative to an IRC message like this example, it is also possible to
+configure notification such that email will be sent when the job starts
+running. For more information, see <a class="reference internal" href="data-export.html#notification-summary"><span class="std std-ref">User specified notifications</span></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#inactivity-termination"><span class="std std-ref">Hacking Session timeouts</span></a> and <a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a> for clarification of the timeout
+support.</p>
+</div>
+</div>
+<div class="section" id="connecting-to-a-hacking-session">
+<h2>Connecting to a Hacking Session<a class="headerlink" href="#connecting-to-a-hacking-session" title="Permalink to this headline">¶</a></h2>
+<p>The hacking session test definition will log the ssh command line needed for
+connection into the LAVA log file. To access the log file, you can use a web
+browser; navigate to your hacking session and scroll to the end of the job to
+see this command line, For an example see:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://validation.linaro.org/scheduler/job/1126092#L2222">https://validation.linaro.org/scheduler/job/1126092#L2222</a></li>
+</ul>
+<div class="section" id="ssh-tunnels">
+<h3>SSH tunnels<a class="headerlink" href="#ssh-tunnels" title="Permalink to this headline">¶</a></h3>
+<p>If your test device is located on a remote network, you may need to gain access
+via an ssh tunnel. If so:</p>
+<ol class="arabic">
+<li><p class="first">verify your SSH key is setup and configured to connect:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">~</span><span class="c1"># ssh -T username@example.com</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Modify your SSH config to allow agent forwarding:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+   <span class="n">ForwardAgent</span> <span class="n">yes</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="lava-test-shell-helper-functions-in-a-hack-session">
+<h3>lava-test-shell helper functions in a hack session<a class="headerlink" href="#lava-test-shell-helper-functions-in-a-hack-session" title="Permalink to this headline">¶</a></h3>
+<p>Once logged in to the hacking session, the lava-test-shell helper functions can
+be found on the test device in the directory <code class="docutils literal notranslate"><span class="pre">/lava/bin</span></code></p>
+</div>
+<div class="section" id="record-text-to-the-lava-log">
+<h3>Record text to the LAVA log<a class="headerlink" href="#record-text-to-the-lava-log" title="Permalink to this headline">¶</a></h3>
+<p>During a hacking session, LAVA listens to the primary serial connection for the
+duration of the hacking session. From within the test device, any text you echo
+to that serial connection will therefore be recorded within LAVA. You may need
+to work out the correct device name for this connection, for example by looking
+at the CONSOLE setting in /proc/cmdline.</p>
+<p>As an example, in a QEMU test, the device name will be <code class="docutils literal notranslate"><span class="pre">/dev/ttyS0</span></code>. From
+within the hacking session:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@kvm01</span><span class="p">:</span><span class="o">~</span><span class="c1"># echo &quot;This is a test statement&quot; &gt; /dev/ttyS0</span>
+</pre></div>
+</div>
+<p>will output to the LAVA log like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">test</span> <span class="n">statement</span>
+</pre></div>
+</div>
+<p>There is an example of this online at
+<a class="reference external" href="https://validation.linaro.org/scheduler/job/1126092#L2300">https://validation.linaro.org/scheduler/job/1126092#L2300</a></p>
+</div>
+</div>
+<div class="section" id="stopping-a-hacking-session">
+<span id="stop-hacking"></span><h2>Stopping a Hacking Session<a class="headerlink" href="#stopping-a-hacking-session" title="Permalink to this headline">¶</a></h2>
+<p>During a hacking session, your test device can’t be used for other tasks. This
+will block other users who may want to run tests using the device. For that
+reason, your session is monitored for <a class="reference internal" href="#inactivity-termination"><span class="std std-ref">Hacking Session timeouts</span></a>, or you can
+complete your session immediately:</p>
+<ul class="simple">
+<li><strong>Log out</strong> of your session (you can avoid closing the session on logout
+using the <a class="reference internal" href="#continue-hacking"><span class="std std-ref">Continuing a Hacking Session</span></a> support).</li>
+<li><strong>Cancel</strong> the job in the LAVA using the link in the job detail or job log
+pages.</li>
+<li><strong>Stop</strong> - Use the helper function <code class="docutils literal notranslate"><span class="pre">stop_hacking</span></code> from the command line
+within the hacking session</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">Cancel</span></code> will end the entire job immediately. Use <code class="docutils literal notranslate"><span class="pre">stop_hacking</span></code>
+to close the session and complete normal job processing that may be defined
+after the hacking session.</p>
+</div>
+</div>
+<div class="section" id="hacking-session-timeouts">
+<span id="inactivity-termination"></span><h2>Hacking Session timeouts<a class="headerlink" href="#hacking-session-timeouts" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This behavior changed after a session at
+<a class="reference external" href="https://www.slideshare.net/linaroorg/hkg15402-orphan-hacking-sessions">Connect HKG15</a></p>
+</div>
+<p>All hacking sessions will <strong>time out after 1 hour</strong> if a login has not been
+detected. If an <code class="docutils literal notranslate"><span class="pre">IRC_USER</span></code> is specified, another IRC private messages will be
+sent to that user explaining the termination.</p>
+<p>The timer is running for the lifetime of the hacking session, so if you use
+<a class="reference internal" href="#continue-hacking"><span class="std std-ref">Continuing a Hacking Session</span></a> and logout, you will still need to log back in within
+one hour.</p>
+<p>The session will timeout, regardless of activity, when the top-level timeout
+specified in the job is reached.</p>
+<p>This support is <em>separate</em> from the <a class="reference internal" href="timeouts.html#timeouts"><span class="std std-ref">Timeouts</span></a> handling of the test job.</p>
+</div>
+<div class="section" id="continuing-a-hacking-session">
+<span id="continue-hacking"></span><h2>Continuing a Hacking Session<a class="headerlink" href="#continuing-a-hacking-session" title="Permalink to this headline">¶</a></h2>
+<p>If you want to be able to log out of a hacking session and log back in within
+the inactivity timeout, call the <code class="docutils literal notranslate"><span class="pre">continue_hacking</span></code> script from the command
+line within the hacking session. The hacking session is still monitored for
+<a class="reference internal" href="#inactivity-termination"><span class="std std-ref">Hacking Session timeouts</span></a>, so do remember to log back in.</p>
+</div>
+<div class="section" id="multiple-hacking-sessions">
+<span id="id1"></span><h2>Multiple hacking sessions<a class="headerlink" href="#multiple-hacking-sessions" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to use <a class="reference internal" href="connections.html#secondary-connection"><span class="std std-ref">secondary connections</span></a> to
+allow more than one person to have a hacking session on a device. Depending on
+how the test job is designed, it is possible to have two hacking sessions into
+the same machine or to contain each hacking session within a separate virtual
+machine. The secondary connection acts exactly as a second root login to the
+device, so it is up to the test writer to handle possible collisions between
+the sessions. It is possible to have multiple hacking sessions per person or
+one hacking session each for multiple users. Secondary connections separate
+each session as a single node in the MultiNode group.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> does <strong>not</strong> support the synchronization or
+message sending primitives inside hacking sessions. Interactive users are
+required to exchange information between users in other means, either by
+using common files on a shared filesystem or other external methods like
+email or IRC.</p>
+</div>
+<div class="section" id="sharing-a-single-device">
+<h3>Sharing a single device<a class="headerlink" href="#sharing-a-single-device" title="Permalink to this headline">¶</a></h3>
+<p>The basis of a test job to share a device between multiple hacking sessions is
+the same as any other secondary connection test job on that device, all that
+changes is the test definition.</p>
+<p>If using multiple users on a single device, it will be necessary to create a
+<a class="reference internal" href="glossary.html#term-role"><span class="xref std std-term">role</span></a> for each user in the MultiNode group. This allows a separate test
+definition for each role, including details of the public SSH key and IRC nick
+of the user who will be able to use that session. Each hacking session test
+definition will notify the specified user individually, when that session is
+ready.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">count</span></code> specified in the MultiNode group determines how many secondary
+connections are made using any one <code class="docutils literal notranslate"><span class="pre">role</span></code>. For one session per user, the
+count for each role would be one with the number of roles determining the
+number of users.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember: this test job will result in multiple individuals all
+having a <strong>root</strong> user login on the device at the same time. Users must
+co-operate and consider that some tasks (like installing new packages) will
+prevent other users from doing their tasks at the same time. It is exactly
+the same as giving multiple people SSH access to a server and giving all
+those users <code class="docutils literal notranslate"><span class="pre">sudo</span></code> privileges - the users need to work together.</p>
+</div>
+</div>
+<div class="section" id="separating-users-using-virtual-machines">
+<h3>Separating users using virtual machines<a class="headerlink" href="#separating-users-using-virtual-machines" title="Permalink to this headline">¶</a></h3>
+<p>If users are to be separated within virtual machines, one test definition will
+be responsible for starting each of those machines and this definition will
+have full control of the QEMU command line for each machine. (It is therefore
+possible to launch virtual machines of different architectures or
+configurations for specific purposes.)</p>
+<p>Notifying users in this situation is more difficult but the existing support
+within the standard hacking session can be re-used as it is simply a script
+being called with parameters from the test job. In particular, the notification
+will have to allow for declaring the IP address of the virtual machine for
+each user.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Separating hacking sessions into virtual machines is a more
+complex task and requires a lot of setup on the device. Consider if it is
+really necessary for each user to be on this one device at the same time or
+whether the separation between users would be better done with separate
+hacking session test jobs. Remember, users may not be able to share data or
+files across different virtual machines on one device. This method is
+<strong>not</strong> a workaround for a lack of hardware of a particular type of device.</p>
+</div>
+<p>In particular, pay attention to:</p>
+<ul class="simple">
+<li>Identify unique MAC addresses for each virtual machine and check with the
+lab admins to ensure that these do not clash with any other device on the
+lab network.</li>
+<li>Setup the bridging on the device before starting any virtual machines so that
+the machine will get an IP address which is visible to the user.</li>
+</ul>
+<p>Start by creating a test job which can launch multiple virtual machines and
+identify the IP address of each machine. The exact mechanisms used to obtain
+this information will vary by use case. The IP address is then passed back to
+the dispatcher to initiate the secondary connection into the running virtual
+machine. The hacking session can then start as normal inside that virtual
+machine.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer-secondary.html#delayed-start-multinode"><span class="std std-ref">Delaying the start of a job using Multinode</span></a> for more information on creating
+a test job which can delay starting the secondary connections until the
+first test job has successfully launched the virtual machines.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/hacking-session.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:03:39 GMT -->
+</html>

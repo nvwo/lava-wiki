@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/actions-protocols.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Protocol Reference &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Timeout Reference" href="actions-timeout.html" />
+    <link rel="prev" title="Repeat" href="actions-repeats.html" />
+    <link rel="canonical" href="actions-protocols.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Protocol Reference</a><ul>
+<li><a class="reference internal" href="#using-protocols-from-actions">Using protocols from actions</a></li>
+<li><a class="reference internal" href="#multinode-protocol">MultiNode Protocol</a><ul>
+<li><a class="reference internal" href="#lava-start-api-call">lava-start API call</a></li>
+<li><a class="reference internal" href="#passing-data-at-startup">Passing data at startup</a></li>
+<li><a class="reference internal" href="#managing-flow-using-inline-definitions">Managing flow using inline definitions</a></li>
+<li><a class="reference internal" href="#marking-some-roles-as-essential">Marking some roles as essential</a></li>
+<li><a class="reference internal" href="#protocol-requests-from-actions">Protocol requests from actions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vland-protocol">VLANd protocol</a><ul>
+<li><a class="reference internal" href="#vland-protocol-requests">Protocol requests from actions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lxc-protocol">LXC protocol</a><ul>
+<li><a class="reference internal" href="#protocol-elements">Protocol elements</a></li>
+<li><a class="reference internal" href="#lxc-protocol-requests">Protocol requests from actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="actions-repeats.html" title="Previous Chapter: Repeat"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Repeat</span>
+    </a>
+  </li>
+  <li>
+    <a href="actions-timeout.html" title="Next Chapter: Timeout Reference"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Timeout Reference &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="protocol-reference">
+<span id="protocols"></span><h1><a class="toc-backref" href="#contents">Protocol Reference</a><a class="headerlink" href="#protocol-reference" title="Permalink to this headline">¶</a></h1>
+<p>Protocols are similar to a Connection but operate over a known API instead of a
+shell connection. The protocol defines which API calls are available through
+the LAVA interface and the Pipeline determines when the API call is made.</p>
+<p>Not all protocols can be called from all actions. Not all protocols are able to
+share data between actions.</p>
+<p>A Protocol operates separately from any Connection, generally over a
+predetermined layer, e.g. TCP/IP sockets. Some protocols can access data
+passing over a Connection.</p>
+<div class="section" id="using-protocols-from-actions">
+<span id="id1"></span><h2><a class="toc-backref" href="#contents">Using protocols from actions</a><a class="headerlink" href="#using-protocols-from-actions" title="Permalink to this headline">¶</a></h2>
+<p>Most protocols can be accessed from individually named actions from the test
+job submission using pre-defined commands. The list of requests supported by
+each protocol is shown in the reference for that protocol. Any action in the
+pipeline is able to make a request to a suitable protocol supported by the test
+job. If the test job uses <a class="reference internal" href="glossary.html#term-namespace"><span class="xref std std-term">namespaces</span></a>, the action making the
+request needs to be in the correct namespace to have access to the correct
+parameters. LAVA provides no guarantee on when the request will be made within
+the runtime of the action and test writers should not rely on the request being
+made at the start of the action. Instead, specify the previous action in the
+same pipeline.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The syntax is similar but not identical to how protocols are accessed
+from within the protocols block. When accessing protocols from an action
+block, a list of requests can be made.</p>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+    <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+    <span class="nt">namespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hikey-oe</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-lxc</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot-deploy</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-power-command</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#lxc-protocol-reference"><span class="std std-ref">LXC protocol</span></a></p>
+</div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#protocol-reference" id="id6">Protocol Reference</a><ul>
+<li><a class="reference internal" href="#using-protocols-from-actions" id="id7">Using protocols from actions</a></li>
+<li><a class="reference internal" href="#multinode-protocol" id="id8">MultiNode Protocol</a><ul>
+<li><a class="reference internal" href="#lava-start-api-call" id="id9">lava-start API call</a></li>
+<li><a class="reference internal" href="#passing-data-at-startup" id="id10">Passing data at startup</a></li>
+<li><a class="reference internal" href="#managing-flow-using-inline-definitions" id="id11">Managing flow using inline definitions</a></li>
+<li><a class="reference internal" href="#marking-some-roles-as-essential" id="id12">Marking some roles as essential</a></li>
+<li><a class="reference internal" href="#protocol-requests-from-actions" id="id13">Protocol requests from actions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vland-protocol" id="id14">VLANd protocol</a><ul>
+<li><a class="reference internal" href="#vland-protocol-requests" id="id15">Protocol requests from actions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lxc-protocol" id="id16">LXC protocol</a><ul>
+<li><a class="reference internal" href="#protocol-elements" id="id17">Protocol elements</a></li>
+<li><a class="reference internal" href="#lxc-protocol-requests" id="id18">Protocol requests from actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="multinode-protocol">
+<span id="id2"></span><h2><a class="toc-backref" href="#contents">MultiNode Protocol</a><a class="headerlink" href="#multinode-protocol" title="Permalink to this headline">¶</a></h2>
+<p>This protocol allows actions within the Pipeline to make calls using the
+<a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> outside of a test definition by wrapping the call inside
+the protocol. Wrapped calls do not necessarily have all of the functionality of
+the same call available in the test definition.</p>
+<p>The MultiNode Protocol allows data to be shared between actions, including data
+generated in one test shell definition being made available over the protocol
+to a deploy or boot action of jobs with a different <code class="docutils literal notranslate"><span class="pre">role</span></code>. It does this by
+adding handlers to the current Connection to intercept API calls.</p>
+<p>The MultiNode Protocol can underpin the use of other tools without necessarily
+needing a dedicated Protocol class to be written for those tools. Using the
+MultiNode Protocol is an extension of using the existing <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a>
+calls within a test definition. The use of the protocol is an advanced use of
+LAVA and relies on the test writer carefully planning how the job will work.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">umount-retry</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync</span>
+    <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+</pre></div>
+</div>
+<p>This snippet would add a <a class="reference internal" href="multinodeapi.html#lava-sync"><span class="std std-ref">lava-sync</span></a> call at the start of the UmountRetry
+action:</p>
+<ul>
+<li><p class="first">Actions which are too complex and would need data mid-operation need to be
+split up.</p>
+</li>
+<li><p class="first">When a particular action is repeatedly used with the protocol, a dedicated
+action needs to be created. Any Strategy which explicitly uses protocol
+support <strong>must</strong> create a dedicated action for each protocol call.</p>
+</li>
+<li><p class="first">To update the value available to the action, ensure that the key exists in
+the matching <a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> and that the value in the job submission YAML
+starts with <strong>$</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protocols:
+  lava-multinode:
+    action: execute-qemu
+    request: lava-wait
+    messageID: test
+    message:
+      ipv4: $IPV4
+</pre></div>
+</div>
+<p>This results in this data being available to the action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;ipv4&#39;</span><span class="p">:</span> <span class="s1">&#39;192.168.0.3&#39;</span><span class="p">},</span> <span class="s1">&#39;messageID&#39;</span><span class="p">:</span> <span class="s1">&#39;test&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Actions check for protocol calls at the start of the run step before even the
+internal pipeline actions are run.</p>
+</li>
+<li><p class="first">Only the named Action instance inside the Pipeline will make the call</p>
+</li>
+<li><p class="first">The <a class="reference internal" href="multinodeapi.html#multinode-api"><span class="std std-ref">MultiNode API</span></a> asserts that repeated calls to <a class="reference internal" href="multinodeapi.html#lava-sync"><span class="std std-ref">lava-sync</span></a> with
+the same messageID will return immediately, so this protocol call in a Retry
+action will only synchronize the first attempt at the action.</p>
+</li>
+<li><p class="first">Some actions may make the protocol call at the end of the run step.</p>
+</li>
+</ul>
+<p>The MultiNode Protocol also exposes calls which are not part of the test shell
+API, which were formerly hidden inside the job setup phase.</p>
+<div class="section" id="lava-start-api-call">
+<span id="lava-start"></span><h3><a class="toc-backref" href="#contents">lava-start API call</a><a class="headerlink" href="#lava-start-api-call" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">lava-start</span></code> determines when MultiNode jobs start, according to the state of
+other jobs in the same MultiNode group. This allows jobs with one <code class="docutils literal notranslate"><span class="pre">role</span></code> to
+determine when jobs of a different <code class="docutils literal notranslate"><span class="pre">role</span></code> start, so that the delayed jobs can
+be sure that particular services required for those jobs are available. For
+example, if the <code class="docutils literal notranslate"><span class="pre">server</span></code> role is actually providing a virtualization platform
+and the <code class="docutils literal notranslate"><span class="pre">client</span></code> is a VM to be started on the <code class="docutils literal notranslate"><span class="pre">server</span></code>, then a delayed
+start is necessary as the first action of the <code class="docutils literal notranslate"><span class="pre">client</span></code> role will be to
+attempt to connect to the server in order to boot the VM, before the <code class="docutils literal notranslate"><span class="pre">server</span></code>
+has even been deployed. The <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> API call allows the test writer to
+control when the <code class="docutils literal notranslate"><span class="pre">client</span></code> is started, allowing the <code class="docutils literal notranslate"><span class="pre">server</span></code> test image to
+setup the virtualization support in a way that allows attaching of debuggers or
+other interventions, before the VM starts.</p>
+<p>The client enables a delayed start by declaring which <code class="docutils literal notranslate"><span class="pre">role</span></code> the client can
+<code class="docutils literal notranslate"><span class="pre">expect</span></code> to send the signal to start the client.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-start</span>
+    <span class="nt">expect_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">server</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+<p>The timeout specified for <code class="docutils literal notranslate"><span class="pre">lava_start</span></code> is the amount of time the job will
+wait for permission to start from the other jobs in the group.</p>
+<p>Internally, <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> is implemented as a <a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> and a
+<a class="reference internal" href="multinodeapi.html#lava-wait-all"><span class="std std-ref">lava-wait-all</span></a> for the role of the action which will make the
+<code class="docutils literal notranslate"><span class="pre">lava_start</span></code> API call using the message ID <code class="docutils literal notranslate"><span class="pre">lava_start</span></code>.</p>
+<p>It is an error to specify the same <code class="docutils literal notranslate"><span class="pre">role</span></code> and <code class="docutils literal notranslate"><span class="pre">expect_role</span></code> to
+<code class="docutils literal notranslate"><span class="pre">lava-start</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Avoid confusing <a class="reference internal" href="connections.html#host-role"><span class="std std-ref">host_role</span></a> with <code class="docutils literal notranslate"><span class="pre">expect_role</span></code>.
+<code class="docutils literal notranslate"><span class="pre">host_role</span></code> is used by the scheduler to ensure that the job assignment
+operates correctly and does not affect the dispatcher or delayed start
+support. The two values may often have the same value but do not mean the
+same thing.</p>
+</div>
+<p>It is an error to specify <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> on all roles within a job or on any
+action without a <code class="docutils literal notranslate"><span class="pre">role</span></code> specified.</p>
+<p>All jobs without a <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> API call specified for the <code class="docutils literal notranslate"><span class="pre">role</span></code> of that
+job will start immediately. Other jobs will write to the log files that the
+start has been delayed, pending a call to <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> by actions with the
+specified role(s).</p>
+<p>Subsequent calls to <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> for a role which has already started will
+still be sent but will have no effect.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> is specified for a <code class="docutils literal notranslate"><span class="pre">test</span></code> action, the test definition is
+responsible for making the <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> call.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava_start</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;LAVA</span><span class="nv"> </span><span class="s">start&quot;</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send lava_start</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="passing-data-at-startup">
+<span id="id3"></span><h3><a class="toc-backref" href="#contents">Passing data at startup</a><a class="headerlink" href="#passing-data-at-startup" title="Permalink to this headline">¶</a></h3>
+<p>The pipeline exposes the names of all actions and these names are used for a
+variety of functions, from timeouts to protocol usage.</p>
+<p>To see the actions within a specific pipeline job, see the job definition (not
+the MultiNode definition) where you will find a Pipeline Description.</p>
+<p>Various delayed start jobs will need dynamic data from the “server” job in
+order to be able to start, like an IP address. This is achieved by adding the
+<code class="docutils literal notranslate"><span class="pre">lava-start</span></code> call to a specified <code class="docutils literal notranslate"><span class="pre">test</span></code> action of the server role where the
+test definition initiates a <a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> message. When this specific
+<code class="docutils literal notranslate"><span class="pre">test</span></code> action completes, the protocol will send the <code class="docutils literal notranslate"><span class="pre">lava-start</span></code>. The first
+thing the delayed start job does is a <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> which would be added to the
+<code class="docutils literal notranslate"><span class="pre">deploy</span></code> action of that job.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="58%" />
+<col width="42%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal notranslate"><span class="pre">Server</span></code> role</th>
+<th class="head">Delayed <code class="docutils literal notranslate"><span class="pre">client</span></code> role</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">deploy</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">boot</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">test</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">lava-send</span> <span class="pre">ipv4</span> <span class="pre">ipaddr=$(IP)</span></code></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">lava-start</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">deploy</span></code></td>
+</tr>
+<tr class="row-odd"><td>&#160;</td>
+<td><code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">lava-wait</span> <span class="pre">ipv4</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">lava-test-case</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">boot</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">deploy</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">client</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-multinode</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+        <span class="nt">message</span><span class="p">:</span>
+            <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+        <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some calls can only be made against specific actions. Specifically,
+the <code class="docutils literal notranslate"><span class="pre">prepare-scp-overlay</span></code> action needs the IP address of the host device
+to be able to copy the LAVA overlay (containing the test definitions) onto
+the device before connecting using <code class="docutils literal notranslate"><span class="pre">ssh</span></code> to start the test. This is a
+<strong>complex</strong> configuration to write.</p>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer-secondary.html#writing-secondary-connection-jobs"><span class="std std-ref">Writing jobs using Secondary Connections</span></a></p>
+</div>
+<p>Depending on the implementation of the <code class="docutils literal notranslate"><span class="pre">deploy</span></code> action, determined by the
+Strategy class, the <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> call will be made at a suitable opportunity
+within the deployment. In the above example, the <code class="docutils literal notranslate"><span class="pre">lava-send</span></code> call is made
+before <code class="docutils literal notranslate"><span class="pre">lava-start</span></code> - this allows the data to be stored in the lava
+coordinator and the <code class="docutils literal notranslate"><span class="pre">lava-wait</span></code> will receive the data immediately.</p>
+<p>The specified <code class="docutils literal notranslate"><span class="pre">messageID</span></code> <strong>must</strong> exactly match the message ID used for the
+<a class="reference internal" href="multinodeapi.html#lava-send"><span class="std std-ref">lava-send</span></a> call in the test definition. (So an <strong>inline</strong> test definition
+could be useful for the test action of the job definition for the <code class="docutils literal notranslate"><span class="pre">server</span></code>
+role. See <a class="reference internal" href="actions-test.html#inline-test-definition-example"><span class="std std-ref">Inline test definition example</span></a>)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+      <span class="nt">repository</span><span class="p">:</span>
+        <span class="nt">metadata</span><span class="p">:</span>
+          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava_send</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;LAVA</span><span class="nv"> </span><span class="s">send&quot;</span>
+        <span class="nt">run</span><span class="p">:</span>
+          <span class="nt">steps</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lava-send</span></code> takes a messageID as the first argument.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">server</span>
+    <span class="nt">protocols</span><span class="p">:</span>
+      <span class="nt">lava-multinode</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">multinode-test</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-start</span>
+        <span class="nt">roles</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">client</span>
+</pre></div>
+</div>
+<p>See also <a class="reference internal" href="pipeline-writer-secondary.html#writing-secondary-connection-jobs"><span class="std std-ref">Writing jobs using Secondary Connections</span></a>.</p>
+</div>
+<div class="section" id="managing-flow-using-inline-definitions">
+<span id="managing-flow-using-inline"></span><h3><a class="toc-backref" href="#contents">Managing flow using inline definitions</a><a class="headerlink" href="#managing-flow-using-inline-definitions" title="Permalink to this headline">¶</a></h3>
+<p>The pipeline exposes the names of all actions and these names are used for a
+variety of functions, from timeouts to protocol usage.</p>
+<p>To see the actions within a specific pipeline job, see the job definition (not
+the MultiNode definition) where you will find a Pipeline Description.</p>
+<p>Creating MultiNode jobs has always been complex. The consistent use of inline
+definitions can significantly improve the experience and once the support is
+complete, it may be used to invalidate submissions which fail to match the
+synchronization primitives.</p>
+<p>The principle is to separate the synchronization from the test operation. By
+only using synchronization primitives inside an inline definition, the flow of
+the complete MultiNode group can be displayed. This becomes impractical as soon
+as the requirement involves downloading a test definition repository and
+possibly fishing inside custom scripts for the synchronization primitives.</p>
+<p>Inline blocks using synchronization calls can still do other checks and tasks
+as well but keeping the synchronization at the level of the submitted YAML
+allows much easier checking of the job before the job starts to run.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span>
+             <span class="nt">metadata</span><span class="p">:</span>
+                 <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lava-Test Test Definition 1.0</span>
+                 <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">install-ssh</span>
+                 <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;install</span><span class="nv"> </span><span class="s">step&quot;</span>
+             <span class="nt">install</span><span class="p">:</span>
+                 <span class="nt">deps</span><span class="p">:</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">openssh-server</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate</span>
+             <span class="nt">run</span><span class="p">:</span>
+                 <span class="nt">steps</span><span class="p">:</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ntpdate-debian</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-echo-ipv4 eth0</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send ipv4 ipaddr=$(lava-echo-ipv4 eth0)</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-send lava_start</span>
+                     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync clients</span>
+        <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh-inline</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inline/ssh-install.yaml</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">definitions</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">repository</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git://git.linaro.org/lava-team/lava-functional-tests.git</span>
+        <span class="nt">from</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git</span>
+        <span class="nt">path</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-test-shell/smoke-tests-basic.yaml</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">smoke-tests</span>
+</pre></div>
+</div>
+<p>This is a small deviation from how existing MultiNode jobs may be defined but
+the potential benefits are substantial when combined with the other elements of
+the MultiNode Protocol.</p>
+</div>
+<div class="section" id="marking-some-roles-as-essential">
+<span id="multinode-essential-roles"></span><span id="index-0"></span><h3><a class="toc-backref" href="#contents">Marking some roles as essential</a><a class="headerlink" href="#marking-some-roles-as-essential" title="Permalink to this headline">¶</a></h3>
+<p>In many Multinode jobs, one or more roles is/are essential to completion of the
+test. For example, a secondary connection job using SSH <strong>must</strong> rely on the
+role providing the SSH server and cannot be expected to do anything useful if
+that role does not become available.</p>
+<p>In the MultiNode protocols section of the test job definition, roles may be
+marked as <strong>essential: True</strong>. If <strong>any</strong> of the jobs for an essential role
+fail with an <a class="reference internal" href="dispatcher-design.html#infrastructure-error-exception"><span class="std std-ref">InfrastructureError Exception</span></a> or
+<a class="reference internal" href="dispatcher-design.html#job-error-exception"><span class="std std-ref">JobError Exception</span></a>, then the entire multinode group will end. (Pipeline
+jobs always call the FinalizeAction when told to end by the master, so the
+device will power-off or the connection can logout.)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="c1"># expect_role is used by the dispatcher and is part of delay_start</span>
+  <span class="c1"># host_role is used by the scheduler, unrelated to delay_start.</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="nt">host</span><span class="p">:</span>
+        <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">beaglebone-black</span>
+        <span class="nt">essential</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="nt">guest</span><span class="p">:</span>
+        <span class="c1"># protocol API call to make during protocol setup</span>
+        <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-start</span>
+        <span class="c1"># set the role for which this role will wait</span>
+        <span class="nt">expect_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+        <span class="nt">timeout</span><span class="p">:</span>
+          <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+        <span class="c1"># no device_type, just a connection</span>
+        <span class="nt">connection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ssh</span>
+        <span class="nt">count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+        <span class="c1"># each ssh connection will attempt to connect to the device of role &#39;host&#39;</span>
+        <span class="nt">host_role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">host</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Essential roles activate when the job with that role <strong>terminates</strong>,
+not when the test shell definition containing the call to <a class="reference internal" href="multinodeapi.html#lava-sync"><span class="std std-ref">lava-sync</span></a>
+or <a class="reference internal" href="multinodeapi.html#lava-wait"><span class="std std-ref">lava-wait</span></a> fails. If there are more test shell definitions after
+this point, those would attempt to run.</p>
+</div>
+</div>
+<div class="section" id="protocol-requests-from-actions">
+<span id="multinode-protocol-requests"></span><h3><a class="toc-backref" href="#contents">Protocol requests from actions</a><a class="headerlink" href="#protocol-requests-from-actions" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-sync</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-sync</span>
+    <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clients</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-wait</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+    <span class="nt">message</span><span class="p">:</span>
+        <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+    <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait</span>
+    <span class="nt">message</span><span class="p">:</span>
+        <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+    <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-wait-all</span></code> with a role:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-wait-all</span>
+    <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">server</span>
+    <span class="nt">message</span><span class="p">:</span>
+        <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+    <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">lava-send</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-multinode</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prepare-scp-overlay</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-send</span>
+    <span class="nt">message</span><span class="p">:</span>
+        <span class="nt">ipaddr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">$ipaddr</span>
+    <span class="nt">messageID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipv4</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="vland-protocol">
+<h2><a class="toc-backref" href="#contents">VLANd protocol</a><a class="headerlink" href="#vland-protocol" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="vland.html#vland-in-lava"><span class="std std-ref">VLANd protocol</span></a> - which uses the MultiNode protocol
+to interface with <a class="reference internal" href="glossary.html#term-vland"><span class="xref std std-term">VLANd</span></a> to support virtual local area networks in LAVA.</p>
+<div class="section" id="vland-protocol-requests">
+<span id="id4"></span><h3><a class="toc-backref" href="#contents">Protocol requests from actions</a><a class="headerlink" href="#vland-protocol-requests" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">deploy_vlans</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-vland</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-vland-overlay</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deploy_vlans</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="lxc-protocol">
+<span id="lxc-protocol-reference"></span><span id="index-1"></span><h2><a class="toc-backref" href="#contents">LXC protocol</a><a class="headerlink" href="#lxc-protocol" title="Permalink to this headline">¶</a></h2>
+<p>The LXC protocol in LAVA implements a minimal set of APIs in order to define
+the LXC container characteristics that will be shared by actions during the
+life cycle of a job. The protocol also takes care of graceful tear down of the
+LXC container at the end of the job.</p>
+<div class="section" id="protocol-elements">
+<h3><a class="toc-backref" href="#contents">Protocol elements</a><a class="headerlink" href="#protocol-elements" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-lxc</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pipeline-lxc-test</span>
+    <span class="nt">template</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+    <span class="nt">distribution</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">debian</span>
+    <span class="nt">release</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sid</span>
+    <span class="nt">mirror</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://ftp.us.debian.org/debian/</span>
+    <span class="nt">security_mirror</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://mirror.csclub.uwaterloo.ca/debian-security/</span>
+    <span class="nt">verbose</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">persist</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>The characteristics of the LXC container is defined by the following data
+elements that are accepted by the LXC protocol:</p>
+<ul class="simple">
+<li><strong>name</strong> <em>(mandatory)</em> - Name of the container that needs to be created. The
+LXC protocol appends the job id along with the name of the container provided
+by the user, by default. For example, if the name is given as
+‘pipeline-lxc-test’ and the submitted job id is 51, then the resulting
+transparent LXC container that will get created during the job execution
+would be ‘pipeline-lxc-test-51’. This appending of job id is in place in
+order to ensure job repeatability, ie., when the same job is getting
+submitted more than once simultaneously, this check will ensure unique name
+for the container.</li>
+<li><strong>template</strong> <em>(optional)</em> - Templates are per distribution based pre-defined
+scripts that are used to create LXC containers. Though there are many
+distribution specific templates that are available in LXC, LAVA supports a
+subset of the same. The following templates are supported, if no template is
+specified, by default <cite>download</cite> template is assumed:<ul>
+<li>download</li>
+<li>debian</li>
+</ul>
+</li>
+<li><strong>distribution</strong> <em>(mandatory)</em> - The distribution of LXC container that
+should be created, which applies to ‘download’ template. Though there is no
+effect when this is specified for the ‘debian’ template, it is a mandatory
+data element.</li>
+<li><strong>release</strong> <em>(mandatory)</em> - Specific release of the distribution specified
+above. When releases are other than codenames such as a version number, the
+value should be treated as a string, ie., when a number is specified, quote
+it, so that it will be taken as a string.</li>
+<li><strong>arch</strong> <em>(optional)</em> - The architecture of the LXC container that should be
+created, this is limited to the processor architecture on which the LAVA
+dispatcher runs on.</li>
+<li><strong>mirror</strong> <em>(optional)</em> - Specifies the Debian mirror to use during
+installation. This is specific to the ‘debian’ template. There is no effect
+when this is specified for the ‘download’ template.</li>
+<li><strong>security_mirror</strong> <em>(optional)</em> - Specifies the Debian security mirror to use
+during installation. This is specific to the ‘debian’ template. There is no
+effect when this is specified for the ‘download’ template.</li>
+<li><strong>verbose</strong> <em>(optional)</em> - Controls the output produced during LXC
+creation. By default the value is <cite>False</cite>. When <cite>verbose</cite> is set to <cite>True</cite>
+the LXC creation command produces detailed output.</li>
+<li><strong>persist</strong> <em>(optional)</em> - Persists the container if set to <cite>true</cite>. When the
+same <cite>name</cite> is used again, the persistent container from the previous test job
+will be used, instead of creating a fresh container. By default the value is
+<cite>false</cite>.</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="deploy-lxc.html#feedback-using-lxc"><span class="std std-ref">Feedback from the device</span></a></p>
+</div>
+</div>
+<div class="section" id="lxc-protocol-requests">
+<span id="id5"></span><h3><a class="toc-backref" href="#contents">Protocol requests from actions</a><a class="headerlink" href="#lxc-protocol-requests" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">pre-power-command</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-lxc</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot-deploy</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-power-command</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">pre-os-command</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">protocols</span><span class="p">:</span>
+  <span class="nt">lava-lxc</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uefi-commands</span>
+    <span class="nt">request</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-os-command</span>
+    <span class="nt">timeout</span><span class="p">:</span>
+      <span class="nt">minutes</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/actions-protocols.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:01:57 GMT -->
+</html>

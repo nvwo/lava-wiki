@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/integrate-uefi.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>UEFI &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Integration Stories" href="integration-stories.html" />
+    <link rel="prev" title="Internet of Things (IoT) Boards" href="integrate-iot.html" />
+    <link rel="canonical" href="integrate-uefi.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">UEFI</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#uefi-menus">UEFI menus</a></li>
+<li><a class="reference internal" href="#uefi-graphical-interfaces">UEFI graphical interfaces</a></li>
+<li><a class="reference internal" href="#d02-d03">D02/D03</a><ul>
+<li><a class="reference internal" href="#cons">Cons</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mustang-uefi">Mustang UEFI</a><ul>
+<li><a class="reference internal" href="#id1">Cons</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hikey-620">HiKey 620</a></li>
+<li><a class="reference internal" href="#hikey-960">HiKey 960</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="integrate-iot.html" title="Previous Chapter: Internet of Things (IoT) Boards"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Internet of T...</span>
+    </a>
+  </li>
+  <li>
+    <a href="integration-stories.html" title="Next Chapter: Integration Stories"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Integration Stories &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="uefi">
+<span id="integrating-uefi"></span><span id="index-0"></span><h1>UEFI<a class="headerlink" href="#uefi" title="Permalink to this headline">¶</a></h1>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Make sure you have read <a class="reference internal" href="device-integration.html#adding-new-device-types"><span class="std std-ref">Adding new device types</span></a> first.</p>
+</div>
+<p><abbr title="Unified Extensible Firmware Interface">UEFI</abbr> is a specification that
+defines a software interface between an operating system and platform firmware.
+Devices which support UEFI typically need to download or execute a UEFI
+application which can act as a bootloader.</p>
+<p>Overall, the simplest way to integrate a device using UEFI is not to interact
+with UEFI in the integration.</p>
+<ul class="simple">
+<li>Configure UEFI to have the required support available as a default boot
+method using a locally installed UEFI application to act as a bootloader.</li>
+<li>Configure UEFI to have suitable drivers to access the network and use that
+support as the default boot method to download a suitable UEFI application to
+act as a bootloader.</li>
+</ul>
+<div class="section" id="introduction">
+<span id="integrating-uefi-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The emphasis when integrating devices using UEFI is to use the firmware to
+support and execute a bootloader. Integration has involved using UEFI with:</p>
+<ul class="simple">
+<li>PXE which then downloads Grub (mustang, D02 and D03)<ul>
+<li>relies on UEFI exposing a network interface.</li>
+</ul>
+</li>
+<li>fastboot (HiKey 620)<ul>
+<li>involves the use of <a class="reference internal" href="glossary.html#term-lxc"><span class="xref std std-term">LXC</span></a> to run <code class="docutils literal notranslate"><span class="pre">fastboot</span> <span class="pre">flash</span></code> commands to
+deploy complete images, including <code class="docutils literal notranslate"><span class="pre">boot</span></code>, <code class="docutils literal notranslate"><span class="pre">system</span></code> and <code class="docutils literal notranslate"><span class="pre">userdata</span></code>
+amongst others.</li>
+</ul>
+</li>
+<li>onboard grub (Hikey 960)<ul>
+<li>A UEFI application is installed by the test writer using <code class="docutils literal notranslate"><span class="pre">fastboot</span></code>.</li>
+</ul>
+</li>
+<li>onboard flash storage (Juno)<ul>
+<li>device-specific support for running commands in a UEFI shell application.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="uefi-menus">
+<span id="device-integration-uefi-menu"></span><h2>UEFI menus<a class="headerlink" href="#uefi-menus" title="Permalink to this headline">¶</a></h2>
+<p>Some UEFI implementations use a menu which can be processed over serial but
+these menus have proved to be unreliable for full automation as that involves
+creating dynamic menu items through a Device Manager. Admins need to create
+static menu items where all LAVA will do is select a known menu item. e.g.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[1] PXE boot
+[2] Reboot
+</pre></div>
+</div>
+<p>This can then be automated using these defaults from <code class="docutils literal notranslate"><span class="pre">base.jinja2</span></code>:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_menu_interrupt_prompt</span> <span class="o">=</span> <span class="s1">&#39;The default boot selection will start in&#39;</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_menu_interrupt_string</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_item_markup_list</span> <span class="o">=</span> <span class="o">(</span>
+<span class="s1">&#39;            - &quot;[&quot;</span>
+<span class="s1">            - &quot;]&quot;&#39;</span>
+<span class="o">)</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_item_class</span> <span class="o">=</span> <span class="s1">&#39;0-9&#39;</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_item_separator</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_label_class</span> <span class="o">=</span> <span class="s1">&#39;a-zA-Z0-9\s\:&#39;</span> -<span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">base_menu_bootloader_prompt</span> <span class="o">=</span> <span class="s1">&#39;Start:&#39;</span> -<span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>These defaults describe how to match the line containing the <code class="docutils literal notranslate"><span class="pre">label</span></code> (PXE
+boot) and then match the integer which can be passed to UEFI to execute that
+menu item (1 in this case). Only a single integer is supported by the default
+<code class="docutils literal notranslate"><span class="pre">base_item_class</span></code> and the integer must be enclosed in the characters
+specified in the <code class="docutils literal notranslate"><span class="pre">base_item_markup_list</span></code>. In practice, only a limited number
+of devices use this method of presenting a menu in UEFI, so the defaults do not
+need to be modified.</p>
+</div>
+<div class="section" id="uefi-graphical-interfaces">
+<span id="device-integration-uefi-graphical"></span><h2>UEFI graphical interfaces<a class="headerlink" href="#uefi-graphical-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>Other UEFI implementations (like the D02 and D03 below) use a system which is
+closer to <a class="reference external" href="https://en.wikipedia.org/wiki/BIOS">BIOS</a>. <strong>These are not possible to drive through serial at all</strong> as
+changes are indicated by changing the color highlight and other similar
+mechanisms. Admins would need to configure the system to use a boot order or
+other supported mechanism so that LAVA does not interact with the UEFI at all.</p>
+<p>Not all UEFI instances include a shell or CLI. Not all shells are capable of
+downloading test artifacts to the device, e.g. no TFTP support.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface">https://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface</a></p>
+</div>
+</div>
+<div class="section" id="d02-d03">
+<span id="integrating-d02-uefi"></span><h2>D02/D03<a class="headerlink" href="#d02-d03" title="Permalink to this headline">¶</a></h2>
+<p>Serial and power control were available over the network due to the onboard
+<a class="reference internal" href="glossary.html#term-bmc"><span class="xref std std-term">BMC</span></a>. This made integration much simpler, in theory.</p>
+<div class="section" id="cons">
+<h3>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h3>
+<p>The early firmware was incredibly unreliable, it could not see local disks and
+grub did not have support for the network device as the EFI networking was
+broken. We had to create our own pxe grub and all modules as grub is only
+usually installed by a distro, I couldn’t find a prepackaged arm64 grub. Then
+had to get the admins to match this grub config and make sure the boards were
+running the same firmware, which was changing frequently.</p>
+<p>The firmware has a bios-like ascii graphical menu system over serial which
+would have been impossible to automate, so had to make the board autoboot into
+grub. We found that running an installer would overwrite the default boot
+option, so had to force the board into a network boot each time. However, the
+<code class="docutils literal notranslate"><span class="pre">ipmi</span></code> calls to do this didn’t work, so had to wait for another firmware
+update.</p>
+</div>
+</div>
+<div class="section" id="mustang-uefi">
+<span id="integrating-mustang-uefi"></span><h2>Mustang UEFI<a class="headerlink" href="#mustang-uefi" title="Permalink to this headline">¶</a></h2>
+<p>Serial and power control work reliably, UEFI is configured by the admin to use
+PXE to download a build of Grub with which LAVA V2 can interact. UEFI itself is
+capable of executing Grub locally. Working SATA support, physical NIC and a
+stable device.</p>
+<p>The mustang UEFI uses the ARM BDS (boot device selector) which provides a UEFI
+menu which can be supported in LAVA over serial:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[1] Boot from eMMC
+[2] Device Manager
+</pre></div>
+</div>
+<p>The UEFI menu support in the template then generates a configuration block for
+each device (where <code class="docutils literal notranslate"><span class="pre">LAVA</span> <span class="pre">PXE</span> <span class="pre">Grub</span></code> is the menu entry created by the admins):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">uefi-menu</span><span class="p">:</span>
+  <span class="nt">menu_options</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pxe-grub</span>
+  <span class="nt">parameters</span><span class="p">:</span>
+    <span class="nt">interrupt_prompt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The default boot selection will start in</span>
+    <span class="nt">interrupt_string</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">&#39;</span>
+    <span class="nt">item_markup</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;[&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;]&quot;</span>
+    <span class="nt">item_class</span><span class="p">:</span> <span class="s">&#39;0-9&#39;</span>
+    <span class="nt">separator</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">&#39;</span>
+    <span class="nt">bootloader_prompt</span><span class="p">:</span> <span class="s">&#39;Start:&#39;</span>
+  <span class="nt">pxe-grub</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">select</span><span class="p">:</span>
+      <span class="nt">items</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&#39;LAVA</span><span class="nv"> </span><span class="s">PXE</span><span class="nv"> </span><span class="s">Grub&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h3>Cons<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>There were a lot of problems getting a build of UEFI for this platform due to
+lack of engagement from hardware suppliers. Issues around getting the network
+card supported in UEFI and a very complex upgrade procedure involving an
+interim build which was no longer available from usual sources. Upgrading the
+local build of Grub inside UEFI is awkward and of little use compared to being
+able to deploy over PXE.</p>
+<p>Hardware no longer commercially available.</p>
+<p>Not possible to switch from UBoot to UEFI on the same device between test jobs
+which has delayed availability of V2 UEFI support on mustang until the lab team
+can declare a suitable maintenance window for all mustangs.</p>
+<p>UEFI was initially scope to work through the menus but this proved to be
+unworkable in automation due to complexity of the sequences and the changes in
+error handling between levels of the same menus.</p>
+</div>
+</div>
+<div class="section" id="hikey-620">
+<span id="integrating-hikey-620-uefi"></span><h2>HiKey 620<a class="headerlink" href="#hikey-620" title="Permalink to this headline">¶</a></h2>
+<p>This section only deals with the integration of the HiKey as it relates to the
+<strong>UEFI support</strong>.</p>
+<p>The HiKey UEFI uses a similar menu approach as the <a class="reference internal" href="#integrating-mustang-uefi"><span class="std std-ref">mustang</span></a>. The HiKey 620 firmware is configured to provide a
+menu option to boot from the eMMC.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">grub-efi</span><span class="p">:</span>
+  <span class="nt">reset_device</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+  <span class="nt">line_separator</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unix</span>
+  <span class="nt">menu_options</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+  <span class="nt">parameters</span><span class="p">:</span>
+    <span class="nt">bootloader_prompt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">grub&gt;</span>
+  <span class="nt">installed</span><span class="p">:</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+      <span class="nt">interrupt_prompt</span><span class="p">:</span> <span class="s">&quot;Android</span><span class="nv"> </span><span class="s">Fastboot</span><span class="nv"> </span><span class="s">mode&quot;</span>
+      <span class="nt">interrupt_string</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">&#39;</span>
+    <span class="nt">commands</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">search.fs_label rootfs root</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linux ($root)/boot/ console=tty0 console=ttyAMA3,115200 root=/dev/mmcblk0p9 rootwait rw</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">devicetree ($root)/boot/</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+<span class="nt">uefi-menu</span><span class="p">:</span>
+  <span class="nt">menu_options</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">fastboot</span>
+  <span class="nt">parameters</span><span class="p">:</span>
+    <span class="nt">interrupt_prompt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Android Fastboot mode</span>
+    <span class="nt">interrupt_string</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">&#39;</span>
+    <span class="nt">item_markup</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;[&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;]&quot;</span>
+    <span class="nt">item_class</span><span class="p">:</span> <span class="s">&#39;0-9&#39;</span>
+    <span class="nt">separator</span><span class="p">:</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">&#39;</span>
+    <span class="nt">bootloader_prompt</span><span class="p">:</span> <span class="s">&quot;Start:&quot;</span>
+    <span class="nt">boot_message</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Booting Linux Kernel...</span>
+  <span class="nt">fastboot</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">select</span><span class="p">:</span>
+      <span class="nt">items</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot from eMMC</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hikey-960">
+<span id="integrating-hikey-960-uefi"></span><h2>HiKey 960<a class="headerlink" href="#hikey-960" title="Permalink to this headline">¶</a></h2>
+<p>This section only deals with the integration of the HiKey as it relates to the
+<strong>UEFI support</strong>.</p>
+<p>The HiKey UEFI uses a similar menu approach as the <a class="reference internal" href="#integrating-mustang-uefi"><span class="std std-ref">mustang</span></a>. The HiKey 960 is configured using DIP switches to
+always go into fastboot which can then be interrupted after flashing the
+relevant files to boot the system. This means that the 960 device configuration
+does not describe UEFI at all, simply fastboot and then grub:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fastboot</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;boot&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;wait-usb-add&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;lxc-add-device&#39;</span><span class="p p-Indicator">]</span>
+<span class="nt">grub</span><span class="p">:</span>
+  <span class="nt">reset_device</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+  <span class="nt">sequence</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">wait-fastboot-interrupt</span>
+  <span class="nt">installed</span><span class="p">:</span>
+    <span class="nt">commands</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boot</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As there is no interaction with UEFI, the boot method is <code class="docutils literal notranslate"><span class="pre">grub</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">grub-efi</span></code> as used with the HiKey 620. The device configuration
+is therefore much shorter as there is no need to describe how to interact
+with UEFI.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/integrate-uefi.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:59:09 GMT -->
+</html>

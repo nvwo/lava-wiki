@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/user-notifications.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:11 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>User notifications in LAVA &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploying test images using LXC" href="deploy-lxc.html" />
+    <link rel="prev" title="Timeout Reference" href="actions-timeout.html" />
+    <link rel="canonical" href="user-notifications.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">User notifications in LAVA</a><ul>
+<li><a class="reference internal" href="#notification-recipients">Notification recipients</a></li>
+<li><a class="reference internal" href="#notification-callbacks">Notification callbacks</a><ul>
+<li><a class="reference internal" href="#debugging-notification-callbacks">Debugging notification callbacks</a></li>
+<li><a class="reference internal" href="#using-profile-settings">Using profile settings</a></li>
+<li><a class="reference internal" href="#direct-listing-of-recipients">Direct listing of recipients</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#result-comparison-in-notifications">Result comparison in notifications</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="actions-timeout.html" title="Previous Chapter: Timeout Reference"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Timeout Reference</span>
+    </a>
+  </li>
+  <li>
+    <a href="deploy-lxc.html" title="Next Chapter: Deploying test images using LXC"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Deploying tes... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="user-notifications-in-lava">
+<span id="notifications"></span><span id="index-0"></span><h1>User notifications in LAVA<a class="headerlink" href="#user-notifications-in-lava" title="Permalink to this headline">¶</a></h1>
+<p>Users can receive notifications containing information about submitted test
+jobs and the accompanying results by using settings in job definition yaml.
+Users can also compare the job results within notifications against previous
+results which satisfy certain conditions.</p>
+<p>The basic setup of the <code class="docutils literal notranslate"><span class="pre">notify</span></code> block in job definitions will have
+<strong>criteria</strong>, <strong>verbosity</strong>, <strong>recipients</strong> and <strong>compare</strong> blocks.</p>
+<ul class="simple">
+<li><strong>Criteria</strong> tells the system when the notifications should be sent.</li>
+<li><strong>verbosity</strong> will tell the system how detailed the email notification should
+be.</li>
+<li><strong>Criteria</strong> can be set by job status (running, complete, incomplete,
+canceled) and the type (regression, progression). There is a special status of
+‘finished’, which will match any of (complete, incomplete, canceled).</li>
+</ul>
+<p>The basic <strong>email</strong> template includes job details, device details and results,
+based on the level of <strong>verbosity</strong> (<code class="docutils literal notranslate"><span class="pre">verbose</span></code>, <code class="docutils literal notranslate"><span class="pre">quiet</span></code>, <code class="docutils literal notranslate"><span class="pre">status-only</span></code>).
+verbose level job information will only be included if the job finished as
+complete or incomplete, not when the job was canceled.</p>
+<div class="section" id="notification-recipients">
+<h2>Notification recipients<a class="headerlink" href="#notification-recipients" title="Permalink to this headline">¶</a></h2>
+<p>The method and destination of each notification can be set for each recipient.
+Currently, two notification methods are supported, <strong>email</strong> and <strong>IRC</strong>.</p>
+<p>Recipients can be specified using the LAVA username or in full.</p>
+<p>If the <strong>recipients</strong> section is omitted in the notify block, the system will
+send an email to the job submitter only, provided the <strong>criteria</strong> is satisfied,
+and there is no <strong>callbacks</strong> section.</p>
+</div>
+<div class="section" id="notification-callbacks">
+<h2>Notification callbacks<a class="headerlink" href="#notification-callbacks" title="Permalink to this headline">¶</a></h2>
+<p>In addition to sending email and IRC messages to <strong>recipients</strong>, the system can
+send multiple URL callback actions. This will do a GET or POST request to the
+specified URL in the <strong>callbacks</strong> subsection. This can be used to trigger some
+action remotely. If a callback uses the POST request, the system will attach job data as described below.
+The <strong>callbacks</strong> section supports list of the following options:</p>
+<ul class="simple">
+<li><strong>url</strong> The URL for the request. This also supports field value
+substitution, i.e. in <a class="reference external" href="http://example.com/">http://example.com</a>/{ID}/{STATUS} <strong>id</strong> and
+<strong>status</strong> will be replaced with corresponding values from the job.</li>
+<li><strong>method</strong> GET or POST</li>
+<li><strong>token</strong> This option is used to supply the API token of the
+authenticated user, appended as the POST request parameter. If the submitting
+user has an XMLRPC auth token with a description that matches this field, that
+token is returned instead. The token is included in the POST data, and also in
+an Authorization header.</li>
+<li><strong>header</strong> In case <strong>token</strong> is defined this option gives possibility to define
+custom header to be used instead of Authorization.</li>
+<li><strong>dataset</strong> This option specifies style of data that the system
+will provide in the callback. It applies only for the POST request. The format
+of the data and possible options are as following:<ul>
+<li><strong>minimal</strong> This will provide basic job info such as job id, status,
+submit_time, start_time, end_time, submitter_username,
+failure_comment, priority, description, actual_device_id, definition and
+metadata.</li>
+<li><strong>logs</strong> In addition to minimal data this will also attach the job log
+output in the url encoded format</li>
+<li><strong>results</strong> In addition to minimal data this will also attach the job
+results as a list of test suites exported in yaml format.</li>
+<li><strong>all</strong> In addition to minimal data this will include both the <strong>logs</strong> and
+<strong>results</strong> datasets as described above.</li>
+</ul>
+</li>
+<li><strong>content-type</strong> This option is used to determine how the POST data is submitted:<ul>
+<li><strong>urlencoded</strong> (Default) Will return a standard HTTP POST request, with an
+application/x-www-form-urlencoded Content-Type header and data sent as an
+urlencoded query string.</li>
+<li><strong>json</strong> The data is dumped into JSON and returned with a <code class="docutils literal notranslate"><span class="pre">Content-Type:</span>
+<span class="pre">application/json</span></code> header.</li>
+</ul>
+</li>
+</ul>
+<p>Example callback usage:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">notify</span><span class="punctuation">:</span>
+  <span class="name tag">criteria</span><span class="punctuation">:</span>
+    <span class="name tag">status</span><span class="punctuation">:</span> <span class="literal scalar plain">finished</span>
+  <span class="name tag">callbacks</span><span class="punctuation">:</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://my-url/callback</span>
+      <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">GET</span>
+    <span class="punctuation indicator">-</span> <span class="name tag">url</span><span class="punctuation">:</span> <span class="literal scalar plain">https://remote-site/callback/lava?status={STATUS}&amp;status_string={STATUS_STRING}</span>
+      <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">POST</span>
+      <span class="name tag">dataset</span><span class="punctuation">:</span> <span class="literal scalar plain">all</span>
+      <span class="name tag">token</span><span class="punctuation">:</span> <span class="literal scalar plain">ci-callback</span>
+      <span class="name tag">content-type</span><span class="punctuation">:</span> <span class="literal scalar plain">json</span>
+</pre>
+<div class="section" id="debugging-notification-callbacks">
+<span id="debugging-callback"></span><h3>Debugging notification callbacks<a class="headerlink" href="#debugging-notification-callbacks" title="Permalink to this headline">¶</a></h3>
+<p>The job data can also be retrieved using the <a class="reference internal" href="data-export.html#rest-api"><span class="std std-ref">REST API</span></a> (which
+supports authentication). For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ wget -O job_data.gz http://localhost/scheduler/job/2126/job_data
+
+$ wget -O job_data.gz &quot;http://localhost/scheduler/job/2127/job_data?user=neil&amp;token=22yj3ls....&quot;
+</pre></div>
+</div>
+<p>Returns a gzip file containing the job data as JSON.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only test jobs which are configured to use the notification callback
+will create notification callback data for later retrieval. Other jobs will
+generate a 404 error.</p>
+</div>
+</div>
+<div class="section" id="using-profile-settings">
+<h3>Using profile settings<a class="headerlink" href="#using-profile-settings" title="Permalink to this headline">¶</a></h3>
+<p>LAVA users can configure the <code class="docutils literal notranslate"><span class="pre">IRC</span> <span class="pre">settings</span></code> or email address in their own
+profile data in the instance. This allows the recipient to be specified using
+only the LAVA username.</p>
+<img alt="_images/profile-menu.png" src="_images/profile-menu.png" />
+</div>
+<div class="section" id="direct-listing-of-recipients">
+<h3>Direct listing of recipients<a class="headerlink" href="#direct-listing-of-recipients" title="Permalink to this headline">¶</a></h3>
+<p>If the user has not configured their own profile data, the recipient details
+must be specified in full.</p>
+<p>Examples for user vs manual addressing:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">notify</span><span class="punctuation">:</span>
+  <span class="name tag">recipients</span><span class="punctuation">:</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">irc</span>
+     <span class="name tag">user</span><span class="punctuation">:</span> <span class="literal scalar plain">neil.williams</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">irc</span>
+     <span class="name tag">handle</span><span class="punctuation">:</span> <span class="literal scalar plain">codehelp</span>
+     <span class="name tag">server</span><span class="punctuation">:</span> <span class="literal scalar plain">irc.freenode.net</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">email</span>
+     <span class="name tag">user</span><span class="punctuation">:</span> <span class="literal scalar plain">neil.williams</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">email</span>
+     <span class="name tag">email</span><span class="punctuation">:</span> <span class="literal scalar plain">neil.williams&#64;linaro.org</span>
+</pre>
+<p>IRC and email notifications use different templates since emails allow for more
+verbosity, so some options which are present in the <code class="docutils literal notranslate"><span class="pre">notify</span></code> block for email
+recipients do not apply for IRC recipients, like <strong>comparing</strong> options and
+<strong>verbosity</strong>.</p>
+</div>
+</div>
+<div class="section" id="result-comparison-in-notifications">
+<h2>Result comparison in notifications<a class="headerlink" href="#result-comparison-in-notifications" title="Permalink to this headline">¶</a></h2>
+<p>Users can use notifications to compare the job status against the last few jobs
+and also compare job results, like test case/suites difference. The
+notification will report if there are new test cases compared to previous test
+jobs, if there are some missing and how the said results differ.</p>
+<p>Which test jobs the current one is compared to is determined by the
+<a class="reference internal" href="lava-queries-charts.html#queries"><span class="std std-ref">LAVA Queries</span></a> system, where those previous jobs will be taken from the query
+specified in the notification block. Custom queries (<a class="reference internal" href="lava-queries-charts.html#query-by-url"><span class="std std-ref">Query by URL</span></a>) can
+also be specified.</p>
+<p><strong>Blacklisting</strong> test cases is also an option. Ignoring some of the test cases
+in the comparing section of the notification is possible through an option in
+the notification block.</p>
+<p>Here are some comparing setup examples from test definition excerpts:</p>
+<pre class="code yaml literal-block">
+<span class="name tag">notify</span><span class="punctuation">:</span>
+  <span class="name tag">recipients</span><span class="punctuation">:</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">email</span>
+     <span class="name tag">user</span><span class="punctuation">:</span> <span class="literal scalar plain">neil.williams</span>
+  <span class="name tag">criteria</span><span class="punctuation">:</span>
+    <span class="name tag">status</span><span class="punctuation">:</span> <span class="literal scalar plain">finished</span>
+  <span class="name tag">verbosity</span><span class="punctuation">:</span> <span class="literal scalar plain">verbose</span>
+  <span class="name tag">compare</span><span class="punctuation">:</span>
+    <span class="name tag">query</span><span class="punctuation">:</span>
+      <span class="name tag">name</span><span class="punctuation">:</span> <span class="literal scalar plain">query_name</span>
+      <span class="name tag">username</span><span class="punctuation">:</span> <span class="literal scalar plain">query_owner</span>
+    <span class="name tag">blacklist</span><span class="punctuation">:</span> <span class="punctuation indicator">[</span><span class="name variable">lava</span><span class="punctuation indicator">,</span> <span class="name variable">singlenode-advanced</span><span class="punctuation indicator">]</span>
+</pre>
+<pre class="code yaml literal-block">
+<span class="name tag">notify</span><span class="punctuation">:</span>
+  <span class="name tag">recipients</span><span class="punctuation">:</span>
+  <span class="punctuation indicator">-</span> <span class="name tag">to</span><span class="punctuation">:</span>
+     <span class="name tag">method</span><span class="punctuation">:</span> <span class="literal scalar plain">email</span>
+     <span class="name tag">user</span><span class="punctuation">:</span> <span class="literal scalar plain">neil.williams</span>
+  <span class="name tag">criteria</span><span class="punctuation">:</span>
+    <span class="name tag">status</span><span class="punctuation">:</span> <span class="literal scalar plain">finished</span>
+  <span class="name tag">verbosity</span><span class="punctuation">:</span> <span class="literal scalar plain">verbose</span>
+  <span class="name tag">compare</span><span class="punctuation">:</span>
+    <span class="name tag">query</span><span class="punctuation">:</span>
+      <span class="name tag">entity</span><span class="punctuation">:</span> <span class="literal scalar plain">testjob</span>
+      <span class="name tag">conditions</span><span class="punctuation">:</span>
+        <span class="name tag">submitter</span><span class="punctuation">:</span> <span class="literal scalar plain">stevan.radakovic</span>
+        <span class="name tag">requested_device_type</span><span class="punctuation">:</span> <span class="literal scalar plain">qemu</span>
+    <span class="name tag">blacklist</span><span class="punctuation">:</span> <span class="punctuation indicator">[</span><span class="name variable">singlenode-advanced</span><span class="punctuation indicator">]</span>
+</pre>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/user-notifications.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 15:02:11 GMT -->
+</html>

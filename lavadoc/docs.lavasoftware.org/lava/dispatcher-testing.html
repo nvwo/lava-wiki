@@ -1,0 +1,1051 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/dispatcher-testing.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Testing the design &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developing LAVA on Debian" href="debian.html" />
+    <link rel="prev" title="LAVA schema" href="pipeline-schema.html" />
+    <link rel="canonical" href="dispatcher-testing.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Testing the design</a><ul>
+<li><a class="reference internal" href="#lava-server">lava-server</a><ul>
+<li><a class="reference internal" href="#jinja2-templates">Jinja2 templates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lava-dispatcher">lava-dispatcher</a><ul>
+<li><a class="reference internal" href="#sample-pipeline-description-output">Sample pipeline description output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compatibility-with-the-old-dispatcher-lavatestshell">Compatibility with the old dispatcher LavaTestShell</a></li>
+<li><a class="reference internal" href="#logical-actions">Logical actions</a><ul>
+<li><a class="reference internal" href="#retryaction-subclassing">RetryAction subclassing</a></li>
+<li><a class="reference internal" href="#diagnostic-subclasses">Diagnostic subclasses</a></li>
+<li><a class="reference internal" href="#adjuvants-skipping-actions-and-using-helper-actions">Adjuvants - skipping actions and using helper actions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#connections-actions-and-the-signaldirector">Connections, Actions and the SignalDirector</a><ul>
+<li><a class="reference internal" href="#power-commands">Power Commands</a><ul>
+<li><a class="reference internal" href="#simple-string">Simple string</a></li>
+<li><a class="reference internal" href="#simple-list">Simple list</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-connections">Using connections</a><ul>
+<li><a class="reference internal" href="#starting-a-connection">Starting a connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-debug-logs">Using debug logs</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-on-the-worker">Debugging on the worker</a></li>
+<li><a class="reference internal" href="#adding-new-classes">Adding new classes</a><ul>
+<li><a class="reference internal" href="#always-add-unit-tests-for-new-classes">Always add unit tests for new classes</a></li>
+<li><a class="reference internal" href="#group-similar-operations">Group similar operations</a></li>
+<li><a class="reference internal" href="#add-documentation">Add documentation</a></li>
+<li><a class="reference internal" href="#online-yaml-checker">Online YAML checker</a></li>
+<li><a class="reference internal" href="#use-syntax-checkers-during-the-refactoring">Use syntax checkers during the refactoring</a></li>
+<li><a class="reference internal" href="#use-class-analysis-tools">Use class analysis tools</a></li>
+<li><a class="reference internal" href="#use-memory-analysis-tools">Use memory analysis tools</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pre-boot-deployment-manipulation">Pre-boot deployment manipulation</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="pipeline-schema.html" title="Previous Chapter: LAVA schema"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; LAVA schema</span>
+    </a>
+  </li>
+  <li>
+    <a href="debian.html" title="Next Chapter: Developing LAVA on Debian"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Developing LA... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="testing-the-design">
+<span id="testing-pipeline-code"></span><span id="index-0"></span><h1>Testing the design<a class="headerlink" href="#testing-the-design" title="Permalink to this headline">¶</a></h1>
+<p>To test the new design after making changes, use the <a class="reference internal" href="development.html#unit-tests"><span class="std std-ref">Unit-tests</span></a>. During
+development, it is useful to only run selected tests, although remember that
+<strong>all</strong> tests must pass before proposing the change as a review.</p>
+<p>In each case, ensure that your local packages are up to date and rebase your
+local development branch against master if <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> fetches new commits. If
+your branch needed to be updated, always build and install your local packages.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="debian.html#developer-build-version"><span class="std std-ref">Developer build versions</span></a></p>
+</div>
+<div class="section" id="lava-server">
+<h2>lava-server<a class="headerlink" href="#lava-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py test
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lava-server</span></code> has several components, see the contents of <code class="docutils literal notranslate"><span class="pre">ci-run</span></code> for the
+full list. Each component can be tested separately:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py test lava_scheduler_app
+</pre></div>
+</div>
+<p>To run particular tests in a specific file, add e.g. <code class="docutils literal notranslate"><span class="pre">test_device.py</span></code> to the
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py test lava_scheduler_app.tests.test_device
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory needs to be specified (instead of the test
+process discovering all tests) but the filename in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory
+<strong>lacks</strong> the <code class="docutils literal notranslate"><span class="pre">.py</span></code> suffix.</p>
+</div>
+<p>Add the class name to run all tests within that class within the specified
+file.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py test lava_scheduler_app.tests.test_device.DeviceTypeTest
+</pre></div>
+</div>
+<p>Add a specific test function to run only that one unit test:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py test lava_scheduler_app.tests.test_device.DeviceTypeTest.test_device_type_templates
+</pre></div>
+</div>
+<p>Useful options to <code class="docutils literal notranslate"><span class="pre">./manage.py</span> <span class="pre">test</span></code> include <code class="docutils literal notranslate"><span class="pre">-v2</span></code> to follow what is
+being done and <code class="docutils literal notranslate"><span class="pre">--noinput</span></code> to automatically remove a database created by a previous
+run of the unit tests which did not complete properly.</p>
+<div class="section" id="jinja2-templates">
+<h3>Jinja2 templates<a class="headerlink" href="#jinja2-templates" title="Permalink to this headline">¶</a></h3>
+<p>Tests on the Jinja2 templates can be run using <code class="docutils literal notranslate"><span class="pre">./ci-run</span> <span class="pre">-t</span></code>.</p>
+<ol class="arabic">
+<li><p class="first">All jinja2 templates in <code class="docutils literal notranslate"><span class="pre">lava_scheduler_app/tests/device-types/</span></code> will be
+tested using a basic check in
+<code class="docutils literal notranslate"><span class="pre">lava_scheduler_app.tests.test_base_templates.TestBaseTemplates.test_all_templates</span></code>
+for YAML syntax. This renders the template without a device dictionary and
+checks that the output is valid YAML. This test will fail with syntax errors
+in variables, jinja2 blocks, inheritance and whitespace indent errors.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -vcf lava_scheduler_app.tests.test_base_templates.TestBaseTemplates.test_all_templates
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add a new unit test to the <code class="docutils literal notranslate"><span class="pre">TestTemplates</span></code> class in the same unit test
+file when any jinja2 template fails to parse. Change the <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> setting
+to <code class="docutils literal notranslate"><span class="pre">True</span></code> to see the rendered output and use the <a class="reference external" href="http://yaml-online-parser.appspot.com/?yaml=&amp;type=json">Online YAML Parser</a> to identify the
+problems with the YAML output. Once the basic validation passes, add an
+initial device dictionary, following the examples and identify specific
+values in the output which can be asserted.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-writer.html#writing-new-job-yaml"><span class="std std-ref">YAML syntax errors</span></a></p>
+</div>
+</li>
+<li><p class="first">Compare the output of the template with a realistic device dictionary, using
+the unit test, with the test YAML used when developing the underlying
+support. If this is a fix for an existing template, you can generate the
+relevant output on the master branch and verify against the changes in the
+local branch.</p>
+</li>
+<li><p class="first">Completed templates need to be installed into
+<code class="docutils literal notranslate"><span class="pre">/etc/lava-server/dispatcher-config/device-types/</span></code> before testjobs can be
+submitted through XML-RPC. The <code class="docutils literal notranslate"><span class="pre">lava-master</span></code> daemon does <strong>not</strong> need to
+be restarted, the next submitted testjob will use the modified template(s).</p>
+</li>
+</ol>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="pipeline-admin.html#adding-known-device"><span class="std std-ref">Adding support for a device of a known type</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="lava-dispatcher">
+<h2>lava-dispatcher<a class="headerlink" href="#lava-dispatcher" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest discover lava_dispatcher/
+</pre></div>
+</div>
+<p>To run a single test, use the test class name as output by a failing test,
+without the call to <code class="docutils literal notranslate"><span class="pre">discover</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest lava_dispatcher.tests.test_basic.TestPipelineInit.test_pipeline_init
+
+$ python3 -m unittest -v -c -f lava_dispatcher.tests.test_basic.TestPipelineInit.test_pipeline_init
+</pre></div>
+</div>
+<p>The call references the path to the python module, the class and then the test
+function within that class. To run all tests in a class, omit the function. To
+run all tests in a file, omit the class and the function.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="development.html#unit-tests"><span class="std std-ref">Unit-tests</span></a> for information on running the full set of
+unit tests on <code class="docutils literal notranslate"><span class="pre">lava-server</span></code> and <code class="docutils literal notranslate"><span class="pre">lava-dispatcher</span></code>.</p>
+</div>
+<p>The structure of any one job will be the same each time it is run (subject to
+changes in the developing codebase). Each different job will have a different
+pipeline structure. Do not rely on any of the pipeline levels have any specific
+labels. When writing unit tests, only use checks based on <code class="docutils literal notranslate"><span class="pre">isinstance</span></code> or
+<code class="docutils literal notranslate"><span class="pre">self.name</span></code>. (The description and summary fields are subject to change to
+make the validation output easier to understand whereas <code class="docutils literal notranslate"><span class="pre">self.name</span></code> is a
+strict class-based label.)</p>
+<div class="section" id="sample-pipeline-description-output">
+<h3>Sample pipeline description output<a class="headerlink" href="#sample-pipeline-description-output" title="Permalink to this headline">¶</a></h3>
+<p>(Actual output is subject to frequent change.)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="kt">!!python/object/apply:collections.OrderedDict</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">device</span>
+  <span class=" -Error"> </span><span class="p p-Indicator">-</span> <span class="nt">parameters</span><span class="p">:</span>
+       <span class="nt">actions</span><span class="p">:</span>
+         <span class="nt">boot</span><span class="p">:</span>
+           <span class="nt">prompts</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;linaro-test&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;root@debian:~#&#39;</span><span class="p p-Indicator">]</span>
+           <span class="nt">command</span><span class="p">:</span>
+             <span class="nt">amd64</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">qemu_binary</span><span class="p">:</span> <span class="nv">qemu-system-x86_64</span><span class="p p-Indicator">}</span>
+           <span class="nt">methods</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">qemu</span><span class="p p-Indicator">]</span>
+           <span class="nt">overrides</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">boot_cmds</span><span class="p p-Indicator">,</span> <span class="nv">qemu_options</span><span class="p p-Indicator">]</span>
+           <span class="nt">parameters</span><span class="p">:</span>
+             <span class="nt">boot_cmds</span><span class="p">:</span>
+             <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">root</span><span class="p">:</span> <span class="nv">/dev/sda1</span><span class="p p-Indicator">}</span>
+             <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">console</span><span class="p">:</span> <span class="s">&#39;ttyS0,115200&#39;</span><span class="p p-Indicator">}</span>
+             <span class="nt">machine</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">accel=kvm:tcg</span>
+             <span class="nt">net</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;nic,model=virtio&#39;</span><span class="p p-Indicator">,</span> <span class="nv">user</span><span class="p p-Indicator">]</span>
+             <span class="nt">qemu_options</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">-nographic</span><span class="p p-Indicator">]</span>
+         <span class="nt">deploy</span><span class="p">:</span>
+           <span class="nt">methods</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">image</span><span class="p p-Indicator">]</span>
+       <span class="nt">architecture</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
+       <span class="nt">device_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm</span>
+       <span class="nt">hostname</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm01</span>
+       <span class="nt">memory</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">512</span>
+       <span class="nt">root_part</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class=" -Error"> </span><span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">job</span>
+   <span class="p p-Indicator">-</span> <span class="nt">parameters</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">action_timeout</span><span class="p">:</span> <span class="nv">5m</span><span class="p p-Indicator">,</span><span class="nt"> device_type</span><span class="p">:</span> <span class="nv">kvm</span><span class="p p-Indicator">,</span><span class="nt"> job_name</span><span class="p">:</span> <span class="nv">kvm-pipeline</span><span class="p p-Indicator">,</span><span class="nt"> job_timeout</span><span class="p">:</span> <span class="nv">15m</span><span class="p p-Indicator">,</span>
+<span class="nt">       output_dir</span><span class="p">:</span> <span class="nv">/tmp/codehelp</span><span class="p p-Indicator">,</span><span class="nt"> priority</span><span class="p">:</span> <span class="nv">medium</span><span class="p p-Indicator">,</span><span class="nt"> target</span><span class="p">:</span> <span class="nv">kvm01</span><span class="p p-Indicator">,</span><span class="nt"> yaml_line</span><span class="p">:</span> <span class="nv">3</span><span class="p p-Indicator">}</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deploy image using loopback mounts</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deployimage</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nl">&amp;id001</span> <span class="p p-Indicator">{</span><span class="nt">TESTER_PS1</span><span class="p">:</span> <span class="s">&#39;linaro-test</span><span class="nv"> </span><span class="s">[rc=$(echo</span><span class="nv"> </span><span class="s">\$?)]#</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">,</span><span class="nt"> TESTER_PS1_INCLUDES_RC</span><span class="p">:</span> <span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="nt">           TESTER_PS1_PATTERN</span><span class="p">:</span> <span class="s">&#39;linaro-test</span><span class="nv"> </span><span class="s">\[rc=(\d+)\]#</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">,</span><span class="nt"> boot_cmds</span><span class="p">:</span> <span class="nv">boot_cmds</span><span class="p p-Indicator">,</span>
+<span class="nt">           distro</span><span class="p">:</span> <span class="nv">debian</span><span class="p p-Indicator">,</span><span class="nt"> lava_test_dir</span><span class="p">:</span> <span class="nv">/lava-%s</span><span class="p p-Indicator">,</span><span class="nt"> lava_test_results_dir</span><span class="p">:</span> <span class="nv">/lava-%s</span><span class="p p-Indicator">,</span>
+<span class="nt">           lava_test_results_part_attr</span><span class="p">:</span> <span class="nv">root_part</span><span class="p p-Indicator">,</span><span class="nt"> lava_test_sh_cmd</span><span class="p">:</span> <span class="nv">/bin/bash</span><span class="p p-Indicator">}</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deploy image</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+       <span class="nt">yaml_line</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">12</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deploy image using loopback mounts</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deploy image</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.1&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download with retry</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.1&#39;</span>
+       <span class="nt">max_retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download_action</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download-retry</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download with retry</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download-retry</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.2&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">md5sum, sha256sum and sha512sum</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.2&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">checksum_action</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">checksum</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">md5sum, sha256sum and sha512sum</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">checksum</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.3&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mount with offset</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.3&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mount_action</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mount loop</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mount with offset</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mount loop</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1.3.1</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">calculate offset of the image</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.3.1</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">offset_action</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">offset calculation</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">calculate offset of the image</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">offset calculation</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1.3.2</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ensure a loop back mount operation is possible</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.3.2</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">loop_check</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check available loop back support</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ensure a loop back mount operation is possible</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check available loop back support</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1.3.3</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mount using a loopback device and offset</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.3.3</span>
+       <span class="nt">max_retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">loop_mount</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+       <span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">loopback mount</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Mount using a loopback device and offset</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">loopback mount</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.4&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">customize image during deployment</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.4&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">customize</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">customize image</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">customize image during deployment</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">customize image</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.5&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">load test definitions into image</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.5&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-definition</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">loading test definitions</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">load test definitions into image</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">loading test definitions</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1.5.1</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">apply git repository of tests to the test image</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.5.1</span>
+       <span class="nt">max_retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git-repo-action</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clone git test repo</span>
+       <span class="nt">uuid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">b32dd5ff-fb80-44df-90fb-5fbd5ab35fe5</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+       <span class="nt">vcs_binary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/git</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">apply git repository of tests to the test image</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clone git test repo</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1.5.2</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">apply git repository of tests to the test image</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.5.2</span>
+       <span class="nt">max_retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">git-repo-action</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clone git test repo</span>
+       <span class="nt">uuid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">200e83ef-bb74-429e-89c1-05a64a609213</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+       <span class="nt">vcs_binary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/bin/git</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">apply git repository of tests to the test image</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">clone git test repo</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">1.5.3</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">overlay test support files onto image</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.5.3</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-overlay</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">applying LAVA test overlay</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">overlay test support files onto image</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">applying LAVA test overlay</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.6&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">add lava scripts during deployment for test shell use</span>
+       <span class="nt">lava_test_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/usr/lib/python3/dist-packages/lava_dispatcher/lava_test_shell</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.6&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lava-overlay</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">runner_dirs</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">bin</span><span class="p p-Indicator">,</span> <span class="nv">tests</span><span class="p p-Indicator">,</span> <span class="nv">results</span><span class="p p-Indicator">]</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">overlay the lava support scripts</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+       <span class="nt">xmod</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">493</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">add lava scripts during deployment for test shell use</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">overlay the lava support scripts</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;1.7&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unmount the test image at end of deployment</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;1.7&#39;</span>
+       <span class="nt">max_retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">umount</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">deployment_data</span><span class="p">:</span> <span class="nv">*id001</span>
+       <span class="nt">sleep</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unmount image</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unmount the test image at end of deployment</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unmount image</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;2&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot image using QEMU command line</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;2&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot_qemu_image</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">parameters</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">failure_retry</span><span class="p">:</span> <span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> media</span><span class="p">:</span> <span class="nv">tmpfs</span><span class="p p-Indicator">,</span><span class="nt"> method</span><span class="p">:</span> <span class="nv">kvm</span><span class="p p-Indicator">,</span><span class="nt"> yaml_line</span><span class="p">:</span> <span class="nv">22</span><span class="p p-Indicator">}</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot QEMU image</span>
+       <span class="nt">timeout</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">duration</span><span class="p">:</span> <span class="nv">30</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span> <span class="nv">boot_qemu_image</span><span class="p p-Indicator">}</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+       <span class="nt">yaml_line</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">22</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot image using QEMU command line</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boot QEMU image</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;2.1&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Wait for a shell</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;2.1&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">expect-shell-connection</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">parameters</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">failure_retry</span><span class="p">:</span> <span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> media</span><span class="p">:</span> <span class="nv">tmpfs</span><span class="p p-Indicator">,</span><span class="nt"> method</span><span class="p">:</span> <span class="nv">kvm</span><span class="p p-Indicator">,</span><span class="nt"> yaml_line</span><span class="p">:</span> <span class="nv">22</span><span class="p p-Indicator">}</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Expect a shell prompt</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Wait for a shell</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Expect a shell prompt</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;3&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;3&#39;</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">parameters</span><span class="p">:</span>
+           <span class="nt">definitions</span><span class="p">:</span>
+           <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">from</span><span class="p">:</span> <span class="nv">git</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span> <span class="nv">smoke-tests</span><span class="p p-Indicator">,</span><span class="nt"> path</span><span class="p">:</span> <span class="nv">lava-test-shell/smoke-tests-basic.yaml</span><span class="p p-Indicator">,</span>
+<span class="nt">             repository</span><span class="p">:</span> <span class="s">&#39;git://git.linaro.org/lava-team/lava-functional-tests.git&#39;</span><span class="p p-Indicator">,</span><span class="nt"> yaml_line</span><span class="p">:</span> <span class="nv">31</span><span class="p p-Indicator">}</span>
+           <span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">from</span><span class="p">:</span> <span class="nv">git</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span> <span class="nv">singlenode-basic</span><span class="p p-Indicator">,</span><span class="nt"> path</span><span class="p">:</span> <span class="nv">singlenode01.yaml</span><span class="p p-Indicator">,</span><span class="nt"> repository</span><span class="p">:</span> <span class="s">&#39;git://git.linaro.org/people/neilwilliams/multinode-yaml.git&#39;</span><span class="p p-Indicator">,</span>
+<span class="nt">             yaml_line</span><span class="p">:</span> <span class="nv">39</span><span class="p p-Indicator">}</span>
+           <span class="nt">failure_retry</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+           <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kvm-basic-singlenode</span>
+           <span class="nt">yaml_line</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">27</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+ <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="s">&#39;4&#39;</span>
+   <span class="p p-Indicator">-</span> <span class="nt">content</span><span class="p">:</span>
+       <span class="nt">level</span><span class="p">:</span> <span class="s">&#39;4&#39;</span>
+       <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">finish the process and cleanup</span>
+       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">finalize</span>
+       <span class="nt">parameters</span><span class="p">:</span>
+         <span class="nt">parameters</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+       <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">finalize the job</span>
+       <span class="nt">valid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">finish the process and cleanup</span>
+     <span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">finalize the job</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="compatibility-with-the-old-dispatcher-lavatestshell">
+<h2>Compatibility with the old dispatcher LavaTestShell<a class="headerlink" href="#compatibility-with-the-old-dispatcher-lavatestshell" title="Permalink to this headline">¶</a></h2>
+<p>The hacks and workarounds in the old LavaTestShell classes may need to be
+marked and retained until such time as either the new model replaces the old or
+the bug can be fixed in both models. Whereas the submission schema, log file
+structure and result bundle schema have thrown away any backwards
+compatibility, LavaTestShell will need to at least attempt to retain
+compatibility while improving the overall design and integrating the test shell
+operations into the new classes.</p>
+<p>Current possible issues include:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">testdef.yaml</span></code> is hardcoded into <code class="docutils literal notranslate"><span class="pre">lava-test-runner</span></code> when this could be a
+parameter fed into the overlay from the VCS handlers.</li>
+<li>Dependent test definitions had special handling because certain YAML files
+had to be retained when the overlay was taken from the dispatcher and
+installed onto the device. This approach leads to long delays and the need to
+use wget on the device to apply the test definition overlay as a separate
+operation during LavaTestShell. The new classes should be capable of creating
+a complete overlay prior to the device being booted which allows for the
+entire VCS repo to be retained. This may change behavior.</li>
+<li>If dependent test definitions use custom signal handlers, this may not work
+- it would depend on how the job parameters are handled by the new classes.</li>
+</ul>
+</div>
+<div class="section" id="logical-actions">
+<span id="retry-diagnostic"></span><h2>Logical actions<a class="headerlink" href="#logical-actions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="retryaction-subclassing">
+<h3>RetryAction subclassing<a class="headerlink" href="#retryaction-subclassing" title="Permalink to this headline">¶</a></h3>
+<p>For a RetryAction to validate, the RetryAction subclass must be a wrapper class
+around a new pipeline to allow the RetryAction.run() function to
+handle all of the retry functionality in one place.</p>
+<p>An Action which needs to support <code class="docutils literal notranslate"><span class="pre">failure_retry</span></code> or which wants to use
+RetryAction support internally, needs a new class added which derives from
+RetryAction, sets a useful name, summary and description and defines a
+populate() function which creates the pipeline. The Action with the
+customized run() function then gets added to the pipeline of the
+RetryAction subclass - without changing the inheritance of the original Action.</p>
+</div>
+<div class="section" id="diagnostic-subclasses">
+<span id="diagnostic-actions"></span><h3>Diagnostic subclasses<a class="headerlink" href="#diagnostic-subclasses" title="Permalink to this headline">¶</a></h3>
+<p>To add Diagnostics, add subclasses of DiagnosticAction to the list of supported
+Diagnostic classes in the Job class. Each subclass must define a trigger
+classmethod which is unique across all Diagnostic subclasses. (The trigger
+string is used as an index in a generator hash of classes.) Trigger strings are
+only used inside the Diagnostic class. If an Action catches a JobError or
+InfrastructureError exception and wants to allow a specific Diagnostic class to
+run, import the relevant Diagnostic subclass and add the trigger to the current
+job inside the exception handling of the Action:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">_run_command</span><span class="p">(</span><span class="n">cmd_list</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">JobError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">triggers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DiagnoseNetwork</span><span class="o">.</span><span class="n">trigger</span><span class="p">())</span>
+  <span class="k">raise</span> <span class="n">JobError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">connection</span>
+</pre></div>
+</div>
+<p>Actions should only append triggers which are relevant to the JobError or
+InfrastructureError exception about to be raised inside an Action.run()
+function. Multiple triggers can be appended to a single exception. The
+exception itself is still raised (so that a RetryAction container will still
+operate).</p>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">A DownloadAction which fails to download a file could
+append a DiagnosticAction class which runs <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> or
+<code class="docutils literal notranslate"><span class="pre">route</span></code> just before raising a JobError containing the
+404 message.</p>
+</div>
+<p>If the error to be diagnosed does not raise an exception, append the trigger in
+a conditional block and emit a JobError or InfrastructureError exception with a
+useful message.</p>
+<p>Do not clear failed results of previous attempts when running a Diagnostic
+class - the fact that a Diagnostic was required is an indication that the job
+had some kind of problem.</p>
+<p>Avoid overloading common Action classes with Diagnostics, add a new Action
+subclass and change specific Strategy classes (Deployment, Boot, Test) to use
+the new Action.</p>
+<p>Avoid chaining Diagnostic classes - if a Diagnostic requires a command to
+exist, it must check that the command does exist. Raise a RuntimeError if a
+Strategy class leads to a Diagnostic failing to execute.</p>
+<p>It is an error to add a Diagnostic class to any Pipeline. Pipeline Actions
+should be restricted to classes which have an effect on the Test itself, not
+simply reporting information.</p>
+</div>
+<div class="section" id="adjuvants-skipping-actions-and-using-helper-actions">
+<span id="adjuvants"></span><h3>Adjuvants - skipping actions and using helper actions<a class="headerlink" href="#adjuvants-skipping-actions-and-using-helper-actions" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes, a particular test image will support the expected command but a
+subsequent image would need an alternative. Generally, the expectation is that
+the initial command should work, therefore the fallback or helper action should
+not be needed. The refactoring offers support for this situation using
+Adjuvants.</p>
+<p>An Adjuvant is a helper action which exists in the normal pipeline but which is
+normally skipped, unless the preceding Action sets a key in the PipelineContext
+that the adjuvant is required. A successful operation of the adjuvant clears
+the key in the context.</p>
+<p>One example is the <code class="docutils literal notranslate"><span class="pre">reboot</span></code> command. Normal user expectation is that a
+<code class="docutils literal notranslate"><span class="pre">reboot</span></code> command as root will successfully reboot the device but LAVA needs
+to be sure that a reboot actually does occur, so usually uses a hard reset PDU
+command after a timeout. The refactoring allows LAVA to distinguish between a
+job where the soft reboot worked and a job where the PDU command became
+necessary, without causing the test itself to fail simply because the job
+didn’t use a hard reset.</p>
+<p>If the ResetDevice Action determines that a reboot happened (by matching a
+pexpect on the bootloader initialization), then nothing happens and the
+Adjuvant action (in this case, HardResetDevice) is marked in the results as
+skipped. If the soft reboot fails, the ResetDevice Action marks this result as
+failed but also sets a key in the PipelineContext so that the HardResetDevice
+action then executes.</p>
+<p>Unlike Diagnostics, Adjuvants are an integral part of the pipeline and show up
+in the verification output and the results, whether executed or not. An
+Adjuvant is not a simple retry, it is a different action, typically a more
+aggressive or forced action. In an ideal world, the adjuvant would never be
+required.</p>
+<p>A similar situation exists with firmware upgrades. In this case, the adjuvant
+is skipped if the firmware does not need upgrading. The preceding Action would
+not be set as a failure in this situation but LAVA would still be able to
+identify which jobs updated the firmware and which did not.</p>
+</div>
+</div>
+<div class="section" id="connections-actions-and-the-signaldirector">
+<span id="connections-and-signals"></span><h2>Connections, Actions and the SignalDirector<a class="headerlink" href="#connections-actions-and-the-signaldirector" title="Permalink to this headline">¶</a></h2>
+<p>Most deployment Action classes run without needing a Connection. Once a
+Connection is established, the Action may need to run commands over that
+Connection. At this point, the Action delegates the maintenance of the run
+function to the Connection pexpect. i.e. the Action.run() is blocked, waiting
+for Connection.run_command() (or similar) to return and the Connection needs to
+handle timeouts, signals and other interaction over the connection. This role
+is taken on by the internal SignalDirector within each Connection. Unlike the
+old model, Connections have their own directors which takes the multinode and
+LMP workload out of the singlenode operations.</p>
+<div class="section" id="power-commands">
+<span id="index-1"></span><span id="id1"></span><h3>Power Commands<a class="headerlink" href="#power-commands" title="Permalink to this headline">¶</a></h3>
+<p>Some devices need a sequence of commands to change power state, some may
+require a <code class="docutils literal notranslate"><span class="pre">sleep</span></code> or similar delay. The power commands available in the
+<a class="reference internal" href="glossary.html#term-device-dictionary"><span class="xref std std-term">device dictionary</span></a> support two uses:</p>
+<div class="section" id="simple-string">
+<h4>Simple string<a class="headerlink" href="#simple-string" title="Permalink to this headline">¶</a></h4>
+<p>This is the simplest form and is recommended for the majority of devices.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">hard_reset_command</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/pduclient --daemon tweetypie --hostname pdu --command reboot --port 08&#39;</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-list">
+<h4>Simple list<a class="headerlink" href="#simple-list" title="Permalink to this headline">¶</a></h4>
+<p>It can be useful to have a short list of simple commands, e.g. during device
+integration. In the final file used in the device dictionary, the entire list
+must be on a single line.</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">hard_reset_command</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;/usr/local/lab-scripts/snmp_pdu_control --hostname pdu14 --command reboot --port 5 --delay 20&#39;</span><span class="o">,</span> <span class="s1">&#39;/usr/local/lab-scripts/eth008_control -a 10.0.9.2 -r 3 -s onoff&#39;</span><span class="o">]</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Extending the list support to more than a simple list of sequential
+commands is <strong>not supported</strong> and there is also <strong>no support</strong> for shell
+operators like <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> or <code class="docutils literal notranslate"><span class="pre">||</span></code>. Any device which needs something more
+complex <strong>must</strong> have custom scripts made available on the worker which
+can do all the conditionals and logic. A script will also make the device
+dictionary more readable.</p>
+</div>
+</div>
+</div>
+<div class="section" id="using-connections">
+<h3>Using connections<a class="headerlink" href="#using-connections" title="Permalink to this headline">¶</a></h3>
+<p>Construct your pipeline to use Actions in the order:</p>
+<ul class="simple">
+<li>Prepare any overlays or commands or context data required later</li>
+<li>Start a new connection</li>
+<li>Issue the command which changes device state</li>
+<li>Wait for the specified prompt on the new connection</li>
+<li>Issue the commands desired over the new connection</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There may be several Retry actions necessary within these
+steps.</p>
+</div>
+<p>So, for a U-Boot operation, this results in a pipeline like:</p>
+<ul class="simple">
+<li>UBootCommandOverlay - substitutes dynamic and device-specific data into the
+U-Boot command list specified in the device configuration.</li>
+<li>ConnectDevice - establishes a serial connection to the device, as specified
+by the device configuration</li>
+<li>UBootRetry - wraps the subsequent actions in a retry</li>
+<li>UBootInterrupt - sets the <code class="docutils literal notranslate"><span class="pre">Hit</span> <span class="pre">any</span> <span class="pre">key</span></code> prompt in a new connection</li>
+<li>ResetDevice - sends the reboot command to the device</li>
+<li>ExpectShellSession - waits for the specified prompt to match</li>
+<li>UBootCommandsAction - issues the commands to U-Boot</li>
+</ul>
+<div class="section" id="starting-a-connection">
+<span id="starting-connections"></span><h4>Starting a connection<a class="headerlink" href="#starting-a-connection" title="Permalink to this headline">¶</a></h4>
+<p>Typically, a Connection is started by an Action within the Pipeline. The call
+to start a Connection must not return until all operations on that Connection
+are complete or the Pipeline determines that the Connection needs to be
+terminated.</p>
+</div>
+</div>
+</div>
+<div class="section" id="using-debug-logs">
+<h2>Using debug logs<a class="headerlink" href="#using-debug-logs" title="Permalink to this headline">¶</a></h2>
+<p>The refactored dispatcher has a different approach to logging:</p>
+<ol class="arabic simple">
+<li><strong>all</strong> logs are structured using YAML</li>
+<li>Actions log to discrete log files</li>
+<li>Results are logged for each action separately</li>
+<li>Log messages use appropriate YAML syntax.</li>
+<li>Messages received from the device are prefixed with <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li>YAML wrapping handled by the dedicated logger. Always use
+<code class="docutils literal notranslate"><span class="pre">self.logger.&lt;LEVEL&gt;</span></code> in an action.</li>
+</ol>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>Actual representation of the logs in the UI will change - these examples are
+the raw content of the output YAML.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;start</span><span class="p">:</span> <span class="nv">1.4.2.3.7 test-install-overlay (max 300s)&#39;</span><span class="p p-Indicator">,</span><span class="nt"> ts</span><span class="p">:</span> <span class="s">&#39;2015-09-07T09:40:46.720450&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;test-install-overlay duration</span><span class="p">:</span> <span class="nv">0.02&#39;</span><span class="p p-Indicator">,</span><span class="nt"> ts</span><span class="p">:</span> <span class="s">&#39;2015-09-07T09:40:46.746036&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="nt">results</span><span class="p">:</span>
+    <span class="nt">test-install-overlay</span><span class="p">:</span> <span class="kt">!!python/object/apply:collections.OrderedDict</span>
+    <span class="p p-Indicator">-</span> <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">success</span><span class="p p-Indicator">,</span> <span class="nv">a9b2300d-0864-4f9c-ba78-c2594b567fc5</span><span class="p p-Indicator">]</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">skipped</span><span class="p p-Indicator">,</span> <span class="nv">a9b2300d-0864-4f9c-ba78-c2594b567fc5</span><span class="p p-Indicator">]</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">duration</span><span class="p p-Indicator">,</span> <span class="nv">0.024679899215698242</span><span class="p p-Indicator">]</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">timeout</span><span class="p p-Indicator">,</span> <span class="nv">300.0</span><span class="p p-Indicator">]</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">level</span><span class="p p-Indicator">,</span> <span class="nv">1.4.2.3.7</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;Received signal</span><span class="p">:</span> <span class="nv">&lt;STARTTC&gt; linux-linaro-ubuntu-pwd&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;test shell timeout</span><span class="p">:</span> <span class="nv">300 seconds&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="nv">/lava-None/tests/0_smoke-tests</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="nv">&lt;LAVA_SIGNAL_ENDTC linux-linaro-ubuntu-pwd&gt;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="nv">&lt;LAVA_SIGNAL_TESTCASE TEST_CASE_ID=linux-linaro-ubuntu-pwd RESULT=pass&gt;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="nv">&lt;LAVA_SIGNAL_STARTTC linux-linaro-ubuntu-uname&gt;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;Received signal</span><span class="p">:</span> <span class="nv">&lt;ENDTC&gt; linux-linaro-ubuntu-pwd&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">target</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;test shell timeout</span><span class="p">:</span> <span class="nv">300 seconds&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;Received signal</span><span class="p">:</span> <span class="nv">&lt;TESTCASE&gt; TEST_CASE_ID=linux-linaro-ubuntu-pwd RESULT=pass&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;res</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">&#39;&#39;test_case_id&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="nv">linux-linaro-ubuntu-pwd&#39;&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;&#39;result&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="nv">pass&#39;&#39;</span><span class="p p-Indicator">}</span>
+<span class="nt">    data</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">&#39;&#39;test_case_id&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="nv">linux-linaro-ubuntu-pwd&#39;&#39;</span><span class="p p-Indicator">,</span><span class="nt"> &#39;&#39;result&#39;&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="nv">pass&#39;&#39;</span><span class="p p-Indicator">}</span><span class="s">&#39;}</span>
+<span class="s">-</span><span class="nv"> </span><span class="s">results:</span><span class="nv"> </span><span class="s">{linux-linaro-ubuntu-pwd:</span><span class="nv"> </span><span class="s">pass,</span><span class="nv"> </span><span class="s">testsuite:</span><span class="nv"> </span><span class="s">smoke-tests-basic}</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">info</span><span class="p">:</span><span class="nt"> &#39;ok</span><span class="p">:</span> <span class="nv">lava_test_shell seems to have completed&#39;</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="nt">debug</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">curl-http</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> direct-install</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> direct-update</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-ifconfig</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span>
+<span class="nt">    linux-linaro-ubuntu-ifconfig-dump</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-lsb_release</span><span class="p">:</span> <span class="nv">fail</span><span class="p p-Indicator">,</span>
+<span class="nt">    linux-linaro-ubuntu-lscpu</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-netstat</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-pwd</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span>
+<span class="nt">    linux-linaro-ubuntu-route-dump-a</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-route-dump-b</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span>
+<span class="nt">    linux-linaro-ubuntu-route-ifconfig-up</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-route-ifconfig-up-lo</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span>
+<span class="nt">    linux-linaro-ubuntu-uname</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> linux-linaro-ubuntu-vmstat</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> ping-test</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span>
+<span class="nt">    remove-tgz</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">,</span><span class="nt"> tar-tgz</span><span class="p">:</span> <span class="nv">pass</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">-</span> <span class="p p-Indicator">{</span><span class="nt">debug</span><span class="p">:</span><span class="nt"> &#39;lava-test-shell duration</span><span class="p">:</span> <span class="nv">26.88&#39;</span><span class="p p-Indicator">,</span><span class="nt"> ts</span><span class="p">:</span> <span class="s">&#39;2015-09-07T09:43:14.065956&#39;</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="debugging-on-the-worker">
+<span id="debugging-workers"></span><span id="index-2"></span><h2>Debugging on the worker<a class="headerlink" href="#debugging-on-the-worker" title="Permalink to this headline">¶</a></h2>
+<p>Pipeline jobs are sent to the worker dispatcher over http as fully formatted YAML
+files but are then deleted when the test job ends.</p>
+<p>Equivalent files can be prepared using the <code class="docutils literal notranslate"><span class="pre">lava-server</span> <span class="pre">manage</span>
+<span class="pre">device-dictionary</span></code> <code class="docutils literal notranslate"><span class="pre">review</span></code> option to output the device configuration YAML.
+To re-run the job on the worker, pass this configuration as the <code class="docutils literal notranslate"><span class="pre">--target</span></code>
+option to <code class="docutils literal notranslate"><span class="pre">lava-dispatch</span></code> and specify a temporary <code class="docutils literal notranslate"><span class="pre">--output-dir</span></code> and the
+test job definition.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">MultiNode test jobs produce a specific test job for each node in the
+group. The original MultiNode definition <strong>cannot</strong> be executed by
+<code class="docutils literal notranslate"><span class="pre">lava-dispatch</span></code> on the command line and the job definition for a single
+node within a MultiNode group will also need editing before it can be run
+without reference to the other nodes.</p>
+</div>
+</div>
+<div class="section" id="adding-new-classes">
+<span id="index-3"></span><span id="id2"></span><h2>Adding new classes<a class="headerlink" href="#adding-new-classes" title="Permalink to this headline">¶</a></h2>
+<p>See also <a class="reference internal" href="dispatcher-format.html#mapping-yaml-to-code"><span class="std std-ref">Mapping deployment actions to the python code</span></a>:</p>
+<p>The expectation is that new tasks for the dispatcher will be created by adding
+more specialist Actions and organizing the existing Action classes into a new
+pipeline for the new task.</p>
+<p>Adding new behavior is a two step process:</p>
+<ul class="simple">
+<li>always add a new Action, usually with an internal pipeline, to implement the
+new behavior</li>
+<li>add a new Strategy class which creates a suitable pipeline to use that
+Action.</li>
+</ul>
+<p>A Strategy class may use conditionals to select between a number of top level
+Strategy Action classes, for example <code class="docutils literal notranslate"><span class="pre">DeployImageAction</span></code> is a top level
+Strategy Action class for the DeployImage strategy. If used, this conditional
+<strong>must only operate on job parameters and the device</strong> as the selection
+function is a <code class="docutils literal notranslate"><span class="pre">classmethod</span></code>.</p>
+<p>A test Job will consist of multiple strategies, one for each of the listed
+<em>actions</em> in the YAML file. Typically, this may include a Deployment strategy,
+a Boot strategy and a Test strategy. Jobs can have multiple deployment, boot,
+or test actions. Strategies add top level Actions to the main pipeline in the
+order specified by the parser. For the parser to select the new strategy, the
+<code class="docutils literal notranslate"><span class="pre">strategies.py</span></code> module for the relevant type of action needs to import the
+new subclass. There should be no need to modify the parser itself.</p>
+<p>A single top level Strategy Action implements a single strategy for the outer
+Pipeline. The use of <a class="reference internal" href="#retry-diagnostic"><span class="std std-ref">Logical actions</span></a> can provide sufficient complexity
+without adding conditionals to a single top level Strategy Action class. Image
+deployment actions will typically include a conditional to check if a Test
+action is required later so that the test definitions can be added to the
+overlay during deployment.</p>
+<p>Re-use existing Action classes wherever these can be used without changes.</p>
+<p>If two or more Action classes have very similar behavior, re-factor to make a
+new base class for the common behavior and retain the specialized classes.</p>
+<p>Strategy selection via select() must only ever rely on the device and the job
+parameters. Add new parameters to the job to distinguish strategies, e.g. the
+boot method or deployment method.</p>
+<ol class="arabic simple">
+<li>A Strategy class is simply a way to select which top level Action class is
+instantiated.</li>
+<li>A top level Action class creates an internal pipeline in <code class="docutils literal notranslate"><span class="pre">populate()</span></code><ul>
+<li>Actions are added to the internal pipeline to do the rest of the work</li>
+</ul>
+</li>
+<li>a top level Action will generally have a basic <code class="docutils literal notranslate"><span class="pre">run()</span></code> function which
+calls <code class="docutils literal notranslate"><span class="pre">run_actions</span></code> on the internal pipeline.</li>
+</ol>
+<p>#. Ensure that the <code class="docutils literal notranslate"><span class="pre">accepts</span></code> routine can uniquely identify this strategy
+without interfering with other strategies. (<a class="reference internal" href="#new-classes-unit-test"><span class="std std-ref">Always add unit tests for new classes</span></a>)</p>
+<ol class="arabic simple">
+<li>Respect the existing classes - reuse wherever possible and keep all classes
+as pure as possible. There should be one class for each type of operation
+and no more, so to download a file onto the dispatcher use the
+DownloaderAction whether that is an image or a dtb. If the existing class
+does not do everything required, inherit from it and add functionality.</li>
+<li>Respect the directory structure - a strategies module should not need to
+import anything from outside that directory. Keep modules together with
+modules used in the same submission YAML stanza.</li>
+<li>Expose all configuration in the YAML, not python. There are FIXMEs in the
+code to remedy situations where this is not yet happening but avoid adding
+code which makes this problem worse. Extend the device or submission YAML
+structure if new values are needed.</li>
+<li>Take care with YAML structure. Always check your YAML changes in the online
+YAML parser as this often shows where a simple hyphen can dramatically
+change the complexity of the data.</li>
+<li>Cherry-pick existing classes alongside new classes to create new pipelines
+and keep all Action classes to a single operation.</li>
+<li>Code defensively:<ol class="arabic">
+<li>check that parameters exist in validation steps.</li>
+<li>call super() on the base class validate() in each Action.validate()</li>
+<li>handle missing data in the dynamic context</li>
+<li>use cleanup() and keep actions idempotent.</li>
+</ol>
+</li>
+</ol>
+<div class="section" id="always-add-unit-tests-for-new-classes">
+<span id="new-classes-unit-test"></span><h3>Always add unit tests for new classes<a class="headerlink" href="#always-add-unit-tests-for-new-classes" title="Permalink to this headline">¶</a></h3>
+<p>Wherever a new class is added, that new class can be tested - if only to be
+sure that it is correctly initialized and added to the pipeline at the correct
+level. Always create a new file in the tests directory for new functionality.
+All unit tests need to be in a file with the <code class="docutils literal notranslate"><span class="pre">test_</span></code> prefix and add a new
+YAML file to the sample_jobs so that the strategies to select the new code can
+be tested. See <a class="reference internal" href="dispatcher-format.html#yaml-job"><span class="std std-ref">Basics of the YAML format</span></a>.</p>
+<p>Often the simplest way to understand the available parameters and how new
+statements in the device configuration or job submission show up inside the
+classes is to use a unit test. To run a single unit-test, for example
+test_function in a class called TestExtra in a file called test_extra.py, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest -v -c -f lava_dispatcher.tests.test_extra.TestExtra.test_function
+</pre></div>
+</div>
+<p>Example python code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">TestExtra</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-many-public-methods</span>
+
+   <span class="k">def</span> <span class="nf">test_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+       <span class="k">print</span> <span class="s2">&quot;Hello world&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="group-similar-operations">
+<h3>Group similar operations<a class="headerlink" href="#group-similar-operations" title="Permalink to this headline">¶</a></h3>
+<p>When using a connection to a device, group calls over that connection to calls
+which are expected to return within a consistent timeout for that class. If the
+final command from the class starts a longer running process, e.g. boot, set
+the connection prompt to look for a message which will be seen on that
+connection within a similar timeframe to all the other calls made by that
+class. This allows test writers to correctly choose the timeout to extend.</p>
+</div>
+<div class="section" id="add-documentation">
+<h3>Add documentation<a class="headerlink" href="#add-documentation" title="Permalink to this headline">¶</a></h3>
+<p>Add to the documentation when adding new classes which implement new dispatcher
+actions, parameters or behavior.</p>
+</div>
+<div class="section" id="online-yaml-checker">
+<h3>Online YAML checker<a class="headerlink" href="#online-yaml-checker" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://yaml-online-parser.appspot.com/">http://yaml-online-parser.appspot.com/</a></p>
+</div>
+<div class="section" id="use-syntax-checkers-during-the-refactoring">
+<h3>Use syntax checkers during the refactoring<a class="headerlink" href="#use-syntax-checkers-during-the-refactoring" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install pylint
+$ pylint -d line-too-long -d missing-docstring lava_dispatcher/
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-class-analysis-tools">
+<h3>Use class analysis tools<a class="headerlink" href="#use-class-analysis-tools" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install graphviz
+$ pyreverse lava_dispatcher/
+$ dot -Tpng classes_No_Name.dot &gt; classes.png
+</pre></div>
+</div>
+<p>(Actual images can be very large.)</p>
+</div>
+<div class="section" id="use-memory-analysis-tools">
+<h3>Use memory analysis tools<a class="headerlink" href="#use-memory-analysis-tools" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://jam-bazaar.blogspot.co.uk/2009/11/memory-debugging-with-meliae.html">http://jam-bazaar.blogspot.co.uk/2009/11/memory-debugging-with-meliae.html</a></li>
+<li><a class="reference external" href="http://jam-bazaar.blogspot.co.uk/2010/08/step-by-step-meliae.html">http://jam-bazaar.blogspot.co.uk/2010/08/step-by-step-meliae.html</a></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt install python-meliae
+</pre></div>
+</div>
+<p>Add this python snippet to a unit test or part of the code of interest:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">meliae</span> <span class="kn">import</span> <span class="n">scanner</span>
+<span class="n">scanner</span><span class="o">.</span><span class="n">dump_all_objects</span><span class="p">(</span><span class="s1">&#39;filename.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once the test has run, the specified filename will exist. To analyze
+the results, start up a python interactive shell in the same directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">meliae</span> <span class="kn">import</span> <span class="n">loader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">om</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;filename.json&#39;</span><span class="p">)</span>
+<span class="go">loaded line 64869, 64870 objs,   8.7 /   8.7 MiB read in 0.9s</span>
+<span class="go">checked    64869 /    64870 collapsed     5136</span>
+<span class="go">set parents    59733 /    59734</span>
+<span class="go">collapsed in 0.4s</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">summarize</span><span class="p">();</span> <span class="n">s</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The python interpreter, the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> configuration and other
+tools may allocate memory as part of the test, so the figures in the output
+may be larger than it would seem for a small test. A basic test may give a
+summary of 12Mb, total size. Figures above 100Mb should prompt a check on
+what is using the extra memory.</p>
+</div>
+</div>
+</div>
+<div class="section" id="pre-boot-deployment-manipulation">
+<h2>Pre-boot deployment manipulation<a class="headerlink" href="#pre-boot-deployment-manipulation" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These provisions are under development and are likely to change
+substantially. e.g. it may be possible to do a lot of these tasks using
+secondary media and secondary connections.</p>
+</div>
+<p>There are several situations where an environment needs to be setup in a
+contained and tested manner and then used for one or multiple LAVA test
+operations.</p>
+<p>One solution is to use MultiNode and this works well when the device under test
+supports a secondary connection, e.g. ethernet.</p>
+<p>MultiNode has requirements on a POSIX-type command line shell to be able to
+pass messages, e.g. busybox.</p>
+<p>QEMU tests involve downloading a pre-built chroot based on a stable
+distribution release of a foreign architecture and running tests inside that
+chroot.</p>
+<p>Android tests may involve setting up a VM or a configured chroot to expose USB
+devices while retaining the ability to use different versions of tools for
+different tests.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/dispatcher-testing.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:53 GMT -->
+</html>

@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from docs.lavasoftware.org/lava/authorization.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:57:58 GMT -->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>User permissions and authorization &#8212; LAVA 2021.01 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Creating Backups" href="admin-backups.html" />
+    <link rel="prev" title="Simple Administration" href="simple-admin.html" />
+    <link rel="canonical" href="authorization.html" />
+  
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"><span><img src="_static/lava.png"></span>
+          LAVA</a>
+        <span class="navbar-text navbar-version pull-left"><b>2021.01</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="genindex.html">Index</a></li>
+                <li><a href="contents.html">Contents</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Introduction to LAVA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="contents.html">Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary of terms</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="support.html">Getting support</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">User permissions and authorization</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#global-authorization">Global authorization</a></li>
+<li><a class="reference internal" href="#per-object-authorization">Per-object authorization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#permission-inheritance">Permission inheritance</a></li>
+<li><a class="reference internal" href="#anonymous-users-vs-authenticated-users">Anonymous users vs authenticated users</a></li>
+<li><a class="reference internal" href="#test-job-specifics-on-visibility">Test job specifics on visibility</a></li>
+<li><a class="reference internal" href="#setup">Setup</a></li>
+<li><a class="reference internal" href="#data-migration">Data migration</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#visibility-decision-trees">Visibility decision trees</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="simple-admin.html" title="Previous Chapter: Simple Administration"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Simple Administration</span>
+    </a>
+  </li>
+  <li>
+    <a href="admin-backups.html" title="Next Chapter: Creating Backups"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Creating Backups &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="https://docs.lavasoftware.org/lava/search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="user-permissions-and-authorization">
+<span id="authorization"></span><span id="index-0"></span><h1>User permissions and authorization<a class="headerlink" href="#user-permissions-and-authorization" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>You need to be familiar with these sections:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="first-installation.html#installation"><span class="std std-ref">First steps installing LAVA</span></a></li>
+<li><a class="reference internal" href="installing_on_debian.html#create-superuser"><span class="std std-ref">Superuser</span></a></li>
+<li><a class="reference internal" href="first_steps.html#logging-in"><span class="std std-ref">Logging In</span></a> (as superuser)</li>
+<li><a class="reference internal" href="devicetypes.html#device-types"><span class="std std-ref">Device types</span></a> and <a class="reference internal" href="devicetypes.html#device-type-elements"><span class="std std-ref">Database elements for a device type</span></a></li>
+<li><a class="reference internal" href="first-devices.html#first-devices"><span class="std std-ref">Adding your first devices</span></a></li>
+</ol>
+</div>
+<div class="section" id="introduction">
+<span id="permission-summary"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>We can split LAVA authorization backend into two separate groups:</p>
+<div class="section" id="global-authorization">
+<h3>Global authorization<a class="headerlink" href="#global-authorization" title="Permalink to this headline">¶</a></h3>
+<p>LAVA global authorization system is derived from a django authorization and can
+be found <span class="target" id="here">here</span>: <a class="reference external" href="https://docs.djangoproject.com/en/2.2/topics/auth/default/#topic-authorization">https://docs.djangoproject.com/en/2.2/topics/auth/default/#topic-authorization</a></p>
+<p>Specific user can have a global permission for any system entity in which case
+this global permission is checked first and has higher priority than
+per-object permission setup when determining this users’ access rights.
+This kind of setup can be managed in admin user settings.</p>
+</div>
+<div class="section" id="per-object-authorization">
+<h3>Per-object authorization<a class="headerlink" href="#per-object-authorization" title="Permalink to this headline">¶</a></h3>
+<p>LAVA per-object authorization is used to apply a fine-grained access to a
+specific objects in the system so it’s best used when there’s a need to i.e.
+hide a device(and all jobs on that device) from a general public.</p>
+<p>Per-object authorization system is <strong>group</strong> based and applies to
+following entities exclusively:</p>
+<ul class="simple">
+<li><strong>Device Type</strong></li>
+<li><strong>Device</strong></li>
+<li><strong>Test Job</strong></li>
+</ul>
+<p>It is split across the following permissions:</p>
+<ul class="simple">
+<li><strong>view</strong></li>
+<li><strong>submit</strong></li>
+<li><strong>change</strong></li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">LAVA per-object authorization works in an <strong>inverse</strong> manner,
+meaning that if there are no permissions assigned for an object,
+that object is considered unprotected. Once a permission is
+assigned to it for a specific group, the system will check that
+the specific user belongs to the group and allow/disallow the
+access rights.</p>
+</div>
+<p>Auth system is also working in <strong>inheritable</strong> manner, meaning that the
+permissions from <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code> are passed over to a <code class="docutils literal notranslate"><span class="pre">device</span></code> and
+permissions from a <code class="docutils literal notranslate"><span class="pre">device</span></code> are passed over to <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">job</span></code>. More in depth
+explanation on this can be found later in this chapter.</p>
+</div>
+</div>
+<div class="section" id="permission-inheritance">
+<h2>Permission inheritance<a class="headerlink" href="#permission-inheritance" title="Permalink to this headline">¶</a></h2>
+<p>As we already covered that the object is <code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">restricted</span></code> if it has any
+permission assigned for a specific group and <code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">unrestricted</span></code>
+otherwise. Since each <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">job</span></code> has either a <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code> (requested) or
+a <code class="docutils literal notranslate"><span class="pre">device</span></code> (actual) and each <code class="docutils literal notranslate"><span class="pre">device</span></code> belongs to a <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code>, the
+per-object authorization will cascade through ‘parent’ entity to check for
+permissions if the object is <code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">unrestricted</span></code> but not otherwise.</p>
+<p>Example: Lets say the device qemu01 is <code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">unrestricted</span></code> but the
+qemu device type has a permission to allow group ‘lkft’ to view it. Only users
+from this particular group will be able to see device qemu01 even if it’s not
+<code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">restricted</span></code> because the underlying device type has the
+restriction. Same goes for test jobs. If the test job is not <code class="docutils literal notranslate"><span class="pre">permission</span>
+<span class="pre">restricted</span></code> it will be visible (example) only if device and device type it
+belongs to are unrestricted (or the user belongs to one of the groups the
+view permission applies to).</p>
+<p>This particular behavior allows admin to set the permissions on higher level
+and it will be applied to all the lower level objects, i.e. if you set the
+<strong>view</strong> permission for aforementioned ‘lkft’ group for the <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code>,
+all the devices and test job will be automagically hidden for non-lkft users.</p>
+<p>Higher level permission settings will always have advantage over the lower
+level ones. For example if a group has a specific permission over a device, it
+does not matter if the same group does not have any permissions over a device
+type, that group will be able to access that particular device using said
+permission.</p>
+</div>
+<div class="section" id="anonymous-users-vs-authenticated-users">
+<h2>Anonymous users vs authenticated users<a class="headerlink" href="#anonymous-users-vs-authenticated-users" title="Permalink to this headline">¶</a></h2>
+<p>For out of the box LAVA installation, device types, devices and test jobs are
+publicly visible meaning that a non-authenticated users can view everything.
+This does not apply to <strong>submit</strong> and <strong>change</strong> permissions.</p>
+<p>But if the object is <code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">restricted</span></code> for <strong>view</strong> permission, or it
+inherits the permission restriction, anonymous users will not be able to see
+that particular object any more.</p>
+<p>If a user is authenticated but belongs to no group, it will have pretty much
+similar access as the anonymous user with the exception that he will be able to
+<strong>submit</strong> jobs to devices which are not <code class="docutils literal notranslate"><span class="pre">permission</span> <span class="pre">restricted</span></code> for
+<strong>submit</strong> permission.</p>
+<p>User belonging to one or more groups will have additional permissions based on
+the admin setup for per-object permissions.</p>
+</div>
+<div class="section" id="test-job-specifics-on-visibility">
+<h2>Test job specifics on visibility<a class="headerlink" href="#test-job-specifics-on-visibility" title="Permalink to this headline">¶</a></h2>
+<p>Test job visibility is affected by two more settings.</p>
+<p>Field <code class="docutils literal notranslate"><span class="pre">viewing_groups</span></code>, if set, will allow only users belonging to specific
+groups to view this job. User must belong to <strong>all</strong> the groups specified in
+the <code class="docutils literal notranslate"><span class="pre">viewing_groups</span></code> field. This field has higher priority than per-object
+auth and it can be set in the <code class="docutils literal notranslate"><span class="pre">job</span> <span class="pre">definition</span></code>.</p>
+<p>Field <code class="docutils literal notranslate"><span class="pre">is_public</span></code> can be used to completely hide job from general public.
+If set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, only submitter, superusers and users belonging to
+<code class="docutils literal notranslate"><span class="pre">viewing_groups</span></code> field (if set) will be able to view the test job. If set to
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, regular per-object authorization will be applied. This field can also
+be set in the <code class="docutils literal notranslate"><span class="pre">job</span> <span class="pre">definition</span></code>.</p>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>The per-object permission can only be assigned to <code class="docutils literal notranslate"><span class="pre">device</span></code> and
+<code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code> objects. The <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">job</span></code> objects will always use
+<strong>inheritance</strong> to determine user access level.</p>
+<p>To add per-object group permissions one can use either admin UI and go to
+individual <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code> and <code class="docutils literal notranslate"><span class="pre">device</span></code> objects or use XMLRPC API methods -
+/api/help/#system.assign_perm_device and
+/api/help/#system.assign_perm_device_type.</p>
+</div>
+<div class="section" id="data-migration">
+<h2>Data migration<a class="headerlink" href="#data-migration" title="Permalink to this headline">¶</a></h2>
+<p>Per-object authorization and new permission model were introduced in 2019.09
+version of LAVA. While some of the fields in relevant tables were removed, the
+Django migration in this version includes a data migration as well so that
+permission entries are automatically created so that no user access is modified
+by introducing the new model.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Downgrades are not recommended after the system 2019.09 upgrade.
+The reason for this is that the backward database migration will <strong>not</strong>
+recreate previous settings regarding <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code> and <code class="docutils literal notranslate"><span class="pre">device</span></code>
+authorization.</p>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">The way <code class="docutils literal notranslate"><span class="pre">is_public</span></code> field works has changed starting with
+2019.09 and authorization update. The way this field worked before was to
+allow all users viewing the test job if set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. After the update,
+test job visibility is also restricted by <code class="docutils literal notranslate"><span class="pre">device</span></code> and <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">type</span></code>
+per-object settings to so some users might see a change in behavior (i.e.
+not being able to view a test job where previously they could)</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>For the sake of simplicity, let’s say we have ‘device-type1’, ‘device1’ (of
+device-type1), and groups ‘group1’ and ‘group2’.</p>
+<ol class="arabic simple">
+<li>no per-object permissions set on device-type1 nor device1: All authenticated
+as well as anonymous users are able to access device-type1, device1 page and
+all test jobs view pages (i.e. /scheduler/device_type/qemu etc.) as well
+as plain logs etc. All authenticated users are able to submit jobs to
+device1. No anonymous users can submit jobs (ever).</li>
+<li>device1 has a per-object permission ‘Can submit to device’ set to group1:
+Now only users from group1 are able to submit jobs to device1.
+All authenticated and anonymous users are still able to <strong>view</strong> device1 and
+all jobs running on it since there’s no restriction for <strong>view</strong> permission.</li>
+<li>group1 has a per-object permission <strong>view</strong> for device-type1 and device1 has
+no per-object permissions set: only users from group1 can <strong>view</strong> the
+device-type1, device1 and all associated test jobs. No-one else.</li>
+<li>group1 has a per-object permission <strong>view</strong> for device-type1 and group2 has
+a per-object permission <strong>view</strong> for device1: users from group1 are not able
+to <strong>view</strong> device1 (nor any testjobs running on it) but they will be able
+to access device-type1 details page.
+Users from group1 will be able to <strong>view</strong> other devices (if any) of
+the device-type1, but only if those devices have no <strong>view</strong> permissions set
+for them (or they belong to some other groups that are included in those
+permissions). users from group2 will be able to <strong>view</strong> the device1 and all
+the test jobs running on it but will not be able to access the device-type1
+detail page.</li>
+</ol>
+</div>
+<div class="section" id="visibility-decision-trees">
+<h2>Visibility decision trees<a class="headerlink" href="#visibility-decision-trees" title="Permalink to this headline">¶</a></h2>
+<p>Device type:</p>
+<img alt="_images/device-type-decision-tree.png" src="_images/device-type-decision-tree.png" />
+<p>Device:</p>
+<img alt="_images/device-decision-tree.png" src="_images/device-decision-tree.png" />
+<p>Test job:</p>
+<img alt="_images/test-job-decision-tree.png" src="_images/test-job-decision-tree.png" />
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2010-2019, Linaro Limited.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+
+<!-- Mirrored from docs.lavasoftware.org/lava/authorization.html by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 25 Feb 2021 14:58:09 GMT -->
+</html>
